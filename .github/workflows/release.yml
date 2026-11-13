@@ -56,6 +56,22 @@ jobs:
 
       # The Python suite needs a game install for its real-data tests, so it is not run here; run it locally before tagging.
 
+      - name: Check the signing secrets before the long build (prints only lengths and pass/fail, never the secret)
+        working-directory: studio
+        shell: pwsh
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          $k = $env:TAURI_SIGNING_PRIVATE_KEY; $p = $env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD
+          # a key file is 348 characters of base64 that starts with the encoding of "untrusted comment:"
+          $facts = "key: set=$([bool]$k) length=$($k.Length) trailingWhitespace=$($k -match '\s$') innerWhitespace=$($k.Trim() -match '\s') startsLikeKey=$($k.TrimStart().StartsWith('dW50cnVzdGVkIGNvbW1lbnQ6')) | password: set=$([bool]$p) length=$($p.Length) hasWhitespace=$($p -match '\s')"
+          Write-Host "::notice title=signing secrets::$facts"
+          Set-Content sigtest.txt x
+          $out = npx tauri signer sign sigtest.txt 2>&1 | Out-String
+          if (Test-Path sigtest.txt.sig) { Write-Host "::notice title=signing test::signed OK" }
+          else { $m = (($out -split "`n" | Select-String 'rror|failed' | Select-Object -First 3) -join ' / '); Write-Host "::error title=signing test failed::$m"; exit 1 }
+
       - name: Build, sign and publish
         uses: tauri-apps/tauri-action@v0
         env:
