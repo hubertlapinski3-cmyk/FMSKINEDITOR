@@ -1,6 +1,6 @@
 [package]
 name = "fm-skin-studio"
-version = "0.1.1"
+version = "0.1.2"
 description = "FM Skin Studio: desktop shell for the FM27 skin engine"
 edition = "2021"
 
