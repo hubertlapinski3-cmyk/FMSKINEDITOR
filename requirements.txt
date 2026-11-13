@@ -1,0 +1,10 @@
+UnityPy==1.25.4
+Pillow==13.0.0
+etcpak==0.9.15
+lz4==4.4.5
+brotli==1.2.1
+texture2ddecoder==1.0.6
+fsspec==2026.9.0
+svgelements==1.9.6
+mapbox_earcut==2.1.0
+numpy==2.5.4

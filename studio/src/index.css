@@ -1,0 +1,98 @@
+﻿:root { color-scheme: dark; --bg:#1e1f22; --side:#25262a; --line:#34363b; --fg:#d6d8dd; --dim:#8b909a; --acc:#7694fe; --bad:#f2748a; --ok:#6fcf97; --warn:#e5b567 }
+* { box-sizing: border-box }
+html, body, #root { height: 100%; margin: 0 }
+body { background: var(--bg); color: var(--fg); font: 13px/1.45 ui-sans-serif, system-ui, "Segoe UI", sans-serif; overflow: hidden }
+button { font: inherit; color: var(--fg); background: #2e3036; border: 1px solid var(--line); border-radius: 4px; padding: 3px 9px; cursor: pointer }
+button:hover:not(:disabled) { border-color: var(--dim) } button:disabled { opacity: .45; cursor: default }
+.boot { display: grid; place-content: center; height: 100%; text-align: center }
+.app { display: grid; height: 100%; grid-template-columns: 44px 250px 1fr; grid-template-rows: 1fr 210px 24px; grid-template-areas: "act exp ed" "act exp pn" "st st st" }
+.activity { grid-area: act; background: #17181b; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 0 }
+.activity button { width: 32px; height: 32px; padding: 0; border: 0; background: none; color: var(--dim); font-weight: 700 }
+.activity button.on { color: var(--fg); box-shadow: inset 2px 0 var(--acc) }
+.grow { flex: 1 }
+.explorer { grid-area: exp; background: var(--side); border-right: 1px solid var(--line); overflow: auto }
+.explorer .head { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em }
+.explorer .head button { padding: 0 7px }
+.explorer ul { list-style: none; margin: 0; padding: 0 }
+.explorer li { padding: 3px 14px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.explorer li:hover { background: #2d2f35 } .explorer li.sel { background: #353a4a }
+.explorer li:has(.rowbtns) { display: flex; justify-content: space-between; align-items: center; gap: 6px }
+.explorer .rowbtns { display: none; gap: 4px; flex: none } .explorer li:hover .rowbtns, .explorer li.sel .rowbtns { display: flex }
+.explorer .rowbtns button { padding: 0 6px; font-size: 11px }
+.explorer li.image,.explorer li.other { color: var(--dim); cursor: default } .explorer small { color: var(--dim) }
+.note { padding: 6px 10px; color: var(--warn) }
+.editor { grid-area: ed; display: flex; flex-direction: column; min-width: 0 }
+.tabs { display: flex; background: #17181b; overflow-x: auto; min-height: 33px }
+.tab { padding: 7px 8px 7px 14px; color: var(--dim); cursor: pointer; border-right: 1px solid var(--line); white-space: nowrap }
+.tab.on { color: var(--fg); background: var(--bg); box-shadow: inset 0 2px var(--acc) }
+.tab button { border: 0; background: none; padding: 0 5px; color: var(--dim) }
+.surface { flex: 1; min-height: 0 } .empty { padding: 30px; color: var(--dim) }
+.panel { grid-area: pn; border-top: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0 }
+.ptabs { display: flex; gap: 2px; padding: 0 8px; background: var(--side) }
+.ptabs button { border: 0; background: none; color: var(--dim); border-radius: 0; padding: 6px 10px; font-size: 11px; letter-spacing: .05em }
+.ptabs button.on { color: var(--fg); box-shadow: inset 0 -2px var(--acc) }
+.pbody { flex: 1; overflow: auto; padding: 6px 12px }
+.prob { padding: 2px 0; cursor: pointer; color: var(--bad) } .prob b { color: var(--fg) } .prob:hover { background: #2d2f35 }
+.mono { font: 12px ui-monospace, Consolas, monospace; white-space: pre-wrap } .dim { color: var(--dim) } .warn { color: var(--warn) } .ok { color: var(--ok) } .bad { color: var(--bad) }
+.build { display: flex; flex-direction: column; gap: 8px; align-items: flex-start }
+.status { grid-area: st; display: flex; gap: 16px; align-items: center; padding: 0 12px; background: #2a3350; font-size: 12px }
+.status .click { cursor: pointer }
+
+.search { width: calc(100% - 20px); margin: 0 10px 6px; background: #17181b; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 4px 8px; font: inherit }
+.opts { display: flex; gap: 12px; padding: 0 10px 6px; color: var(--dim); align-items: center }
+.file { padding: 4px 10px; color: var(--acc); font-size: 12px } .hit { padding: 1px 10px 1px 18px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis } .hit:hover { background: #2d2f35 } .hit b { color: var(--dim); font-weight: 400; margin-right: 6px }
+.palette .head, .searchview .head { padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em }
+.palette ul { list-style: none; margin: 0; padding: 0 } .palette li { display: flex; align-items: center; gap: 6px; padding: 3px 10px }
+.palette li:hover { background: #2d2f35 } .palette input[type=color] { width: 30px; height: 22px; padding: 0; border: 1px solid var(--line); background: none }
+.palette .alpha { width: 56px; background: #17181b; color: var(--fg); border: 1px solid var(--line); border-radius: 3px; padding: 1px 3px }
+.palette .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px } .palette .var { color: var(--dim); font-size: 12px; width: 94px; overflow: hidden; text-overflow: ellipsis }
+.palette .found li { cursor: pointer } .palette .found i { display: inline-block; width: 14px; height: 14px; border: 1px solid var(--line); border-radius: 3px }
+.palette li button { padding: 0 6px }
+
+.gameview ul { list-style: none; margin: 0; padding: 0 } .gameview li { padding: 3px 14px; cursor: pointer } .gameview li:hover { background: #2d2f35 } .gameview small { color: var(--dim) }
+.gameview .head { padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em }
+.plan { display: flex; flex-direction: column; gap: 3px; font-size: 12px }
+
+.assets .head { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em }
+.assets .pad { padding: 6px 10px } .assets .warn { padding: 4px 10px }
+.assets .conf { padding: 0 10px 6px; font-size: 12px } .assets .conf div { margin: 2px 0 } .c-error b { color: #f48771 } .c-warning b { color: #e5c07b } .c-info b { color: var(--dim); font-weight: 400 }
+.assets .swap, .assets .item { padding: 6px 10px; border-top: 1px solid var(--line) } .assets .item { display: flex; align-items: center; gap: 8px }
+.assets .pair { display: flex; align-items: center; gap: 6px }
+.assets .thumb { width: 92px; height: 56px; object-fit: contain; background: #17181b; border: 1px solid var(--line); border-radius: 3px; flex: none }
+.assets .meta { font-size: 12px; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0 } .assets small { color: var(--dim) }
+.assets .ctl { display: flex; gap: 6px; margin-top: 4px; align-items: center }
+.assets .where { display: flex; flex-direction: column; gap: 1px; margin-top: 4px; font-size: 12px }
+.assets .row { display: flex; gap: 6px; align-items: center; padding: 6px 0 }
+.assets .swap.is-dirty { border-left: 3px solid #e5c07b; background: #26241c }
+.assets .thumb.staged { outline: 1px dashed #e5c07b } .assets .thumb.empty { display: grid; place-items: center; color: var(--dim); font-size: 11px }
+.assets .badge { margin-left: 6px; font-size: 11px; padding: 0 5px; border-radius: 8px } .assets .badge.saved { color: #98c379; border: 1px solid #3c5a35 } .assets .badge.dirty, .assets .dirty { color: #e5c07b }
+.assets .badge.dirty { border: 1px solid #6b5a2a } .assets button.primary:not(:disabled) { background: #2f5d3a; border-color: #3c7a4a; color: #fff }
+
+.updates .head { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em }
+.updates .pad { padding: 4px 10px } .updates .warn { padding: 2px 0 } .updates .small { font-size: 11px } .updates .mono { font-family: Consolas, monospace; padding: 0 10px; overflow-wrap: anywhere }
+.updates .ustatus { margin: 0 10px 6px; padding: 6px 8px; border-left: 3px solid var(--line); font-size: 12px } .ustatus.s-same { border-color: #98c379 } .ustatus.s-catalog_changed, .ustatus.s-tamper { border-color: #e5c07b }
+.updates .prof { padding: 2px 10px; font-size: 12px } .updates summary { padding: 2px 10px; cursor: pointer }
+.updates .item { padding: 3px 10px; font-size: 12px; border-left: 3px solid transparent } .st-moved { border-color: #61afef } .st-gone { border-color: #e06c75 } .st-review { border-color: #e5c07b }
+.preview { padding: 8px 12px; font-size: 12px } .preview .row { display: flex; gap: 10px; align-items: center; margin-bottom: 4px } .preview .shot { max-width: 100%; max-height: 360px; margin-top: 6px; border: 1px solid var(--line) } .preview .steps { margin: 4px 0; padding-left: 18px }
+
+.layouts .head { padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em } .layouts .pad { padding: 4px 10px } .layouts .small { font-size: 11px } .layouts .mono { font-family: Consolas, monospace; overflow-wrap: anywhere }
+.llist { list-style: none; margin: 0; padding: 0; max-height: 70vh; overflow: auto } .llist li { padding: 2px 12px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis } .llist li:hover { background: #2d2f35 }
+.ltree { max-height: 38vh; overflow: auto; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 12px }
+.lnode { padding: 1px 6px; cursor: pointer; white-space: nowrap } .lnode:hover { background: #2d2f35 } .lnode.sel { background: #353a4a } .lnode .caret { display: inline-block; width: 12px; color: var(--dim) } .lnode .nm { color: #61afef } .lnode .dot { color: #e5c07b; margin-left: 6px }
+.layouts .inc { border-left: 1px dashed var(--line); margin-left: 10px } .layouts a { color: #61afef; cursor: pointer; text-decoration: none } .layouts .hit { padding: 1px 10px; cursor: pointer } .layouts .hit:hover { background: #2d2f35 }
+.chip { display: inline-block; margin: 2px 4px 2px 0; padding: 0 6px; border: 1px solid var(--line); border-radius: 9px; font-size: 11px } .chip.gone { text-decoration: line-through; color: var(--dim) }
+.inspector, .usage { border-top: 1px solid var(--line) }
+
+.guard { margin: 12px; padding: 10px; border: 1px solid #6b2a2a; background: #2a1c1c; border-radius: 4px; font-size: 12px } .guard .mono { font-family: Consolas, monospace; margin: 6px 0; overflow-wrap: anywhere }
+
+.tiles .head, .tables .head { padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em } .tiles .pad, .tables .pad { padding: 4px 10px } .tiles .small, .tables .small { font-size: 11px }
+.canvas { overflow: auto; max-height: 46vh; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #17181b } .canvas svg { display: block; margin: 8px; user-select: none; touch-action: none }
+.gl { stroke: #2d2f35; stroke-width: 1 } .tcell rect { fill: #2f3b57; stroke: #61afef; stroke-width: 1.5; cursor: grab } .tcell text { fill: #e6e6e6; font-size: 11px; pointer-events: none } .tcell text.dim { fill: #9aa0ac }
+.tcell.sel rect { stroke: #e5c07b; stroke-width: 2.5 } .tcell.moved rect { fill: #4a4326 } .tcell.bad rect { stroke: #e06c75; fill: #3b2326 } .tcell.hit rect { stroke-dasharray: 5 3 } .tcell.fixed rect { fill: #2a2c31; stroke: #666; cursor: not-allowed }
+.cellbox .row { display: flex; gap: 8px; align-items: center; margin: 4px 0 } .cellbox input { width: 60px } .tiles .bad { color: #f48771 } .tiles .ok { color: #98c379 } .warnline { color: #e5c07b }
+.tcols { width: 100%; border-collapse: collapse; font-size: 12px } .tcols th { text-align: left; color: var(--dim); font-weight: 400; padding: 2px 6px } .tcols td { padding: 2px 6px; border-top: 1px solid var(--line); vertical-align: middle } .tcols input { width: 62px } .tcols tr.patched { background: #26241c } .tcols .dot { color: #e5c07b }
+.tcols button { padding: 0 5px; margin-right: 2px } .addlist { max-height: 24vh; overflow: auto }
+
+.checklist .head { padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em } .checklist .pad { padding: 4px 10px } .checklist .small { font-size: 11px }
+.pkg { margin: 4px 10px; padding: 6px 8px; border-left: 3px solid var(--line); font-size: 12px } .pkg.latest { border-color: #98c379 } .checklist .ok { color: #98c379 } .checklist .bad { color: #f48771 }
+.checklist .doc { margin: 6px 10px; padding: 8px; background: #17181b; border: 1px solid var(--line); border-radius: 4px; font: 11px/1.45 Consolas, monospace; white-space: pre-wrap; max-height: 55vh; overflow: auto }

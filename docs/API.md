@@ -1,0 +1,132 @@
+﻿# Engine API (phase 0)
+
+The engine (`skin_editor/engine.py`) is one object with every operation of the editor and no transport code. Three clients use it:
+
+- **JSON-RPC 2.0 over HTTP:** `POST /rpc` (one request or a batch), same token and Host check as the page. Named parameters only.
+- **Events:** `GET /events` is a server-sent event stream: `job.queued`, `job.started`, `job.progress`, `job.done`, `job.failed`, `job.cancelled`. Each event carries `seq`, `type`, `time`, `data`.
+- **Command line:** `python -m skin_editor rpc METHOD '{json}' [--data-file F] [--out F] [--no-wait]` and `python -m skin_editor methods [--markdown]`.
+
+The first server's `/api/...` routes stay and call the same engine functions; `tests/test_api.py` proves the two surfaces cover the same set.
+
+Conventions:
+
+- **Jobs.** A `job` method returns `{"job": "j3"}`. Jobs run one at a time in submission order; follow them with `jobs.get`, `jobs.wait` or the event stream. The CLI waits by default.
+- **Bytes in.** A parameter of type `bytes` (`data`) is sent as base64.
+- **Bytes out.** A `binary` method returns `{"content_type", "base64", "filename"?}`.
+- **Path ids** (`id`) are decimal strings: Unity path ids are 64-bit and do not fit a JavaScript number.
+- **Parameters are checked** against the schema before the engine runs: unknown, missing and wrongly typed parameters are all reported together.
+
+Error codes: `-32700` parse error, `-32600` invalid request, `-32601` method not found, `-32602` invalid params (`data.problems`), `-32004` not found, `-32010` placement refused (`data.blocks`, `warnings`, `collisions`, `requires_confirm`), `-32011` layout dump refused (`data.errors`), `-32020` install refused, `-32000` any other engine error (`data.type`).
+
+Transport note: the specification proposed a WebSocket. Phase 0 uses HTTP POST plus server-sent events instead, because both exist in the Python standard library and in every WebView; the method table and events are transport-free, so a WebSocket can be added later without touching them.
+
+## Methods
+
+| Method | Kind | Parameters | HTTP route (first server) | What it does |
+|---|---|---|---|---|
+| `api.methods` | call | - | - | This table: every method with its parameters. |
+| `jobs.list` | call | - | - | All known jobs, oldest first. |
+| `jobs.get` | call | id: str | - | One job: state, progress, result or error. |
+| `jobs.wait` | call | id: str, timeout?: num | - | Block until the job finishes (or the timeout, seconds), then return it. |
+| `jobs.cancel` | call | id: str | - | Cancel a job that has not started. |
+| `jobs.latest` | call | - | `GET /api/job` | The most recent job in the first frontend's shape. |
+| `app.state` | call | - | `GET /api/state` | Install, snapshot, index, tamper and project state. |
+| `app.quit` | call | - | `POST /api/quit` | Stop the server. |
+| `game.detect` | call | - | `POST /api/detect` | Search the store libraries for FM installs. |
+| `game.select` | call | game_dir: str | `POST /api/config` | Use this game folder. |
+| `snapshot.take` | call | force?: bool | `POST /api/snapshot` | Copy the stock style bundles (game closed, stock files). |
+| `snapshot.record_reference` | call | force?: bool | `POST /api/reference-hashes` | Record catalog and UI bundle hashes for an older snapshot. |
+| `index.build` | job | - | `POST /api/index` | Decode the snapshot's stylesheets into the style index. |
+| `tokens.list` | call | q?: str, colours?: bool | `GET /api/tokens` | Tokens by name, value or hex code. |
+| `tokens.get` | call | name: str | `GET /api/token` | One token: definitions per sheet, alias chain, reach. |
+| `literals.list` | call | - | `GET /api/literals` | Colour literals with hit counts. |
+| `literals.get` | call | rgb: str, a: num | `GET /api/literal` | Rules using one RGBA, and every alpha of its RGB. |
+| `project.list` | call | - | `GET /api/projects` | Project names. |
+| `project.get` | call | name: str | `GET /api/project` | Load a project (a new one when it does not exist). |
+| `project.save` | call | project: obj | `POST /api/project` | Validate and store a project. |
+| `project.files` | call | project: str | - | Files of a folder project (path, kind, bytes); empty for a legacy project. |
+| `project.read_file` | call | project: str, path: str | - | One text file of a folder project. |
+| `project.write_file` | call | project: str, path: str, text: str | - | Store a text file exactly as given; returns the project's problems. |
+| `project.delete_file` | call | project: str, path: str | - | Delete a file of a folder project (not the core files). |
+| `project.problems` | call | project: str | - | Compile a folder project and list problems (file, line, message). |
+| `uss.diagnostics` | call | text: str, sheet?: str | - | Diagnostics of USS text: syntax, unknown property or token, bad colour, unit, unused class (with quick-fix suggestions). |
+| `game.sheets` | call | - | - | The game's stylesheets (name, bundle, rule count). |
+| `game.sheet` | call | name: str, bundle?: str | - | One vanilla sheet printed as USS. |
+| `build.plan` | call | project: str, target?: enum: native | bundles | - | What a build would do and drop for a target, without writing anything. |
+| `project.import_native` | call | path: str, name: str | - | A native USS skin folder (skin.json + sheets + assets) as a project; the source is only read. |
+| `docs.checklist` | call | - | - | The in-game checklist (docs/INGAME-CHECKLIST.md) and its results block. |
+| `builds.list` | call | project?: str, limit?: int | - | Prepared packages: every build with a package.json (project, id, gate result, files with hashes, plan digest); `latest` marks what Install build would install. |
+| `layout.export_index` | call | index?: str, game_build?: str, areas?: str | - | Build the fmlayout-index/2 dump from the FM27_LayoutMCP sqlite index plus the game's composition bundles (cross-checked cell by cell against the bundles) and import it. |
+| `tables.list` | call | q?: str, limit?: int | - | The game's table views (ui-tableviews): name, path id, column count. |
+| `tables.view` | call | path_id: id, project?: str | - | One table view: its columns in order with width and flags, what each column's row cell draws (factory, default width, cell layout), the columns the factory could add; with a project, its patch file. |
+| `tables.usage` | call | index?: str | - | Where table views are used: decode the view GUIDs from the layouts' InitFunction arguments in the FM27_LayoutMCP index (read-only) and store the map in the workspace; `tables.view` then returns `used_by` (layout, tile, compositions) and `used_by_summary`. |
+| `tables.edit` | call | project: str, name: str, path_id: id, op: obj | - | Add a column edit (set-width, hide-column, show-column, move-column) to the project's patch file of a table view. Bundle target only. |
+| `tables.unedit` | call | project: str, name: str | - | Remove the patch file of a table view from the project. |
+| `layouts.list` | call | q?: str, bundle?: str, limit?: int | - | The game's UXML layouts (VisualTreeAssets): bundle, name, path id, element count; filtered by name. |
+| `layouts.tree` | call | bundle: str, path_id: id, project?: str | - | One layout as an element tree (type, name, classes, attributes, inline style, bindings read-only), templates resolved one level; with a project, its patch file for that layout. |
+| `layouts.class_usage` | call | class: str | - | Where a USS class is used: layouts with elements carrying it, and the style rules that mention it. |
+| `layouts.edit` | call | project: str, bundle: str, name: str, path_id: id, op: obj | - | Add an edit (set-classes, set-inline, set-attr; addressed by element id plus a type/name guard) to the project's patch file of a layout. Bundle target only. |
+| `layouts.unedit` | call | project: str, bundle: str, name: str, id: int, op?: str | - | Remove the edits of one element (or one op kind) from a layout's patch file. |
+| `font.tokens` | call | - | - | The game's font-family tokens, the targets of a font swap. |
+| `font.set` | call | project: str, token: str, path: str | - | Assign a .ttf/.otf file to a font token (native target: the export copies the font and writes the url() rule). |
+| `font.remove` | call | project: str, token: str | - | Remove a font assignment. |
+| `inspector.status` | call | - | - | Is the FM27 inspector pipe answering? {online, game, scene} or {online: false, reason}. |
+| `preview.live` | call | project: str | - | Live preview: write the project as a native skin skins/<name>-preview, ask the game to reload skins, screenshot it through the inspector. mode static + reason when the pipe is unavailable. Never touches bundles. |
+| `preview.live_image` | binary | path: str | - | A screenshot taken by preview.live. |
+| `update.status` | call | - | - | Live game against the active version profile: same, catalog_changed (guided flow), tamper (bundle installs blocked) or no profile; plus the stored profiles. |
+| `update.profiles` | call | - | - | Stored version profiles (id, build, catalog hash, counts). |
+| `update.scan` | call | build?: str | - | Scan the vanilla snapshot into a version profile (tokens, sheets, rules, icon classes, hashes) stored under profiles/. |
+| `update.import_profile` | call | path: str, build?: str, catalog_hash?: str, note?: str | - | Scan a folder of stock style bundles of another game build (read-only) into a profile for diffing. |
+| `update.diff` | call | old: str, new: str, project?: str | - | Diff two profiles: tokens added/removed/changed/renamed, rules whose selector vanished or moved, sheets, icons, layouts; with a project, a state for each of its items (ok, target moved, target gone, vanilla value changed). |
+| `update.autofix` | call | project: str, old: str, new: str | - | Apply the auto-fixable (target moved) items to a project: token renames, rules moved to the sheet that now holds the game's rule, repointed images. |
+| `project.new_sheet` | call | project: str, sheet: str | - | Add an empty rule sheet styles/<sheet>.uss for a game stylesheet to a folder project. |
+| `project.delete` | call | project: str | - | Remove a project from the list: the folder is moved to <workspace>/trash, not erased. |
+| `project.search` | call | project: str, q: str, regex?: bool, case?: bool | - | Find text in a folder project's text files. |
+| `project.create_folder` | call | name: str, target?: enum: native | bundles | - | New empty folder project. |
+| `project.migrate` | call | project: str | - | Convert a legacy <name>.skin.json into a project folder (verified round trip; the old file is kept as .migrated). |
+| `project.create` | call | name: str, preset?: str | `POST /api/preset` | New project, blank or from a preset. |
+| `build.bundles` | job | name: str | `POST /api/build` | Patch fresh copies of the snapshot; gate; write packages. |
+| `build.reach` | job | name: str | `POST /api/reach` | Check scoped-rule selectors against the game layouts. |
+| `install.bundles` | call | name: str, force?: bool | `POST /api/install` | Install the latest build with backup and verification. |
+| `backup.list` | call | - | `GET /api/backups` | Backup sets. |
+| `backup.restore` | call | backup: str | `POST /api/restore` | Restore a backup set, or 'vanilla'. |
+| `native.info` | call | - | `GET /api/native/info` | The user skins folder, installed skins, wallpaper places. |
+| `native.export` | call | project: str, id?: str, display?: str, dest?: str | `POST /api/native/export` | Write the project as a native skin folder. |
+| `launcher.create` | call | confirm?: bool, target_dir?: str | `POST /api/launcher` | Plan or create the macOS launcher. |
+| `shell.open_folder` | call | path: str | `POST /api/open-folder` | Open an export or skin folder in the file manager. |
+| `layout.state` | call | - | `GET /api/layout/state` | The imported layout dump and its staleness. |
+| `layout.import` | call | data: bytes, name?: str | `POST /api/layout/import` | Import a layout dump (fmlayout-index/2). |
+| `layout.screens` | call | area?: str, q?: str | `GET /api/layout/screens` | Screens (panels) with areas. |
+| `layout.screen` | call | panel: str | `GET /api/layout/screen` | One screen: layouts, compositions, cells. |
+| `layout.outline` | call | layout: int, anc?: list of int, q?: str | `GET /api/layout/outline` | Element outline of one layout. |
+| `where.token` | call | name: str | `GET /api/where/token` | Screens and areas a token paints. |
+| `where.literal` | call | rgb: str, a: num | `GET /api/where/literal` | Screens and areas a literal paints. |
+| `where.search` | call | q?: str | `GET /api/where/search` | Where a class or selector is used. |
+| `placement.list` | call | project: str | `GET /api/placement/list` | Stored placement edits. |
+| `placement.check` | call | project: str, edit: obj | `POST /api/placement/check` | Validate one placement edit. |
+| `placement.add` | call | project: str, edit: obj, confirm?: bool | `POST /api/placement/add` | Store a placement edit. |
+| `placement.remove` | call | project: str, id: str | `POST /api/placement/remove` | Remove a stored placement edit. |
+| `preview.model_names` | call | - | `GET /api/models` | Names of the measured screens. |
+| `preview.models` | call | - | `GET /api/preview/models` | Measured screens with region counts. |
+| `preview.evaluate` | call | name: str, project?: str | `GET /api/preview/model` | A screen's regions with vanilla and skin colours. |
+| `preview.image` | binary | name: str | `GET /api/preview/image` | A measured screen's screenshot. |
+| `preview.suggest` | call | name: str, rgb: str | `GET /api/preview/suggest` | Nearest tokens painting a screen. |
+| `verify.screenshot` | call | model: str, project?: str, data: bytes | `POST /api/verify` | Compare an in-game screenshot with the expected colours. |
+| `images.catalog` | call | refresh?: bool | `GET /api/images/catalog` | Every texture, icon and SVG in the UI bundles. |
+| `images.thumb` | binary | bundle: str, path_id: id | `GET /api/images/thumb` | Thumbnail of one image. |
+| `images.source` | binary | project: str, file: str | `GET /api/images/source` | A project's stored replacement. |
+| `images.swap` | call | project: str, bundle: str, path_id: id, kind: enum: texture | svg | icon, name?: str, fit?: enum: cover | contain | stretch, data: bytes | `POST /api/images/swap` | Store a replacement image for one slot. |
+| `images.swap_file` | call | project: str, bundle: str, path_id: id, kind: enum: texture | svg | icon, name?: str, fit?: enum: cover | contain | stretch, path: str | - | Like images.swap, reading the replacement from a local file path. |
+| `images.commit` | call | project: str, bundle: str, path_id: id, kind: enum: texture | svg | icon, name?: str, fit?: enum: cover | contain | stretch, where?: list of str, path?: str | - | Commit the staged edit of one slot in a single write: replacement file (path; omit to keep the stored one), fit and where. Returns the project. |
+| `images.preview_file` | binary | path: str | - | A local image file as a PNG preview (for a staged, not yet stored replacement). |
+| `images.fit` | call | project: str, bundle: str, path_id: id, fit: enum: cover | contain | stretch | - | Change how a stored replacement is fitted. |
+| `assets.conflicts` | call | project: str, target?: enum: native | bundles | - | Conflict report of a project's image swaps: missing files, aspect and size problems, slots the game no longer has, wallpapers on the same place, icons a native skin cannot place. |
+| `images.remove` | call | project: str, bundle: str, path_id: id | `POST /api/images/remove` | Remove a swap. |
+| `images.where` | call | project: str, bundle: str, path_id: id, where: list of str | `POST /api/images/where` | Native skins: where a wallpaper swap is shown. |
+| `images.export` | binary | bundle: str, path_id: id | `GET /api/images/export` | One original at true size (PNG or zip). |
+| `images.export_all` | job | group?: str, kind?: str, q?: str, big?: bool | `POST /api/images/export-all` | Export every image matching a filter. |
+| `compare.load` | call | path: str | `POST /api/compare/load` | Load another skin (USS folder or bundles) for comparison. |
+| `compare.state` | call | - | `GET /api/compare/state` | The loaded comparison. |
+| `compare.asset` | binary | file: str | `GET /api/compare/asset` | An image of the loaded USS skin. |
+| `compare.thumb` | binary | side: enum: vanilla | theirs, bundle: str, path_id: id | `GET /api/compare/thumb` | Thumbnail of a differing image. |
+| `compare.import` | call | name: str | `POST /api/compare/import` | New project from the comparison's colours. |

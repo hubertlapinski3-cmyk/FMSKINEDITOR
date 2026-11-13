@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FM27 Skin Editor</title>
+<style>
+:root{--bg:#14161a;--panel:#1c1f25;--line:#2c313a;--fg:#dfe3ea;--dim:#8b93a1;--acc:#e0475f;--ok:#4fb477;--warn:#e0a947}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{display:flex;align-items:center;gap:18px;padding:0 16px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:2}
+header b{font-size:14px;letter-spacing:.04em}
+nav button{background:none;border:0;color:var(--dim);padding:13px 10px;font:inherit;cursor:pointer;border-bottom:2px solid transparent}
+nav button.on{color:var(--fg);border-color:var(--acc)}
+#proj{margin-left:auto;display:flex;gap:6px;align-items:center}
+main{padding:16px;display:none}main.on{display:block}
+.cols{display:grid;grid-template-columns:minmax(380px,1fr) minmax(380px,1fr);gap:16px;align-items:start}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:12px}
+.box h3{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
+.list{max-height:72vh;overflow:auto}
+table{border-collapse:collapse;width:100%}td,th{padding:4px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--dim);font-weight:500;position:sticky;top:0;background:var(--panel)}
+tr.pick{cursor:pointer}tr.pick:hover{background:#242831}
+code,.mono{font:12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;word-break:break-all}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;border:1px solid #0008;vertical-align:-2px;margin-right:6px;
+  background-image:linear-gradient(45deg,#888 25%,transparent 25%,transparent 75%,#888 75%),linear-gradient(45deg,#888 25%,#ccc 25%,#ccc 75%,#888 75%);background-size:8px 8px;background-position:0 0,4px 4px;overflow:hidden}
+.sw i{display:block;width:100%;height:100%}
+.ed{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+input,select,button,textarea{font:inherit;color:var(--fg);background:#101216;border:1px solid var(--line);border-radius:4px;padding:5px 8px}
+input[type=color]{padding:0;width:34px;height:28px;vertical-align:middle}
+button{cursor:pointer;background:#262b34}button:hover{border-color:var(--dim)}button.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+button:disabled{opacity:.45;cursor:default}
+.dim{color:var(--dim)}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--acc)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}
+#msg{position:fixed;right:16px;bottom:16px;max-width:520px;padding:10px 14px;border-radius:6px;background:#2a1418;border:1px solid var(--acc);display:none;white-space:pre-wrap}
+#msg.good{background:#14261b;border-color:var(--ok)}
+progress{width:220px}
+.pv{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;align-items:start}
+.pvwrap{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#000;line-height:0}
+.pvwrap canvas{width:100%;height:auto;display:block}
+#pvo{position:absolute;left:0;top:0;cursor:crosshair}
+.imgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.imc{background:#101216;border:1px solid var(--line);border-radius:6px;padding:6px;cursor:pointer;line-height:1.3}
+.imc:hover{border-color:var(--dim)}.imc.on{border-color:var(--acc)}.imc.sw{box-shadow:inset 0 0 0 2px var(--ok)}
+.imc img{width:100%;aspect-ratio:16/10;object-fit:contain;background:repeating-conic-gradient(#222 0 25%,#2a2a2a 0 50%) 0 0/16px 16px;border-radius:4px;display:block}
+.imc .n{font:11px ui-monospace,Consolas,monospace;word-break:break-all;margin-top:4px}.imc .d{color:var(--dim);font-size:11px}
+.imbig{width:100%;background:repeating-conic-gradient(#222 0 25%,#2a2a2a 0 50%) 0 0/16px 16px;border-radius:4px;display:block}
+.pvtip{position:absolute;pointer-events:none;background:#000c;color:#fff;padding:4px 7px;border-radius:4px;font:11px ui-monospace,Consolas,monospace;white-space:nowrap;display:none;line-height:1.4;z-index:1}
+</style>
+</head>
+<body>
+<header>
+  <b>FM27 SKIN EDITOR</b>
+  <nav id="nav"></nav>
+  <div id="proj"><span class="dim">Project</span><select id="projsel"></select><button id="projnew">New</button></div>
+</header>
+<main id="setup"></main>
+<main id="tokens"><div class="cols">
+  <div class="box"><div class="row"><input id="tq" placeholder="Search name, value or hex code (AF78FF)" size="38">
+    <label><input type="checkbox" id="tcol" checked> colours only</label><span id="tcount" class="dim"></span></div>
+    <div class="row"><input id="wq" placeholder="Where is a class or selector used? (e.g. tactics-collapsable-pitch-container)" size="38"><button id="wgo">Where?</button></div>
+    <div class="list" id="tlist"></div></div>
+  <div id="tdetail"></div></div></main>
+<main id="literals"><div class="cols">
+  <div class="box"><div class="row"><input id="lq" placeholder="Search hex code (AF78FF or AF78FF80)" size="38"><span id="lcount" class="dim"></span></div><div class="list" id="llist"></div></div>
+  <div id="ldetail"></div></div></main>
+<main id="preview"></main>
+<main id="images"></main>
+<main id="compare"></main>
+<main id="layout"><div class="cols"><div class="box" id="lyscreens"></div><div id="lydetail"></div></div></main>
+<main id="project"></main>
+<main id="build"></main>
+<main id="verify"></main>
+<div id="msg"></div>
+<script>
+const T = new URLSearchParams(location.search).get("t") || "";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+/* Colours: canonical object {rgb: "#RRGGBB", a: float 0..1}. Col is the only conversion code on this side
+   (mirrors skin_editor/colour.py). The alpha float is kept in full; three decimals and the hex byte are display. */
+const Col = {
+  is: v => !!v && typeof v === "object" && typeof v.rgb === "string" && typeof v.a === "number",
+  byte: a => Math.floor(Math.min(1, Math.max(0, a)) * 255 + 0.5),
+  hex2: b => b.toString(16).toUpperCase().padStart(2, "0"),
+  hex8: o => o.rgb.toUpperCase() + Col.hex2(Col.byte(o.a)),
+  text: o => Col.byte(o.a) === 255 ? o.rgb.toUpperCase() : Col.hex8(o),
+  css: o => `rgba(${parseInt(o.rgb.slice(1, 3), 16)},${parseInt(o.rgb.slice(3, 5), 16)},${parseInt(o.rgb.slice(5, 7), 16)},${o.a})`,
+  parse: s => { s = String(s).trim(); let m = /^#([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(s);
+    return m ? {rgb: "#" + m[1].toUpperCase(), a: m[2] === undefined ? 1 : parseInt(m[2], 16) / 255} : null; },
+  same: (x, y) => x.rgb.toUpperCase() === y.rgb.toUpperCase() && Math.abs(x.a - y.a) <= 1e-6,
+};
+const sw = c => { const o = Col.is(c) ? c : Col.parse(c || ""); return o ? `<span class="sw"><i style="background:${Col.css(o)}"></i></span>` : ""; };
+const fmt = o => `${sw(o)}<span class="mono">${o.rgb.toUpperCase()}</span> <span class="dim">alpha</span> <span class="mono">${o.a.toFixed(3)}</span> <span class="dim mono">${Col.hex8(o)}</span>`;
+const val = v => Col.is(v) ? fmt(v) : `<span class="mono">${esc(v)}</span>`;
+/* RGBA editor: picker + hex6 for RGB, alpha as a 0..1 float and as the last byte of the 8-digit hex, all synced.
+   ED[id] holds the value; an alpha the user did not touch keeps its full stored precision. */
+const ED = {};
+function rgbaEditor(id, o, rgbOnly) { ED[id] = {rgb: o.rgb.toUpperCase(), a: rgbOnly ? 1 : o.a};
+  return `<span class="ed" data-ed="${id}"><input type="color" data-f="pick" value="${o.rgb.toLowerCase()}"><input data-f="hex6" class="mono" size="8" value="${ED[id].rgb}">` +
+    (rgbOnly ? "" : `<label class="dim">alpha <input data-f="a" type="number" min="0" max="1" step="0.001" value="${o.a.toFixed(3)}" style="width:84px"></label><input data-f="hex8" class="mono" size="10" value="${Col.hex8(o)}" title="8-digit hex; the last two digits are the alpha byte">`) +
+    `<span data-f="sw">${sw(ED[id])}</span></span>`; }
+document.addEventListener("input", e => { const box = e.target.closest && e.target.closest("[data-ed]"); if (!box) return;
+  const st = ED[box.dataset.ed], f = e.target.dataset.f, v = e.target.value.trim(), q = k => box.querySelector(`[data-f="${k}"]`);
+  if (f === "pick") st.rgb = v.toUpperCase();
+  else if (f === "hex6") { if (!/^#[0-9a-f]{6}$/i.test(v)) return; st.rgb = v.toUpperCase(); }
+  else if (f === "a") { const a = parseFloat(v); if (!(a >= 0 && a <= 1)) return; st.a = a; }
+  else if (f === "hex8") { const o = Col.parse(v); if (!o || v.length !== 9) return; st.rgb = o.rgb; st.a = o.a; }
+  if (f !== "pick") q("pick").value = st.rgb.toLowerCase();
+  if (f !== "hex6") q("hex6").value = st.rgb;
+  if (q("a") && f !== "a") q("a").value = st.a.toFixed(3);
+  if (q("hex8") && f !== "hex8") q("hex8").value = Col.hex8(st);
+  q("sw").innerHTML = sw(st); });
+let S = null, P = null, pages = ["setup","tokens","literals","preview","images","compare","layout","project","build","verify"];
+
+function say(text, good) { const m = $("msg"); m.textContent = text; m.className = good ? "good" : ""; m.style.display = "block";
+  clearTimeout(say.t); say.t = setTimeout(() => m.style.display = "none", good ? 3500 : 9000); }
+async function api(path, body, raw) {
+  const r = await fetch(path, {method: body === undefined ? "GET" : "POST", headers: {"X-Token": T},
+    body: body === undefined ? undefined : raw ? body : JSON.stringify(body)});
+  const j = await r.json();
+  if (!r.ok) { say(j.error || "request failed"); throw new Error(j.error); }
+  return j;
+}
+async function job(start) {
+  let j = await start;
+  while (j.running) { renderJob(j); await new Promise(r => setTimeout(r, 500)); j = await api("/api/job"); }
+  renderJob(j);
+  if (j.error) { say(j.error); throw new Error(j.error); }
+  return j.result;
+}
+function renderJob(j) { document.querySelectorAll(".jobbar").forEach(e => e.innerHTML = j.running ?
+  `<progress value="${j.progress}" max="1"></progress> <span class="dim">${esc(j.label)}</span>` : ""); }
+
+function show(p) { pages.forEach(x => { $(x).classList.toggle("on", x === p); });
+  [...$("nav").children].forEach(b => b.classList.toggle("on", b.dataset.p === p));
+  ({setup: drawSetup, tokens: drawTokens, literals: drawLiterals, preview: drawPreview, images: drawImages, compare: drawCompare, layout: drawLayout, project: drawProject, build: drawBuild, verify: drawVerify})[p](); }
+$("nav").innerHTML = pages.map(p => `<button data-p="${p}">${p[0].toUpperCase() + p.slice(1)}</button>`).join("");
+$("nav").onclick = e => e.target.dataset.p && show(e.target.dataset.p);
+
+async function refresh() { S = await api("/api/state");
+  const names = S.projects.includes(P?.name) || !P ? S.projects : [P.name, ...S.projects];
+  $("projsel").innerHTML = names.map(n => `<option ${P && n === P.name ? "selected" : ""}>${esc(n)}</option>`).join("") || "<option value=''>none</option>";
+  if (!P && S.projects.length) await loadProject(S.projects[0]); }
+async function loadProject(name) { P = await api("/api/project?name=" + encodeURIComponent(name)); }
+async function saveProject() { const r = await api("/api/project", P); P = r.project; await refresh();
+  say("Saved " + P.name + (r.warnings.length ? "\n" + r.warnings.join("\n") : ""), true); }
+$("projsel").onchange = async e => { if (e.target.value) { lastReport = lastReach = null; await loadProject(e.target.value); show(document.querySelector("main.on").id); } };
+$("projnew").onclick = () => { newForm = true; show("project"); };
+let newForm = false;
+function needProject() { if (!P) { say("Create a project first (New, top right)"); return false; } return true; }
+
+/* ---------- setup */
+async function drawSetup() { await refresh(); const i = S.install, st = {vanilla:"ok", skinned:"warn", changed:"bad", missing:"bad", no_snapshot:"dim"};
+  $("setup").innerHTML = `
+  <div class="box"><h3>Game install</h3>
+    ${i ? `<table><tr><td>Path</td><td class="mono">${esc(i.game_dir)}</td></tr><tr><td>Bundles</td><td class="mono">${esc(i.aa_dir)}</td></tr>
+      <tr><td>Platform / store / version</td><td>${esc(i.platform_folder)} / ${esc(i.store)} / ${esc(i.version || "unknown")}</td></tr>
+      <tr><td>Game process</td><td class="${S.running ? "bad" : "ok"}">${S.running ? "running or updating: install is blocked" : "not running"}</td></tr></table>`
+      : `<p class="warn">No install selected.</p>`}
+    <div class="row"><button id="det">Auto-detect</button><input id="gd" size="70" placeholder="or paste the path to the game folder or .app"><button id="setgd">Use path</button></div>
+    ${(S.candidates || []).map(c => `<div class="row mono"><button data-gd="${esc(c.game_dir)}">Select</button>${esc(c.game_dir)}</div>`).join("")}
+    ${S.candidates && !S.candidates.length ? `<p class="dim">Nothing found in the Steam, Epic or Applications folders.</p>` : ""}</div>
+  <div class="box"><h3>Vanilla snapshot and index</h3>
+    <p>${S.vanilla ? `Snapshot taken ${esc(S.vanilla.taken_utc)}, game build ${esc(S.vanilla.game_build || "unknown")}.` : "No snapshot yet."}
+       ${S.indexed ? `Index: ${S.index_stats.sheets} sheets, ${S.index_stats.tokens} tokens, ${S.index_stats.literals} literal colours.` : "Not indexed."}
+       UnityPy: <span class="${S.unitypy ? "" : "bad"}">${esc(S.unitypy || "not installed")}</span></p>
+    ${S.decode_failures && S.decode_failures.count ? (() => { const d = S.decode_failures, c = k => d.classes[k] || {entries: 0, unique: 0}, ba = c("byte-alpha candidate"), hd = c("hdr"), un = c("unclassified");
+      return `<details open><summary class="warn">${d.count} bundle colour entries (${d.unique} unique colours) are quarantined: ${ba.entries} byte-alpha candidates, ${hd.entries} hdr${un.entries ? `, <span class="bad">${un.entries} unclassified</span>` : ""}</summary>
+      <p><b>Byte-alpha candidates (${ba.entries} entries, ${ba.unique} colours):</b> RGB is a valid 0..1 colour, the stored alpha is an integer above 1 that fits the 0..255 byte scale. The alpha shown is stored/255 and is for display only.<br>
+        <b>hdr (${hd.entries} entries, ${hd.unique} colours):</b> a red, green or blue component is above 1. Kept as raw floats, no hex rendering, excluded from literal swaps permanently.</p>
+      <p class="warn">None of these is offered as a literal, and a build never rewrites any of them. Pending in-game check for the byte-alpha candidates: look at the selected cell of the Squad streamed table. Solid #AF78FF means the game clamps alpha above 1 to opaque; translucent means the byte scale is live. The quarantine stays until that observation is reported (diagnostics/README.md).</p>
+      <div class="list" style="max-height:30vh"><table><tr><th>Class</th><th>Shown as</th><th>Raw r, g, b, a</th><th>Sheet</th><th>Rule</th><th>Selector</th><th>Property</th></tr>
+      ${d.rows.map(x => `<tr><td>${esc(x.class)}</td><td>${x.display ? fmt(x.display) : `<span class="dim">no hex</span>`}</td><td class="mono">${esc(x.raw.map(v => +v.toFixed(4)).join(", "))}</td><td>${esc(x.sheet)}</td><td>${x.rule}</td><td class="mono">${esc(x.selector)}</td><td class="mono">${esc(x.property)}</td></tr>`).join("")}</table></div></details>`; })() : ""}
+    ${S.legacy_alpha.length ? `<details><summary class="warn">${S.legacy_alpha.length} percent-style alpha value(s) in legacy project data were divided by 100 (logged in logs/app.log)</summary><table><tr><th>Boundary</th><th>Where</th><th>Original</th><th>Stored</th></tr>
+      ${S.legacy_alpha.map(x => `<tr><td>${esc(x.boundary)}</td><td class="mono">${esc(x.context)}</td><td>${x.original}</td><td>${x.stored}</td></tr>`).join("")}</table></details>` : ""}
+    ${S.live ? `<table><tr><th>Bundle</th><th>Live file</th></tr>${Object.entries(S.live).map(([n, v]) =>
+      `<tr><td class="mono">${esc(n)}</td><td class="${st[v.state]}">${esc(v.state)}</td></tr>`).join("")}</table>` : ""}
+    ${S.live && Object.values(S.live).some(v => v.state === "changed") ? `<p class="warn">Live files match neither the snapshot nor the last install: the game was updated or verified. Restore stock files through Steam if a skin might still be in place, then take a new snapshot and re-index.</p>` : ""}
+    ${S.snapshot_mismatch ? `<p class="bad">Wrong snapshot: ${esc(S.snapshot_mismatch)} Install and "Restore stock files" are blocked until then.</p>` : ""}
+    ${i && i.other_copies && i.other_copies.length ? `<p class="dim">Other copies of the game's files under the game folder (ignored): ${i.other_copies.map(x => `<span class="mono">${esc(x)}</span>`).join(", ")}</p>` : ""}
+    ${(() => { const T = S.tamper; if (!T) return "";
+      if (T.state === "clean") return `<p class="ok">Tamper check: all ${T.checked} UI bundles are stock${Object.values(T.files).includes("skinned") ? " (or this app's installed skin)" : ""}.${T.new.length ? ` ${T.new.length} new bundle(s) have no reference hash.` : ""}</p>`;
+      return `<p class="${T.state === "no_reference" ? "warn" : "bad"}">Tamper check: ${esc(T.message)}</p>`; })()}
+    <div class="row"><button id="snap" ${i ? "" : "disabled"}>${S.vanilla ? "Replace snapshot" : "Take vanilla snapshot"}</button>
+      <button id="idx" class="pri" ${S.vanilla ? "" : "disabled"}>Build index</button>
+      ${S.vanilla && !S.vanilla.reference ? `<button id="refh" ${i ? "" : "disabled"}>Record reference hashes</button>` : ""}<span class="jobbar"></span></div>
+    <p class="dim">${S.vanilla && S.vanilla.reference ? `Reference hashes: catalog ${esc(String(S.vanilla.reference.catalog_hash).slice(0, 12))}, ${Object.keys(S.vanilla.reference.bundles).length} layout bundles (hashes only, no copies).` : S.vanilla ? "This snapshot has no reference hashes, so a layout dump cannot be checked against the game files. Record them with the game closed and stock files." : ""}</p>
+    <p class="dim">The snapshot copies the two style bundles from the game folder. Take it only while the game files are stock. Workspace: <span class="mono">${esc(S.workspace)}</span></p></div>
+  <div class="box"><h3>Layout data</h3>${(() => { const L = S.layout;
+    return L && L.present ? `<table><tr><td>Dump</td><td>game build <span class="mono">${esc(L.game_build)}</span>, exported ${esc(L.exported_at)}, from <span class="mono">${esc(L.source_name || "")}</span></td></tr>
+      <tr><td>Fingerprint</td><td class="mono">${esc(L.fingerprint)} <span class="dim">${L.changed_vs_previous === null ? "first dump" : L.changed_vs_previous ? "changed vs previous " + esc(L.previous_fingerprint) : "same as previous"}</span></td></tr>
+      <tr><td>Staleness</td><td class="${{fresh: "ok", stale: "bad", contaminated: "bad", unknown: "warn"}[L.staleness.status]}">${esc(L.staleness.status)} <span class="dim">(read from ${esc(L.source.platform_folder)}, catalog ${esc(L.source.catalog_hash)}, ${L.source.bundles} bundles)</span></td></tr>
+      ${L.runtime_classes_provenance ? `<tr><td>Runtime classes</td><td class="dim">${esc(L.runtime_classes_provenance)}</td></tr>` : ""}</table>
+      ${L.staleness.status !== "fresh" ? `<p class="${L.staleness.status === "unknown" ? "warn" : "bad"}">${esc(L.staleness.message)}</p>` : ""}` : `<p class="warn">No layout dump imported. "Where it paints" and the layout features need one.</p>`; })()}
+    <div class="row"><input type="file" id="ldump" accept=".json,application/json"><button id="limp">Import layout dump</button></div>
+    <div id="lerr"></div>
+    <p class="dim">The dump (schema fmlayout-index/2, docs/fmlayout-index-2.md) is read-only input from the external layout indexer. It is validated as a whole: a file that breaks the contract is refused and nothing is loaded. Its file hashes are compared with the snapshot's reference hashes: a dump read from modified files (contaminated) is refused. It has no geometry, and results are a lower bound (no template or table-factory references).</p></div>  <div class="box"><h3>Launcher and server</h3>
+    <div class="row"><button id="mkl">Create launcher</button><button id="quit">Quit server</button></div>
+    <p class="dim">Create launcher makes "FM27 Skin Editor.app" (in Applications when writable, otherwise next to the app folder) so the app starts by double-click. The server keeps running after this tab is closed; Quit server stops it.</p></div>`;
+  $("mkl").onclick = async () => { const p = await api("/api/launcher", {});
+    if (!confirm((p.macos ? "" : "This computer is not a Mac; the launcher only runs on macOS.\n\n") + "Create the launcher here?\n\n" + p.app +
+      (p.exists ? "\n(replaces the existing launcher)" : "") + "\n\nIt will start the app from:\n" + p.project + "\nwith the workspace:\n" + p.workspace)) return;
+    const r = await api("/api/launcher", {confirm: true, target_dir: p.target_dir});
+    say("Launcher created:\n" + r.app + "\nDrag it to the Dock if you like. Create it again after moving the app folder or the workspace.", true); };
+  $("quit").onclick = async () => { if (!confirm("Stop the server? Unsaved edits in this tab are lost. Start again with the launcher.")) return;
+    await api("/api/quit", {}); document.body.innerHTML = '<p style="padding:40px">The server has stopped. Close this tab. Click the FM27 Skin Editor icon to start again.</p>'; };
+  $("det").onclick = async () => { await api("/api/detect", {}); drawSetup(); };
+  $("setgd").onclick = async () => { await api("/api/config", {game_dir: $("gd").value}); drawSetup(); };
+  $("setup").querySelectorAll("[data-gd]").forEach(b => b.onclick = async () => { await api("/api/config", {game_dir: b.dataset.gd}); drawSetup(); });
+  $("snap").onclick = async () => { const force = !!S.vanilla;
+    if (force && !confirm("Replace the vanilla snapshot with the files currently in the game folder? Only do this when those files are stock.")) return;
+    await api("/api/snapshot", {force}); drawSetup(); };
+  if ($("refh")) $("refh").onclick = async () => { if (!confirm("Record reference hashes of the game's catalog and layout bundles? Only do this when the game is closed and the files are stock.")) return;
+    await api("/api/reference-hashes", {}); drawSetup(); };
+  $("idx").onclick = async () => { await job(api("/api/index", {})); drawSetup(); };
+  $("limp").onclick = async () => { const f = $("ldump").files[0]; if (!f) return say("Choose a layout dump (.json) first");
+    const r = await fetch("/api/layout/import?name=" + encodeURIComponent(f.name), {method: "POST", headers: {"X-Token": T}, body: await f.arrayBuffer()}), j = await r.json();
+    if (!r.ok) { $("lerr").innerHTML = `<p class="bad">${esc(j.error)}</p>${(j.errors || []).length ? `<div class="list" style="max-height:24vh"><table>${j.errors.map(x => `<tr><td class="mono">${esc(x)}</td></tr>`).join("")}</table></div>` : ""}${j.total_errors > (j.errors || []).length ? `<p class="dim">${j.total_errors} violations in total; the first ${j.errors.length} are shown.</p>` : ""}`; return; }
+    say(j.staleness.status === "fresh" ? "Layout dump imported" : j.staleness.message, j.staleness.status === "fresh"); drawSetup(); };
+}
+
+/* ---------- where it paints (layout join; docs/fmlayout-index-1.md) */
+const ST = {verified: "ok", "runtime-observed": "warn", unverified: "bad"};
+const badge = s => `<span class="${ST[s]}">${esc(s)}</span>`;
+const stateCounts = b => `${badge("verified")} ${b.verified} &nbsp; ${badge("runtime-observed")} ${b["runtime-observed"]} &nbsp; ${badge("unverified")} ${b.unverified}`;
+function joinHtml(j) {
+  if (!j.rules) return `<p class="dim">No style rules.</p>`;
+  const scr = Object.entries(j.screens);
+  return `<p>${j.rules} rule selector(s): ${stateCounts(j.by_state)}. Areas: ${Object.entries(j.by_area).map(([a, n]) => `<span class="mono">${esc(a)}</span> ${n}`).join(", ") || "none"}.</p>
+  <h4>Screens (panels) reached: ${scr.length}</h4>
+  ${scr.length ? `<div class="list" style="max-height:26vh"><table><tr><th>Panel</th><th>Areas</th><th>Evidence</th><th>Through layouts</th></tr>${scr.map(([p, v]) => `<tr><td class="mono">${esc(p)}</td><td>${esc(v.areas.join(", "))}</td><td>${v.states.map(badge).join(" ")}</td><td class="mono dim">${esc(v.layouts.join(", "))}</td></tr>`).join("")}</table></div>` : `<p class="dim">No screen is reached by a verified or runtime-observed hit.</p>`}
+  <h4>Layouts${j.layouts_total > j.layouts.length ? ` (first ${j.layouts.length} of ${j.layouts_total})` : ` (${j.layouts_total})`}</h4>
+  <div class="list" style="max-height:30vh"><table><tr><th>Layout</th><th>Area</th><th>Evidence</th><th>Screens</th><th>Properties</th><th>Elements</th></tr>${j.layouts.map(l => `<tr><td class="mono" style="white-space:nowrap">${esc(l.layout)}${l.cycle ? ` <span class="warn" title="the include graph above this layout contains a cycle; the walk stopped at the repeat">cycle</span>` : ""}</td><td>${esc(l.area)}</td>
+    <td>${l.states.map(badge).join(" ")}</td><td>${l.screens.length}</td><td class="mono">${esc(l.properties.join(", "))}</td><td class="mono dim">${esc(l.elements.join(", "))}</td></tr>`).join("")}</table></div>
+  ${j.unverified_total ? `<h4 class="bad">Unverified: ${j.unverified_total}${j.unverified_total > j.unverified.length ? ` (first ${j.unverified.length})` : ""}</h4>
+    <p class="dim">No element in the dump carries these (runtime-added or code-driven, or unused). They are listed, not hidden, and add no screens above.</p>
+    <div class="list" style="max-height:24vh"><table><tr><th>Sheet</th><th>Selector</th><th>Properties</th><th>Why</th></tr>${j.unverified.map(u => `<tr><td>${esc(u.sheet)}</td><td class="mono">${esc(u.selector)}</td><td class="mono">${esc(u.properties.join(", "))}</td><td class="dim">${esc(u.reason)}</td></tr>`).join("")}</table></div>` : ""}
+  <details><summary>Evidence per rule (${j.evidence_total}${j.evidence_total > j.evidence.length ? `, first ${j.evidence.length}` : ""})</summary><div class="list" style="max-height:34vh"><table><tr><th>State</th><th>Rule</th><th>Properties</th><th>Layout / element</th></tr>
+  ${j.evidence.map(e => `<tr><td>${badge(e.state)}</td><td class="mono">${esc(e.selector)}<br><span class="dim">${esc(e.sheet)}${e.pseudo.length ? " :" + esc(e.pseudo.join(" :")) + " (state, not matched)" : ""}</span></td>
+    <td class="mono">${esc(Object.entries(e.properties).map(([k, v]) => k + ": " + v).join("; "))}</td>
+    <td class="mono">${e.layouts.length ? e.layouts.map(l => `${esc(l.layout)} <span class="dim">[${esc(l.area)}] ${esc(l.elements.join(", "))}${l.count > l.elements.length ? " +" + (l.count - l.elements.length) : ""}</span>`).join("<br>") : `<span class="dim">no element</span>`}</td></tr>`).join("")}</table></div></details>`;
+}
+function whereNotes(w) { const L = w.layout, s = L.staleness;
+  return `${s.status !== "fresh" ? `<p class="${s.status === "stale" ? "bad" : "warn"}">${esc(s.message)}</p>` : ""}
+    <p class="dim">${esc(w.lower_bound)}<br>${esc(w.code_set_colours)}<br>Dump: build ${esc(L.game_build)}, fingerprint <span class="mono">${esc(L.fingerprint)}</span>. Evidence: ${badge("verified")} static element, ${badge("runtime-observed")} class added at runtime and observed, ${badge("unverified")} neither.</p>`; }
+function whereTokenHtml(w) {
+  if (!w.layout_present) return `<div class="box"><h3>Where it paints</h3><p class="warn">${esc(w.message)}</p></div>`;
+  return `<div class="box"><h3>Where it paints</h3>
+    ${w.zero_hit ? `<p class="warn">No style rule uses this token, directly or through an alias. Nothing to show.</p>` : w.no_layout_evidence ? `<p class="warn">Rules use this token, but no element in the dump carries their classes: everything below is unverified.</p>` : ""}
+    <h4>Alias hops</h4><table><tr><th>Hop</th><th>Token</th><th>Through</th><th>Rules</th><th>Screens reached</th><th>Only through this alias</th></tr>
+    ${w.alias_hops.map(h => `<tr><td>${h.hop}</td><td class="mono">${esc(h.token)}</td><td class="mono dim">${esc(h.via || "")}</td><td>${h.rules}</td><td class="mono">${esc(h.screens.join(", ")) || "<span class='dim'>none</span>"}</td>
+      <td class="mono ${h.new_screens_vs_hop0.length ? "warn" : "dim"}">${esc(h.new_screens_vs_hop0.join(", "))}</td></tr>`).join("")}</table>
+    ${Object.keys(w.cross_screen_via_alias).length ? `<p class="warn">Cross-screen effect through aliases: changing this token also changes ${esc(Object.entries(w.cross_screen_via_alias).map(([t, s]) => s.join(", ") + " (via " + t + ")").join("; "))}.</p>` : ""}
+    ${joinHtml(w.total)}${whereNotes(w)}</div>`; }
+function whereLiteralHtml(w) {
+  if (!w.layout_present) return `<div class="box"><h3>Where it paints</h3><p class="warn">${esc(w.message)}</p></div>`;
+  return `<div class="box"><h3>Where it paints</h3>${w.zero_hit ? `<p class="warn">No style rule carries this colour.</p>` : ""}
+    <h4>Exact RGBA (mode "rgba")</h4>${joinHtml(w.exact)}
+    <details><summary>Every alpha of this RGB (mode "rgb-keep-alpha"): ${w.rgb_all.rules} rule selector(s), ${Object.keys(w.rgb_all.screens).length} screen(s)</summary>${joinHtml(w.rgb_all)}</details>${whereNotes(w)}</div>`; }
+function whereSearchHtml(w) {
+  if (!w.layout_present) return `<div class="box"><h3>Where is it used</h3><p class="warn">${esc(w.message)}</p></div>`;
+  const rl = Object.entries(w.classes_in_layouts_without_rules);
+  return `<div class="box"><h3>Where is "${esc(w.query)}" used</h3>${w.zero_hit ? `<p class="warn">No rule selector and no layout class contains this text.</p>` : ""}
+    <p>${w.rules_matched}${w.truncated ? "+" : ""} matching rule propert${w.rules_matched === 1 ? "y" : "ies"}. Tokens they read: ${w.tokens_read.map(t => `<span class="mono">${esc(t)}</span>`).join(", ") || "<span class='dim'>none</span>"}</p>
+    <details><summary>Matching rules (${w.rules.length}${w.rules_matched > w.rules.length ? " shown" : ""})</summary><div class="list" style="max-height:26vh"><table>${w.rules.map(r => `<tr><td>${esc(r.sheet)}</td><td class="mono">${esc(r.selector)}</td><td class="mono">${esc(r.property)}: ${esc(r.value)}</td></tr>`).join("")}</table></div></details>
+    ${joinHtml(w.total)}
+    ${rl.length ? `<h4>Classes in layouts with no style rule</h4><table><tr><th>Class</th><th>Evidence</th><th>Areas</th><th>Layouts</th><th>Screens</th></tr>${rl.map(([c, v]) => `<tr><td class="mono">${esc(c)}</td><td>${badge(v.state)}</td><td>${esc(v.areas.join(", "))}</td><td class="mono dim">${esc(v.layouts.join(", "))}</td><td class="mono">${esc(v.screens.join(", "))}</td></tr>`).join("")}</table>` : ""}
+    ${whereNotes(w)}</div>`; }
+async function whereInto(id, url, render) { const el = $(id); if (!el) return; el.innerHTML = `<div class="box"><p class="dim">Looking up where this paints ...</p></div>`;
+  try { el.innerHTML = render(await api(url)); } catch (e) { el.innerHTML = ""; } }
+async function runSearch() { const q = $("wq").value.trim(); if (!q) return say("Type a class or selector substring first");
+  $("tdetail").innerHTML = `<div id="wres"></div>`; await whereInto("wres", "/api/where/search?q=" + encodeURIComponent(q), whereSearchHtml); }
+/* LAYOUT TAB BEGIN */
+/* Layout tab: read-only. Structure from the layout dump, through the same join pipeline as "Where it paints". Nothing on this
+   page edits anything: it only reads (GET) and navigates. The dump has no geometry; grid numbers are cell units. */
+const LV = {area: "", q: "", panel: null};
+const areaLabel = a => a === "unassigned" ? `<span class="dim" title="no area anchor claims this layout">unassigned</span>` : `<span class="mono">${esc(a)}</span>`;
+const areaChips = by => Object.entries(by || {}).map(([a, n]) => `${areaLabel(a)} ${n}`).join(" &nbsp; ") || "<span class='dim'>none</span>";
+const lyNote = r => `<p class="dim">${esc(r.note || "")}</p>${r.dump.staleness.status !== "fresh" ? `<p class="${r.dump.staleness.status === "stale" ? "bad" : "warn"}">${esc(r.dump.staleness.message)}</p>` : ""}
+  <p class="dim">This tab is read-only. Evidence on classes: ${badge("verified")} static class in the layout, ${badge("runtime-observed")} class added at runtime and observed (never counted as verified). Click a class to see where it paints. Stored-edit mode, when it is available, is opt-in and only on the composition and cell view below.</p>`;
+async function drawLayout() { await refresh();
+  const r = await api("/api/layout/screens?area=" + encodeURIComponent(LV.area) + "&q=" + encodeURIComponent(LV.q));
+  if (!r.layout_present) { $("lyscreens").innerHTML = `<p class="warn">${esc(r.message)}</p>`; $("lydetail").innerHTML = ""; return; }
+  const areas = Object.keys(r.by_area);
+  $("lyscreens").innerHTML = `<h3>Screens</h3>${lyNote(r)}
+    <p>${r.total} screens by area: ${areaChips(r.by_area)}<br><span class="dim">${r.layouts} layouts by area:</span> ${areaChips(r.layouts_by_area)}</p>
+    <div class="row"><select id="lyarea"><option value="">all areas</option>${areas.map(a => `<option value="${esc(a)}" ${a === LV.area ? "selected" : ""}>${esc(a)}</option>`).join("")}</select>
+      <input id="lyq" placeholder="filter by panel id or layout name" size="30" value="${esc(LV.q)}"><span class="dim">${r.shown} of ${r.total}</span></div>
+    <div class="list" style="max-height:62vh"><table><tr><th>Panel</th><th>Layout</th><th>Area</th><th>Elements</th><th>Tiles</th><th>Sets</th></tr>
+    ${r.screens.map(s => `<tr class="pick" data-p="${esc(s.panel_id)}"><td class="mono">${esc(s.panel_id)}</td><td class="mono dim">${esc(s.layout)}</td><td>${areaLabel(s.area)}</td><td>${s.elements}</td><td>${s.tiles}</td><td>${s.sets}</td></tr>`).join("")}</table></div>`;
+  $("lyarea").onchange = e => { LV.area = e.target.value; drawLayout(); };
+  $("lyq").oninput = e => { LV.q = e.target.value; clearTimeout(drawLayout.t); drawLayout.t = setTimeout(async () => { const pos = $("lyq").selectionStart; await drawLayout(); $("lyq").focus(); $("lyq").setSelectionRange(pos, pos); }, 250); };
+  $("lyscreens").querySelectorAll("tr.pick").forEach(tr => tr.onclick = () => lyScreen(tr.dataset.p));
+  if (LV.panel) lyScreen(LV.panel); }
+async function lyScreen(panel) { LV.panel = panel; const s = await api("/api/layout/screen?panel=" + encodeURIComponent(panel)); await lyEditPrep();
+  $("lydetail").innerHTML = `<div class="box"><h3>${esc(panel)}</h3>
+    <p>Layout <span class="mono">${esc(s.layout)}</span>, area ${areaLabel(s.area)}, ${s.elements} elements. Below it (includes and tiles): ${s.reach.layouts} layouts by area: ${areaChips(s.reach.by_area)}</p>
+    <h4>Structure (outline)</h4>
+    <div class="row"><input id="lyoq" placeholder="search this outline by element name or class" size="38"><span id="lyoc" class="dim"></span></div>
+    <p class="dim">Elements with their classes. An include shows the layout it pulls in (with its area); expand opens it one level at a time. An include back to a layout that is already open is marked as a cycle and not opened.</p>
+    <div id="lyout"></div></div>
+    <div class="box"><h3>Compositions and cells</h3><p class="dim">From the dump, verbatim. x, y, w, h and the limits are grid cell units, not pixels. Flags, alignments, layout mode, preset and conditions are shown exactly as stored.</p><div id="lyedit"></div>
+    ${s.sets.length ? s.sets.map(lySet).join("") : `<p class="dim">This screen has no composition sets in the dump.</p>`}</div>
+    <div id="lywhere"></div>`;
+  lyEditBind(s);
+  const draw = async () => { const q = $("lyoq").value.trim(); await lyOutline($("lyout"), s.layout_id, [], q, $("lyoc")); };
+  $("lyoq").oninput = () => { clearTimeout(draw.t); draw.t = setTimeout(draw, 250); };
+  await draw(); }
+function lyClass(c, kind) { return `<span class="lycls ${ST[c.state]}" data-c="${esc(c.name)}" title="${esc(c.state)}${kind ? " (class seen only at runtime)" : ""}" style="cursor:pointer;margin-right:6px">.${esc(c.name)}${kind ? " *" : ""}</span>`; }
+function lyNode(n, anc, layoutId) {
+  const inc = n.includes.map(i => i.cycle ? `<div class="warn">include ${esc(i.alias)} -> <span class="mono">${esc(i.layout)}</span> (${areaLabel(i.area)}): cycle, already open above, not expanded</div>`
+    : `<div>include ${esc(i.alias)} -> <span class="mono">${esc(i.layout)}</span> (${areaLabel(i.area)}) <button class="lyexp" data-l="${i.layout_id}" data-anc="${[...anc, layoutId].join(",")}">expand</button><div class="lyslot"></div></div>`).join("");
+  return `<li${n.match ? ` style="background:#243"` : ""}><span class="mono">${esc(n.type)}</span>${n.name ? ` <b>#${esc(n.name)}</b>` : ""} ${n.classes.map(c => lyClass(c, false)).join("")}${n.runtime_classes.map(c => lyClass(c, true)).join("")}${inc}
+    ${n.children.length ? `<ul style="margin:2px 0 2px 14px;padding-left:10px;list-style:none;border-left:1px solid #333">${n.children.map(c => lyNode(c, anc, layoutId)).join("")}</ul>` : ""}</li>`; }
+async function lyOutline(el, layoutId, anc, q, countEl) {
+  const o = await api(`/api/layout/outline?layout=${layoutId}&anc=${anc.join(",")}&q=${encodeURIComponent(q || "")}`);
+  el.innerHTML = `${o.truncated ? `<p class="warn">Showing the first ${o.shown} of ${o.total} elements (cap ${o.cap}); the rest are not listed. Narrow it with the search box.</p>` : ""}
+    ${o.tree.length ? `<ul style="list-style:none;padding-left:0;margin:0">${o.tree.map(n => lyNode(n, anc, layoutId)).join("")}</ul>` : `<p class="dim">${q ? "No element matches." : "No elements."}</p>`}`;
+  if (countEl) countEl.textContent = q ? `${o.matches} match${o.matches === 1 ? "" : "es"}` : `${o.total} elements`;
+  el.querySelectorAll(".lycls").forEach(c => c.onclick = () => whereInto("lywhere", "/api/where/search?q=" + encodeURIComponent(c.dataset.c), whereSearchHtml));
+  el.querySelectorAll(".lyexp").forEach(b => b.onclick = async () => { const slot = b.nextElementSibling; if (slot.innerHTML) { slot.innerHTML = ""; b.textContent = "expand"; return; }
+    b.textContent = "collapse"; slot.innerHTML = `<div class="box" style="margin:4px 0"><div class="lyin"></div></div>`;
+    await lyOutline(slot.querySelector(".lyin"), +b.dataset.l, b.dataset.anc.split(",").filter(Boolean).map(Number), "", null); }); }
+function lySet(s) { return `<h4>Set <span class="mono">${esc(s.set_name)}</span></h4>${s.variants.map((v, k) => { const c = v.composition_info;
+  return `<details ${k === 0 ? "open" : ""}><summary>Breakpoint ${v.breakpoint}, variant ${v.variant_idx}, composition <span class="mono">${esc(v.composition)}</span> (${v.cells.length} cells)</summary>
+    ${c ? `<table><tr><td>Layout mode</td><td class="mono">${esc(c.layout_mode)}</td><td>Preset</td><td class="mono">${esc(c.preset_name)} ${c.preset_w} x ${c.preset_h}</td><td>Instantiation order</td><td class="mono">${esc(c.instantiation_order.join(", "))}</td></tr></table>
+      <p>Conditions: ${c.conditions.length ? c.conditions.map(x => `<code>${esc(x)}</code>`).join(" ") : "<span class='dim'>none</span>"}</p>` : `<p class="warn">Composition ${esc(v.composition)} has no record in the dump.</p>`}
+    <div class="list" style="max-height:40vh"><table><tr><th>#</th><th>Cell</th><th>x y w h</th><th>min</th><th>max</th><th>Flags</th><th>h / v align</th><th>Tile configs</th><th>Tile for this variant</th><th>${lyEditHook()}</th></tr>
+    ${v.cells.map(x => `<tr><td>${x.cell_index}</td><td class="mono" style="white-space:nowrap">${esc(x.element_id)}</td><td class="mono" style="white-space:nowrap">${x.x} ${x.y} ${x.w} ${x.h}</td><td class="mono">${x.min_w} x ${x.min_h}</td><td class="mono">${x.max_w} x ${x.max_h}</td>
+      <td>${x.flags.length ? x.flags.map(f => `<code class="${f === "locked" ? "warn" : ""}">${esc(f)}</code>`).join(" ") : "<span class='dim'>none</span>"}</td><td class="mono">${esc(x.h_align)} / ${esc(x.v_align)}</td>
+      <td class="mono">${x.configs.map(g => `${g.cfg_index}: ${esc(g.layout)} ${g.size_w}x${g.size_h} (${esc(g.area)})`).join("<br>")}</td>
+      <td class="mono">${x.placed ? `cfg ${x.placed.cfg_index}: ${esc(x.placed.layout)} ${x.placed.size.w}x${x.placed.size.h} (${esc(x.placed.area)})` : "<span class='dim'>none in the dump</span>"}</td><td>${lyEditHook(x, v)}</td></tr>`).join("")}</table></div></details>`; }).join("")}`; }
+/* LAYOUT TAB END */
+/* PLACEMENT EDIT BEGIN */
+/* Placement edit mode: STORED ONLY. Nothing here changes the game, a bundle or the layout dump, and install ignores these edits.
+   The controls exist only while the layout dump is fresh and a project is selected; the Layout tab itself stays read-only. */
+const PL = {on: false, list: null, form: null};
+const plCan = () => !!(S && S.layout && S.layout.present && S.layout.staleness.status === "fresh" && P);
+const plFind = (comp, idx) => (PL.list ? PL.list.edits : []).find(e => e.composition === comp && e.cell_index === idx);
+const plGeo = g => g ? `${g.x} ${g.y} ${g.w} ${g.h}` : "";
+async function plLoad() { PL.list = null; if (!P) return; try { PL.list = await api("/api/placement/list?project=" + encodeURIComponent(P.name)); } catch (e) { PL.list = null; } }
+async function plPost(path, body) { const r = await fetch(path, {method: "POST", headers: {"X-Token": T}, body: JSON.stringify(body)}); return {code: r.status, j: await r.json()}; }
+async function lyEditPrep() { await plLoad(); }
+function lyEditHook(x, v) {
+  if (!x) return (PL.list && PL.list.edits.length) || (plCan() && PL.on) ? "Stored edit" : "";
+  const e = plFind(v.composition, x.cell_index); let h = "";
+  if (e) h += `<span class="${e.state === "valid" ? "ok" : "bad"}" title="${esc((e.reasons || []).join("; "))}">${esc(e.state)}</span> <span class="mono dim">${esc(e.geometry ? plGeo(e.geometry) : "cfg " + e.config)}</span> `;
+  if (plCan() && PL.on) h += `<button class="plopen" data-c="${esc(v.composition)}" data-i="${x.cell_index}">${e ? "Change" : "Edit"}</button>`;
+  return h; }
+function lyEditBind(s) { const box = $("lyedit"); if (!box) return;
+  const cells = {}; s.sets.forEach(st => st.variants.forEach(v => v.cells.forEach(c => { cells[v.composition + "#" + c.cell_index] = {c, v}; })));
+  const ed = PL.list ? PL.list.edits : [], st = S.layout.staleness;
+  box.innerHTML = `<div class="box"><h4>Placement edits (stored; positions are written by a bundle build)</h4>
+    <p class="warn">Stored; positions are written by a bundle build: edits are kept in the workspace for this project and listed in the build report. A bundle build writes the x/y of every valid edit into a copy of the composition bundle; the game changes only when that build is installed. The layout dump is never changed.</p>
+    ${!P ? `<p class="dim">Select or create a project to store edits.</p>` : !plCan() ? `<p class="dim">Editing is hidden until the layout dump is fresh (now: ${esc(st.status)}). Stored edits stay listed below; revert still works.</p>`
+      : `<label><input type="checkbox" id="plon" ${PL.on ? "checked" : ""}> placement edit mode</label>`}
+    ${ed.length ? `<div class="list" style="max-height:28vh"><table><tr><th>Target</th><th>Dump</th><th>Stored</th><th>State</th><th>Checked against</th><th></th></tr>${ed.map(e => `<tr><td class="mono">${esc(e.composition)} / cell ${e.cell_index} (${esc(e.cell_element_id)})</td>
+      <td class="mono">${esc(plGeo(e.old.geometry))}${e.old.config !== null ? " cfg " + e.old.config : ""}</td><td class="mono">${esc(e.geometry ? plGeo(e.geometry) : "")}${e.config !== null ? " cfg " + e.config : ""}${e.confirmed_collisions.length ? ` <span class="warn">overlaps ${esc(e.confirmed_collisions.join(", "))} (confirmed)</span>` : ""}</td>
+      <td><span class="${e.state === "valid" ? "ok" : "bad"}">${esc(e.state)}</span>${(e.reasons || []).map(r => `<br><span class="bad">${esc(r)}</span>`).join("")}${(e.warnings || []).map(r => `<br><span class="warn">${esc(r)}</span>`).join("")}</td>
+      <td class="mono dim">${esc(e.validated_against.fingerprint.slice(0, 12))}</td><td><button class="plrev" data-id="${esc(e.id)}">Revert</button></td></tr>`).join("")}</table></div>` : P ? `<p class="dim">No stored edits for this project.</p>` : ""}
+    <div id="plform"></div></div>`;
+  const again = async () => { await plLoad(); lyScreen(LV.panel); };
+  const on = $("plon"); if (on) on.onchange = e => { PL.on = e.target.checked; PL.form = null; lyScreen(LV.panel); };
+  box.querySelectorAll(".plrev").forEach(b => b.onclick = async () => { const r = await plPost("/api/placement/remove", {project: P.name, id: b.dataset.id});
+    if (r.code !== 200) return say(r.j.error || "revert failed"); say("Edit reverted: the dump's value applies again", true); again(); });
+  const open = (comp, idx) => plForm(cells[comp + "#" + idx], again);
+  document.querySelectorAll(".plopen").forEach(b => b.onclick = () => open(b.dataset.c, +b.dataset.i)); }
+function plForm(ref, again) { if (!ref || !plCan()) return; const {c, v} = ref, e = plFind(v.composition, c.cell_index), g = (e && e.geometry) || {x: c.x, y: c.y, w: c.w, h: c.h};
+  $("plform").innerHTML = `<h4>${esc(v.composition)} / cell ${c.cell_index} (${esc(c.element_id)})</h4>
+    <p class="dim">Dump: x y w h = ${c.x} ${c.y} ${c.w} ${c.h}; limits ${c.min_w}x${c.min_h} to ${c.max_w}x${c.max_h}; flags ${c.flags.length ? esc(c.flags.join(", ")) : "none"}; grid ${esc(String(v.composition_info ? v.composition_info.preset_w + " x " + v.composition_info.preset_h : "unknown"))} (cell units).${c.flags.includes("locked") ? ` <span class="warn">locked: a move or resize is refused.</span>` : ""}</p>
+    <div class="row">x <input id="plx" type="number" step="1" value="${g.x}" style="width:70px"> y <input id="ply" type="number" step="1" value="${g.y}" style="width:70px"> w <input id="plw" type="number" step="1" value="${g.w}" style="width:70px"> h <input id="plh" type="number" step="1" value="${g.h}" style="width:70px">
+      config <select id="plcfg"><option value="">no change</option>${c.configs.map(k => `<option value="${k.cfg_index}" ${e && e.config === k.cfg_index ? "selected" : ""}>${k.cfg_index}: ${esc(k.layout)} ${k.size_w}x${k.size_h}</option>`).join("")}</select>
+      <input id="plnote" placeholder="note (optional)" size="22" value="${esc(e ? e.note : "")}"></div>
+    <div class="row"><button id="plchk">Check</button><button class="pri" id="plstore">Store edit</button></div><div id="plres"></div>`;
+  const payload = () => { const n = id => Number($(id).value), geo = {x: n("plx"), y: n("ply"), w: n("plw"), h: n("plh")}, same = geo.x === c.x && geo.y === c.y && geo.w === c.w && geo.h === c.h;
+    const ed = {composition: v.composition, cell_index: c.cell_index, note: $("plnote").value}; if (!same) ed.geometry = geo; if ($("plcfg").value !== "") ed.config = Number($("plcfg").value); return ed; };
+  const show = (r, confirm) => { $("plres").innerHTML = `${(r.blocks || []).map(b => `<p class="bad">Blocked: ${esc(b)}</p>`).join("")}${(r.warnings || []).map(w => `<p class="warn">${esc(w)}</p>`).join("")}
+    ${(r.collisions || []).length ? `<p class="warn">Overlap with ${r.collisions.map(x => `cell ${x.cell_index} (${esc(x.element_id)}: ${esc(plGeo(x.geometry))})`).join(", ")}. Overlap may be intentional layering.</p>${confirm ? `<button class="pri" id="plconf">Confirm the overlap and store</button>` : ""}` : ""}
+    ${!(r.blocks || []).length && !(r.warnings || []).length ? `<p class="ok">No problems found.</p>` : ""}`;
+    const cb = $("plconf"); if (cb) cb.onclick = () => store(true); };
+  const store = async confirm => { const r = await plPost("/api/placement/add", {project: P.name, edit: payload(), confirm: !!confirm});
+    if (r.code === 200) { say("Edit stored (not written to the game)", true); return again(); }
+    show({blocks: r.j.blocks && r.j.blocks.length ? r.j.blocks : [r.j.error], warnings: r.j.warnings, collisions: r.j.collisions}, r.code === 409); };
+  $("plchk").onclick = async () => { const r = await plPost("/api/placement/check", {project: P.name, edit: payload()}); show(r.j, false); };
+  $("plstore").onclick = () => store(false); }
+/* PLACEMENT EDIT END */
+/* ---------- tokens */
+async function drawTokens() { if (!S?.indexed) { await refresh(); if (!S.indexed) { $("tlist").innerHTML = `<p class="warn">Build the index on the Setup page first.</p>`; return; } }
+  const r = await api(`/api/tokens?q=${encodeURIComponent($("tq").value)}&colours=${$("tcol").checked ? 1 : 0}`);
+  const ov = Object.fromEntries((P?.token_overrides || []).map(o => [o.token, o.value]));
+  $("tcount").textContent = `${r.rows.length} of ${r.total}`;
+  $("tlist").innerHTML = `<table><tr><th>Token</th><th>Vanilla</th><th>Override</th><th>Paints</th></tr>${r.rows.map(t => `<tr class="pick" data-n="${esc(t.name)}">
+    <td class="mono">${esc(t.name)}${t.conflict ? ` <span class="warn" title="defined with different values across sheets">!</span>` : ""}</td>
+    <td>${t.resolved ? fmt(t.resolved) : `<span class="mono">${esc(t.value)}</span>`}</td><td>${t.name in ov ? val(ov[t.name]) : ""}</td><td>${t.reach}</td></tr>`).join("")}</table>`;
+  $("tlist").querySelectorAll("tr.pick").forEach(tr => tr.onclick = () => tokenDetail(tr.dataset.n)); }
+$("tq").oninput = () => { clearTimeout(drawTokens.t); drawTokens.t = setTimeout(drawTokens, 200); };
+$("tcol").onchange = drawTokens;
+$("wgo").onclick = runSearch; $("wq").onkeydown = e => { if (e.key === "Enter") runSearch(); };
+async function tokenDetail(name) { const t = await api("/api/token?name=" + encodeURIComponent(name));
+  const cur = (P?.token_overrides || []).find(o => o.token === name);
+  const start = cur && Col.is(cur.value) ? cur.value : t.resolved || {rgb: "#000000", a: 1};
+  $("tdetail").innerHTML = `<div class="box"><h3>${esc(name)}</h3>
+    <table><tr><td>Vanilla</td><td>${t.resolved ? fmt(t.resolved) : `<span class="mono">${esc(t.value)}</span>`} <span class="dim">chain: ${esc(t.chain.join(" -> "))}</span></td></tr>
+      <tr><td>Override</td><td>${cur ? val(cur.value) : `<span class="dim">none</span>`}</td></tr></table>
+    <div class="row">${rgbaEditor("tok", start)}<button class="pri" id="tset">${cur ? "Update colour" : "Override with this colour"}</button></div>
+    <div class="row"><input id="tv" class="mono" size="30" placeholder="var(--other-token), 4px, ..." value="${esc(cur && !Col.is(cur.value) ? cur.value : "")}"><button id="traw">Override with this value</button>
+      ${cur ? `<button id="tdel">Remove override</button>` : ""}</div>
+    <p class="dim">Rewrites the definition in all ${t.sheets} sheets that define it. Paints ${t.reach} properties. Alpha is stored in full; three decimals are shown.</p>
+    <table><tr><th>Sheet</th><th>Vanilla value</th></tr>${Object.entries(t.defs).map(([sh, v]) => `<tr><td>${esc(sh)}</td><td class="mono">${sw(v)}${esc(v)}</td></tr>`).join("")}</table></div>
+    <div class="box"><h3>Reach${t.reach > t.uses.length ? ` (first ${t.uses.length} of ${t.reach})` : ""}</h3><div class="list" style="max-height:40vh"><table>
+    ${t.uses.map(u => `<tr><td>${esc(u.sheet)}</td><td class="mono">${esc(u.selector)}</td><td class="mono">${esc(u.property)}</td></tr>`).join("")}</table></div></div>
+    <div id="twhere"></div>`;
+  whereInto("twhere", "/api/where/token?name=" + encodeURIComponent(name), whereTokenHtml);
+  const put = async value => { if (!needProject()) return;
+    P.token_overrides = P.token_overrides.filter(o => o.token !== name);
+    P.token_overrides.push({token: name, value, vanilla: t.value});
+    await saveProject(); drawTokens(); tokenDetail(name); };
+  $("tset").onclick = () => put({...ED.tok});
+  $("traw").onclick = () => { const v = $("tv").value.trim(); if (!v) return say("Type a value first"); put(v); };
+  if (cur) $("tdel").onclick = async () => { P.token_overrides = P.token_overrides.filter(o => o.token !== name); await saveProject(); drawTokens(); tokenDetail(name); };
+}
+
+/* ---------- literals */
+async function drawLiterals() { if (!S?.indexed) { await refresh(); if (!S.indexed) { $("llist").innerHTML = `<p class="warn">Build the index on the Setup page first.</p>`; return; } }
+  const all = await api("/api/literals"), q = $("lq").value.trim().replace(/^#/, "").toUpperCase();
+  const rows = q ? all.filter(r => Col.hex8(r).slice(1).includes(q)) : all;
+  $("lcount").textContent = `${rows.length} of ${all.length}`;
+  $("llist").innerHTML = `<table><tr><th>Colour (RGBA)</th><th>Hits</th><th>All alphas of this RGB</th></tr>${rows.map((r, k) => `<tr class="pick" data-k="${k}"><td>${fmt(r)}</td><td>${r.hits}</td><td>${r.rgb_hits}</td></tr>`).join("")}</table>`;
+  $("llist").querySelectorAll("tr.pick").forEach(tr => tr.onclick = () => literalDetail(rows[tr.dataset.k])); }
+$("lq").oninput = () => { clearTimeout(drawLiterals.t); drawLiterals.t = setTimeout(drawLiterals, 200); };
+async function literalDetail(c) { const r = await api(`/api/literal?rgb=${encodeURIComponent(c.rgb)}&a=${c.a}`), from = {rgb: c.rgb, a: c.a};
+  const hitRows = (hits, only) => hits.map((h, k) => `<tr><td>${esc(h.sheet)}</td><td class="mono">${esc(h.selector)}</td><td class="mono">${esc(h.property)}<br><span class="dim">${esc(h.value)}</span></td>
+    <td>${only ? (h.token_def ? `<span class="dim">token</span>` : h.selectors.length ? `<button data-k="${k}">Only this</button>` : "") : `<span class="mono">${h.a.toFixed(3)}</span>`}</td></tr>`).join("");
+  $("ldetail").innerHTML = `<div class="box"><h3>Literal</h3><p>${fmt(from)}</p>
+    <h3>Mode "rgba": swap this exact RGBA (${r.exact.length} hits)</h3>
+    <div class="row">${rgbaEditor("lit", from)}<button class="pri" id="lrgba">Swap ${r.exact.length} exact hits</button></div>
+    <p class="dim">Only uses with this RGB and this alpha change; the new colour brings its own alpha.</p>
+    <h3>Mode "rgb-keep-alpha": swap every alpha of ${esc(c.rgb)} (${r.rgb_all.length} hits)</h3>
+    <div class="row">${rgbaEditor("litrgb", from, true)}<button id="lrgb">Swap ${r.rgb_all.length} hits, each keeps its alpha</button></div>
+    <p class="warn">Either swap recolours every listed hit in every sheet. "Only this" appends a rule with the same selector instead (using the RGBA editor above); Build raises its specificity above the original.</p>
+    <div class="list" style="max-height:38vh"><table><tr><th>Sheet</th><th>Selector</th><th>Property</th><th></th></tr>${hitRows(r.exact, true)}</table></div>
+    <details><summary>All ${r.rgb_all.length} uses of ${esc(c.rgb)} with their alphas</summary><div class="list" style="max-height:38vh"><table>${hitRows(r.rgb_all, false)}</table></div></details></div>
+    <div id="lwhere"></div>`;
+  whereInto("lwhere", `/api/where/literal?rgb=${encodeURIComponent(c.rgb)}&a=${c.a}`, whereLiteralHtml);
+  const add = async sw_ => { if (!needProject()) return;
+    P.literal_swaps = P.literal_swaps.filter(x => !(x.mode === sw_.mode && (sw_.mode === "rgba" ? Col.same(x.from, sw_.from) : x.from.rgb.toUpperCase() === sw_.from.rgb)));
+    P.literal_swaps.push(sw_); await saveProject(); };
+  $("lrgba").onclick = () => add({from, to: {...ED.lit}, mode: "rgba", hits_expected: r.exact.length});
+  $("lrgb").onclick = () => add({from: {rgb: c.rgb, a: 1}, to: {rgb: ED.litrgb.rgb, a: 1}, mode: "rgb-keep-alpha", hits_expected: r.rgb_all.length});
+  $("ldetail").querySelectorAll("[data-k]").forEach(b => b.onclick = async () => { if (!needProject()) return; const h = r.exact[b.dataset.k], to = {...ED.lit};
+    const value = h.value === Col.text(from) ? to : h.value.split(Col.text(from)).join(Col.text(to));
+    P.scoped_rules.push({sheet: h.sheet, selector: h.selectors.join(", "), props: {[h.property]: value}, why: "literal " + Col.text(from) + " in this rule"});
+    await saveProject(); });
+}
+
+/* ---------- project */
+async function drawProject() { if (!S) await refresh();
+  if (!P || newForm) { $("project").innerHTML = `<div class="box"><h3>New project</h3><div class="row">
+    <input id="nname" placeholder="name (letters, digits, dot, dash, underscore)" size="40">
+    <select id="npre"><option value="">blank</option>${S.presets.map(x => `<option>${esc(x)}</option>`).join("")}</select>
+    <button class="pri" id="ncreate">Create</button>${P ? `<button id="ncancel">Cancel</button>` : ""}</div>
+    <p class="dim">A preset is generated from the style index of the installed game build, so the index must exist first. The crimson preset is the rule set of make_crimson_json.py without the header sweep rules.</p></div>`;
+    $("ncreate").onclick = async () => { const r = await api("/api/preset", {name: $("nname").value.trim(), preset: $("npre").value});
+      P = r.project; newForm = false; await refresh(); drawProject(); };
+    if (P) $("ncancel").onclick = () => { newForm = false; drawProject(); };
+    return; }
+  const sec = (title, key, head, cells) => `<div class="box"><h3>${title} (${P[key].length})</h3><div class="list" style="max-height:34vh"><table>${P[key].length ? head : ""}${P[key].map((e, k) =>
+    `<tr>${cells(e)}<td style="width:1%"><button data-key="${key}" data-k="${k}">Remove</button></td></tr>`).join("") || `<tr><td class="dim">none</td></tr>`}</table></div></div>`;
+  $("project").innerHTML = `<div class="cols"><div>
+    ${sec("Token overrides", "token_overrides", "<tr><th>Token</th><th>Vanilla</th><th>Override</th><th></th></tr>", e => `<td class="mono">${esc(e.token)}</td><td class="mono">${sw((e.vanilla || "").split(" / ")[0])}${esc(e.vanilla || "")}</td><td>${val(e.value)}</td>`)}
+    ${sec("Literal swaps", "literal_swaps", "<tr><th>From</th><th>To</th><th>Mode</th><th>Expected</th><th></th></tr>", e => e.mode === "rgba" ? `<td>${fmt(e.from)}</td><td>${fmt(e.to)}</td><td>rgba</td><td class="dim">${e.hits_expected ?? ""}</td>`
+      : `<td class="mono">${sw(e.from)}${esc(e.from.rgb)} <span class="dim">any alpha</span></td><td class="mono">${sw(e.to)}${esc(e.to.rgb)} <span class="dim">alpha kept</span></td><td>rgb-keep-alpha</td><td class="dim">${e.hits_expected ?? ""}</td>`)}
+    ${sec("Scoped rules", "scoped_rules", "", e => `<td>${esc(e.sheet)}</td><td class="mono">${esc(e.selector)}</td><td>${Object.entries(e.props).map(([a, b]) => `<span class="mono">${esc(a)}:</span> ${val(b)}`).join("<br>")}</td>`)}
+    <div class="box"><h3>Options</h3><label><input type="checkbox" id="flat" ${P.options.flatten_gradients ? "checked" : ""}> Flatten gradients (copy start colour into end colour)</label><br>
+      <label><input type="checkbox" id="rspec" ${P.options.raise_specificity !== false ? "checked" : ""}> Raise scoped rules above competing vanilla rules at build</label>
+      <div class="row"><span>Contrast backdrop</span>${rgbaEditor("bd", P.options.contrast_backdrop, true)}<button id="bdset">Set</button></div>
+      <div class="row"><label><input type="checkbox" id="clubrm" ${P.options.club_colours === false ? "checked" : ""}> Remove club colours</label>
+        <span>replace with</span>${rgbaEditor("clubc", P.options.club_colours_replacement || {rgb: "#171717", a: 1}, true)}<button id="clubset">Set</button></div>
+      <p class="dim">Off by default: the game paints your club's colours (top bar, kit strip, profile and news headers, club wallpaper). When ticked, the build adds the 20 rules proven in the Crimson skin (code-bound club gradients stop drawing, the bars behind them take the colour above) and renames the club-theme classes nav-on-light / nav-on-dark, so the top bar text stays light for every club. Some headers stay club-coloured (the Crimson header sweep is not included).</p>
+      <p class="dim">Skipped sheets: ${esc((P.options.skip_sheets || []).join(", ") || "none")}. Class renames: ${esc(Object.entries(P.rename_classes || {}).map(([a, b]) => a + " -> " + b).join(", ") || "none")}. Contrast pairs: ${(P.contrast_pairs || []).length}. Edit these in the JSON.</p></div>
+    </div><div class="box"><h3>${esc(P.name)}.skin.json (schema ${P.schema})</h3><textarea id="raw" class="mono" style="width:100%;height:62vh" spellcheck="false">${esc(JSON.stringify(P, null, 2))}</textarea>
+    <div class="row"><button class="pri" id="rawsave">Save JSON</button><span class="dim">Colours: {"rgb": "#RRGGBB", "a": 0..1}. Colour strings are converted on save.</span></div></div></div>`;
+  $("project").querySelectorAll("[data-key]").forEach(b => b.onclick = async () => { P[b.dataset.key].splice(+b.dataset.k, 1); await saveProject(); drawProject(); });
+  $("flat").onchange = async e => { P.options.flatten_gradients = e.target.checked; await saveProject(); drawProject(); };
+  $("rspec").onchange = async e => { P.options.raise_specificity = e.target.checked; await saveProject(); drawProject(); };
+  $("bdset").onclick = async () => { P.options.contrast_backdrop = {rgb: ED.bd.rgb, a: 1}; await saveProject(); drawProject(); };
+  $("clubrm").onchange = async e => { P.options.club_colours = !e.target.checked; await saveProject(); drawProject(); };
+  $("clubset").onclick = async () => { P.options.club_colours_replacement = {rgb: ED.clubc.rgb, a: 1}; await saveProject(); drawProject(); };
+  $("rawsave").onclick = async () => { let p; try { p = JSON.parse($("raw").value); } catch (e) { return say("Invalid JSON: " + e.message); }
+    const keep = P; P = p; try { await saveProject(); } catch (e) { P = keep; } drawProject(); };
+}
+
+/* ---------- build and install */
+let lastReport = null, lastReach = null;
+async function drawBuild() { await refresh(); const backups = await api("/api/backups"); const r = lastReport;
+  const route = P?.options?.output || "bundles";
+  $("build").innerHTML = `<div class="box"><h3>How ${esc(P?.name || "this project")} reaches the game</h3>
+    <div class="row"><label><input type="radio" name="route" value="native" ${route === "native" ? "checked" : ""}> <b>Native skin folder</b> (recommended)</label>
+      <span class="dim">FM27 loads it itself from Documents / Sports Interactive / Football Manager 27 / skins; no game file changes, survives updates, switch it in Preferences.</span></div>
+    <div class="row"><label><input type="radio" name="route" value="bundles" ${route === "bundles" ? "checked" : ""}> <b>Game bundles</b></label>
+      <span class="dim">Patches copies of the game's bundles and installs them with a backup; can also swap wallpaper textures, atlas icons and SVGs inside the game files. Steam updates undo it.</span></div>
+    <p class="dim">Use one at a time: a native skin on top of an installed bundle skin applies changes twice. <a href="#" id="routeother">${route === "native" ? "Show the bundle tools anyway" : "Show the native export anyway"}</a></p></div>
+    <div class="cols"><div>
+    <div class="box route-bundles"><h3>Build ${esc(P?.name || "")}</h3><div class="row"><button class="pri" id="bld" ${P && S.vanilla ? "" : "disabled"}>Build</button><span class="jobbar"></span></div>
+    <p class="dim">Patches fresh copies of the vanilla snapshot. The game folder is not touched.</p>
+    ${r ? `<table>${Object.entries(r.totals).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join("")}
+      ${Object.entries(r.files).map(([n, f]) => `<tr><td class="mono">${esc(n)}</td><td class="${f.changed ? "ok" : "dim"}">${f.changed ? "patched" : "unchanged"}</td></tr>`).join("")}</table>
+      ${r.tokens_not_found.length ? `<p class="bad">Tokens not found: ${esc(r.tokens_not_found.join(", "))}</p>` : ""}
+      ${r.sheets_not_found.length ? `<p class="bad">Sheets not found: ${esc(r.sheets_not_found.join(", "))}</p>` : ""}
+      ${r.warnings.map(w => `<p class="warn">${esc(w)}</p>`).join("")}
+      <p class="${r.gate.fail.length ? "bad" : "ok"}">Structural gate: ${r.gate.fail.length ? "FAIL, install is blocked" : "pass"} (object counts, deserialisation, rule counts, ${r.gate.appended_rules_checked} appended rules decoded)</p>
+      ${r.gate.fail.map(f => `<p class="bad mono">${esc(f)}</p>`).join("")}
+      ${r.literal_swaps.length ? `<table><tr><th>Literal swap</th><th>To</th><th>Mode</th><th>Hits</th></tr>${r.literal_swaps.map(x => `<tr><td>${x.mode === "rgba" ? fmt(x.from) : sw(x.from) + `<span class="mono">${esc(x.from.rgb)}</span>`}</td>
+        <td>${x.mode === "rgba" ? fmt(x.to) : sw(x.to) + `<span class="mono">${esc(x.to.rgb)}</span>`}</td><td>${x.mode}</td><td class="${x.hits ? "" : "warn"}">${x.hits}</td></tr>`).join("")}</table>` : ""}
+      <p>Specificity: ${r.specificity_log.filter(x => x.after > x.before).length} branch(es) raised. Contrast: ${r.contrast.pairs} pair(s) over backdrop <span class="mono">${sw(r.contrast.backdrop)}${r.contrast.backdrop}</span>, ${r.contrast.composited} alpha-composited, <span class="${r.contrast.failures ? "warn" : "ok"}">${r.contrast.failures} below minimum</span>.</p>
+      <details ${r.contrast.failures ? "open" : ""}><summary>Contrast rows</summary><div class="list" style="max-height:40vh"><table><tr><th>Status</th><th>Ratio</th><th>Need</th><th>Text</th><th>Surface</th><th>Surface from</th><th>Painted</th><th>Rule</th></tr>${r.contrast.rows.map(x =>
+        `<tr><td class="${x.status === "PASS" ? "ok" : "warn"}">${x.status}</td><td>${x.ratio ?? "-"}</td><td>${x.need}</td><td><span class="mono dim">${esc(x.fg)}</span><br>${x.fg_rgba ? fmt(x.fg_rgba) : ""}</td><td><span class="mono dim">${esc(x.bg)}</span><br>${x.bg_rgba ? fmt(x.bg_rgba) : ""}</td>
+         <td>${esc(x.bg_source)}</td><td class="mono">${x.fg_painted ? `${sw(x.fg_painted)}${x.fg_painted} on ${sw(x.bg_painted)}${x.bg_painted}${x.composited ? `<br><span class="warn">alpha-composited</span>` : ""}` : ""}</td><td class="mono">${esc(x.src)}</td></tr>`).join("")}</table></div></details>
+      ${r.specificity_log.filter(x => x.after > x.before).length ? `<details><summary>Raised selectors</summary><table>${r.specificity_log.filter(x => x.after > x.before).map(x =>
+        `<tr><td>${x.before} -> ${x.after}</td><td class="mono">${esc(x.raised_to)}</td><td class="mono dim">${esc(x.strongest)}</td></tr>`).join("")}</table></details>` : ""}
+      <p class="mono dim">${esc(r.dir)}</p>` : ""}</div>
+    <div class="box route-bundles"><h3>Selector reach</h3><div class="row"><button id="rch" ${P && S.install && P.scoped_rules.length ? "" : "disabled"}>Check scoped rules against the game layouts</button></div>
+    <p class="dim">Reads the visual tree bundles in the game folder (read only; the first run takes a while). A branch with 0 matches may still work at runtime when its parts sit in different templates or use runtime classes.</p>
+    ${lastReach ? `<p>${lastReach.trees} templates searched, ${lastReach.no_match} branch(es) without a single-template match.</p><div class="list" style="max-height:40vh"><table><tr><th>Matches</th><th>Branch</th><th>Parts in no template</th></tr>
+      ${lastReach.rows.map(x => `<tr><td class="${x.hits ? "ok" : "warn"}">${x.hits}</td><td class="mono">${esc(x.branch)}</td><td class="mono">${esc(x.missing.join(" "))}</td></tr>`).join("")}</table></div>` : ""}</div>
+    <div class="box route-native"><h3>Export as native skin</h3><div id="natbox"><p class="dim">...</p></div></div>
+    <div class="box route-bundles"><h3>Install</h3><p class="${S.running ? "bad" : "ok"}">${S.install ? (S.running ? "Game is running or updating. Close it first." : "Game is not running.") : "No install selected."}</p>
+    <div class="row"><button class="pri" id="ins" ${P && S.install && !S.running && !(r && r.gate.fail.length) ? "" : "disabled"}>Install latest build</button></div>
+    <p class="dim">Backs up every replaced file, copies changed bundles only, re-hashes, and rolls back on mismatch.</p></div></div>
+    <div class="box"><h3>Backups</h3><table><tr><td>Stock files from the vanilla snapshot</td><td></td><td><button data-b="vanilla" ${S.vanilla && S.install ? "" : "disabled"}>Restore</button></td></tr>
+    ${backups.map(b => `<tr><td class="mono">${esc(b.name)}</td><td>before ${esc(b.label)}<br><span class="dim">${b.files.length} file(s)</span></td><td><button data-b="${esc(b.name)}">Restore</button></td></tr>`).join("")}</table></div></div>`;
+  const showRoute = (r, both) => $("build").querySelectorAll(".route-bundles, .route-native").forEach(x => x.style.display = both || x.classList.contains("route-" + r) ? "" : "none");
+  showRoute(route, false);
+  $("routeother").onclick = e => { e.preventDefault(); showRoute(route, true); e.target.remove(); };
+  $("build").querySelectorAll("input[name=route]").forEach(x => x.onchange = async () => { if (!needProject()) return; P.options.output = x.value; await saveProject(); drawBuild(); });
+  natDraw();
+  $("bld").onclick = async () => { lastReport = await job(api("/api/build", {name: P.name})); drawBuild(); };
+  $("rch").onclick = async () => { lastReach = await job(api("/api/reach", {name: P.name})); drawBuild(); };
+  $("ins").onclick = async () => { if (!confirm("Copy the latest build of " + P.name + " into the game folder?")) return;
+    const r = await api("/api/install", {name: P.name}); say(r.copied.length ? "Installed: " + r.copied.join(", ") + "\nBackup: " + r.backup : "Game files already match this build.", true); drawBuild(); };
+  $("build").querySelectorAll("[data-b]").forEach(b => b.onclick = async () => { if (!confirm("Restore " + b.dataset.b + " into the game folder?")) return;
+    const r = await api("/api/restore", {backup: b.dataset.b}); say("Restored: " + (r.copied.join(", ") || "nothing to change"), true); drawBuild(); });
+}
+
+/* ---------- preview
+   A measured screenshot of a vanilla screen (data/models) repainted with the project: every region bound to a token or a literal
+   gets its skin colour; code-painted regions keep the measured colour. Repaint shifts the pixels that carry the region's old
+   on-screen colour to the new one (fills: matching pixels; text, borders: anti-aliased pixels by their share of the colour),
+   reading from the untouched screenshot so regions never compound. Editing a token here previews instantly, Save stores it. */
+const PV = {name: null, img: null, orig: null, ev: null, mode: "skin", outline: true, sel: null, live: null, hover: null};
+const rgba8 = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16), h.length > 7 ? parseInt(h.slice(7, 9), 16) / 255 : 1];
+const hex8of = o => o.rgb.toUpperCase() + Col.hex2(Col.byte(o.a));
+async function drawPreview() { if (!S) await refresh();
+  const models = await api("/api/preview/models");
+  if (!models.length) { $("preview").innerHTML = `<div class="box"><p class="warn">No preview models in data/models. Build one on Windows with tools/build_preview_model.py from an inspector measurement.</p></div>`; return; }
+  if (!PV.name || !models.some(m => m.name === PV.name)) PV.name = models.find(m => m.name === "tactics")?.name || models[0].name;
+  const m = models.find(x => x.name === PV.name);
+  $("preview").innerHTML = `<div class="pv"><div>
+    <div class="row"><select id="pvm">${models.map(x => `<option ${x.name === PV.name ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+      <button id="pvskin" class="${PV.mode === "skin" ? "pri" : ""}">Skin</button><button id="pvvan" class="${PV.mode === "vanilla" ? "pri" : ""}">Vanilla</button>
+      <label><input type="checkbox" id="pvout" ${PV.outline ? "checked" : ""}> outline changed regions</label>
+      <span class="dim" id="pvstat"></span>${PV.compare ? ` <span class="warn">showing the loaded comparison's colours</span> <button id="pvcmpoff">Back to ${esc(P?.name || "vanilla")}</button>` : ""}</div>
+    <div class="pvwrap" id="pvwrap"><canvas id="pvc"></canvas><canvas id="pvo"></canvas><div class="pvtip" id="pvtip"></div></div>
+    <p class="dim">Screenshot measured on the ${esc(m.measured_state)} game${m.game_build ? ", build " + esc(m.game_build) : ""}, ${m.regions} regions (${Object.entries(m.kinds).map(([k, v]) => v + " " + k).join(", ")}). Hover a region to see what paints it; click to edit. Code-painted regions are not driven by the stylesheets and keep their measured colour; scoped rules are matched on the element only (approx).</p></div>
+    <div id="pvside"></div></div>`;
+  $("pvm").onchange = e => { PV.name = e.target.value; PV.img = PV.orig = PV.sel = PV.live = null; drawPreview(); };
+  $("pvskin").onclick = () => { PV.mode = "skin"; drawPreview(); };
+  $("pvvan").onclick = () => { PV.mode = "vanilla"; drawPreview(); };
+  $("pvout").onchange = e => { PV.outline = e.target.checked; pvOverlay(); };
+  if ($("pvcmpoff")) $("pvcmpoff").onclick = () => { PV.compare = false; drawPreview(); };
+  if (!PV.img || PV.img.dataset.name !== PV.name) {
+    PV.img = await new Promise((ok, bad) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => bad(new Error("screenshot did not load"));
+      im.dataset.name = PV.name; im.src = `/api/preview/image?name=${encodeURIComponent(PV.name)}&t=${encodeURIComponent(T)}`; });
+    const c = document.createElement("canvas"); c.width = PV.img.naturalWidth; c.height = PV.img.naturalHeight;
+    const x = c.getContext("2d", {willReadFrequently: true}); x.drawImage(PV.img, 0, 0); PV.orig = x.getImageData(0, 0, c.width, c.height); }
+  await pvLoad(); pvBind(); }
+async function pvLoad() { const proj = PV.compare ? "__compare__" : P ? P.name : "";
+  PV.ev = await api(`/api/preview/model?name=${encodeURIComponent(PV.name)}${proj ? "&project=" + encodeURIComponent(proj) : ""}`); pvRender(); pvSide(); }
+function pvSkin(r) {   /* the colour a region shows now: a live (unsaved) token edit wins over the evaluated skin colour */
+  if (r.prop === "gradient") return pvEnds(r)[0];
+  if (PV.live && r.chain && r.chain.includes(PV.live.token)) return hex8of(PV.live.value);
+  return r.skin; }
+function pvEnds(r) { const live = e => PV.live && r["chain_" + e] && r["chain_" + e].includes(PV.live.token) ? hex8of(PV.live.value) : null;
+  return [live("start") || r.skin, live("end") || r.skin_end]; }
+function pvChanged(r) { return r.prop === "gradient" ? pvEnds(r).join() !== [r.vanilla, r.vanilla_end].join() : pvSkin(r) !== r.vanilla; }
+function pvDominant(d, W, x0, y0, x1, y1) { const h = new Map(); const step = Math.max(1, Math.floor(Math.sqrt((x1 - x0) * (y1 - y0) / 4000)));
+  let best = null, bn = 0;
+  for (let y = y0; y < y1; y += step) for (let x = x0; x < x1; x += step) { const i = (y * W + x) * 4, k = (d[i] >> 3) << 10 | (d[i + 1] >> 3) << 5 | (d[i + 2] >> 3);
+    const n = (h.get(k) || 0) + 1; h.set(k, n); if (n > bn) { bn = n; best = [d[i], d[i + 1], d[i + 2]]; } }
+  return best || [0, 0, 0]; }
+function pvRepaint(src, out, W, H, r, sx, sy, newHex) {
+  const op = r.opacity ?? 1, o = rgba8(r.vanilla), n = rgba8(newHex), oa = o[3] * op, na = n[3] * op;
+  let [x, y, w, h] = r.rect; const x0 = Math.max(0, Math.floor(x * sx)), y0 = Math.max(0, Math.floor(y * sy)), x1 = Math.min(W, Math.ceil((x + w) * sx)), y1 = Math.min(H, Math.ceil((y + h) * sy));
+  if (x1 <= x0 || y1 <= y0) return;
+  const mix = (c, b, a) => [0, 1, 2].map(i => c[i] * a + b[i] * (1 - a));
+  if (r.prop === "gradient") {          // SIGradient: start -> end along its direction; only pixels that carry the old gradient colour
+    const [ns, ne] = pvEnds(r).map(rgba8), vs = rgba8(r.vanilla), ve = rgba8(r.vanilla_end), dir = r.direction || "LeftToRight";
+    const lerp = (a, b, k) => a.map((v, i) => v + (b[i] - v) * k), GD = pvDominant(src, W, x0, y0, x1, y1);
+    for (let yy = y0; yy < y1; yy++) for (let xx = x0; xx < x1; xx++) {
+      let k = dir.startsWith("Left") || dir.startsWith("Right") ? (xx - x0) / Math.max(1, x1 - x0 - 1) : (yy - y0) / Math.max(1, y1 - y0 - 1);
+      if (dir === "RightToLeft" || dir === "BottomToTop") k = 1 - k;
+      const oc = lerp(vs, ve, k), nc = lerp(ns, ne, k), a0 = oc[3] * op, a1 = nc[3] * op, i = (yy * W + xx) * 4, P = [src[i], src[i + 1], src[i + 2]];
+      let Bk;
+      if (a0 >= 0.999) { if (Math.abs(P[0] - oc[0]) > 22 || Math.abs(P[1] - oc[1]) > 22 || Math.abs(P[2] - oc[2]) > 22) continue; Bk = P; }
+      else { if (Math.abs(P[0] - GD[0]) > 34 || Math.abs(P[1] - GD[1]) > 34 || Math.abs(P[2] - GD[2]) > 34) continue;    // keep content drawn on top (text, icons)
+        Bk = P.map((v, c) => Math.min(255, Math.max(0, (v - a0 * oc[c]) / (1 - a0)))); }
+      for (let c = 0; c < 3; c++) out[i + c] = Math.min(255, Math.max(0, a1 * nc[c] + (1 - a1) * Bk[c])); }
+    return; }
+  const D = pvDominant(src, W, x0, y0, x1, y1);
+  if (r.prop === "-unity-background-image-tint-color") {          // a tint multiplies the image: scale each channel
+    const f = [0, 1, 2].map(i => o[i] > 4 ? n[i] / o[i] : 1);
+    for (let yy = y0; yy < y1; yy++) for (let xx = x0; xx < x1; xx++) { const i = (yy * W + xx) * 4; for (let c = 0; c < 3; c++) out[i + c] = Math.min(255, src[i + c] * f[c]); }
+    return; }
+  if (r.prop === "background-color") {
+    let O, N;
+    if (oa >= 0.999) { O = o; N = na >= 0.999 ? n : mix(n, o, na); }
+    else { O = D; const B = [0, 1, 2].map(i => Math.min(255, Math.max(0, (D[i] - oa * o[i]) / Math.max(1e-3, 1 - oa)))); N = mix(n, B, na); }
+    const dl = [0, 1, 2].map(i => N[i] - O[i]), tol = 22;
+    for (let yy = y0; yy < y1; yy++) for (let xx = x0; xx < x1; xx++) { const i = (yy * W + xx) * 4;
+      if (Math.abs(src[i] - O[0]) <= tol && Math.abs(src[i + 1] - O[1]) <= tol && Math.abs(src[i + 2] - O[2]) <= tol)
+        for (let c = 0; c < 3; c++) out[i + c] = Math.min(255, Math.max(0, src[i + c] + dl[c])); }
+    return; }
+  // text and borders: pixels are anti-aliased between the backdrop B and the colour O; shift each by its share k
+  const B = D, O = mix(o, B, oa), N = mix(n, B, na), v = [0, 1, 2].map(i => O[i] - B[i]), vv = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+  if (vv < 30) return;
+  const band = r.prop.startsWith("border-") ? Math.max(2, Math.ceil(2 * sx)) : 0, side = r.prop.split("-")[1];
+  for (let yy = y0; yy < y1; yy++) for (let xx = x0; xx < x1; xx++) {
+    if (band && !((side === "top" && yy < y0 + band) || (side === "bottom" && yy >= y1 - band) || (side === "left" && xx < x0 + band) || (side === "right" && xx >= x1 - band))) continue;
+    const i = (yy * W + xx) * 4, p = [src[i] - B[0], src[i + 1] - B[1], src[i + 2] - B[2]];
+    const k = (p[0] * v[0] + p[1] * v[1] + p[2] * v[2]) / vv; if (k <= 0.08) continue;
+    const kk = Math.min(1, k), res = Math.hypot(p[0] - kk * v[0], p[1] - kk * v[1], p[2] - kk * v[2]); if (res > 40) continue;
+    for (let c = 0; c < 3; c++) out[i + c] = Math.min(255, Math.max(0, src[i + c] + kk * (N[c] - O[c]))); } }
+function pvRender() { const c = $("pvc"); if (!c || !PV.orig) return; const W = PV.orig.width, H = PV.orig.height;
+  c.width = W; c.height = H; const x = c.getContext("2d");
+  const out = new ImageData(new Uint8ClampedArray(PV.orig.data), W, H);
+  let n = 0;
+  if (PV.mode === "skin") { const sx = W / PV.ev.resolution[0], sy = H / PV.ev.resolution[1];
+    for (const r of PV.ev.regions) { if (!pvChanged(r)) continue; n++; pvRepaint(PV.orig.data, out.data, W, H, r, sx, sy, pvSkin(r)); } }
+  x.putImageData(out, 0, 0);
+  $("pvstat").textContent = PV.mode === "skin" ? `${n} region(s) repainted${PV.live ? " (unsaved edit of " + PV.live.token + ")" : ""}` : "vanilla screenshot";
+  pvOverlay(); }
+function pvOverlay() { const o = $("pvo"), c = $("pvc"); if (!o || !PV.ev) return; o.width = c.width; o.height = c.height; o.style.width = c.clientWidth + "px"; o.style.height = c.clientHeight + "px";
+  const x = o.getContext("2d"), sx = c.width / PV.ev.resolution[0], sy = c.height / PV.ev.resolution[1];
+  const box = (r, col, lw) => { x.strokeStyle = col; x.lineWidth = lw; x.strokeRect(r.rect[0] * sx, r.rect[1] * sy, r.rect[2] * sx, r.rect[3] * sy); };
+  if (PV.outline && PV.mode === "skin") PV.ev.regions.forEach(r => { if (pvChanged(r)) box(r, "rgba(255,210,0,.55)", 1.5); });
+  if (PV.hover) box(PV.hover, "#00e0ff", 2.5);
+  if (PV.sel) box(PV.sel, "#ff2bd6", 3); }
+function pvAt(ev) { const o = $("pvo"), b = o.getBoundingClientRect(), px = (ev.clientX - b.left) / b.width * PV.ev.resolution[0], py = (ev.clientY - b.top) / b.height * PV.ev.resolution[1];
+  let best = null;
+  for (const r of PV.ev.regions) { const [x, y, w, h] = r.rect; if (px < x || py < y || px > x + w || py > y + h) continue;
+    const pref = r.binding.kind === "code" ? 1 : 0;                                // prefer stylesheet-painted regions, then the smallest box
+    if (!best || pref < best[0] || (pref === best[0] && w * h < best[1])) best = [pref, w * h, r]; }
+  return best && best[2]; }
+function pvBind() { const o = $("pvo"), tip = $("pvtip");
+  o.onmousemove = e => { const r = pvAt(e); if (r !== PV.hover) { PV.hover = r; pvOverlay(); }
+    if (!r) { tip.style.display = "none"; return; }
+    const b = r.binding, wrap = $("pvwrap").getBoundingClientRect();
+    tip.innerHTML = `${esc(r.prop)}: ${esc(b.kind === "token" ? b.token : b.kind === "literal" ? b.value : b.kind === "gradient" ? "gradient (stylesheet)" : "code")}<br>${esc(r.vanilla)}${r.prop === "gradient" ? " .. " + esc(r.vanilla_end) : ""}${pvChanged(r) ? " -> " + esc(pvEnds(r).join(" .. ")) : ""}`;
+    tip.style.display = "block"; tip.style.left = Math.min(e.clientX - wrap.left + 14, wrap.width - 260) + "px"; tip.style.top = (e.clientY - wrap.top + 14) + "px"; };
+  o.onmouseleave = () => { PV.hover = null; tip.style.display = "none"; pvOverlay(); };
+  o.onclick = e => { PV.sel = pvAt(e); PV.live = null; pvRender(); pvSide(); };
+  window.onresize = () => pvOverlay(); }
+async function pvSide() { const r = PV.sel, side = $("pvside"); if (!side) return;
+  if (!r) { const toks = PV.ev.screen_tokens, ov = Object.fromEntries((P?.token_overrides || []).map(o => [o.token, o.value]));
+    side.innerHTML = `<div class="box"><h3>${esc(PV.name)}${P ? " with " + esc(P.name) : " (no project: vanilla)"}</h3>
+      <p>${PV.ev.changed} of ${PV.ev.regions.length} regions change with this project.</p>
+      <h3>Tokens painting this screen (${toks.length})</h3><div class="list" style="max-height:60vh"><table>${toks.map(t => `<tr class="pick" data-t="${esc(t)}"><td class="mono">${esc(t)}</td><td>${t in ov ? val(ov[t]) : ""}</td></tr>`).join("")}</table></div>
+      <p class="dim">Click a token to select its first region on the screen.</p></div>`;
+    side.querySelectorAll("[data-t]").forEach(tr => tr.onclick = () => { PV.sel = PV.ev.regions.find(x => x.binding.token === tr.dataset.t) || null; pvRender(); pvSide(); });
+    return; }
+  const b = r.binding, cur = b.kind === "token" ? (P?.token_overrides || []).find(o => o.token === b.token) : null;
+  const same = PV.ev.regions.filter(x => b.kind === "token" ? x.binding.token === b.token : b.kind === "literal" ? x.binding.value === b.value : false).length;
+  let html = `<div class="box"><h3>Region</h3><table>
+    <tr><td>Element</td><td class="mono">${esc(r.label)}${r.text ? `<br><span class="dim">"${esc(r.text)}"</span>` : ""}</td></tr>
+    <tr><td>Property</td><td class="mono">${esc(r.prop)}</td></tr>
+    <tr><td>Vanilla</td><td>${fmt(Col.parse(r.vanilla))}</td></tr>
+    <tr><td>Skin</td><td>${fmt(Col.parse(pvSkin(r)))}${r.why ? `<br><span class="dim">${esc(r.why)}</span>` : ""}${r.approx ? ` <span class="warn">approx</span>` : ""}</td></tr>
+    ${r.prop === "gradient" ? `<tr><td>Gradient end</td><td>${fmt(Col.parse(r.vanilla_end))} -> ${fmt(Col.parse(pvEnds(r)[1]))} <span class="dim">${esc(r.direction)}</span></td></tr>` : ""}
+    <tr><td>Painted by</td><td>${b.kind === "code" ? `<span class="warn">code</span> <span class="dim">${esc(b.why || "")}</span>` : b.kind === "gradient" ?
+      ["start", "end"].map(e => b[e] ? `<span class="mono">${e}: ${esc(b[e].selector)} ${esc(b[e].value)}</span>` : "").join("<br>") + ` <span class="warn">approx</span>` :
+      `<span class="mono">${esc(b.sheet)}</span><br><span class="mono">${esc(b.selector)}</span><br><span class="mono">${esc(r.prop)}: ${esc(b.value)}</span>`}</td></tr>
+    ${r.chain ? `<tr><td>Chain</td><td class="mono">${esc(r.chain.join(" -> "))}</td></tr>` : ""}</table>`;
+  if (b.kind === "token") {
+    const start = cur && Col.is(cur.value) ? cur.value : Col.parse(pvSkin(r));
+    html += `<h3>Edit ${esc(b.token)} (${same} region(s) on this screen)</h3><div class="row">${rgbaEditor("pvtok", start)}</div>
+      <div class="row"><button class="pri" id="pvsave">Save override</button><button id="pvreset">Discard edit</button>${cur ? `<button id="pvdel">Remove override</button>` : ""}<button id="pvopen">Open in Tokens</button></div>
+      <p class="dim">The screen repaints while you edit; Save stores the override in ${esc(P?.name || "a project")}. Overriding ${esc(b.token)} changes every place it paints, not only this screen.</p>`;
+  } else if (b.kind === "gradient") {
+    const heads = [...new Set([r.chain_start?.[0], r.chain_end?.[0]].filter(Boolean))];
+    html += `<p>Stylesheet gradient (matched on the element's classes only: approx).</p><div class="row">${heads.map(t => `<button data-gt="${esc(t)}">Open ${esc(t)} in Tokens</button>`).join("") || `<span class="dim">ends are literals</span>`}</div>`;
+  } else if (b.kind === "literal") {
+    html += `<p>Hard-coded colour in this rule (${same} region(s) on this screen use it).</p><div class="row"><button id="pvlit">Open in Literals</button></div>`;
+  } else {
+    html += `<p class="warn">This colour is not painted by a stylesheet rule here (${esc(b.why || "code")}), so a skin cannot change it through this rule.</p><div id="pvsug"></div>`;
+  }
+  side.innerHTML = html + `<div class="row"><button id="pvback">Back to screen summary</button></div></div>`;
+  $("pvback").onclick = () => { PV.sel = PV.live = null; pvRender(); pvSide(); };
+  if (b.kind === "token") {
+    const box = side.querySelector('[data-ed="pvtok"]');
+    box.addEventListener("input", () => { clearTimeout(pvSide.t);       // the document-level editor handler updates ED.pvtok after this one: read it later
+      pvSide.t = setTimeout(() => { PV.live = {token: b.token, value: {...ED.pvtok}}; pvRender(); }, 30); });
+    $("pvreset").onclick = () => { PV.live = null; pvRender(); pvSide(); };
+    $("pvopen").onclick = () => { show("tokens"); $("tq").value = b.token; drawTokens(); tokenDetail(b.token); };
+    $("pvsave").onclick = async () => { if (!needProject()) return; const t = await api("/api/token?name=" + encodeURIComponent(b.token));
+      P.token_overrides = P.token_overrides.filter(o => o.token !== b.token); P.token_overrides.push({token: b.token, value: {...ED.pvtok}, vanilla: t.value});
+      await saveProject(); PV.live = null; await pvLoad(); PV.sel = PV.ev.regions.find(x => x.id === r.id) || null; pvOverlay(); pvSide(); };
+    if (cur) $("pvdel").onclick = async () => { P.token_overrides = P.token_overrides.filter(o => o.token !== b.token); await saveProject(); PV.live = null;
+      await pvLoad(); PV.sel = PV.ev.regions.find(x => x.id === r.id) || null; pvOverlay(); pvSide(); };
+  } else if (b.kind === "gradient") {
+    side.querySelectorAll("[data-gt]").forEach(x => x.onclick = () => { show("tokens"); $("tq").value = x.dataset.gt; drawTokens(); tokenDetail(x.dataset.gt); });
+  } else if (b.kind === "literal") {
+    $("pvlit").onclick = () => { const c = Col.parse(b.value); show("literals"); $("lq").value = Col.hex8(c).slice(1); drawLiterals(); literalDetail(c); };
+  } else {
+    const s = await api(`/api/preview/suggest?name=${encodeURIComponent(PV.name)}&rgb=${encodeURIComponent(r.vanilla.slice(0, 7))}`);
+    if ($("pvsug")) $("pvsug").innerHTML = `<h3>Nearest tokens that paint this screen</h3><table>${s.map(x => `<tr><td class="mono">${esc(x.token)}</td><td>${sw(x.colour)}<span class="mono">${esc(x.colour)}</span></td><td class="dim">${x.distance}</td></tr>`).join("")}</table>
+      <p class="dim">Suggestions only: a token that paints nearby with a similar colour may be what you meant to change.</p>`;
+  }
+}
+
+/* ---------- images and SVGs
+   Every texture and SVG (VectorImage) in the game's ui-* bundles. Pick one, give it a replacement (PNG/JPG/WebP for an image, SVG
+   for an SVG); the project stores it and Build writes it into a fresh copy of the bundle (same size, same format), checked by the
+   gate and installed with a backup like the style bundles. */
+const IM = {cat: null, sel: null, q: "", group: "competition", kind: "all", big: true, limit: 240};
+const thumbUrl = r => `/api/images/thumb?bundle=${encodeURIComponent(r.bundle)}&path_id=${r.path_id}&t=${encodeURIComponent(T)}`;
+const srcUrl = e => `/api/images/source?project=${encodeURIComponent(P.name)}&file=${encodeURIComponent(e.source)}&t=${encodeURIComponent(T)}&v=${Date.now()}`;
+function imDefaultWhere(n) { n = n.toLowerCase();       /* mirrors native.default_places */
+  if (n.includes("start_screen") || n.includes("newgame")) return ["start-screen"];
+  if (n.includes("background-texture") || n.includes("loading")) return ["loading"];
+  if (n.includes("lineup") || n.includes("prematch")) return ["match-intro"];
+  return ["report-pages", "main-screens"]; }
+async function drawImages() { if (!S) await refresh(); if (!IM.places) { try { IM.places = (await api("/api/native/info")).places; } catch (e) {} }
+  if (!S.install) { $("images").innerHTML = `<div class="box"><p class="warn">Select the game folder on the Setup tab first.</p></div>`; return; }
+  if (!IM.cat) { $("images").innerHTML = `<div class="box"><p class="dim">Reading the images in the game's UI bundles (first time only, a few seconds) ...</p></div>`; IM.cat = await api("/api/images/catalog"); }
+  const swaps = P?.image_swaps || [], key = r => r.bundle + "#" + r.path_id, swapped = new Set(swaps.map(key));
+  const q = IM.q.toLowerCase();
+  const rows = IM.cat.filter(r => (IM.group === "all" || r.group === IM.group || (IM.group === "swapped" && swapped.has(key(r)))) && (IM.kind === "all" || r.kind === IM.kind)
+    && (!IM.big || r.kind !== "texture" || r.w * r.h >= 640 * 360) && (!q || r.name.toLowerCase().includes(q) || r.bundle.includes(q)));
+  const groups = ["competition", "wallpaper", "room", "prematch", "menu", "icon", "other"];
+  $("images").innerHTML = `<div class="pv"><div>
+    <div class="row"><input id="imq" placeholder="Search name (bundesliga, ucl, skin_blended ...)" size="34" value="${esc(IM.q)}">
+      <select id="img">${["swapped", "all", ...groups].map(g => `<option ${g === IM.group ? "selected" : ""} value="${g}">${g === "swapped" ? "swapped in this project" : g}</option>`).join("")}</select>
+      <select id="imk">${["all", "texture", "svg", "icon"].map(k => `<option ${k === IM.kind ? "selected" : ""}>${k}</option>`).join("")}</select>
+      <label><input type="checkbox" id="imbig" ${IM.big ? "checked" : ""}> large images only</label>
+      <span class="dim">${rows.length} of ${IM.cat.length}</span><button id="imre" title="Re-read the game's bundles">Refresh</button>
+      <button id="imexp" title="Write every image in this list at its true size (PNG; SVG plus an 8x PNG; icons at 1x to 4x) into a folder">Export these ${rows.length}</button><span class="jobbar"></span></div>
+    <div class="imgrid">${rows.slice(0, IM.limit).map((r, k) => `<div class="imc ${IM.sel && key(IM.sel) === key(r) ? "on" : ""} ${swapped.has(key(r)) ? "sw" : ""}" data-k="${k}">
+      <img loading="lazy" src="${thumbUrl(r)}" alt=""><div class="n">${esc(r.name)}</div><div class="d">${r.kind === "svg" ? "SVG" : r.kind === "icon" ? "icon" : esc(r.format)} ${r.w}x${r.h}${swapped.has(key(r)) ? ` &middot; <span class="ok">swapped</span>` : ""}</div></div>`).join("")}</div>
+    ${rows.length > IM.limit ? `<div class="row"><button id="immore">Show more (${rows.length - IM.limit} left)</button></div>` : ""}
+    </div><div id="imside"></div></div>`;
+  $("imq").oninput = e => { IM.q = e.target.value; clearTimeout(drawImages.t); drawImages.t = setTimeout(drawImages, 250); };
+  $("img").onchange = e => { IM.group = e.target.value; IM.limit = 240; drawImages(); };
+  $("imk").onchange = e => { IM.kind = e.target.value; drawImages(); };
+  $("imbig").onchange = e => { IM.big = e.target.checked; drawImages(); };
+  $("imre").onclick = async () => { IM.cat = await api("/api/images/catalog?refresh=1"); drawImages(); };
+  $("imexp").onclick = async () => { if (!confirm(`Export ${rows.length} image(s) at their true size into a folder in the workspace?`)) return;
+    const r = await job(api("/api/images/export-all", {group: IM.group === "swapped" ? "all" : IM.group, kind: IM.kind, q: IM.q, big: IM.big}));
+    say(`Exported ${r.items} item(s)${r.errors ? ", " + r.errors + " error(s)" : ""} to\n${r.folder}`, !r.errors); await api("/api/open-folder", {path: r.folder}); };
+  if ($("immore")) $("immore").onclick = () => { IM.limit += 480; drawImages(); };
+  $("images").querySelectorAll(".imc").forEach(c => c.onclick = () => { IM.sel = rows[+c.dataset.k]; $("images").querySelectorAll(".imc").forEach(x => x.classList.toggle("on", x === c)); imSide(); });
+  const qi = $("imq"); if (document.activeElement !== qi && IM.q) { qi.focus(); qi.setSelectionRange(IM.q.length, IM.q.length); }
+  imSide(); }
+function imSide() { const side = $("imside"); if (!side) return; const r = IM.sel, swaps = P?.image_swaps || [];
+  if (!r) { side.innerHTML = `<div class="box"><h3>Image swaps${P ? " in " + esc(P.name) : ""} (${swaps.length})</h3>
+      ${swaps.length ? `<table>${swaps.map((e, k) => `<tr class="pick" data-k="${k}"><td><img src="${srcUrl(e)}" style="width:96px" class="imbig"></td><td class="mono">${esc(e.name)}<br><span class="dim">${esc(e.bundle)}</span></td></tr>`).join("")}</table>` : `<p class="dim">None yet. Pick an image on the left.</p>`}
+      <p class="dim">Competition wallpapers are chosen by the game for your club's competition. The *_blended copies (report and tool pages) are recoloured with your club colour by the game, so only the light and dark of a replacement show there. Build and Install as usual.</p></div>`;
+    side.querySelectorAll("[data-k]").forEach(tr => tr.onclick = () => { const e = swaps[+tr.dataset.k]; IM.sel = IM.cat.find(x => x.bundle === e.bundle && x.path_id === e.path_id) || null; imSide(); });
+    return; }
+  const cur = swaps.find(e => e.bundle === r.bundle && e.path_id === r.path_id);
+  const warn = [r.name.includes("blended") ? "The game recolours this wallpaper with your club colour: only the light and dark of your image show." : "",
+    /Crunched/.test(r.format || "") ? "Stored Crunch-compressed; your image is written as plain " + r.format.replace("Crunched", "") + " (larger file)." : "",
+    r.mips > 1 ? `Has ${r.mips} mip levels; written with 1.` : "",
+    r.kind === "svg" ? "Filled shapes only: strokes and gradients are not converted (outline strokes to paths first). The SVG is scaled into the icon's box, aspect kept." : "",
+    r.kind === "icon" ? "Bitmap icon packed in the icon atlases: your PNG or SVG is drawn into its slot at all four UI scales (1x to 4x, aspect kept). The atlases are Crunch-compressed and are written back as plain DXT5 (a few MB larger)." : ""].filter(Boolean);
+  side.innerHTML = `<div class="box"><h3>${esc(r.name)}</h3><img class="imbig" src="${thumbUrl(r)}">
+    <table><tr><td>Bundle</td><td class="mono">${esc(r.bundle)}</td></tr><tr><td>Type</td><td>${r.kind === "svg" ? "SVG (VectorImage), " + r.triangles + " triangles" : r.kind === "icon" ? "icon in atlas " + esc(r.atlas) : "image, " + esc(r.format)}</td></tr>
+      <tr><td>Size</td><td>${r.w} x ${r.h}</td></tr><tr><td>Path id</td><td class="mono">${r.path_id}</td></tr>${r.classes ? `<tr><td>USS class</td><td class="mono">${r.classes.map(c => "." + esc(c)).join("<br>")}</td></tr>` : ""}</table>
+    ${warn.map(w => `<p class="warn">${esc(w)}</p>`).join("")}
+    ${cur ? `<h3>Replacement</h3><img class="imbig" src="${srcUrl(cur)}"><div class="row"><button id="imdel">Remove swap</button></div>` : ""}
+    ${cur && r.kind === "texture" && IM.places ? `<h3>Native skin: show it on</h3><div id="imwhere">${Object.entries(IM.places).map(([k, label]) =>
+      `<label style="display:block"><input type="checkbox" value="${k}" ${(cur.where || imDefaultWhere(r.name)).includes(k) ? "checked" : ""}> ${esc(label)}</label>`).join("")}</div>
+      <p class="dim">The game picks wallpapers in code, so a native skin hides or covers its picture on these places and paints yours (as the Jonukas skin does). The bundle route replaces the texture itself instead.</p>` : ""}
+    <h3>${cur ? "Replace with another file" : "Swap"}</h3>
+    <div class="row"><input type="file" id="imf" accept="${r.kind === "svg" ? ".svg,image/svg+xml" : r.kind === "icon" ? "image/png,image/jpeg,image/webp,.svg,image/svg+xml" : "image/png,image/jpeg,image/webp"}">
+      ${r.kind === "texture" ? `<select id="imfit"><option value="cover">cover (fill, crop)</option><option value="contain">contain (fit, transparent bars)</option><option value="stretch">stretch</option></select>` : ""}
+      <button class="pri" id="imgo">Use this file</button></div>
+    <p class="dim">Stored in the project; nothing is written to the game until you Build and Install.</p>
+    <div class="row"><a href="/api/images/export?bundle=${encodeURIComponent(r.bundle)}&path_id=${r.path_id}&t=${encodeURIComponent(T)}"><button>Export original at true size</button></a>
+      <span class="dim">${r.kind === "icon" ? "zip: PNG at 1x, 2x, 3x, 4x (the exact slot sizes)" : r.kind === "svg" ? "zip: editable SVG + PNG at 8x" : "PNG, " + r.w + " x " + r.h}</span></div>
+    <div class="row"><button id="imback">Back to the list of swaps</button></div></div>`;
+  $("imback").onclick = () => { IM.sel = null; drawImages(); };
+  $("imgo").onclick = async () => { if (!needProject()) return; const f = $("imf").files[0]; if (!f) return say("Choose a file first");
+    const qs = new URLSearchParams({project: P.name, bundle: r.bundle, path_id: r.path_id, kind: r.kind, name: r.name, fit: $("imfit") ? $("imfit").value : "cover"});
+    const res = await api("/api/images/swap?" + qs, await f.arrayBuffer(), true); P = res.project;
+    say("Swap stored: " + r.name + (res.notes.length ? "\n" + res.notes.join("\n") : "") + "\nBuild and Install to put it in the game.", true); drawImages(); };
+  if ($("imwhere")) $("imwhere").querySelectorAll("input").forEach(x => x.onchange = async () => {
+    const where = [...$("imwhere").querySelectorAll("input:checked")].map(y => y.value);
+    P = (await api("/api/images/where", {project: P.name, bundle: r.bundle, path_id: r.path_id, where})).project; });
+  if (cur) $("imdel").onclick = async () => { P = (await api("/api/images/remove", {project: P.name, bundle: r.bundle, path_id: r.path_id})).project; say("Swap removed", true); drawImages(); };
+}
+
+/* ---------- compare another skin (read-only)
+   A runtime USS skin folder (skin.json + .uss) or another skin's bundles, against vanilla: the tokens it changes, its own tokens,
+   images and fonts, rule techniques; for bundles the textures and SVGs that differ. Its colours can be previewed on the measured
+   screens or copied into a new project. Nothing is installed. */
+const CM = {rep: null, q: "", only: true};
+async function drawCompare() { if (!S) await refresh(); if (!CM.rep) { try { CM.rep = await api("/api/compare/state"); } catch (e) {} }
+  const r = CM.rep;
+  let html = `<div class="box"><h3>Compare a skin</h3><div class="row"><input id="cmp" size="70" placeholder="Folder of a skin (skin.json + .uss, or .bundle files) or one .bundle file" value="${esc(r?.path || "")}"><button class="pri" id="cmpgo">Load</button></div>
+    <p class="dim">Read-only: nothing is installed or changed. USS skins are runtime skins for skin-loader mods; bundle skins replace game files.</p></div>`;
+  if (r) {
+    const q = CM.q.toLowerCase(), toks = r.tokens_changed.filter(t => (!q || t.token.includes(q)) && (!CM.only || t.theirs_colour || t.vanilla_colour));
+    const swc = h => h ? `${sw(h)}<span class="mono">${esc(h)}</span>` : "";
+    html += `<div class="cols"><div>
+      <div class="box"><h3>${esc(r.name)} (${r.kind === "uss" ? "USS skin" : "bundles"})</h3>
+        <table><tr><td>Tokens changed vs vanilla</td><td>${r.tokens_changed.length}</td></tr><tr><td>Own tokens</td><td>${r.tokens_new.length}</td></tr>
+        ${r.kind === "uss" ? `<tr><td>Rules</td><td>${r.rules}</td></tr><tr><td>Images and fonts</td><td>${r.assets.length}</td></tr>` : `<tr><td>Images / SVGs that differ</td><td>${r.images_changed.length}</td></tr>`}</table>
+        <div class="row"><button class="pri" id="cmpprev">Preview its colours on the screens</button><input id="cmpname" placeholder="new project name" size="18"><button id="cmpimp">Copy its colours into a new project</button></div>
+        <p class="dim">Preview and copy use its colour tokens only${r.kind === "uss" ? "; its rules, images, fonts and transforms need its skin loader (see the rules list)" : ""}.</p></div>
+      ${r.kind === "uss" ? `<div class="box"><h3>Sheets</h3><table><tr><th>Sheet</th><th>Tokens</th><th>Rules</th></tr>${r.sheets.map(s => `<tr><td class="mono">${esc(s.sheet)}</td><td>${s.root_tokens ?? ""}</td><td>${s.rules ?? (s.missing ? "missing" : "")}</td></tr>`).join("")}</table>
+        <h3>Techniques</h3><table>${Object.entries(r.techniques).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join("")}</table>
+        <h3>Most used properties</h3><p class="mono dim">${r.top_properties.map(([k, v]) => esc(k) + " " + v).join(", ")}</p></div>
+      <div class="box"><h3>Images and fonts (${r.assets.length})</h3><div class="imgrid">${r.assets.filter(a => a.kind === "image").map(a => `<div class="imc"><img loading="lazy" src="/api/compare/asset?file=${encodeURIComponent(a.file)}&t=${encodeURIComponent(T)}"><div class="n">${esc(a.file)}</div><div class="d">${a.w || "?"}x${a.h || "?"} &middot; ${esc(a.sheets.join(", "))}</div></div>`).join("")}</div>
+        <p class="mono dim">${r.assets.filter(a => a.kind === "font").map(a => esc(a.file)).join(", ")}</p></div>
+      <details class="box"><summary>Rules (first ${r.rule_samples.length})</summary><div class="list" style="max-height:50vh"><table>${r.rule_samples.map(x => `<tr><td class="dim">${esc(x.sheet)}</td><td class="mono">${esc(x.selector)}</td><td class="mono">${x.decls.map(([k, v]) => esc(k) + ": " + esc(v)).join("<br>")}</td></tr>`).join("")}</table></div></details>`
+      : `<div class="box"><h3>Bundles</h3><table>${r.bundles.map(b => `<tr><td class="mono">${esc(b.bundle)}</td><td>${b.sheets != null ? b.sheets + " sheets, " + b.rules + " rules (vanilla " + (b.rules_vanilla ?? "?") + ")" : b.changed != null ? b.changed + " changed, " + b.added + " added, " + b.removed + " removed" : esc(b.note || "")}</td></tr>`).join("")}</table></div>
+        ${r.images_changed.length ? `<div class="box"><h3>Images that differ: vanilla | theirs</h3><div class="list" style="max-height:60vh"><table>${r.images_changed.map(x => `<tr><td class="mono">${esc(x.name)}<br><span class="dim">${esc(x.bundle)}</span></td>
+          <td><img loading="lazy" style="width:180px" class="imbig" src="/api/compare/thumb?side=vanilla&bundle=${encodeURIComponent(x.bundle)}&path_id=${x.path_id}&t=${encodeURIComponent(T)}"></td>
+          <td><img loading="lazy" style="width:180px" class="imbig" src="/api/compare/thumb?side=theirs&bundle=${encodeURIComponent(x.bundle)}&path_id=${x.path_id}&t=${encodeURIComponent(T)}"></td></tr>`).join("")}</table></div></div>` : ""}`}
+      </div><div>
+      <div class="box"><h3>Tokens changed (${toks.length} of ${r.tokens_changed.length})</h3><div class="row"><input id="cmq" placeholder="filter token name" value="${esc(CM.q)}"><label><input type="checkbox" id="cmonly" ${CM.only ? "checked" : ""}> colours only</label></div>
+        <div class="list" style="max-height:70vh"><table><tr><th>Token</th><th>Vanilla</th><th>Theirs</th></tr>${toks.slice(0, 1500).map(t => `<tr><td class="mono">${esc(t.token)}</td><td>${swc(t.vanilla_colour) || `<span class="mono dim">${esc(t.vanilla)}</span>`}</td><td>${swc(t.theirs_colour) || `<span class="mono dim">${esc(t.theirs)}</span>`}</td></tr>`).join("")}</table></div></div>
+      <div class="box"><h3>Its own tokens (${r.tokens_new.length})</h3><div class="list" style="max-height:30vh"><table>${r.tokens_new.map(t => `<tr><td class="mono">${esc(t.token)}</td><td class="dim">${esc(t.kind)}</td><td class="mono">${swc(t.theirs_colour) || esc(t.theirs)}</td></tr>`).join("")}</table></div></div>
+      </div></div>`;
+  }
+  $("compare").innerHTML = html;
+  $("cmpgo").onclick = async () => { const path = $("cmp").value.trim(); if (!path) return say("Type the folder of a skin");
+    $("cmpgo").disabled = true; try { CM.rep = await api("/api/compare/load", {path}); } finally { drawCompare(); } };
+  if (!r) return;
+  $("cmq").oninput = e => { CM.q = e.target.value; clearTimeout(drawCompare.t); drawCompare.t = setTimeout(drawCompare, 250); };
+  $("cmonly").onchange = e => { CM.only = e.target.checked; drawCompare(); };
+  $("cmpprev").onclick = () => { PV.compare = true; show("preview"); };
+  $("cmpimp").onclick = async () => { const name = $("cmpname").value.trim(); if (!name) return say("Type a name for the new project");
+    const res = await api("/api/compare/import", {name}); P = res.project; await refresh(); say(`Project ${name} created with ${res.tokens} colour token(s)`, true); };
+  const qi = $("cmq"); if (CM.q && document.activeElement !== qi) { qi.focus(); qi.setSelectionRange(CM.q.length, CM.q.length); }
+}
+
+/* ---------- native skin export (Build tab) */
+let lastNative = null;
+async function natDraw() { if (!$("natbox")) return; const info = await api("/api/native/info");
+  const box = $("natbox"); if (!box) return;       /* the tab may have been redrawn or left while waiting: use the box that is on the page now */
+  const r = lastNative;
+  box.innerHTML = `<p class="dim">Writes ${esc(P?.name || "the project")} as a skin folder FM27 loads itself: no game file is changed, it survives updates, and you switch it in FM27 (cog > Preferences, next to "Reload Skin"). Exports colours, rules, club-colour removal (including the light-club top bar), icon / SVG swaps and wallpapers (hidden and covered on the places you pick on the Images tab).</p>
+    <div class="row"><input id="natid" size="22" placeholder="folder name" value="${esc(r?.project === P?.name ? r.folder.split(/[\\/]/).pop() : (P?.name || ""))}"><input id="natdisp" size="22" placeholder="name in FM27" value="${esc(P?.name || "")}">
+      <button class="pri" id="natgo" ${P ? "" : "disabled"}>Export skin</button></div>
+    <p class="dim">Into: <span class="mono">${esc(info.skins_root || "no FM27 user folder found")}</span>${info.installed.length ? ` &middot; skins there: ${info.installed.map(esc).join(", ")}` : ""}</p>
+    ${r ? `<p class="${r.problems.length ? "bad" : "ok"}">Exported ${esc(r.skin)}: ${r.tokens} token(s), ${r.rules} rule(s), ${r.images} image(s)${r.problems.length ? " &middot; " + r.problems.length + " problem(s)" : ", checks passed"}.</p>
+      ${r.problems.map(x => `<p class="bad mono">${esc(x)}</p>`).join("")}${r.skipped.map(x => `<p class="warn">Skipped: ${esc(x)}</p>`).join("")}${r.notes.map(x => `<p class="dim">${esc(x)}</p>`).join("")}
+      <div class="row"><button id="natopen">Open the skin folder</button></div>` : ""}`;
+  $("natgo").onclick = async () => { lastNative = await api("/api/native/export", {project: P.name, id: $("natid").value.trim(), display: $("natdisp").value.trim()});
+    say("Skin exported to\n" + lastNative.folder + "\nIn FM27: Preferences > pick it next to Reload Skin.", !lastNative.problems.length); natDraw(); };
+  if ($("natopen")) $("natopen").onclick = () => api("/api/open-folder", {path: lastNative.folder}); }
+
+/* ---------- verify */
+async function drawVerify() { const models = await api("/api/models");
+  $("verify").innerHTML = `<div class="box"><h3>Screenshot check</h3>
+    ${models.length ? `<div class="row"><select id="vm">${models.map(m => `<option>${esc(m)}</option>`).join("")}</select><input type="file" id="vf" accept="image/png"><button class="pri" id="vgo">Compare</button></div>
+      <p class="dim">Take a screenshot of the same screen in the game with ${P ? "<b>" + esc(P.name) + "</b>" : "the skin"} installed (same aspect as the model, 16:9). Each opaque background region the model can judge is sampled at its centre: landed = the expected ${P ? "skin" : "vanilla"} colour, not landed = still the vanilla colour.</p>`
+      : `<p class="warn">No preview models are shipped in data/models. They have to be measured on a Windows machine with the inspector and saved in the format described in skin_editor/verify.py.</p>`}
+    <div id="vout"></div></div>`;
+  if (!models.length) return;
+  $("vgo").onclick = async () => { const f = $("vf").files[0]; if (!f) return say("Choose a PNG screenshot");
+    const r = await api("/api/verify?model=" + encodeURIComponent($("vm").value) + (P ? "&project=" + encodeURIComponent(P.name) : ""), await f.arrayBuffer(), true);
+    const cls = {landed: "ok", not_landed: "bad", unknown: "warn", info: "dim"};
+    $("vout").innerHTML = `<p>${r.landed} landed, ${r.not_landed} not landed</p><table><tr><th>Region</th><th>Expected</th><th>Got</th><th>Max delta</th><th>Result</th><th>Entry</th></tr>
+      ${r.rows.map(x => `<tr><td>${esc(x.id)}</td><td class="mono">${sw(x.expected)}${esc(x.expected)}</td><td class="mono">${sw(x.got)}${esc(x.got)}</td><td>${x.max_delta}</td><td class="${cls[x.result]}">${esc(x.result)}</td><td class="mono">${esc(x.entry || "")}</td></tr>`).join("")}</table>`; };
+}
+
+show("setup");
+</script>
+</body>
+</html>

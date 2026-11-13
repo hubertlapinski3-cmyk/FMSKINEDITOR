@@ -1,0 +1,73 @@
+name: release
+
+# Push a tag like v0.1.1 (it must equal the version in studio/src-tauri/tauri.conf.json) to build the Windows installer,
+# sign the update with the updater key, and publish the GitHub release together with latest.json (the file the installed app polls).
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: studio/package-lock.json
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: studio/src-tauri
+
+      - name: The tag must match the app version
+        shell: pwsh
+        run: |
+          $v = (Get-Content studio/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
+          if ("v$v" -ne "${{ github.ref_name }}" -and "${{ github.event_name }}" -eq "push") { throw "tag ${{ github.ref_name }} does not match tauri.conf.json version $v" }
+
+      - name: Freeze the engine (PyInstaller one-dir sidecar)
+        shell: pwsh
+        run: |
+          python -m pip install -r requirements.txt pyinstaller
+          python tools/freeze_engine.py
+          if (-not (Test-Path build-sidecar/fm-skin-engine/fm-skin-engine.exe)) { throw "frozen engine missing" }
+
+      - name: Install the Studio dependencies and run its tests
+        working-directory: studio
+        shell: pwsh
+        run: |
+          npm ci
+          npm test
+
+      # The Python suite needs a game install for its real-data tests, so it is not run here; run it locally before tagging.
+
+      - name: Build, sign and publish
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: studio
+          tagName: ${{ github.ref_name }}
+          releaseName: FM Skin Studio ${{ github.ref_name }}
+          releaseBody: See docs/PHASE8-PLAN.md for what is in this release.
+          releaseDraft: false
+          prerelease: false
+          includeUpdaterJson: true
+          args: --config src-tauri/tauri.release.conf.json

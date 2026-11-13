@@ -1,0 +1,18 @@
+# environments and build output
+.venv/
+build-sidecar/
+__pycache__/
+*.pyc
+studio/node_modules/
+studio/dist/
+studio/src-tauri/target/
+studio/src-tauri/gen/
+
+# the editor's own workspace and any game copies never belong in the repo
+workspace/
+diagnostics/
+*.bundle
+
+# secrets: the updater private key lives outside the repo (~/.tauri); never commit one
+*.key
+*.password

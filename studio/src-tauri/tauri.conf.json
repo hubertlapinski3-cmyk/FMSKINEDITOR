@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "FM Skin Studio",
+  "version": "0.1.1",
+  "identifier": "app.fmskinstudio.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [{ "title": "FM Skin Studio", "width": 1500, "height": 950, "minWidth": 1000, "minHeight": 640 }],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http://127.0.0.1:* ipc: http://ipc.localhost; img-src 'self' data: blob: http://127.0.0.1:*; style-src 'self' 'unsafe-inline'; font-src 'self' data:; script-src 'self' 'unsafe-eval' blob:; worker-src 'self' blob:"
+    }
+  },
+  "bundle": { "active": false, "targets": "all", "icon": ["icons/icon.ico", "icons/icon.png"] },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk1NTNEODhEOTk4NTlEMEQKUldRTm5ZV1pqZGhUbGVSSTBEdFhkZ0NTbGc1bHh2aER1c2hVY1dHOTFTL012Q2NOSGNIemRaNEsK",
+      "endpoints": ["https://github.com/hubertlapinski3-cmyk/FMSKINEDITOR/releases/latest/download/latest.json"],
+      "windows": { "installMode": "passive" }
+    }
+  }
+}

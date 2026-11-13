@@ -1,0 +1,11 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": ["nsis"],
+    "icon": ["icons/icon.ico", "icons/icon.png"],
+    "resources": { "../../build-sidecar/fm-skin-engine/": "fm-skin-engine/" },
+    "windows": { "nsis": { "installMode": "currentUser" } }
+  }
+}
