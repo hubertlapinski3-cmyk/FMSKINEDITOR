@@ -544,7 +544,8 @@ Evidence      = (claim, build, date, how: "seen in game" | "gate" | "inferred", 
 **Descope (owner decision, 2026-11-13): Phase 8 is Windows only.** All macOS work is dropped indefinitely: no macOS full run, no signing, no notarisation, no Apple Developer account, no `.app` questions. Linux/Proton stays deferred; the fake-tree tests in `tests/test_userdirs.py` are its only coverage and nothing was or will be run on Linux. The macOS and Linux rows in Part 5, the "macOS never run" warning (Part 1) and the macOS items in Parts 6 and 7 stay in the document as history and design notes, not as work.
 **Revised exit criteria:** (1) the Windows installer is installed and running with the bundled engine and no Python on PATH; (2) auto-update proven from one installed version to the next through GitHub Releases; (3) all tests green; (4) the carried items (icons/layouts diff, layout item states) still close at the next FM patch.
 
-**Phase 8 status (2026-11-13): IN PROGRESS (Windows); plan, status and evidence in `docs/PHASE8-PLAN.md`.**
+**Phase 8 status (2026-11-14): CLOSED (Windows only); plan, status and evidence in `docs/PHASE8-PLAN.md`.** Installer proven with the bundled engine and no Python on PATH; auto-update proven 0.1.1 to 0.1.2 through GitHub Releases (`hubertlapinski3-cmyk/FMSKINEDITOR`); updater key to be kept backed up by the owner. Phase 9 starts at M0 (`docs/PHASE9-PLAN.md`).
+*(Earlier status, kept for history:)* IN PROGRESS (Windows).
 - **Done and run (Windows):** PyInstaller one-dir engine (`tools/freeze_engine.py`), a frozen build bit-identical to the venv build of the in-game-proven bundle, frozen `serve` + RPC; shell prefers a bundled engine (`cargo check` passes); Windows user folder via the Documents Known Folder; platform path rules (`skin_editor/userdirs.py`, 10 tests on fake trees).
 - **Open:** installer built, installed and proven; GitHub Releases auto-update.
 
