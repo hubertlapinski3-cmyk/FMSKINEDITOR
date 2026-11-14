@@ -10,7 +10,7 @@ MANIFEST = ROOT / "docs" / "evidence" / "MANIFEST.sha256"
 class Manifest(unittest.TestCase):
     def test_every_listed_file_hashes_to_its_recorded_value(self):
         self.assertTrue(MANIFEST.is_file(), "run tools/make_manifest.py")
-        lines = [l for l in MANIFEST.read_text(encoding="utf-8").splitlines() if l.strip()]
+        lines = [l for l in MANIFEST.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")]
         self.assertGreater(len(lines), 0)
         for l in lines:
             want, name = l.split(" *", 1)

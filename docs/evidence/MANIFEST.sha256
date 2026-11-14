@@ -1,6 +1,14 @@
+# sha256 of the LF-normalised bytes of each file (so any checkout agrees). Lines starting with # are comments.
+# Logs, verified 2026-11-14 (committed LogOutput.log, hashed in the LF form and the CRLF form, against the value recorded in the session doc):
+#   Session B: recorded 5DB697AC3446F2F9 (6428 bytes) = the CRLF form of the committed file, so it IS listed below (the manifest hashes its LF form).
+#   Session D: recorded 65026D7EA79CF637 (10420 bytes); committed LF form D6808D14A7620392 (10332 bytes), CRLF form FF47B09159183B77 (10421 bytes): NOT reproduced, not listed.
+#   Session E: recorded FB54E30D779E10AD (8707 bytes); committed LF form 3ED8D7B277D14D71 (8628 bytes), CRLF form 410FFB1F6A4E143E (8708 bytes): NOT reproduced, not listed.
+#   Session A: its doc records no LogOutput hash (only the size and time before launch); LF form 249FBF432001D192, CRLF form 78DADFA92BF05648; nothing to compare, not listed.
+#   D and E: the recorded size equals the CRLF form minus one byte, but no simple variant (final byte, BOM, whitespace) reproduces the recorded hash.
 4aed7fc790023db697b62da4d3f8fbfb58b70c79658719fc0466c011ba0297af *docs/evidence/phase9-m7-calibration-20261114/calibration-report.md
 376d9398be9369a53610f78e6b29e6e0d8bb9fcbc1dcd029790dd058a244dc58 *docs/evidence/phase9-m7-calibration-20261114/calibration-report.json
 941a8008ab53c993efbd56f708c2aa5c961ae693d38993a376ff5150a8c3a77a *docs/evidence/phase9-m7-calibration-revised-20261114/calibration-report.md
 801a2fb4ce2f7c8f0d50f4b5215cb4ed832b38ad29174695b6b2aad5d820af7d *docs/evidence/phase9-m7-calibration-revised-20261114/calibration-report.json
 3c2bcb20da593bb0957895eeb2df47b15d10ef11f19ba42b7046b8de21517e6f *docs/evidence/phase9-fix-round-heldout-predictions.json
 3659a846b82c4e31d3b13eb0e2ef2bb174173c33ff501dec2b44e2e1e97dac3f *docs/evidence/phase9-fix-round-heldout-results.json
+18c02323134708d559b6d5e3d8fbc73aabf5220e2bd7051583362b1baa491c36 *docs/evidence/phase9-m0-session-B-logs-20261114/LogOutput.log
