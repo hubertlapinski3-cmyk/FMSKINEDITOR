@@ -39,69 +39,166 @@ RULES = {
                            "live path depth between the paired parent and the node; the wrapper elements' names and classes in the capture"),
     "stand-in-font": ("same text string and font size, the stand-in font gives another width",
                       "render text equals live text; live font size; |width residual| at most a quarter of the live width"),
+    "code-built-children": ("a widget the game fills in code: the live element has children in the capture and no template source, the layout holds none (its size is set by that content; the size itself is not predicted)",
+                            "render node has no children; live element has children in the capture; live source absent"),
+    "sub-pixel-tolerance": ("a sub-pixel offset on an element whose tolerance (5 percent of its size) is under half a pixel: the same offset the passing rows of the fixture carry",
+                            "tolerance of the component; |delta| under 1 px; the median delta of the rows that pass in the same fixture"),
 }
 GRADE_FACT, GRADE_MAGNITUDE = "measured fact", "magnitude only"
 MASK_BITS = {1: "active", 2: "hover", 8: "checked", 32: "disabled", 64: "focus"}
 
 
-def _close(a, b, tol=INHERIT_TOL):
-    return a is not None and b is not None and abs(a - b) <= tol
+def _tolx(v):
+    """The equality tolerance for 'this displacement equals that one': 1 px plus 1 percent of the displacement (a 105 px list leaves a 1 px rounding)."""
+    return INHERIT_TOL + 0.01 * abs(v)
 
 
-def inheritance(tab, i, k, tol_k):
-    """Where the failing component k of row i comes from: ('origin', None) or (kind, [(row, comp)...]) naming the neighbour displacement it equals."""
+def _close(a, b):
+    return a is not None and b is not None and abs(a - b) <= _tolx(b)
+
+
+def candidates(tab, i, k):
+    """Every neighbour displacement the failing component k of row i could be: [(kind, predicted value, [(row, comp) sources])]."""
     n = tab[i]
     d = n["d"]
     par = tab[n["parent"]] if n["parent"] is not None else None
     prev = tab[n["prev"]] if n["prev"] is not None else None
-    cands = []
+    sibs = [c for c in (par["kids"] if par else []) if tab[c]["d"] and not tab[c]["hidden"]]
+    out = []
     if k < 2:
         s = k + 2
         if par and par["d"]:
-            cands.append(("parent", par["d"][k], [(n["parent"], k)]))
-            cands.append(("centred-in-parent", par["d"][k] + (par["d"][s] - d[s]) / 2, [(n["parent"], k), (n["parent"], s), (i, s)]))
+            out.append(("parent", par["d"][k], [(n["parent"], k)]))
+            out.append(("centred-in-parent", par["d"][k] + (par["d"][s] - d[s]) / 2, [(n["parent"], k), (n["parent"], s), (i, s)]))
         if prev and prev["d"]:
-            cands.append(("preceding-sibling-end", prev["d"][k] + prev["d"][s], [(n["prev"], k), (n["prev"], s)]))
-            cands.append(("preceding-sibling", prev["d"][k], [(n["prev"], k)]))
+            out.append(("preceding-sibling-end", prev["d"][k] + prev["d"][s], [(n["prev"], k), (n["prev"], s)]))
+            out.append(("preceding-sibling", prev["d"][k], [(n["prev"], k)]))
+        if par and par["d"] and i in sibs and len(sibs) > 1:         # space-between: the free space left by narrower (or wider) siblings is shared out between the gaps
+            pos = sibs.index(i)
+            before = sum(tab[c]["d"][s] for c in sibs[:pos])
+            total = sum(tab[c]["d"][s] for c in sibs)
+            out.append(("space-between-share", par["d"][k] + before - pos * total / (len(sibs) - 1), [(c, s) for c in sibs]))
     else:
         if par and par["d"]:
-            cands.append(("parent-size", par["d"][k], [(n["parent"], k)]))
+            out.append(("parent-size", par["d"][k], [(n["parent"], k)]))
+            others = [c for c in sibs if c != i]
+            if others and abs(par["d"][k]) <= 1.0:                      # the parent keeps its size, so what a sibling lost this node gains (flex-grow)
+                out.append(("complement-of-siblings", -sum(tab[c]["d"][k] for c in others), [(c, k) for c in others]))
         kids = [c for c in n["kids"] if tab[c]["d"] and not tab[c]["hidden"]]
         if kids:
-            cands.append(("sum-of-children", sum(tab[c]["d"][k] for c in kids), [(c, k) for c in kids]))
-            cands.append(("max-of-children", max(tab[c]["d"][k] for c in kids), [(c, k) for c in kids]))
-    for kind, val, src in cands:
-        if _close(d[k], val):
-            return kind, src
-    return "origin", None
+            out.append(("sum-of-children", sum(tab[c]["d"][k] for c in kids), [(c, k) for c in kids]))
+            out.append(("max-of-children", max(tab[c]["d"][k] for c in kids), [(c, k) for c in kids]))
+            if len(kids) == 1:                                           # a child larger than its parent (overflow): the parent follows the child's own content
+                grand = [g for g in tab[kids[0]]["kids"] if tab[g]["d"] and not tab[g]["hidden"]]
+                if grand:
+                    out.append(("content-of-child", sum(tab[g]["d"][k] for g in grand), [(g, k) for g in grand]))
+    return out
 
 
-def propagate(tab, failing, tolerances):
-    """failing: {row index: [failing component indices]}; tolerances: {row index: [tol x, y, w, h]}. Returns {(row, comp): {"status": origin|inherited, "kind", "sources", "origins"}}
-    where origins are the (row, comp) pairs at the end of the chain."""
+def inheritance(tab, i, k):
+    """All the neighbour displacements the failing component k of row i equals, and a partial share when none does but the children explain part of it."""
+    d = tab[i]["d"][k]
+    cands = candidates(tab, i, k)
+    matches = [{"kind": kind, "sources": src, "value": round(v, 1)} for kind, v, src in cands if _close(d, v)]
+    partial = None
+    if not matches and k >= 2:
+        for kind, v, src in cands:
+            if kind in ("sum-of-children", "content-of-child") and abs(v) >= 2.0 and v * d > 0 and abs(v) < abs(d):
+                partial = {"kind": kind, "sources": src, "value": round(v, 1), "residual": round(d - v, 1)}
+                break
+    return matches, partial
+
+
+def _depth(tab, i):
+    n = 0
+    while tab[i]["parent"] is not None:
+        i, n = tab[i]["parent"], n + 1
+    return n
+
+
+def propagate(tab, failing, fits):
+    """failing: {row index: [failing component indices]}; fits(key) -> True when a mechanism with an independent fact fits that (row, comp). Returns {(row, comp): {status, matches, partial,
+    origins, cycle}}: `origins` are the (row, comp) pairs at the end of every chain the component can be traced along. A chain that only loops (a parent sized by its child that is sized
+    by its parent) cannot be separated by deltas: the loop's origin is the deepest member where a mechanism fits; if none fits, the group is unexplained and its deepest member stands for it."""
     status = {}
     for i, comps in failing.items():
         for k in comps:
-            kind, src = inheritance(tab, i, k, tolerances[i][k])
-            status[(i, k)] = {"status": "origin" if kind == "origin" else "inherited", "kind": kind, "sources": src or []}
+            matches, partial = inheritance(tab, i, k)
+            status[(i, k)] = {"status": "inherited" if matches else "origin", "matches": matches, "partial": partial, "cycle": False}
+    terminals, group_of = set(), {}
 
-    def origins(key, seen):
-        if key in seen:
-            return set()
-        seen.add(key)
+    def reachable(key):
+        out, todo = set(), [key]
+        while todo:
+            x = todo.pop()
+            if x in out or x not in status:
+                continue
+            out.add(x)
+            for m in status[x]["matches"]:
+                todo += [s for s in m["sources"] if s in status and s not in out]
+        return out
+
+    def origins(key, trail):
         st = status.get(key)
         if st is None:                       # a neighbour that does not fail at this component: not an origin of anything
-            return set()
-        if st["status"] == "origin":
-            return {key}
-        out = set()
-        for s in st["sources"]:
-            out |= origins(s, seen)
-        return out
+            return set(), set()
+        if st["status"] == "origin" or key in terminals:
+            return {key}, set()
+        if key in group_of:                  # already attributed to the origin of its group
+            return {group_of[key]}, set()
+        if key in trail:
+            return set(), {key}
+        out, cyc = set(), set()
+        for m in st["matches"]:
+            for s in m["sources"]:
+                o, c = origins(s, trail | {key})
+                out |= o
+                cyc |= c
+        return out, cyc | ({key} if not out else set())
+    for _round in range(len(status) + 1):
+        stuck = {}
+        for key, st in status.items():
+            if st["status"] == "inherited":
+                o, cyc = origins(key, frozenset())
+                if not o:
+                    stuck[key] = {key} | cyc
+        if not stuck:
+            break
+        keys_all = set().union(*[reachable(k) for k in stuck])
+        adj = {k: set() for k in keys_all}
+        for k in keys_all:
+            for m in status[k]["matches"]:
+                for s in m["sources"]:
+                    if s in adj:
+                        adj[k].add(s)
+                        adj[s].add(k)
+        seen = set()
+        for k0 in sorted(keys_all):                                            # connected groups of components that share one displacement: ONE origin for the group
+            if k0 in seen:
+                continue
+            comp, todo = set(), [k0]
+            while todo:
+                x = todo.pop()
+                if x in comp:
+                    continue
+                comp.add(x)
+                todo += [y for y in adj[x] if y not in comp]
+            seen |= comp
+            members = {k for k in comp if k in stuck} | {k for k in comp if status[k]["status"] == "inherited" and not origins(k, frozenset())[0]}
+            if not members:
+                continue
+            fit = [m for m in members if fits(m)]
+            pick = max(fit or members, key=lambda kk: (_depth(tab, kk[0]), -kk[0]))
+            terminals.add(pick)
+            status[pick]["cycle"] = True
+            for k in members:
+                group_of[k] = pick
     for key, st in status.items():
-        st["origins"] = sorted(origins(key, set()))
+        o, _c = origins(key, frozenset())
+        if not o and key in group_of:
+            o = {group_of[key]}                                                # shares the group's displacement but no chain reaches the origin: attributed to it
+        st["origins"] = sorted(o)
     return status
-
 
 # ---------------------------------------------------------------- mechanisms (the frozen rules)
 def _live(rec):
@@ -205,19 +302,40 @@ def rule_stand_in_font(rec, comp=None):
     return None
 
 
+def rule_code_built_children(rec, comp=None):
+    lv, rn = _live(rec), rec.get("render") or {}
+    if rec["property"] != "box" or rn.get("has_children") or lv.get("source") or (lv.get("children_in_capture") or 0) < 2:
+        return None
+    return GRADE_FACT, {"live_children_in_capture": lv["children_in_capture"], "render_children": 0, "magnitude_predicted": False}
+
+
+def rule_sub_pixel(rec, comp=None):
+    if rec["property"] != "box" or comp is None or not rec.get("tol") or rec["tol"]["xywh".index(comp)] > 0.5:
+        return None
+    k = "xywh".index(comp)
+    off = rec.get("tile_offset")
+    if abs(rec["d"][k]) < 1.0 and off and abs(rec["d"][k] - off[k]) <= 0.5:
+        return GRADE_FACT, {"tolerance": rec["tol"][k], "delta": rec["d"][k], "median_delta_of_passing_rows": off[k], "magnitude_predicted": True}
+    return None
+
+
 def mechanisms(rec, comp, casc, runtime_values):
     """Every rule that fits this origin component, in priority order: [(key, grade, evidence)]. Priority is by independence of the fact, not by fixture."""
     out = []
     for key, fn in (("runtime-class", lambda: rule_runtime_class(rec, casc, comp)), ("empty-code-list", lambda: rule_empty_code_list(rec, comp)),
                     ("inline-display-none", lambda: rule_inline_display_none(rec, comp)), ("state-captured", lambda: rule_state_captured(rec, casc)),
                     ("runtime-sheet-colour", lambda: rule_runtime_sheet_colour(rec, runtime_values)), ("stand-in-font", lambda: rule_stand_in_font(rec, comp)),
-                    ("code-built-wrapper", lambda: rule_wrapper_gap(rec, comp))):
+                    ("sub-pixel-tolerance", lambda: rule_sub_pixel(rec, comp)), ("code-built-wrapper", lambda: rule_wrapper_gap(rec, comp)),
+                    ("code-built-children", lambda: rule_code_built_children(rec, comp))):
         try:
             r = fn()
         except (KeyError, TypeError, ValueError, StopIteration):
             r = None
         if r:
-            out.append((key, r[0], r[1]))
+            ev = dict(r[1])
+            ev.setdefault("magnitude_predicted", key in ("runtime-class", "empty-code-list", "inline-display-none", "state-captured"))
+            out.append((key, r[0], ev))
+    out.sort(key=lambda m: (not m[2]["magnitude_predicted"], m[1] != GRADE_FACT))          # a mechanism that predicts the magnitude outranks one that only names a class of cause
     return out
 
 
@@ -294,6 +412,15 @@ def fixture_tables(ctx, fx):
     return tab, info, pairs, (W, H), parent
 
 
+def _tile_offset(tab, exclude):
+    """Median delta per component over the rows that were not failing at all: the constant offset every passing row of a fixture carries."""
+    out = []
+    for k in range(4):
+        v = sorted(t["d"][k] for t in tab if t["d"] and t["i"] not in exclude)
+        out.append(v[len(v) // 2] if v else 0)
+    return out
+
+
 def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
     """The examination of every FAIL row of one fixture. Returns {row id: exam}."""
     from . import fixtures
@@ -358,8 +485,16 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
             failing[rec["node"]] = fk
             tols[rec["node"]] = tl
             comps_of[rid] = fk
-    status = propagate(tab, failing, tols) if failing else {}
+            rec["tol"] = [round(x, 2) for x in tl]
+            rec["tile_offset"] = _tile_offset(tab, set(failing) | {rec["node"]})
+    node_rec = {rec["node"]: rec for rec in recs.values() if rec.get("node") is not None and rec["property"] == "box"}
+
+    def fits(key):
+        rec_ = node_rec.get(key[0])
+        return bool(rec_) and bool(mechanisms(rec_, COMP[key[1]], casc, runtime))
+    status = propagate(tab, failing, fits) if failing else {}
     node_rid = {rec["node"]: rid for rid, rec in recs.items() if rec.get("node") is not None and rec["property"] == "box"}
+    origin_keys = {key for key, st in status.items() if st["status"] == "origin" or st["cycle"]}      # a loop's chosen member is an origin too
     out = {}
     for rid, rec in recs.items():
         ex = {"id": rid, "pair_checks": None, "components": [], "status": None, "origin_ids": [], "cause_key": None, "cause": None, "grade": None, "evidence": None, "also_fits": []}
@@ -372,8 +507,9 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
             for k in comps_of[rid]:
                 st = status[(rec["node"], k)]
                 origin_rows = sorted({node_rid[o[0]] for o in st["origins"] if o[0] in node_rid})
-                ex["components"].append({"c": COMP[k], "delta": rec["d"][k], "tol": round(tols[rec["node"]][k], 1), "status": st["status"], "kind": st["kind"], "origin_rows": origin_rows})
-                if st["status"] == "origin":
+                ex["components"].append({"c": COMP[k], "delta": rec["d"][k], "tol": round(tols[rec["node"]][k], 1), "status": st["status"], "origin_rows": origin_rows, "cycle": st["cycle"],
+                                         "kinds": [m["kind"] for m in st["matches"]], "partial": st["partial"]})
+                if (rec["node"], k) in origin_keys:
                     origin_comps.append(COMP[k])
             inherited_from = sorted({o for c in ex["components"] if c["status"] == "inherited" for o in c["origin_rows"] if o != rid})
             ex["status"] = ("origin" if origin_comps else "inherited") if ex["components"] else "origin"

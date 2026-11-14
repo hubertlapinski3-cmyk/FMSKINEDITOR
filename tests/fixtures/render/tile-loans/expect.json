@@ -1,12 +1,37 @@
 {
- "checks": [
-  {
-   "id": "geometry",
-   "kind": "boxes"
-  },
-  {
-   "id": "values",
-   "kind": "values"
-  }
- ]
+    "checks":  [
+                   {
+                       "id":  "geometry",
+                       "kind":  "boxes"
+                   },
+                   {
+                       "id":  "values",
+                       "kind":  "values"
+                   },
+                   {
+                       "id":  "hover-captured",
+                       "state":  "#2E3138",
+                       "property":  "background-color",
+                       "note":  "paired with the FAIL row of the values check (added after 1.0.0, the FAIL is kept as scored): this tile was captured with the button\u0027s pseudo-state mask = 2 (hover), so its resolved value is the hover value",
+                       "kind":  "state",
+                       "chain":  [
+                                     {
+                                         "states":  [
+                                                        "hover"
+                                                    ],
+                                         "classes":  [
+                                                         "sibutton",
+                                                         "navigatable",
+                                                         "HasSIClickable",
+                                                         "interactable-tile",
+                                                         "layout-tile-interaction-button",
+                                                         "layout-tile-interaction-button-background",
+                                                         "anchor-loans"
+                                                     ],
+                                         "name":  "layout-tile-interaction-button",
+                                         "type":  "SIButton"
+                                     }
+                                 ]
+                   }
+               ]
 }
