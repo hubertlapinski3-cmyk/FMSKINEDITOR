@@ -1,4 +1,4 @@
-﻿# Engine API (phase 0)
+# Engine API (phase 0)
 
 The engine (`skin_editor/engine.py`) is one object with every operation of the editor and no transport code. Three clients use it:
 
@@ -58,7 +58,10 @@ Transport note: the specification proposed a WebSocket. Phase 0 uses HTTP POST p
 | `builds.list` | call | project?: str, limit?: int | - | Prepared packages: every build with a package.json (project, id, gate result, files with hashes, plan digest); `latest` marks what Install build would install. |
 | `layout.export_index` | call | index?: str, game_build?: str, areas?: str | - | Build the fmlayout-index/2 dump from the FM27_LayoutMCP sqlite index plus the game's composition bundles (cross-checked cell by cell against the bundles) and import it. |
 | `render.layouts` | call | q?: str, limit?: int | - | The game's layouts (VisualTreeAssets) for the render browser: name, bundle, path id, element count, filtered by name; `total` is the number that match. |
-| `render.layout` | call | bundle?: str, path_id?: id, name?: str, depth?: int | - | Offline render of one layout (an approximation, never the game's renderer): its element tree with template includes resolved by GUID, the matched rules per element in cascade order and the computed declarations, each flagged mapped, partial, unmapped or unknown; plus the sheet order, the named gaps and timings. |
+| `render.layout` | call | bundle?: str, path_id?: id, name?: str, depth?: int, project?: str, skin?: bool, max_nodes?: int, open?: list of str | - | Offline render of one layout (an approximation, never the game's renderer): its element tree with template includes resolved by GUID, the matched rules per element in cascade order and the computed declarations, each flagged mapped, partial, unmapped or unknown; plus the sheet order, the named gaps and timings. Large layouts are cut to `max_nodes` nodes (default 1000, 0 = all): a collapsed node carries `collapsed`, its path in `open` expands it, and `truncated` says what was cut. |
+| `render.rule` | call | sheet: str, rule: int, project?: str, skin?: bool | - | One rule of the render's cascade as USS text and where it lives: a game rule is read-only, a project rule gives its file and line. |
+| `render.table` | call | path_id: id, project?: str, skin?: bool, breakpoint?: int | - | A table view as a labelled placeholder table: its header row is the column order; with project (and skin not false) the project's column edits are applied. |
+| `render.screen` | call | composition: str, width: num, height: num, reserved_right?: int, padding?: int, project?: str, skin?: bool | - | A composition's cells placed on a grid container of width x height px, with measured pitch, tile layouts and flags; with project (and skin not false) the project's tile moves apply. |
 | `tables.list` | call | q?: str, limit?: int | - | The game's table views (ui-tableviews): name, path id, column count. |
 | `tables.view` | call | path_id: id, project?: str | - | One table view: its columns in order with width and flags, what each column's row cell draws (factory, default width, cell layout), the columns the factory could add; with a project, its patch file. |
 | `tables.usage` | call | index?: str | - | Where table views are used: decode the view GUIDs from the layouts' InitFunction arguments in the FM27_LayoutMCP index (read-only) and store the map in the workspace; `tables.view` then returns `used_by` (layout, tile, compositions) and `used_by_summary`. |

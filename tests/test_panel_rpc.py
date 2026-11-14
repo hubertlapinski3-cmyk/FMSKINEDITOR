@@ -1,4 +1,4 @@
-﻿"""M6 prerequisite: the editor endpoints the side panel calls (L: layouts.edit/unedit, V: tables.edit/unedit, USS and tokens: project.write_file, project.save, uss.diagnostics,
+"""M6 prerequisite: the editor endpoints the side panel calls (L: layouts.edit/unedit, V: tables.edit/unedit, USS and tokens: project.write_file, project.save, uss.diagnostics,
 tokens.get), each exercised THROUGH RPC against the real game data, each firing exactly one `render.invalidate`, each visible in the next render."""
 import json
 import tempfile
@@ -82,6 +82,28 @@ class PanelEndpoints(unittest.TestCase):
         self.call("layouts.unedit", {"project": "demo", "bundle": lay["bundle"], "name": lay["name"], "id": node["id"]})
         self.assertEqual([e["reason"] for e in self.events()], ["layout-patch"])
         self.assertNotIn("margin-top", self.find(self.loans(project="demo"), "title area frame")["computed"])
+
+    def test_a_huge_layout_is_capped_by_default_and_opens_by_path_over_rpc(self):
+        """M8: render.layout cuts a 5,487-element layout to about 1,000 nodes by default; `open` expands one collapsed node; max_nodes 0 asks for everything."""
+        big = next(r for r in self.call("render.layouts", {"q": "DetailedPreferencesBlock", "limit": 20})["layouts"] if r["name"] == "DetailedPreferencesBlock")
+        key = {"bundle": big["bundle"], "path_id": big["path_id"]}
+        res = self.call("render.layout", key)
+        self.assertGreater(res["truncated"]["total"], 5000)
+        self.assertLessEqual(res["truncated"]["shown"], 1000)
+
+        def stubs(top, p=""):
+            out = []
+            for i, n in enumerate(top):
+                q = "%s/%d" % (p, i) if p else str(i)
+                if n.get("collapsed"):
+                    out.append((q, n))
+                out += stubs(n["children"], q)
+            return out
+        path, _n = stubs(res["tree"])[0]
+        again = self.call("render.layout", dict(key, open=[path]))
+        self.assertGreater(again["truncated"]["shown"], res["truncated"]["shown"])
+        self.assertIsNone(self.call("render.layout", dict(key, max_nodes=0))["truncated"])
+        self.assertIsNone(self.loans()["truncated"])
 
     def test_the_V_editor_edits_a_table_view_and_the_placeholder_follows(self):
         views = self.call("tables.list", {"limit": 400})["views"]

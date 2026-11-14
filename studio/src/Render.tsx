@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { rpc, RpcError, subscribe } from './engine'
 import Gutter, { useStoredSize } from './Gutter'
 
@@ -10,12 +10,15 @@ export type Flag = 'unknown' | 'unmapped' | 'partial' | null
 export interface Computed { value: string; raw: string | null; tokens: string[] | null; source: Record<string, any>; unresolved: string[] | null; status: string; note: string; css: string[][]; inferred_name_from?: string }
 export interface RNode {
   type: string; name: string; classes: string[]; runtime_classes: string[]; style: Record<string, string>; text: string | null; flag: Flag
-  matched: { sheet: string; rule: number; selector: string; specificity: number }[]; computed: Record<string, Computed>; children: RNode[]
+  matched: { sheet: string; rule: number; selector: string; specificity: number; origin?: { file: string; selector: string } }[]; computed: Record<string, Computed>; children: RNode[]
   placeholder?: 'set' | 'sample' | 'empty' | null; font?: string | null
   layout?: string; include?: { alias: string; layout?: string; resolved: boolean; slot?: string; problem?: string }; components?: string[]
+  /** M8: a node of a large layout whose children are not drawn yet (render/cap.py); its path is sent in `open` to expand it. */
+  collapsed?: { children: number; descendants: number }
 }
+export interface Truncated { total: number; shown: number; cap: number; collapsed: number; opened: number }
 export interface RResult {
-  layout: string; notice: string; tree: RNode[]; includes: unknown[]; summary: { elements: number; properties: number; by_status: Record<string, number>; unresolved_variables: Record<string, number> }
+  layout: string; notice: string; tree: RNode[]; includes: unknown[]; truncated?: Truncated | null; summary: { elements: number; properties: number; by_status: Record<string, number>; unresolved_variables: Record<string, number> }
   sheet_order: { position: number; sheet: string; why: string }[]; gaps: string[]; timing_ms: { total: number }
   origins?: Origins | null
   overlay?: { project: string; output: string; layout_patch_ops_applied: number; notes: string[]; not_applied: string[] } | null
@@ -60,13 +63,15 @@ export function RenderBrowser({ picked, onPick, say }: { picked: string | null; 
   )
 }
 
-function Node({ n, path, sel, onSel, markers, hl }: { n: RNode; path: string; sel: string | null; onSel: (p: string) => void; markers: boolean; hl: Set<string> }) {
+function Node({ n, path, sel, onSel, markers, hl, onOpen }: { n: RNode; path: string; sel: string | null; onSel: (p: string) => void; markers: boolean; hl: Set<string>; onOpen?: (p: string) => void }) {
   return (
     <div className={'rnode' + (sel === path ? ' sel' : '') + (hl.has(path) ? ' hl' : '')} data-path={path} data-flag={markers && n.flag ? n.flag : undefined} data-placeholder={n.placeholder === 'sample' || n.placeholder === 'empty' ? n.placeholder : undefined}
       title={labelOf(n) + (n.placeholder === 'sample' ? ' | sample text from the layout, not the delivered value' : n.placeholder === 'empty' ? ' | no text known (bound or set from code)' : '') + (n.font ? ' | font ' + n.font + ' (stand-in drawn)' : '')} style={styleOf(n)}
       onClick={(e) => { e.stopPropagation(); onSel(path) }}>
       {n.text}
-      {n.children.map((c, i) => <Node key={i} n={c} path={path + '/' + i} sel={sel} onSel={onSel} markers={markers} hl={hl} />)}
+      {n.children.map((c, i) => <Node key={i} n={c} path={path + '/' + i} sel={sel} onSel={onSel} markers={markers} hl={hl} onOpen={onOpen} />)}
+      {n.collapsed && <button type="button" className="rmore" data-testid="rmore" title={`${n.collapsed.descendants} elements below, not drawn yet`}
+        onClick={(e) => { e.stopPropagation(); onOpen?.(path) }}>▸ show {n.collapsed.children} child element{n.collapsed.children === 1 ? '' : 's'} ({n.collapsed.descendants} in all)</button>}
     </div>
   )
 }
@@ -185,14 +190,23 @@ export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult
   const [skin, setSkin] = useState(true)          // the vanilla/skin toggle: on = the open project's edits are drawn, off = the game as it ships
   const [tick, setTick] = useState(0)             // bumped by every `render.invalidate` event of the open project, so the view repaints after any edit
   const [explainW, setExplainW] = useStoredSize('studio.explainW', 400, 240, 800)
+  // M8, large layouts: the engine cuts the tree to about 1,000 nodes; `open` is the list of collapsed nodes the user expanded, `all` asks for every node. Both belong to one layout and reset with it.
+  const key = layout ? layout.bundle + '|' + layout.path_id : ''
+  const [ex, setEx] = useState<{ key: string; open: string[]; all: boolean }>({ key: '', open: [], all: false })
+  const open = ex.key === key ? ex.open : []
+  const all = ex.key === key && ex.all
+  const openKey = open.join(',')
+  const lastKey = useRef('')
   useEffect(() => {
     if (!layout) return
     let live = true
-    setBusy(true); setErr(''); setSel(null)
-    rpc<RResult>('render.layout', { bundle: layout.bundle, path_id: layout.path_id, ...(project ? { project, skin } : {}) }).then((r) => { if (live) { setRes(r); setBusy(false); onResult?.(r, layout) } })
+    setBusy(true); setErr('')
+    if (lastKey.current !== key) { setSel(null); lastKey.current = key }            // expanding a branch keeps the selection; another layout clears it
+    rpc<RResult>('render.layout', { bundle: layout.bundle, path_id: layout.path_id, ...(project ? { project, skin } : {}), ...(open.length ? { open } : {}), ...(all ? { max_nodes: 0 } : {}) }).then((r) => { if (live) { setRes(r); setBusy(false); onResult?.(r, layout) } })
       .catch((e) => { if (live) { const m = e instanceof RpcError ? e.message : String(e); setErr(m); setBusy(false); say('ERROR ' + m) } })
     return () => { live = false }
-  }, [layout, say, project, skin, tick])
+  }, [layout, say, project, skin, tick, openKey, all])      // eslint-disable-line react-hooks/exhaustive-deps
+  const openNode = (p: string) => setEx((s) => ({ key, open: [...(s.key === key ? s.open : []), p], all: false }))
   useEffect(() => subscribe((t, d) => { if (t === 'render.invalidate' && project && d?.project === project) setTick((n) => n + 1) }), [project])
   const node = useMemo(() => (res ? at(res.tree, sel) : null), [res, sel])
   const hl = useMemo(() => new Set(highlight), [highlight])
@@ -212,12 +226,16 @@ export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult
           {res && <span className="dim small">{res.summary.elements} elements · {res.timing_ms.total} ms</span>}
         </div>
         {res && <div className="rnotice" role="note">{res.notice}</div>}
+        {res?.truncated && <div className="rnotice" role="status" data-testid="truncated">Large layout: {res.truncated.shown.toLocaleString()} of {res.truncated.total.toLocaleString()} elements are drawn
+          ({res.truncated.collapsed} collapsed branch{res.truncated.collapsed === 1 ? '' : 'es'}). Use a "show" button inside the stage to open one branch, or{' '}
+          <button type="button" className="link" onClick={() => setEx({ key, open: [], all: true })}>draw all {res.truncated.total.toLocaleString()}</button> (slower, a large payload).</div>}
+        {all && res && !res.truncated && <div className="rnotice" role="status">Every element is drawn. <button type="button" className="link" onClick={() => setEx({ key, open: [], all: false })}>back to the capped view</button></div>}
         {res && <div className="small pad rfid">Properties on this render: {Object.entries(by).map(([k, v]) => <span key={k} className={'badge st ' + k}>{k} {v}</span>)}
           {markers && <span className="dim"> · corner marker: red = unknown or unmapped property, amber = partial</span>}</div>}
         {err && <div className="warn pad">{err}</div>}
         <div className="rscroll" onClick={() => setSel(null)}>
           <div className="rstage" data-testid="stage" style={{ width: w, height: h, transform: `scale(${zoom})` }}>
-            {res?.tree.map((n, i) => <Node key={i} n={n} path={String(i)} sel={sel} onSel={setSel} markers={markers} hl={hl} />)}
+            {res?.tree.map((n, i) => <Node key={i} n={n} path={String(i)} sel={sel} onSel={setSel} markers={markers} hl={hl} onOpen={openNode} />)}
           </div>
         </div>
         {res?.overlay && <details className="small pad" open={res.overlay.notes.length > 0}><summary>Project overlay: {res.overlay.project} ({res.overlay.output}), {res.overlay.layout_patch_ops_applied} layout patch op(s) applied{res.overlay.notes.length ? `, ${res.overlay.notes.length} note(s)` : ''}</summary>

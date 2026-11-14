@@ -18,6 +18,8 @@ from . import project as project_mod
 from . import changes
 from .api.jobs import EventBus, JobQueue
 
+DEFAULT_NODE_CAP = 1000          # M8: the render tree of one layout is cut to about this many nodes (render/cap.py); the rest opens branch by branch
+
 
 class PlacementRefused(Exception):
     """Carries the validation result of a refused placement edit to the HTTP layer."""
@@ -465,7 +467,8 @@ class Engine:
         project = None
         if b.get("project") and b.get("skin", True):                      # the skin toggle: skin=false renders the vanilla game whatever the project holds
             project = project_mod.load(self.ws, b["project"])
-        res = self._renderer().layout(bundle, pid, int(b.get("depth") or 3), project=project)
+        cap = DEFAULT_NODE_CAP if b.get("max_nodes") is None else int(b["max_nodes"])        # 0 = every node (the caller asked for it)
+        res = self._renderer().layout(bundle, pid, int(b.get("depth") or 3), project=project, max_nodes=cap, open=[str(x) for x in (b.get("open") or [])])
         if project is not None:
             from .render import origins
             res["origins"] = origins.resolve(self.ws, project, res["tree"])          # where the project's own rules and token overrides are, for the side panel

@@ -202,3 +202,35 @@ describe('click to rule to token, and back', () => {
     expect(screen.getByTestId('stage').querySelector('[data-path="0/0"]')!.className).not.toContain('hl')
   })
 })
+
+
+describe('large layouts (M8)', () => {
+  const stub: RNode = { ...root, name: 'big', collapsed: { children: 3, descendants: 40 }, children: [] }
+  const capped = { ...result, tree: [stub], truncated: { total: 5487, shown: 1000, cap: 1000, collapsed: 1, opened: 0 } }
+
+  it('says how much of a capped layout is drawn and opens one collapsed branch by its path', async () => {
+    ;(rpc as any).mockImplementation(async (m: string, p: any) => (m === 'render.layout' ? (p.open ? { ...result, tree: [{ ...root, children: [text] }], truncated: { ...capped.truncated, shown: 1003, opened: 1 } } : capped) : null))
+    render(<RenderCanvas layout={rows[1]} say={() => {}} />)
+    expect((await screen.findByTestId('truncated')).textContent).toContain('1,000 of 5,487')
+    fireEvent.click(screen.getByTestId('rmore'))
+    await waitFor(() => expect(rpc).toHaveBeenCalledWith('render.layout', { bundle: 'b.bundle', path_id: '2', open: ['0'] }))
+    await waitFor(() => expect(screen.queryByTestId('rmore')).toBeNull())
+    expect(screen.getByTestId('stage').querySelectorAll('.rnode').length).toBe(2)
+  })
+
+  it('draws every node only when asked, and goes back to the capped view', async () => {
+    ;(rpc as any).mockImplementation(async (m: string, p: any) => (m === 'render.layout' ? (p.max_nodes === 0 ? result : capped) : null))
+    render(<RenderCanvas layout={rows[1]} say={() => {}} />)
+    fireEvent.click(await screen.findByText(/draw all 5,487/))
+    await waitFor(() => expect(rpc).toHaveBeenCalledWith('render.layout', { bundle: 'b.bundle', path_id: '2', max_nodes: 0 }))
+    fireEvent.click(await screen.findByText(/back to the capped view/))
+    await waitFor(() => expect(screen.getByTestId('truncated')).toBeTruthy())
+  })
+
+  it('a layout that fits shows no banner and sends no cap parameters', async () => {
+    render(<RenderCanvas layout={rows[1]} say={() => {}} />)
+    await screen.findByRole('note')
+    expect(screen.queryByTestId('truncated')).toBeNull()
+    expect(rpc).toHaveBeenCalledWith('render.layout', { bundle: 'b.bundle', path_id: '2' })
+  })
+})

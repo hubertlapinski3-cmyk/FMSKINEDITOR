@@ -1,6 +1,7 @@
 """The render call: a layout -> render tree with computed styles, plus what the render cannot know."""
 import time
 
+from . import cap as cap_mod
 from . import cascade as cascade_mod
 from . import delivered as delivered_mod
 from . import overlay
@@ -61,7 +62,8 @@ class Renderer:
             self._skin[p["name"]] = hit
         return hit[1], hit[2]
 
-    def layout(self, bundle, path_id, depth=3, branches=None, project=None, delivered=None):
+    def layout(self, bundle, path_id, depth=3, branches=None, project=None, delivered=None, max_nodes=None, open=()):
+        """`max_nodes` caps the drawn tree (render/cap.py): None or 0 draws every node (the fixtures do); `open` lists the paths of collapsed nodes the caller expanded."""
         t0 = time.perf_counter()
         notes, applied = [], 0
         if project is not None:
@@ -75,6 +77,7 @@ class Renderer:
         if project is not None:
             applied, pnotes = overlay.apply_layout_patches(top, project.get("layout_patches"))
             notes = notes + pnotes
+        truncated = cap_mod.cap_tree(top, max_nodes, open) if max_nodes else None          # before the cascade: only the shown nodes are computed
         summary = c.compute(top)
         asset_counts = None
         if self._assets:
@@ -101,7 +104,7 @@ class Renderer:
                 walk(k)
         for n in top:
             walk(n)
-        return {"layout": tree["layout"], "bundle": bundle, "path_id": str(path_id), "notice": NOTICE, "tree": top, "includes": includes, "summary": summary, "assets": asset_counts, "delivered": delivered_report,
+        return {"layout": tree["layout"], "bundle": bundle, "path_id": str(path_id), "notice": NOTICE, "tree": top, "includes": includes, "truncated": truncated, "summary": summary, "assets": asset_counts, "delivered": delivered_report,
                 "overlay": ({"project": project["name"], "hash": overlay.project_hash(project), "output": (project.get("options") or {}).get("output", "bundles"),
                              "layout_patch_ops_applied": applied, "notes": notes, "not_applied": overlay.NOT_APPLIED} if project is not None else None),
                 "sheet_order": [{"position": i, "bundle": b, "sheet": n, "why": why} for i, (b, n, why) in enumerate(ROOT_SHEETS)],

@@ -212,6 +212,8 @@ A project is now a folder of text files (`docs/SKIN-BUILDER-SPEC.md`, part 3). T
 - **As a desktop app (Tauri):** `npm run tauri dev` in `studio/`. It needs Rust and the Windows SDK (both installed on this machine); it starts the engine itself.
 - Existing projects keep working in the old page. Convert one with `python -m skin_editor rpc project.migrate '{"project": "NAME"}'` (verified first; the old file is kept as `.migrated`).
 
+**Render (activity bar R, Phase 9):** draws any game layout offline and explains every element (which rules matched, where each value and token comes from, in both directions between the render and your editor); large layouts are drawn about 1,000 elements at a time with a "show" button per collapsed branch. It is an approximation: the published calibration report is `docs/evidence/phase9-m7-calibration-20261114/`, the user guide is `docs/RENDER-GUIDE.md`.
+
 ## Engine API
 
 Every operation is also available as a named, schema-checked method:
