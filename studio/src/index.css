@@ -96,3 +96,30 @@ button:hover:not(:disabled) { border-color: var(--dim) } button:disabled { opaci
 .checklist .head { padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em } .checklist .pad { padding: 4px 10px } .checklist .small { font-size: 11px }
 .pkg { margin: 4px 10px; padding: 6px 8px; border-left: 3px solid var(--line); font-size: 12px } .pkg.latest { border-color: #98c379 } .checklist .ok { color: #98c379 } .checklist .bad { color: #f48771 }
 .checklist .doc { margin: 6px 10px; padding: 8px; background: #17181b; border: 1px solid var(--line); border-radius: 4px; font: 11px/1.45 Consolas, monospace; white-space: pre-wrap; max-height: 55vh; overflow: auto }
+
+/* ---- resizable shell (Gutter) and the render view (Phase 9) */
+.app { position: relative }
+.gutter { position: absolute; z-index: 6; background: transparent; outline: none }
+.gutter.x { width: 6px; cursor: col-resize } .gutter.y { height: 6px; cursor: row-resize }
+.gutter.inflow { position: static; flex: none; z-index: auto } .gutter.inflow.x { align-self: stretch }
+.gutter:hover, .gutter.dragging { background: rgba(97, 175, 239, .45) } .gutter:focus-visible { background: rgba(97, 175, 239, .7) }
+.rbrowser { display: flex; flex-direction: column; height: 100% } .rbrowser ul { list-style: none; margin: 0; padding: 0; overflow: auto; flex: 1 }
+.rbrowser li { padding: 2px 12px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis } .rbrowser li:hover { background: #2d2f35 } .rbrowser li.sel { background: #353a4a } .rbrowser small { color: var(--dim) }
+.rbrowser .search { margin: 6px 8px }
+.rsplit { display: flex; height: 100%; min-width: 0 } .rmain { flex: 1; min-width: 0; display: flex; flex-direction: column } .rexplain { flex: none; overflow: auto; background: var(--side); border-left: 1px solid var(--line) }
+.rbar { display: flex; gap: 12px; align-items: center; padding: 6px 10px; border-bottom: 1px solid var(--line); flex-wrap: wrap } .rbar input[type=number] { width: 64px } .rbar label { color: var(--dim); font-size: 12px }
+.rnotice { padding: 5px 10px; background: #3a3320; color: #e5c07b; font-size: 12px; border-bottom: 1px solid var(--line) }
+.rfid { display: flex; gap: 6px; align-items: center; flex-wrap: wrap }
+.rscroll { flex: 1; overflow: auto; background: #101114; padding: 12px }
+.rstage { transform-origin: 0 0; background: #1b1d22; overflow: hidden; position: relative; flex: none }
+.rnode { cursor: default } .rnode:hover { outline: 1px dashed rgba(97, 175, 239, .5); outline-offset: -1px } .rnode.sel { outline: 2px solid #61afef; outline-offset: -2px; z-index: 1 }
+.rnode[data-flag]::after { content: ''; position: absolute; top: 0; right: 0; width: 5px; height: 5px; pointer-events: none; z-index: 2 }
+.rnode[data-flag='unknown']::after, .rnode[data-flag='unmapped']::after { background: #e06c75 } .rnode[data-flag='partial']::after { background: #e5c07b }
+.explain .head { padding: 6px 10px; color: var(--dim); font-size: 11px; letter-spacing: .05em; display: flex; justify-content: space-between; border-top: 1px solid var(--line) }
+.rtable { width: 100%; border-collapse: collapse; font-size: 12px } .rtable td { padding: 2px 8px; border-top: 1px solid var(--line); vertical-align: top; word-break: break-word }
+.badge.st { padding: 0 6px; border-radius: 8px; font-size: 11px; background: #2b2d33; color: var(--fg) } .badge.st.mapped { color: #98c379 } .badge.st.partial { color: #e5c07b } .badge.st.unmapped, .badge.st.unknown { color: #e06c75 }
+.rtable tr.st-unknown, .rtable tr.st-unmapped { background: #2a1f20 } .rtable tr.st-partial { background: #26241c }
+.rtable td:first-child { overflow-wrap: anywhere; min-width: 110px } .rtable td:nth-child(3) { white-space: nowrap }
+.rnotice { font-weight: 600 }
+
+.rnode[data-placeholder='sample'] { text-decoration: underline dotted #8a93a6; text-underline-offset: 3px; }

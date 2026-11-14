@@ -11,12 +11,14 @@ import Tiles from './Tiles'
 import Tables from './Tables'
 import Checklist from './Checklist'
 import Search from './Search'
+import Gutter, { useStoredSize } from './Gutter'
+import { RenderBrowser, RenderCanvas, type LayoutRow } from './Render'
 
 interface Tab { path: string; text: string; saved: string; readonly?: boolean }
 interface Plan { target: string; operations: { op: string; count: number; summary: string; detail: any[] }[]; dropped: { item: string; reason: string }[]; warnings: string[] }
 type Mode = 'simple' | 'expert'
 type PanelTab = 'problems' | 'output' | 'build' | 'preview'
-type View = 'explorer' | 'search' | 'palette' | 'assets' | 'layouts' | 'tiles' | 'tables' | 'updates' | 'checklist' | 'game'
+type View = 'explorer' | 'search' | 'palette' | 'assets' | 'layouts' | 'tiles' | 'tables' | 'updates' | 'checklist' | 'game' | 'render'
 const SESSION = 'studio.session'
 
 /** A view that throws while rendering shows its error instead of taking the whole window down (a blank black screen). */
@@ -55,6 +57,9 @@ export default function App() {
   const [planErr, setPlanErr] = useState('')
   const [sheets, setSheets] = useState<{ name: string; bundle: string; rules: number }[]>([])
   const [sheetQ, setSheetQ] = useState('')
+  const [rl, setRl] = useState<LayoutRow | null>(null)                             // the layout picked in the render view
+  const [sideW, setSideW] = useStoredSize('studio.sideW', 250, 160, 640)           // resizable panels, remembered between runs
+  const [panelH, setPanelH] = useStoredSize('studio.panelH', 210, 80, 560)
 
   const say = useCallback((s: string) => setLog((l) => [...l.slice(-300), new Date().toLocaleTimeString() + '  ' + s]), [])
   const fail = useCallback((e: unknown) => { say('ERROR ' + (e instanceof RpcError ? `${e.message} (code ${e.code})` : String(e))); setPanel('output') }, [say])
@@ -225,7 +230,9 @@ export default function App() {
   if (boot !== 'ready') return <div className="boot"><h1>FM Skin Studio</h1><p>{boot === 'connecting' ? 'Starting the engine ...' : boot}</p></div>
 
   return (
-    <div className="app">
+    <div className="app" style={{ gridTemplateColumns: `44px ${sideW}px 1fr`, gridTemplateRows: `1fr ${panelH}px 24px` }}>
+      <Gutter axis="x" value={sideW} min={160} max={640} def={250} onChange={setSideW} label="Side panel width" style={{ left: 44 + sideW - 3, top: 0, bottom: 24 }} />
+      <Gutter axis="y" invert value={panelH} min={80} max={560} def={210} onChange={setPanelH} label="Bottom panel height" style={{ left: 44 + sideW, right: 0, bottom: 24 + panelH - 3 }} />
       <nav className="activity">
         <button className={view === 'explorer' ? 'on' : ''} title="Explorer" onClick={() => setView('explorer')}>E</button>
         <button className={view === 'search' ? 'on' : ''} title="Search in project" onClick={() => setView('search')}>S</button>
@@ -234,6 +241,7 @@ export default function App() {
         <button className={view === 'layouts' ? 'on' : ''} title="UXML layouts: element trees, class edits" onClick={() => setView('layouts')}>L</button>
         <button className={view === 'tiles' ? 'on' : ''} title="Tile layout: grid compositions per screen and breakpoint, move cells" onClick={() => setView('tiles')}>T</button>
         <button className={view === 'tables' ? 'on' : ''} title="Table views: columns, widths, order" onClick={() => setView('tables')}>V</button>
+        <button className={view === 'render' ? 'on' : ''} title="Render: draw a game layout offline, with the rules that matched (an approximation)" onClick={() => setView('render')}>R</button>
         <button className={view === 'checklist' ? 'on' : ''} title="In-game checklist and the prepared packages" onClick={() => setView('checklist')}>?</button>
         <button className={view === 'updates' ? 'on' : ''} title="Game updates: version profiles and the diff between two builds" onClick={() => setView('updates')}>U</button>
         <button className={view === 'game' ? 'on' : ''} title="Game: vanilla stylesheets (read-only)" onClick={() => setView('game')}>G</button>
@@ -249,6 +257,7 @@ export default function App() {
         {view === 'layouts' && <Guard name="Layouts"><Layouts key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
         {view === 'tiles' && <Guard name="Tile layout"><Tiles key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
         {view === 'tables' && <Guard name="Table views"><Tables key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
+        {view === 'render' && <Guard name="Render browser"><RenderBrowser picked={rl ? rl.bundle + rl.path_id : null} onPick={setRl} say={say} /></Guard>}
         {view === 'checklist' && <Guard name="In-game checklist"><Checklist say={say} /></Guard>}
         {view === 'updates' && <Guard name="Game updates"><Updates project={project} say={say} onChanged={reloadClean} /></Guard>}
         {view === 'palette' && project && <Palette project={project} onChanged={reloadClean} say={say} />}
@@ -268,6 +277,7 @@ export default function App() {
         </>}
       </aside>
       <main className="editor">
+        {view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} /></Guard> : <>
         <div className="tabs">{tabs.map((t) => <div key={t.path} className={'tab' + (t.path === active ? ' on' : '')} onClick={() => setActive(t.path)}>{t.path.split('/').pop()}{t.readonly ? ' (game)' : ''}{dirty(t.path) ? ' •' : ''}<button onClick={(e) => { e.stopPropagation(); closeTab(t.path) }}>×</button></div>)}</div>
         <div className="surface">
           {tab ? <Editor path={tab.path} language={langOf(tab.path)} theme="vs-dark" value={tab.text}
@@ -282,6 +292,7 @@ export default function App() {
             options={{ minimap: { enabled: false }, fontSize: 13, automaticLayout: true, colorDecorators: true, tabSize: 4, readOnly: !!tab.readonly }} />
             : <div className="empty">{project ? 'Open a file from the explorer. Ctrl+S saves; Ctrl+F / Ctrl+H find and replace; Ctrl+Z undo (per file).' : 'Open or create a project.'}</div>}
         </div>
+        </>}
       </main>
       <section className="panel">
         <div className="ptabs">

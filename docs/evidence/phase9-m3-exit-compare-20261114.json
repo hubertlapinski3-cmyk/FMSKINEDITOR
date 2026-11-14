@@ -1,0 +1,1219 @@
+{
+ "schema": "fm-m3-exit/1",
+ "tolerance": "8 px or 5 percent of the measured size, whichever is tighter",
+ "fixtures": [
+  {
+   "id": "squad-large",
+   "capture": "styles-d1-squad-overview-20261114-111054.ndjson",
+   "composition": "SquadComposition-Large",
+   "grid_container": [
+    2468.8,
+    1319.3
+   ],
+   "grid": {
+    "columns": 30,
+    "rows": 16
+   },
+   "pitch": {
+    "cell": 65.5,
+    "gap": 16.5,
+    "measured": true,
+    "source": "Squad > Overview, Large composition (Tactics at x16 y0 w4 h4), English, 2x scale, build 27.0.1.2503222, panel 2500 x 1406.25, Dortmund career; inspector capture-0.3.0 (mode 1) styles-squad-overview-20261114-104418.ndjson, world bounds of the host elements",
+    "flag": null
+   },
+   "rows": [
+    {
+     "element": "Atmosphere",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      2159.6,
+      753.9,
+      312,
+      148
+     ],
+     "measured": [
+      2160.2,
+      753.9,
+      311.5,
+      147.5
+     ],
+     "delta": [
+      -0.6,
+      0.0,
+      0.5,
+      0.5
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadAtmosphereTile_4x2",
+      "how": "config of exactly this size",
+      "named_elements": 15,
+      "present_on_screen": 14,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Tactics",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      2159.6,
+      97.9,
+      312,
+      312
+     ],
+     "measured": [
+      2160.2,
+      97.7,
+      311.5,
+      311.5
+     ],
+     "delta": [
+      -0.6,
+      0.2,
+      0.5,
+      0.5
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TacticsTile_4x4",
+      "how": "config of exactly this size",
+      "named_elements": 36,
+      "present_on_screen": 34,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Training",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      2159.6,
+      425.9,
+      312,
+      312
+     ],
+     "measured": [
+      2160.2,
+      425.8,
+      311.5,
+      311.5
+     ],
+     "delta": [
+      -0.6,
+      0.1,
+      0.5,
+      0.5
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TrainingTile_4x4",
+      "how": "config of exactly this size",
+      "named_elements": 26,
+      "present_on_screen": 25,
+      "all_present": false
+     }
+    },
+    {
+     "element": "HumanActionsControlPanelBlock",
+     "mode": [
+      "flexible width"
+     ],
+     "expected": [
+      27.6,
+      97.9,
+      2116,
+      66
+     ],
+     "measured": [
+      28.3,
+      97.7,
+      2115.2,
+      66.4
+     ],
+     "delta": [
+      -0.7,
+      0.2,
+      0.8,
+      -0.4
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "HumanActionsControlPanelBlock",
+      "how": "largest config that fits (16x1), ASSUMED",
+      "named_elements": 1,
+      "present_on_screen": 1,
+      "all_present": true
+     }
+    },
+    {
+     "element": "FirstTeamOverview",
+     "mode": [
+      "flexible width",
+      "flexible height"
+     ],
+     "expected": [
+      27.6,
+      179.9,
+      2116,
+      1214
+     ],
+     "measured": [
+      28.3,
+      179.7,
+      2115.2,
+      1213.9
+     ],
+     "delta": [
+      -0.7,
+      0.2,
+      0.8,
+      0.1
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadOverviewTableBlock",
+      "how": "largest config that fits (12x5), ASSUMED",
+      "named_elements": 48,
+      "present_on_screen": 33,
+      "all_present": false
+     }
+    }
+   ],
+   "runtime_slots": [
+    {
+     "element": "SquadHierachy",
+     "given_cell": [
+      26,
+      10,
+      4,
+      2
+     ],
+     "measured": [
+      2160.2,
+      918,
+      311.5,
+      147.5
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    },
+    {
+     "element": "MedicalCentre",
+     "given_cell": [
+      26,
+      12,
+      4,
+      2
+     ],
+     "measured": [
+      2160.2,
+      1082,
+      311.5,
+      147.5
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    },
+    {
+     "element": "Loans",
+     "given_cell": [
+      26,
+      14,
+      4,
+      2
+     ],
+     "measured": [
+      2160.2,
+      1246.1,
+      311.5,
+      147.5
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    }
+   ],
+   "flags": [
+    "tile configs chosen by the largest-fit assumption: HumanActionsControlPanelBlock",
+    "tile configs chosen by the largest-fit assumption: FirstTeamOverview"
+   ],
+   "passed": 5,
+   "failed": 0
+  },
+  {
+   "id": "squad-medium",
+   "capture": "styles-d6-squad-overview-medium-20261114-113402.ndjson",
+   "composition": "SquadComposition-Large",
+   "grid_container": [
+    2057.3,
+    1074.4
+   ],
+   "grid": {
+    "columns": 25,
+    "rows": 13
+   },
+   "pitch": {
+    "cell": 65.5,
+    "gap": 16.5,
+    "measured": true,
+    "source": "Squad > Overview, Large composition (Tactics at x16 y0 w4 h4), English, 2x scale, build 27.0.1.2503222, panel 2500 x 1406.25, Dortmund career; inspector capture-0.3.0 (mode 1) styles-squad-overview-20261114-104418.ndjson, world bounds of the host elements",
+    "flag": null
+   },
+   "rows": [
+    {
+     "element": "Atmosphere",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1750.3,
+      761.1,
+      312,
+      148
+     ],
+     "measured": [
+      1750.4,
+      761.7,
+      311.9,
+      147.8
+     ],
+     "delta": [
+      -0.1,
+      -0.6,
+      0.1,
+      0.2
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadAtmosphereTile_4x2",
+      "how": "config of exactly this size",
+      "named_elements": 15,
+      "present_on_screen": 14,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Tactics",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1750.3,
+      105.1,
+      312,
+      312
+     ],
+     "measured": [
+      1750.4,
+      105.3,
+      311.9,
+      311.9
+     ],
+     "delta": [
+      -0.1,
+      -0.2,
+      0.1,
+      0.1
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TacticsTile_4x4",
+      "how": "config of exactly this size",
+      "named_elements": 36,
+      "present_on_screen": 34,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Training",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1750.3,
+      433.1,
+      312,
+      312
+     ],
+     "measured": [
+      1750.4,
+      433.5,
+      311.9,
+      311.9
+     ],
+     "delta": [
+      -0.1,
+      -0.4,
+      0.1,
+      0.1
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TrainingTile_4x4",
+      "how": "config of exactly this size",
+      "named_elements": 26,
+      "present_on_screen": 25,
+      "all_present": false
+     }
+    },
+    {
+     "element": "HumanActionsControlPanelBlock",
+     "mode": [
+      "flexible width"
+     ],
+     "expected": [
+      28.3,
+      105.1,
+      1706,
+      66
+     ],
+     "measured": [
+      27.8,
+      105.3,
+      1706.3,
+      66.1
+     ],
+     "delta": [
+      0.5,
+      -0.2,
+      -0.3,
+      -0.1
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "HumanActionsControlPanelBlock",
+      "how": "largest config that fits (16x1), ASSUMED",
+      "named_elements": 1,
+      "present_on_screen": 1,
+      "all_present": true
+     }
+    },
+    {
+     "element": "FirstTeamOverview",
+     "mode": [
+      "flexible width",
+      "flexible height"
+     ],
+     "expected": [
+      28.3,
+      187.1,
+      1706,
+      968
+     ],
+     "measured": [
+      27.8,
+      187,
+      1706.3,
+      968.3
+     ],
+     "delta": [
+      0.5,
+      0.1,
+      -0.3,
+      -0.3
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadOverviewTableBlock",
+      "how": "largest config that fits (12x5), ASSUMED",
+      "named_elements": 48,
+      "present_on_screen": 33,
+      "all_present": false
+     }
+    }
+   ],
+   "runtime_slots": [
+    {
+     "element": "SquadHierachy",
+     "given_cell": [
+      21,
+      10,
+      4,
+      2
+     ],
+     "measured": [
+      1750.4,
+      925,
+      311.9,
+      148.6
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    }
+   ],
+   "flags": [
+    "tile configs chosen by the largest-fit assumption: HumanActionsControlPanelBlock",
+    "tile configs chosen by the largest-fit assumption: FirstTeamOverview"
+   ],
+   "passed": 5,
+   "failed": 0
+  },
+  {
+   "id": "squad-small-display",
+   "capture": "styles-e2-squad-small-20261114-115336.ndjson",
+   "composition": "SquadComposition-Large",
+   "grid_container": [
+    1648.5,
+    828.2
+   ],
+   "grid": {
+    "columns": 20,
+    "rows": 10
+   },
+   "pitch": {
+    "cell": 65.5,
+    "gap": 16.5,
+    "measured": true,
+    "source": "Squad > Overview, Large composition (Tactics at x16 y0 w4 h4), English, 2x scale, build 27.0.1.2503222, panel 2500 x 1406.25, Dortmund career; inspector capture-0.3.0 (mode 1) styles-squad-overview-20261114-104418.ndjson, world bounds of the host elements",
+    "flag": null
+   },
+   "rows": [
+    {
+     "element": "Atmosphere",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1339.8,
+      769.1,
+      312,
+      148
+     ],
+     "measured": [
+      1340.1,
+      769.1,
+      311.7,
+      147.7
+     ],
+     "delta": [
+      -0.3,
+      0.0,
+      0.3,
+      0.3
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadAtmosphereTile_4x2",
+      "how": "config of exactly this size",
+      "named_elements": 15,
+      "present_on_screen": 14,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Tactics",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1339.8,
+      113.1,
+      312,
+      312
+     ],
+     "measured": [
+      1340.1,
+      112.9,
+      311.7,
+      312.4
+     ],
+     "delta": [
+      -0.3,
+      0.2,
+      0.3,
+      -0.4
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TacticsTile_4x4",
+      "how": "config of exactly this size",
+      "named_elements": 36,
+      "present_on_screen": 34,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Training",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1339.8,
+      441.1,
+      312,
+      312
+     ],
+     "measured": [
+      1340.1,
+      441,
+      311.7,
+      311.7
+     ],
+     "delta": [
+      -0.3,
+      0.1,
+      0.3,
+      0.3
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TrainingTile_4x4",
+      "how": "config of exactly this size",
+      "named_elements": 26,
+      "present_on_screen": 25,
+      "all_present": false
+     }
+    },
+    {
+     "element": "HumanActionsControlPanelBlock",
+     "mode": [
+      "flexible width"
+     ],
+     "expected": [
+      27.8,
+      113.1,
+      1296,
+      66
+     ],
+     "measured": [
+      28.2,
+      112.9,
+      1296.1,
+      66.3
+     ],
+     "delta": [
+      -0.4,
+      0.2,
+      -0.1,
+      -0.3
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "HumanActionsControlPanelBlock",
+      "how": "config of exactly this size",
+      "named_elements": 1,
+      "present_on_screen": 1,
+      "all_present": true
+     }
+    },
+    {
+     "element": "FirstTeamOverview",
+     "mode": [
+      "flexible width",
+      "flexible height"
+     ],
+     "expected": [
+      27.8,
+      195.1,
+      1296,
+      722
+     ],
+     "measured": [
+      28.2,
+      194.9,
+      1296.1,
+      721.9
+     ],
+     "delta": [
+      -0.4,
+      0.2,
+      -0.1,
+      0.1
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadOverviewTableBlock",
+      "how": "largest config that fits (12x5), ASSUMED",
+      "named_elements": 48,
+      "present_on_screen": 33,
+      "all_present": false
+     }
+    }
+   ],
+   "runtime_slots": [],
+   "flags": [
+    "tile configs chosen by the largest-fit assumption: FirstTeamOverview"
+   ],
+   "passed": 5,
+   "failed": 0
+  },
+  {
+   "id": "squad-small-composition",
+   "capture": "styles-e3-squad-1152x864-20261114-115626.ndjson",
+   "composition": "SquadComposition-Small",
+   "grid_container": [
+    992,
+    664
+   ],
+   "grid": {
+    "columns": 12,
+    "rows": 8
+   },
+   "pitch": {
+    "cell": 66.6,
+    "gap": 15.2,
+    "measured": true,
+    "source": "Squad > Overview at 1152 x 864 (panel 1024 x 768, Information Display Small), grid container 992 x 664 = 12 x 8; capture styles-e3-squad-1152x864-20261114-115626.ndjson, plugin 0.4.0-capture",
+    "flag": null
+   },
+   "rows": [
+    {
+     "element": "Training",
+     "mode": [
+      "flexible width"
+     ],
+     "expected": [
+      356,
+      598.2,
+      312,
+      148
+     ],
+     "measured": [
+      356.4,
+      598.2,
+      312,
+      148.4
+     ],
+     "delta": [
+      -0.4,
+      0.0,
+      0,
+      -0.4
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TrainingTile_4x2",
+      "how": "config of exactly this size",
+      "named_elements": 15,
+      "present_on_screen": 14,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Atmosphere",
+     "mode": [
+      "flexible width"
+     ],
+     "expected": [
+      684,
+      598.2,
+      312,
+      148
+     ],
+     "measured": [
+      684.4,
+      598.2,
+      312,
+      148.4
+     ],
+     "delta": [
+      -0.4,
+      0.0,
+      0,
+      -0.4
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadAtmosphereTile_4x2",
+      "how": "config of exactly this size",
+      "named_elements": 15,
+      "present_on_screen": 14,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Tactics",
+     "mode": [
+      "fixed"
+     ],
+     "expected": [
+      28,
+      598.2,
+      312,
+      148
+     ],
+     "measured": [
+      28.4,
+      598.2,
+      312,
+      148.4
+     ],
+     "delta": [
+      -0.4,
+      0.0,
+      0,
+      -0.4
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TacticsTile_4x2",
+      "how": "config of exactly this size",
+      "named_elements": 31,
+      "present_on_screen": 26,
+      "all_present": false
+     }
+    },
+    {
+     "element": "HumanActionsControlPanelBlock",
+     "mode": [
+      "flexible width"
+     ],
+     "expected": [
+      28,
+      106.2,
+      968,
+      66
+     ],
+     "measured": [
+      28.4,
+      106.7,
+      968,
+      65.8
+     ],
+     "delta": [
+      -0.4,
+      -0.5,
+      0,
+      0.2
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "HumanActionsControlPanelBlock",
+      "how": "config of exactly this size",
+      "named_elements": 1,
+      "present_on_screen": 1,
+      "all_present": true
+     }
+    },
+    {
+     "element": "FirstTeamOverview",
+     "mode": [
+      "flexible width",
+      "flexible height"
+     ],
+     "expected": [
+      28,
+      188.2,
+      968,
+      394
+     ],
+     "measured": [
+      28.4,
+      188.4,
+      968,
+      393.8
+     ],
+     "delta": [
+      -0.4,
+      -0.2,
+      0,
+      0.2
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadOverviewTableBlock",
+      "how": "config of exactly this size",
+      "named_elements": 48,
+      "present_on_screen": 33,
+      "all_present": false
+     }
+    }
+   ],
+   "runtime_slots": [],
+   "flags": [],
+   "passed": 5,
+   "failed": 0
+  },
+  {
+   "id": "squad-standard-composition",
+   "capture": "styles-e4-squad-1600x900-20261114-115839.ndjson",
+   "composition": "SquadComposition-Standard",
+   "grid_container": [
+    1319.9,
+    664.2
+   ],
+   "grid": {
+    "columns": 16,
+    "rows": 8
+   },
+   "pitch": {
+    "cell": 67.1,
+    "gap": 14.4,
+    "measured": true,
+    "source": "Squad > Overview at 1600 x 900 (panel 1366 x 768.4, Information Display as locked for this resolution), grid container 1319.9 x 664.2 = 16 x 8; capture styles-e4-squad-1600x900-20261114-115839.ndjson, plugin 0.4.0-capture",
+    "flag": null
+   },
+   "rows": [
+    {
+     "element": "Training",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1019.1,
+      434.8,
+      312,
+      148
+     ],
+     "measured": [
+      1019.4,
+      434.6,
+      311.6,
+      148.6
+     ],
+     "delta": [
+      -0.3,
+      0.2,
+      0.4,
+      -0.6
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TrainingTile_4x2",
+      "how": "config of exactly this size",
+      "named_elements": 15,
+      "present_on_screen": 14,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Atmosphere",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1019.1,
+      598.8,
+      312,
+      148
+     ],
+     "measured": [
+      1019.4,
+      598.5,
+      311.6,
+      148.6
+     ],
+     "delta": [
+      -0.3,
+      0.3,
+      0.4,
+      -0.6
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadAtmosphereTile_4x2",
+      "how": "config of exactly this size",
+      "named_elements": 15,
+      "present_on_screen": 14,
+      "all_present": false
+     }
+    },
+    {
+     "element": "Tactics",
+     "mode": [
+      "right-anchored"
+     ],
+     "expected": [
+      1019.1,
+      106.8,
+      312,
+      312
+     ],
+     "measured": [
+      1019.4,
+      106.7,
+      311.6,
+      311.6
+     ],
+     "delta": [
+      -0.3,
+      0.1,
+      0.4,
+      0.4
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TacticsTile_4x4",
+      "how": "config of exactly this size",
+      "named_elements": 36,
+      "present_on_screen": 34,
+      "all_present": false
+     }
+    },
+    {
+     "element": "HumanActionsControlPanelBlock",
+     "mode": [
+      "flexible width"
+     ],
+     "expected": [
+      35.1,
+      106.8,
+      968,
+      66
+     ],
+     "measured": [
+      35,
+      106.7,
+      968.2,
+      65.7
+     ],
+     "delta": [
+      0.1,
+      0.1,
+      -0.2,
+      0.3
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "HumanActionsControlPanelBlock",
+      "how": "config of exactly this size",
+      "named_elements": 1,
+      "present_on_screen": 1,
+      "all_present": true
+     }
+    },
+    {
+     "element": "FirstTeamOverview",
+     "mode": [
+      "flexible width",
+      "flexible height"
+     ],
+     "expected": [
+      35.1,
+      188.8,
+      968,
+      558
+     ],
+     "measured": [
+      35,
+      188.7,
+      968.2,
+      558.4
+     ],
+     "delta": [
+      0.1,
+      0.1,
+      -0.2,
+      -0.4
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "SquadOverviewTableBlock",
+      "how": "largest config that fits (12x5), ASSUMED",
+      "named_elements": 48,
+      "present_on_screen": 33,
+      "all_present": false
+     }
+    }
+   ],
+   "runtime_slots": [],
+   "flags": [
+    "tile configs chosen by the largest-fit assumption: FirstTeamOverview"
+   ],
+   "passed": 5,
+   "failed": 0
+  },
+  {
+   "id": "teaminstr",
+   "capture": "styles-d2-team-instructions-20261114-111314.ndjson",
+   "composition": "TacticalPlannerTeamInstructionsTabComposition-Large",
+   "grid_container": [
+    2361.3,
+    1213.9
+   ],
+   "grid": {
+    "columns": 29,
+    "rows": 15
+   },
+   "pitch": {
+    "cell": 65.75,
+    "gap": 16.25,
+    "measured": true,
+    "source": "Tactics > Team Instructions, interface at the panel's Large composition (pitch 6 wide, Phases 4 wide), English, 2x scale, build 27.0.1.2503222, panel 2500 x 1406.25; inspector capture-0.3.1 (mode 1) styles-d2-team-instructions-20261114-111314.ndjson; the composition name is the one whose fixed cells (pitch 6, Phases 4) match: it is inferred from the layout index, not recorded by the capture",
+    "flag": null
+   },
+   "rows": [
+    {
+     "element": "TeamInstructionsPitch",
+     "mode": [
+      "flexible height"
+     ],
+     "expected": [
+      28.3,
+      194.3,
+      476,
+      1214
+     ],
+     "measured": [
+      28.3,
+      194.3,
+      475.6,
+      1213.9
+     ],
+     "delta": [
+      0.0,
+      0.0,
+      0.4,
+      0.1
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TacticalPlannerTeamInstructionsPitchBlock",
+      "how": "largest config that fits (6x8), ASSUMED",
+      "named_elements": 19,
+      "present_on_screen": 15,
+      "all_present": false
+     }
+    },
+    {
+     "element": "TeamInstructionsBlock",
+     "mode": [
+      "flexible width",
+      "flexible height"
+     ],
+     "expected": [
+      520.3,
+      194.3,
+      1214,
+      1214
+     ],
+     "measured": [
+      519.5,
+      194.3,
+      1214.8,
+      1213.9
+     ],
+     "delta": [
+      0.8,
+      0.0,
+      -0.8,
+      0.1
+     ],
+     "verdict": "PASS",
+     "tile": {
+      "layout": "TacticalPlannerTeamInstructionsBlock",
+      "how": "largest config that fits (10x8), ASSUMED",
+      "named_elements": 17,
+      "present_on_screen": 12,
+      "all_present": false
+     }
+    },
+    {
+     "element": "PhasesAndTeamInstructions",
+     "mode": [
+      "right-anchored",
+      "flexible height"
+     ],
+     "expected": [
+      1750.3,
+      194.3,
+      312,
+      1214
+     ],
+     "measured": [
+      1750,
+      194.3,
+      311.5,
+      1213.9
+     ],
+     "delta": [
+      0.3,
+      0.0,
+      0.5,
+      0.1
+     ],
+     "verdict": "PASS",
+     "tile": null
+    }
+   ],
+   "runtime_slots": [
+    {
+     "element": "ClubTeamReport",
+     "given_cell": [
+      25,
+      0,
+      4,
+      2
+     ],
+     "measured": [
+      2078.1,
+      194.3,
+      311.5,
+      148.4
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    },
+    {
+     "element": "SetPieces",
+     "given_cell": [
+      25,
+      8,
+      4,
+      2
+     ],
+     "measured": [
+      2078.1,
+      850.6,
+      311.5,
+      147.5
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    },
+    {
+     "element": "DataHub",
+     "given_cell": [
+      25,
+      2,
+      4,
+      4
+     ],
+     "measured": [
+      2078.1,
+      358.4,
+      311.5,
+      312.5
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    },
+    {
+     "element": "Penalties",
+     "given_cell": [
+      25,
+      10,
+      4,
+      2
+     ],
+     "measured": [
+      2078.1,
+      1014.6,
+      311.5,
+      147.5
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    },
+    {
+     "element": "Captains",
+     "given_cell": [
+      25,
+      6,
+      4,
+      2
+     ],
+     "measured": [
+      2078.1,
+      686.5,
+      311.5,
+      147.5
+     ],
+     "category": "run-time-added slot without a default tile (placeholder)"
+    }
+   ],
+   "flags": [
+    "tile configs chosen by the largest-fit assumption: TeamInstructionsPitch",
+    "tile configs chosen by the largest-fit assumption: TeamInstructionsBlock"
+   ],
+   "passed": 3,
+   "failed": 0
+  }
+ ]
+}

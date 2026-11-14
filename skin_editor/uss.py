@@ -66,6 +66,19 @@ def _num(x):
     return "%g" % x
 
 
+def _items_end(tree, handles, i, n):
+    """Index just after `n` top-level items that start at handle `i`. A function is ONE item but spans its own handles: the function, its argument count, and that
+    many items, nested functions included (so `var(--a, var(--b))` is a function whose second argument is a whole function). Fixed 2026-11-14 after the render found
+    30 nested var() fallbacks in 8 Training layouts decoded as `var(--a, var()) 1 --b`: the old slice counted the nested function as a single handle."""
+    while n > 0 and i < len(handles):
+        if handles[i].get("m_ValueType") == T_FUNC and i + 1 < len(handles) and handles[i + 1].get("m_ValueType") == T_FLOAT:
+            i = _items_end(tree, handles, i + 2, int(tree["floats"][handles[i + 1]["valueIndex"]]))
+        else:
+            i += 1
+        n -= 1
+    return i
+
+
 def value_text(tree, handles, failures=None):
     """Handles -> (readable text, [[#RRGGBB, alpha float], ...] for every literal colour).
     The text shows alpha as a hex byte; the list keeps the decoded float.
@@ -81,12 +94,13 @@ def value_text(tree, handles, failures=None):
         t, v = handles[i].get("m_ValueType"), handles[i].get("valueIndex")
         try:
             if t == T_FUNC:
-                n = 0
-                if i + 1 < len(handles) and handles[i + 1].get("m_ValueType") == T_FLOAT:
-                    n = int(tree["floats"][handles[i + 1]["valueIndex"]])
-                    i += 1
-                txt, c = value_text(tree, handles[i + 1:i + 1 + n], failures)
-                i += n
+                n, start = 0, i + 1
+                if start < len(handles) and handles[start].get("m_ValueType") == T_FLOAT:
+                    n = int(tree["floats"][handles[start]["valueIndex"]])
+                    start += 1
+                end = _items_end(tree, handles, start, n)
+                txt, c = value_text(tree, handles[start:end], failures)
+                i = end - 1                                       # the loop's own step moves past the last handle of the function
                 cols += c
                 out.append("%s(%s)" % (FUNCS.get(v, "func%s" % v), txt))
             elif t == T_KEYWORD:

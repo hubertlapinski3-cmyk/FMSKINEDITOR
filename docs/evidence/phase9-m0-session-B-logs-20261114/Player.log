@@ -1,0 +1,156 @@
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.3.18f1-custom (96cdb67fb884)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/Football Manager 27/fm_Data/UnitySubsystems
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4060 (ID=0x2882)
+    Vendor:   NVIDIA
+    VRAM:     7956 MB
+    Driver:   32.0.16.2114
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+<RI> Initializing input.
+Using Windows.Gaming.Input
+UnloadTime: 0.432100 ms
+No Theme Style Sheet set to PanelSettings NavigationLayerSettings, UI will not render properly
+UnityEngine.DebugLogHandler:Internal_Log_Injected(LogType, LogOption, ManagedSpanWrapper&, IntPtr)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.Logger:Log(LogType, Object, Object)
+UnityEngine.Debug:LogWarning(Object, Object)
+UnityEngine.UIElements.PanelSettings:ApplyThemeStyleSheet(VisualElement) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:884)
+UnityEngine.UIElements.RuntimePanelAccess:get_panel() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:175)
+UnityEngine.UIElements.PanelSettings:get_visualTree() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:694)
+UnityEngine.UIElements.PanelSettings:AttachAndInsertUIDocumentToVisualTree(UIDocument) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:1124)
+UnityEngine.UIElements.UIDocument:RecreateUI() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/UIDocument.cs:1017)
+UnityEngine.UIElements.UIDocument:_Enable() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/UIDocument.cs:537)
+UnityEngine.UIElements.UIDocument:OnEnable() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/UIDocument.cs:515)
+
+No Theme Style Sheet set to PanelSettings ColourSpaceConversionLayerSettings, UI will not render properly
+UnityEngine.DebugLogHandler:Internal_Log_Injected(LogType, LogOption, ManagedSpanWrapper&, IntPtr)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.Logger:Log(LogType, Object, Object)
+UnityEngine.Debug:LogWarning(Object, Object)
+UnityEngine.UIElements.PanelSettings:ApplyThemeStyleSheet(VisualElement) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:884)
+UnityEngine.UIElements.RuntimePanelAccess:get_panel() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:175)
+UnityEngine.UIElements.PanelSettings:get_visualTree() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:694)
+UnityEngine.UIElements.PanelSettings:AttachAndInsertUIDocumentToVisualTree(UIDocument) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:1124)
+UnityEngine.UIElements.UIDocument:RecreateUI() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/UIDocument.cs:1017)
+UnityEngine.UIElements.UIDocument:_Enable() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/UIDocument.cs:537)
+UnityEngine.UIElements.UIDocument:OnEnable() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/UIDocument.cs:515)
+
+Backtrace native integration status: Cannot initialize Crashpad client
+UnityEngine.DebugLogHandler:Internal_Log_Injected(LogType, LogOption, ManagedSpanWrapper&, IntPtr)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+FM.Game.UnityLogHandler:LogFormat(LogType, Object, String, Object[]) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Assets/Scripts/Game/FMInitialiser.cs:293)
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:LogWarning(Object)
+Backtrace.Unity.Runtime.Native.Windows.NativeClient:HandleNativeCrashes(IDictionary`2, IEnumerable`1) (at ./Library/PackageCache/io.backtrace.unity@c3dc42f2505a/Runtime/Native/Windows/NativeClient.cs:167)
+Backtrace.Unity.Runtime.Native.Windows.NativeClient:.ctor(BacktraceConfiguration, BacktraceBreadcrumbs, IDictionary`2, IEnumerable`1) (at ./Library/PackageCache/io.backtrace.unity@c3dc42f2505a/Runtime/Native/Windows/NativeClient.cs:74)
+Backtrace.Unity.Runtime.Native.NativeClientFactory:CreateNativeClient(BacktraceConfiguration, String, BacktraceBreadcrumbs, IDictionary`2, ICollection`1) (at ./Library/PackageCache/io.backtrace.unity@c3dc42f2505a/Runtime/Native/NativeClientFactory.cs:20)
+Backtrace.Unity.BacktraceClient:Refresh() (at ./Library/PackageCache/io.backtrace.unity@c3dc42f2505a/Runtime/BacktraceClient.cs:631)
+Backtrace.Unity.BacktraceClient:Initialize(BacktraceConfiguration, Dictionary`2, String) (at ./Library/PackageCache/io.backtrace.unity@c3dc42f2505a/Runtime/BacktraceClient.cs:469)
+SI.Core.BacktraceCrashReporter:OnCompleted(AsyncOperationHandle`1) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Debug/BacktraceCrashReporter.cs:209)
+System.Action`1:Invoke(T) (at <no-source>:1)
+UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1:InvokeCompletionEvent() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/AsyncOperations/AsyncOperationBase.cs:387)
+UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1:InvokeCompletionEvent() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/AsyncOperations/AsyncOperationBase.cs:387)
+UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1:Complete(TObject, Boolean, Exception, Boolean) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/AsyncOperations/AsyncOperationBase.cs:490)
+UnityEngine.ResourceManagement.AsyncOperations.ProviderOperation`1:ProviderCompleted(T, Boolean, Exception) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/AsyncOperations/ProviderOperation.cs:189)
+UnityEngine.ResourceManagement.ResourceProviders.InternalOp:CompleteOperation() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/ResourceProviders/BundledAssetProvider.cs:248)
+UnityEngine.ResourceManagement.ResourceProviders.InternalOp:ActionComplete(AsyncOperation) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/ResourceProviders/BundledAssetProvider.cs:206)
+System.Action`1:Invoke(T) (at <no-source>:1)
+
+Curl error 6: Could not resolve host: events.backtrace.io
+Curl error 6: Could not resolve host: events.backtrace.io
+Initialising plugin - game_plugin Nov 10 2026 21:11:32 FINAL
+{"Timestamp":"2026-11-14T10:34:21.8633962+01:00","LogLevel":"Information","Category":"Default","Message":"GAME_PLUGIN::initialise() called (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\apps\\game\\plugin\\generic\\game_plugin_impl.cpp:1614\u003EC:\\TeamCity\\work\\fm27-native\\apps\\game\\plugin\\generic\\game_plugin_impl.cpp:1614\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:21.8775941+01:00","LogLevel":"Information","Category":"default","Message":"Football Manager 27 plugin version: 27.0.1\u002B2503222 (fm27-rel-03-launch) (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\apps\\game\\plugin\\generic\\game_plugin_impl.cpp:854\u003EC:\\TeamCity\\work\\fm27-native\\apps\\game\\plugin\\generic\\game_plugin_impl.cpp:854\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:22.0761144+01:00","LogLevel":"Information","Category":"default","Message":"Loading translation data... (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sicore\\generic\\translation\\sitranslation.cpp:520\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sicore\\generic\\translation\\sitranslation.cpp:520\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:22.0973224+01:00","LogLevel":"Information","Category":"default","Message":"...Loading translation data took 22ms (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sicore\\generic\\translation\\sitranslation.cpp:538\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sicore\\generic\\translation\\sitranslation.cpp:538\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:22.2619113+01:00","LogLevel":"Information","Category":"MULTIPLAYER_CHANNEL","Message":"Created NETWORKING_PLAYFAB (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:85\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:85\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:22.5109456+01:00","LogLevel":"Information","Category":"USER_ACCOUNT_PLAYFAB_CHANNEL","Message":"Attempt login - primary dis = 2 (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:279\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:279\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:22.5124609+01:00","LogLevel":"Information","Category":"USER_ACCOUNT_PLAYFAB_CHANNEL","Message":"Attempt App Ticket Request (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:285\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:285\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:22.7999806+01:00","LogLevel":"Information","Category":"USER_ACCOUNT_PLAYFAB_CHANNEL","Message":"Encrypted App Ticket recieved, status = true (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:304\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:304\u003C/link\u003E\u003C/color\u003E)"}
+No Theme Style Sheet set to PanelSettings DefaultLayerSettings, UI will not render properly
+UnityEngine.DebugLogHandler:Internal_Log_Injected(LogType, LogOption, ManagedSpanWrapper&, IntPtr)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+FM.Game.UnityLogHandler:LogFormat(LogType, Object, String, Object[]) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Assets/Scripts/Game/FMInitialiser.cs:293)
+UnityEngine.Logger:Log(LogType, Object, Object)
+UnityEngine.Debug:LogWarning(Object, Object)
+UnityEngine.UIElements.PanelSettings:ApplyThemeStyleSheet(VisualElement) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:884)
+UnityEngine.UIElements.RuntimePanelAccess:get_panel() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:175)
+UnityEngine.UIElements.PanelSettings:get_visualTree() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:694)
+UnityEngine.UIElements.PanelSettings:AttachAndInsertUIDocumentToVisualTree(UIDocument) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:1124)
+UnityEngine.UIElements.UIDocument:set_panelSettings(PanelSettings) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/UIDocument.cs:237)
+FM.UI.FMDocumentManager:CreateDocument(PanelSettings, VisualTreeAsset, String) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Assets/Scripts/UI/FMDocumentManager.cs:282)
+FM.UI.FMDocumentManager:OnAssetsLoaded(ResourceHandle`1) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Assets/Scripts/UI/FMDocumentManager.cs:80)
+SI.Core.LoadComplete`1:Invoke(ResourceHandle`1) (at <no-source>:1)
+SI.Core.AssetRequest`1:Broadcast() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Subsystems/ResourcesSubsystem.Requests.cs:334)
+SI.Core.ResourcesSubsystem:ProcessRequests() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Subsystems/ResourcesSubsystem.Requests.cs:546)
+SI.Core.ResourcesSubsystem:Tick(Single) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Subsystems/ResourcesSubsystem.cs:293)
+SI.Core.TickSubsystem:Update() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Subsystems/TickSubsystem.cs:154)
+
+No Theme Style Sheet set to PanelSettings ShortcutLayerSettings, UI will not render properly
+UnityEngine.DebugLogHandler:Internal_Log_Injected(LogType, LogOption, ManagedSpanWrapper&, IntPtr)
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+FM.Game.UnityLogHandler:LogFormat(LogType, Object, String, Object[]) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Assets/Scripts/Game/FMInitialiser.cs:293)
+UnityEngine.Logger:Log(LogType, Object, Object)
+UnityEngine.Debug:LogWarning(Object, Object)
+UnityEngine.UIElements.PanelSettings:ApplyThemeStyleSheet(VisualElement) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:884)
+UnityEngine.UIElements.RuntimePanelAccess:get_panel() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:175)
+UnityEngine.UIElements.PanelSettings:get_visualTree() (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:694)
+UnityEngine.UIElements.PanelSettings:AttachAndInsertUIDocumentToVisualTree(UIDocument) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/PanelSettings.cs:1124)
+UnityEngine.UIElements.UIDocument:set_panelSettings(PanelSettings) (at C:/build/output/unity/unity/Modules/UIElements/Core/GameObjects/UIDocument.cs:237)
+SI.Bindable.ShortcutData:OnResourcesLoaded(ResourceHandle`1, ShortcutData) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.bindable/Runtime/Scripts/Shortcuts/ShortcutData.cs:556)
+SI.Core.AssetRequest`1:Broadcast() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Subsystems/ResourcesSubsystem.Requests.cs:334)
+SI.Core.ResourcesSubsystem:ProcessRequests() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Subsystems/ResourcesSubsystem.Requests.cs:546)
+SI.Core.ResourcesSubsystem:Tick(Single) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Subsystems/ResourcesSubsystem.cs:293)
+SI.Core.TickSubsystem:Update() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/Subsystems/TickSubsystem.cs:154)
+
+{"Timestamp":"2026-11-14T10:34:23.6168886+01:00","LogLevel":"Information","Category":"USER_ACCOUNT_PLAYFAB_CHANNEL","Message":"handle playfab_login_response (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:517\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:517\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:23.620458+01:00","LogLevel":"Information","Category":"USER_ACCOUNT_PLAYFAB_CHANNEL","Message":"login succeeded, token = {\n    \u0022Id\u0022: \u0022C0BC00E58DD8020A\u0022,\n    \u0022Type\u0022: \u0022title_player_account\u0022,\n    \u0022TypeString\u0022: \u0022title_player_account\u0022\n} id = C0BC00E58DD8020A type = title_player_account (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:550\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\sidistribution\\services\\distribution\\playfab\\user_account_playfab.cpp:550\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:23.623093+01:00","LogLevel":"Information","Category":"MULTIPLAYER_CHANNEL","Message":"Setting up NETWORKING_PLAYFAB (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:112\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:112\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:23.6236095+01:00","LogLevel":"Information","Category":"MULTIPLAYER_CHANNEL","Message":"Networking work mode: Automatic (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:159\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:159\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:23.6236095+01:00","LogLevel":"Information","Category":"MULTIPLAYER_CHANNEL","Message":"Creating local party user for user C0BC00E58DD8020A hash = 14117326714052193650 (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:165\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:165\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:23.6481338+01:00","LogLevel":"Information","Category":"MULTIPLAYER_CHANNEL","Message":"NETWORKING_PLAYFAB Initialised and ready to use (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:177\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:177\u003C/link\u003E\u003C/color\u003E)"}
+{"Timestamp":"2026-11-14T10:34:29.3719312+01:00","LogLevel":"Information","Category":"MULTIPLAYER_CHANNEL","Message":"Party State Change: RegionsChanged: 0 (\u003Ccolor=#3B8FE1\u003E\u003Clink=\u0022plugin-link://C:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:386\u003EC:\\TeamCity\\work\\fm27-native\\shared\\libraries\\si\\core\\simultiplayer\\services\\networking\\playfab\\networking_playfab.cpp:386\u003C/link\u003E\u003C/color\u003E)"}
+[FirstLook:Init] FirstLook client initialized.
+Football Manager 27 version: 27.0.1.2503222
+Unloading 5 Unused Serialized files (Serialized files now loaded: 74)
+UnloadTime: 0.190600 ms
+Unloading the last loaded scene b3449139cd3a0e349af080215641a948(build index: -1), is not supported. Please use SceneManager.LoadScene()/EditorSceneManager.OpenScene() to switch to another scene.
+UnityEngine.SceneManagement.SceneManager:UnloadSceneAsyncInternal_Injected(Scene&, UnloadSceneOptions) (at <no-source>:1)
+UnityEngine.SceneManagement.SceneManager:UnloadSceneAsyncInternal(Scene, UnloadSceneOptions) (at <no-source>:1)
+UnityEngine.SceneManagement.SceneManager:UnloadSceneAsync(Scene, UnloadSceneOptions) (at C:/build/output/unity/unity/Runtime/Export/SceneManager/SceneManager.cs:236)
+UnityEngine.ResourceManagement.ResourceProviders.UnloadSceneOp:Execute() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/ResourceProviders/SceneProvider.cs:239)
+UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1:InvokeExecute() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/AsyncOperations/AsyncOperationBase.cs:513)
+UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1:Start(ResourceManager, AsyncOperationHandle, DelegateList`1) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/AsyncOperations/AsyncOperationBase.cs:508)
+UnityEngine.ResourceManagement.ResourceManager:StartOperation(AsyncOperationBase`1, AsyncOperationHandle) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/ResourceManager.cs:424)
+UnityEngine.ResourceManagement.ResourceProviders.SceneProvider:UnityEngine.ResourceManagement.ResourceProviders.ISceneProvider2.ReleaseScene(ResourceManager, AsyncOperationHandle`1, UnloadSceneOptions) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/ResourceProviders/SceneProvider.cs:326)
+UnityEngine.ResourceManagement.ResourceProviders.SceneOp:Destroy() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/ResourceProviders/SceneProvider.cs:167)
+UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationBase`1:DecrementReferenceCount() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/AsyncOperations/AsyncOperationBase.cs:221)
+UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle`1:Release() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/ResourceManager/AsyncOperations/AsyncOperationHandle.cs:266)
+UnityEngine.AddressableAssets.Addressables:Release(AsyncOperationHandle`1) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/apps/game/FM Unity/Packages/com.unity.addressables/Runtime/Addressables.cs:1483)
+SI.Core.<RunSceneLoad>d__26:MoveNext() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/SceneLoader.cs:220)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at C:/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+SI.Core.SceneLoader:SetState(TransitionState) (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/SceneLoader.cs:146)
+SI.Core.<RunTransitionScene>d__25:MoveNext() (at C:/TeamCity/work/fm27-6000.3.18f1-custom-xcode-26.2/shared/packages/com.si.core/SceneLoader.cs:183)
+UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at C:/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+
+[ line 439999336]
+
+Unloading 269 unused Assets to reduce memory usage. Loaded Objects now: 28376.
+Total: 175.524900 ms (FindLiveObjects: 0.868800 ms CreateObjectMapping: 0.610600 ms MarkObjects: 173.910400 ms  DeleteObjects: 0.134600 ms)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 70)
+UnloadTime: 0.075500 ms
+Unloading 8 unused Assets to reduce memory usage. Loaded Objects now: 28373.
+Total: 177.726900 ms (FindLiveObjects: 0.801900 ms CreateObjectMapping: 0.574300 ms MarkObjects: 176.274200 ms  DeleteObjects: 0.076100 ms)
+
+Curl error 6: Could not resolve host: events.backtrace.io

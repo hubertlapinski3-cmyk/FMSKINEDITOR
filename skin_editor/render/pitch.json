@@ -1,0 +1,53 @@
+{
+  "schema": "fm-pitch/1",
+  "note": "Measured cell pitch per composition, panel units (px at the 2500 x 1406.25 panel the capture was taken on). A composition with no entry has NO measurement: pitch.lookup() returns an explicitly flagged estimate for it, never a silent default. Each entry names its evidence.",
+  "compositions": {
+    "SquadComposition-Large": {
+      "cell": 65.5,
+      "gap": 16.5,
+      "fit": "least squares over the three fixed-size cells (min size == max size) of the Squad overview: Atmosphere 4x2 = 311.5 x 147.5, Tactics 4x4 and Training 4x4 = 311.5 x 311.5; stride 82.000 = cell + gap, gap 16.500, all six size residuals 0.0 px; stacked fixed cells sit 16.6 px apart (vertical stride 328.1)",
+      "flexible_cells": "cells whose max size is 100 (HumanActionsControlPanelBlock 16x1, FirstTeamOverview 16x9) do not use the pitch: they fill what the fixed cells leave (2115.2 wide = panel content width minus the 4-cell column minus a 16.7 gap). Not modelled by the pitch.",
+      "context": "Squad > Overview, Large composition (Tactics at x16 y0 w4 h4), English, 2x scale, build 27.0.1.2503222, panel 2500 x 1406.25, Dortmund career; inspector capture-0.3.0 (mode 1) styles-squad-overview-20261114-104418.ndjson, world bounds of the host elements",
+      "evidence": "docs/evidence/phase9-m0-session-C-analysis-20261114.md and docs/evidence/phase9-m3-pitch-20261114.md",
+      "measured_on": "2026-11-14",
+      "breakpoint_text_scale": "not varied: one panel size, one text scale",
+      "also_measured": {
+        "information_display": "Medium",
+        "panel": "1600 wide, grid area 2057.3 x 1074.4 (25 columns x 13 rows)",
+        "same_composition": "the five cells are the Large composition's (Tactics 4x4 at the top right, Training 4x4 below, Atmosphere 4x2), so Medium did not switch to SquadComposition-Standard",
+        "fit": "stride 81.850, gap 15.500, max residual 0.40 px over 7 sizes; tile tops 4, 4 and 2 strides apart as in Large",
+        "capture": "styles-d6-squad-overview-medium-20261114-113402.ndjson"
+      }
+    },
+    "TacticalPlannerTeamInstructionsTabComposition-Large": {
+      "cell": 65.75,
+      "gap": 16.25,
+      "fit": "least squares over 12 sizes of fixed cells on Tactics > Team Instructions (pitch 6 cells wide = 475.6; Phases 4 = 311.5; ClubTeamReport, SetPieces, Penalties, Captains 4x2 = 311.5 x 147.5/148.4; DataHub 4x4 = 311.5 x 312.5): stride 81.965, gap 16.21, max residual 0.85 px, worst on the two content-driven heights (148.4 and 312.5). Column positions are exact multiples of the stride from the pitch's left (block 5.99, Phases 21.00, side tiles 25.00); side-tile tops are 0, 2, 6, 8, 10 strides x 82.",
+      "flexible_cells": "TeamInstructionsBlock (min 10 cells wide, max 100) fills 1214.8 = 15 columns; the pitch and the Phases cells span 15 rows (1213.9), more than the composition's 9: on this panel the grid is 29 columns x 15 rows and fixed cells follow the pitch, flexible cells and heights fill.",
+      "context": "Tactics > Team Instructions, interface at the panel's Large composition (pitch 6 wide, Phases 4 wide), English, 2x scale, build 27.0.1.2503222, panel 2500 x 1406.25; inspector capture-0.3.1 (mode 1) styles-d2-team-instructions-20261114-111314.ndjson; the composition name is the one whose fixed cells (pitch 6, Phases 4) match: it is inferred from the layout index, not recorded by the capture",
+      "evidence": "docs/evidence/phase9-m3-session-D-20261114.md",
+      "measured_on": "2026-11-14",
+      "breakpoint_text_scale": "not varied"
+    },
+    "SquadComposition-Small": {
+      "cell": 66.6,
+      "gap": 15.2,
+      "fit": "stride 81.800, gap 15.200 from the three fixed 4x2 tiles (Tactics, Training, Atmosphere side by side at row 6), max residual 0.00 px; inline hosts left 12 / 340 / 668 = 12 + 82 x column (0, 4, 8), top 504 = 12 + 82 x 6",
+      "flexible_cells": "HumanActionsControlPanelBlock 12x1 = 968 wide and FirstTeamOverview 12x5 = 968 x 394 fill the 12 x 8 grid (design size of the composition)",
+      "context": "Squad > Overview at 1152 x 864 (panel 1024 x 768, Information Display Small), grid container 992 x 664 = 12 x 8; capture styles-e3-squad-1152x864-20261114-115626.ndjson, plugin 0.4.0-capture",
+      "evidence": "docs/evidence/phase9-i2-session-E-20261114.md",
+      "measured_on": "2026-11-14",
+      "breakpoint_text_scale": "one panel size"
+    },
+    "SquadComposition-Standard": {
+      "cell": 67.1,
+      "gap": 14.4,
+      "fit": "stride 81.500, gap 14.400 from the fixed tiles (Tactics 4x4, Training 4x2, Atmosphere 4x2 in the right column), max residual 0.00 px over six sizes; Training and Atmosphere tops 2 and 4 strides below Tactics' lower edge row",
+      "flexible_cells": "HumanActionsControlPanelBlock 12x1 = 968.2 wide and FirstTeamOverview 12x7 = 968.2 x 558.4 fill the 16 x 8 grid (design size of the composition)",
+      "context": "Squad > Overview at 1600 x 900 (panel 1366 x 768.4, Information Display as locked for this resolution), grid container 1319.9 x 664.2 = 16 x 8; capture styles-e4-squad-1600x900-20261114-115839.ndjson, plugin 0.4.0-capture",
+      "evidence": "docs/evidence/phase9-i2-session-E-20261114.md",
+      "measured_on": "2026-11-14",
+      "breakpoint_text_scale": "one panel size"
+    }
+  }
+}

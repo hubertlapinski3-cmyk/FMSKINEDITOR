@@ -16,3 +16,8 @@ diagnostics/
 # secrets: the updater private key lives outside the repo (~/.tauri); never commit one
 *.key
 *.password
+
+# inspector plugin build output (the DLL is built from inspector/plugin; staging copies are not source)
+inspector/staging/
+inspector/plugin/obj/
+inspector/plugin/bin/

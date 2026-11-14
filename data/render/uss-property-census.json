@@ -1,0 +1,602 @@
+{
+ "schema": "fm-uss-property-census/1",
+ "stylesheets": 7545,
+ "custom_property_declarations": 5441,
+ "distinct_properties": 99,
+ "by_status": {
+  "mapped": 51,
+  "partial": 23,
+  "shorthand": 6,
+  "unmapped": 10,
+  "unknown": 9
+ },
+ "unknown": {
+  "-unity-background-image-tint-height": {
+   "count": 4,
+   "example": "20px"
+  },
+  "-unity-background-image-tint-font-size": {
+   "count": 4,
+   "example": "16px"
+  },
+  "transform": {
+   "count": 3,
+   "example": ""
+  },
+  "gap": {
+   "count": 2,
+   "example": "12px"
+  },
+  "-unity-id-262145": {
+   "count": 1,
+   "example": "right"
+  },
+  "-unity-background-image-tint-width": {
+   "count": 1,
+   "example": "150px"
+  },
+  "border-top": {
+   "count": 1,
+   "example": "0 solid #FFFFFF"
+  },
+  "border-right": {
+   "count": 1,
+   "example": "0 solid #FFFFFF"
+  },
+  "border-left": {
+   "count": 1,
+   "example": "0 solid #FFFFFF"
+  }
+ },
+ "properties": {
+  "height": {
+   "count": 16152,
+   "status": "mapped",
+   "example": "450px"
+  },
+  "width": {
+   "count": 15990,
+   "status": "mapped",
+   "example": "900px"
+  },
+  "align-self": {
+   "count": 13249,
+   "status": "mapped",
+   "example": "center"
+  },
+  "flex-grow": {
+   "count": 12076,
+   "status": "mapped",
+   "example": "1"
+  },
+  "flex-shrink": {
+   "count": 11982,
+   "status": "mapped",
+   "example": "0"
+  },
+  "margin-bottom": {
+   "count": 7519,
+   "status": "mapped",
+   "example": "32px"
+  },
+  "background-image": {
+   "count": 7099,
+   "status": "partial",
+   "example": "asset(3:8272664044156952402)"
+  },
+  "flex-direction": {
+   "count": 6311,
+   "status": "mapped",
+   "example": "column"
+  },
+  "background-color": {
+   "count": 5313,
+   "status": "mapped",
+   "example": "var(--colours-brand-foundation-midnight-70)"
+  },
+  "align-items": {
+   "count": 3366,
+   "status": "mapped",
+   "example": "center"
+  },
+  "border-radius": {
+   "count": 3159,
+   "status": "shorthand",
+   "example": "var(--border-radius-radius-8)"
+  },
+  "padding": {
+   "count": 3051,
+   "status": "shorthand",
+   "example": "var(--padding-padding-4)"
+  },
+  "flex": {
+   "count": 2986,
+   "status": "shorthand",
+   "example": "1 0 0"
+  },
+  "margin-top": {
+   "count": 2808,
+   "status": "mapped",
+   "example": "4px"
+  },
+  "-unity-text-align": {
+   "count": 2725,
+   "status": "partial",
+   "example": "upper-center"
+  },
+  "padding-bottom": {
+   "count": 2683,
+   "status": "mapped",
+   "example": "4px"
+  },
+  "padding-top": {
+   "count": 2504,
+   "status": "mapped",
+   "example": "4px"
+  },
+  "border-color": {
+   "count": 2216,
+   "status": "shorthand",
+   "example": "var(--layout-modules-block-border-colour)"
+  },
+  "justify-content": {
+   "count": 2204,
+   "status": "mapped",
+   "example": "center"
+  },
+  "border-width": {
+   "count": 2157,
+   "status": "shorthand",
+   "example": "0"
+  },
+  "align-content": {
+   "count": 1726,
+   "status": "mapped",
+   "example": "stretch"
+  },
+  "color": {
+   "count": 1702,
+   "status": "mapped",
+   "example": "#FDFF00"
+  },
+  "position": {
+   "count": 1694,
+   "status": "mapped",
+   "example": "absolute"
+  },
+  "display": {
+   "count": 1385,
+   "status": "mapped",
+   "example": "none"
+  },
+  "white-space": {
+   "count": 1382,
+   "status": "partial",
+   "example": "normal"
+  },
+  "max-height": {
+   "count": 1193,
+   "status": "mapped",
+   "example": "16px"
+  },
+  "min-height": {
+   "count": 1157,
+   "status": "mapped",
+   "example": "25px"
+  },
+  "overflow": {
+   "count": 1142,
+   "status": "mapped",
+   "example": "hidden"
+  },
+  "min-width": {
+   "count": 1126,
+   "status": "mapped",
+   "example": "200px"
+  },
+  "max-width": {
+   "count": 1060,
+   "status": "mapped",
+   "example": "8px"
+  },
+  "top": {
+   "count": 978,
+   "status": "mapped",
+   "example": "2%"
+  },
+  "border-top-right-radius": {
+   "count": 972,
+   "status": "mapped",
+   "example": "3px",
+   "raw_id_name": "-unity-id-458765",
+   "name_inferred": true
+  },
+  "-unity-background-image-tint-color": {
+   "count": 968,
+   "status": "partial",
+   "example": "var(--colours-base-purple-soft)"
+  },
+  "border-top-left-radius": {
+   "count": 960,
+   "status": "mapped",
+   "example": "3px",
+   "raw_id_name": "-unity-id-458764",
+   "name_inferred": true
+  },
+  "border-bottom-left-radius": {
+   "count": 945,
+   "status": "mapped",
+   "example": "3px",
+   "raw_id_name": "-unity-id-458759",
+   "name_inferred": true
+  },
+  "left": {
+   "count": 941,
+   "status": "mapped",
+   "example": "8%"
+  },
+  "border-bottom-right-radius": {
+   "count": 941,
+   "status": "mapped",
+   "example": "3px",
+   "raw_id_name": "-unity-id-458760",
+   "name_inferred": true
+  },
+  "margin-right": {
+   "count": 803,
+   "status": "mapped",
+   "example": "4px"
+  },
+  "border-bottom-width": {
+   "count": 789,
+   "status": "mapped",
+   "example": "1px"
+  },
+  "border-left-width": {
+   "count": 775,
+   "status": "mapped",
+   "example": "1px"
+  },
+  "border-right-width": {
+   "count": 775,
+   "status": "mapped",
+   "example": "1px"
+  },
+  "right": {
+   "count": 725,
+   "status": "mapped",
+   "example": "8%"
+  },
+  "padding-right": {
+   "count": 720,
+   "status": "mapped",
+   "example": "4px"
+  },
+  "border-top-width": {
+   "count": 716,
+   "status": "mapped",
+   "example": "1px"
+  },
+  "padding-left": {
+   "count": 701,
+   "status": "mapped",
+   "example": "4px"
+  },
+  "border-bottom-color": {
+   "count": 656,
+   "status": "mapped",
+   "example": "#F4F4F4"
+  },
+  "font-size": {
+   "count": 646,
+   "status": "mapped",
+   "example": "var(--typography-size-20)"
+  },
+  "bottom": {
+   "count": 634,
+   "status": "mapped",
+   "example": "26%"
+  },
+  "text-overflow": {
+   "count": 612,
+   "status": "mapped",
+   "example": "ellipsis"
+  },
+  "border-left-color": {
+   "count": 609,
+   "status": "mapped",
+   "example": "#F4F4F4"
+  },
+  "border-top-color": {
+   "count": 601,
+   "status": "mapped",
+   "example": "#F4F4F4"
+  },
+  "border-right-color": {
+   "count": 593,
+   "status": "mapped",
+   "example": "#F4F4F4"
+  },
+  "margin-left": {
+   "count": 564,
+   "status": "mapped",
+   "example": "4px"
+  },
+  "margin": {
+   "count": 555,
+   "status": "shorthand",
+   "example": "0"
+  },
+  "flex-wrap": {
+   "count": 508,
+   "status": "mapped",
+   "example": "nowrap"
+  },
+  "-unity-font-definition": {
+   "count": 473,
+   "status": "partial",
+   "example": "var(--typography-family-primary)"
+  },
+  "opacity": {
+   "count": 397,
+   "status": "mapped",
+   "example": "0.5"
+  },
+  "flex-basis": {
+   "count": 358,
+   "status": "mapped",
+   "example": "0"
+  },
+  "-unity-font-style": {
+   "count": 347,
+   "status": "partial",
+   "example": "var(--typography-weight-bold)"
+  },
+  "transition-duration": {
+   "count": 285,
+   "status": "unmapped",
+   "example": "0.5s",
+   "raw_id_name": "-unity-id-393217",
+   "name_inferred": true
+  },
+  "transition-property": {
+   "count": 282,
+   "status": "unmapped",
+   "example": "opacity",
+   "raw_id_name": "-unity-id-393218",
+   "name_inferred": true
+  },
+  "transition-timing-function": {
+   "count": 279,
+   "status": "unmapped",
+   "example": "ease-in-out",
+   "raw_id_name": "-unity-id-393219",
+   "name_inferred": true
+  },
+  "transition": {
+   "count": 276,
+   "status": "unmapped",
+   "example": "translate 0.5s ease-out"
+  },
+  "-unity-background-scale-mode": {
+   "count": 184,
+   "status": "partial",
+   "example": "scale-to-fit",
+   "raw_id_name": "-unity-id-262153",
+   "name_inferred": true
+  },
+  "scale": {
+   "count": 175,
+   "status": "partial",
+   "example": "var(--rlt-x-flip) 1"
+  },
+  "cursor": {
+   "count": 141,
+   "status": "unmapped",
+   "example": "var(--cursor-clickable-1x-url) var(--cursor-clickable-1x-hot",
+   "raw_id_name": "-unity-id-196608",
+   "name_inferred": true
+  },
+  "rotate": {
+   "count": 108,
+   "status": "partial",
+   "example": "90deg"
+  },
+  "translate": {
+   "count": 99,
+   "status": "partial",
+   "example": "-100% 0"
+  },
+  "visibility": {
+   "count": 90,
+   "status": "mapped",
+   "example": "hidden"
+  },
+  "transition-delay": {
+   "count": 78,
+   "status": "unmapped",
+   "example": "0.5s",
+   "raw_id_name": "-unity-id-393216",
+   "name_inferred": true
+  },
+  "letter-spacing": {
+   "count": 45,
+   "status": "mapped",
+   "example": "-8px"
+  },
+  "background-size": {
+   "count": 41,
+   "status": "partial",
+   "example": "keyword8",
+   "raw_id_name": "-unity-id-458757",
+   "name_inferred": true
+  },
+  "-unity-text-outline-width": {
+   "count": 32,
+   "status": "partial",
+   "example": "0",
+   "raw_id_name": "-unity-id-65550",
+   "name_inferred": true
+  },
+  "-unity-text-outline-color": {
+   "count": 30,
+   "status": "partial",
+   "example": "var(--none)",
+   "raw_id_name": "-unity-id-65549",
+   "name_inferred": true
+  },
+  "transform-origin": {
+   "count": 25,
+   "status": "partial",
+   "example": "center"
+  },
+  "text-shadow": {
+   "count": 23,
+   "status": "unmapped",
+   "example": "3px 3px 3px #000000"
+  },
+  "-unity-slice-scale": {
+   "count": 17,
+   "status": "partial",
+   "example": "0.1px",
+   "raw_id_name": "-unity-id-196615",
+   "name_inferred": true
+  },
+  "-unity-text-generator": {
+   "count": 17,
+   "status": "unmapped",
+   "example": "advanced",
+   "raw_id_name": "-unity-id-65548",
+   "name_inferred": true
+  },
+  "background-position-x": {
+   "count": 15,
+   "status": "partial",
+   "example": "right 2px",
+   "raw_id_name": "-unity-id-458754",
+   "name_inferred": true
+  },
+  "-unity-slice-left": {
+   "count": 15,
+   "status": "partial",
+   "example": "19",
+   "raw_id_name": "-unity-id-196613",
+   "name_inferred": true
+  },
+  "-unity-slice-top": {
+   "count": 15,
+   "status": "partial",
+   "example": "0",
+   "raw_id_name": "-unity-id-196616",
+   "name_inferred": true
+  },
+  "-unity-slice-right": {
+   "count": 15,
+   "status": "partial",
+   "example": "19",
+   "raw_id_name": "-unity-id-196614",
+   "name_inferred": true
+  },
+  "-unity-slice-bottom": {
+   "count": 15,
+   "status": "partial",
+   "example": "0",
+   "raw_id_name": "-unity-id-196612",
+   "name_inferred": true
+  },
+  "background-repeat": {
+   "count": 13,
+   "status": "partial",
+   "example": "repeat repeat",
+   "raw_id_name": "-unity-id-458756",
+   "name_inferred": true
+  },
+  "aspect-ratio": {
+   "count": 8,
+   "status": "mapped",
+   "example": "1",
+   "raw_id_name": "-unity-id-131075",
+   "name_inferred": true
+  },
+  "background-position-y": {
+   "count": 7,
+   "status": "partial",
+   "example": "top 0",
+   "raw_id_name": "-unity-id-458755",
+   "name_inferred": true
+  },
+  "-unity-background-image-tint-height": {
+   "count": 4,
+   "status": "unknown",
+   "example": "20px"
+  },
+  "-unity-background-image-tint-font-size": {
+   "count": 4,
+   "status": "unknown",
+   "example": "16px"
+  },
+  "transform": {
+   "count": 3,
+   "status": "unknown",
+   "example": ""
+  },
+  "-unity-overflow-clip-box": {
+   "count": 2,
+   "status": "unmapped",
+   "example": "content-box",
+   "raw_id_name": "-unity-id-196611",
+   "name_inferred": true
+  },
+  "-unity-text-overflow-position": {
+   "count": 2,
+   "status": "unmapped",
+   "example": "end",
+   "raw_id_name": "-unity-id-196618",
+   "name_inferred": true
+  },
+  "gap": {
+   "count": 2,
+   "status": "unknown",
+   "example": "12px"
+  },
+  "-unity-id-262145": {
+   "count": 1,
+   "status": "unknown",
+   "example": "right"
+  },
+  "-unity-background-image-tint-width": {
+   "count": 1,
+   "status": "unknown",
+   "example": "150px"
+  },
+  "word-spacing": {
+   "count": 1,
+   "status": "mapped",
+   "example": "4px",
+   "raw_id_name": "-unity-id-65553",
+   "name_inferred": true
+  },
+  "border-top": {
+   "count": 1,
+   "status": "unknown",
+   "example": "0 solid #FFFFFF"
+  },
+  "border-right": {
+   "count": 1,
+   "status": "unknown",
+   "example": "0 solid #FFFFFF"
+  },
+  "border-left": {
+   "count": 1,
+   "status": "unknown",
+   "example": "0 solid #FFFFFF"
+  },
+  "-unity-slice-type": {
+   "count": 1,
+   "status": "partial",
+   "example": "sliced",
+   "raw_id_name": "-unity-id-196617",
+   "name_inferred": true
+  }
+ }
+}

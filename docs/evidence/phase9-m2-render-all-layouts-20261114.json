@@ -1,0 +1,82 @@
+{
+    "layouts":  7467,
+    "rendered":  7467,
+    "failed":  0,
+    "seed":  null,
+    "all":  true,
+    "cached_ms":  {
+                      "p50":  1.8,
+                      "p95":  13.9,
+                      "p99":  44.7,
+                      "max":  565.8
+                  },
+    "first_ms":  {
+                     "p50":  5.4,
+                     "p95":  18.8,
+                     "max":  572.1
+                 },
+    "over_200ms_cached":  [
+                              "DetailedPreferencesBlock",
+                              "GameCreationLoadingScreen",
+                              "GameCreationManagerSelectionScreen",
+                              "IGEEditDetailsBlock",
+                              "ManagerPersonaDetailsScreen_EditMode",
+                              "NewsTransfersHubSiteHeader",
+                              "OnThePitchComparisonMainBlock",
+                              "PhoneDashboardHeaderNavigationTabs",
+                              "PlayerReportHeader",
+                              "ShotMapTile_4x4",
+                              "StaffTransferActivityBlock_12x8",
+                              "TeamShotMapTile_4x6",
+                              "data_display-graph-shotmap-default"
+                          ],
+    "unresolved_includes":  {
+                                "layouts":  0,
+                                "includes":  0
+                            },
+    "elements_total":  412006,
+    "flagged_elements":  215018,
+    "unresolved_variable_uses":  2,
+    "json_kb":  {
+                    "p50":  79.9,
+                    "p95":  588.1,
+                    "max":  27197.2
+                },
+    "biggest":  [
+                    [
+                        "DetailedPreferencesBlock",
+                        5487,
+                        565.8,
+                        27197.2
+                    ],
+                    [
+                        "GameCreationLoadingScreen",
+                        3792,
+                        470.3,
+                        10020.9
+                    ],
+                    [
+                        "ClubSiteHeaderSeasonInformationTemplate",
+                        1816,
+                        145.0,
+                        5193.9
+                    ],
+                    [
+                        "IGEEditDetailsBlock",
+                        1770,
+                        205.4,
+                        5744.3
+                    ],
+                    [
+                        "GameCreationAdvancedSetupChooseTeamScreen",
+                        1700,
+                        170.4,
+                        4393.2
+                    ]
+                ],
+    "seconds":  99.6,
+    "failures":  [
+
+                 ],
+    "game":  "27.0.1.2503222"
+}

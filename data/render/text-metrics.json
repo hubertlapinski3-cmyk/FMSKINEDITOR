@@ -1,0 +1,38 @@
+{
+ "schema": "fm-text-metrics/1",
+ "source": "inspector dumps (live-*-flat.json), single-line SIText, ratio of node height to the cascade's font size",
+ "dump_files": 12,
+ "min_samples": 100,
+ "line_height_px": {
+  "12": 18.6,
+  "13": 16.6,
+  "14": 21.5,
+  "16": 24.4
+ },
+ "samples": {
+  "12": {
+   "n": 3512,
+   "ratio": 1.55
+  },
+  "13": {
+   "n": 145,
+   "ratio": 1.277
+  },
+  "14": {
+   "n": 3342,
+   "ratio": 1.536
+  },
+  "16": {
+   "n": 386,
+   "ratio": 1.525
+  }
+ },
+ "excluded_sizes": {
+  "22": 9,
+  "10": 303,
+  "20": 16,
+  "18": 36,
+  "40": 3,
+  "24": 4
+ }
+}

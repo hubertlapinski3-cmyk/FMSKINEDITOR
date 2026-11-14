@@ -416,6 +416,45 @@ class Engine:
             raise RuntimeError("the game's layout bundles are not stock (%s); restore them or take a new snapshot" % (", ".join(bad[:3]) or t.get("message", "")))
         return uxml.Layouts(aa, self.ws.cache)
 
+    # ---- offline render (Phase 9, docs/PHASE9-PLAN.md): an approximation of the game's UI, never the game's renderer
+    def _renderer(self):
+        """One Renderer per game folder/profile; the layout bundles are read from the snapshot or from the stock game folder, as `_layouts` does."""
+        from .render.service import Renderer
+        from . import uxml
+        folder = self._render_folder(uxml)
+        key = (str(folder), id(self.index))
+        if getattr(self, "_rd", (None, None))[0] != key:
+            self._rd = (key, Renderer(folder, self.ws.cache, self.index))
+        return self._rd[1]
+
+    def _render_folder(self, uxml):
+        """The folder the render reads every layout bundle from. The snapshot is used only when it holds the COMPLETE set of the game's layout bundles (it often holds just
+        the few the build touches, and the L view's loader reads the snapshot as soon as it holds any one); otherwise the game folder, and only while its layout bundles
+        are stock (the same tamper rule as `_layouts`), so a test bundle left installed can never change a render."""
+        aa = Path(self.need_info()["aa_dir"])
+        live = {p.name for p in aa.glob(uxml.VTA_GLOB)}
+        if live and live <= {p.name for p in Path(self.ws.vanilla).glob(uxml.VTA_GLOB)}:
+            return Path(self.ws.vanilla)
+        t = install.tamper_status(self.ws, str(aa))
+        bad = [n for n, s in (t.get("files") or {}).items() if n.startswith("ui-visualtreeassets") and s != "stock"]
+        if t.get("state") == "game_updated" or (t.get("state") == "modified" and bad):
+            raise RuntimeError("the game's layout bundles are not stock (%s); restore them or take a new snapshot" % (", ".join(bad[:3]) or t.get("message", "")))
+        return aa
+
+    def render_layouts(self, q, b):
+        """The layouts the render browser lists (the VisualTreeAssets of the game), filtered by name."""
+        return self._renderer().layout_list(b.get("q", ""), b.get("limit") or 200)
+
+    def render_layout(self, q, b):
+        """The render tree of one layout with computed styles. `bundle` + `path_id`, or `name` (the first layout of that name)."""
+        bundle, pid = b.get("bundle"), b.get("path_id")
+        if not (bundle and pid):
+            rows = [r for r in self._layouts().list() if r["name"] == b.get("name")]
+            if not rows:
+                raise KeyError("no layout named %r" % b.get("name"))
+            bundle, pid = rows[0]["bundle"], rows[0]["path_id"]
+        return self._renderer().layout(bundle, pid, int(b.get("depth") or 3))
+
     def layouts_list(self, q, b):
         rows = self._layouts().list()
         s = str(b.get("q", "")).lower()

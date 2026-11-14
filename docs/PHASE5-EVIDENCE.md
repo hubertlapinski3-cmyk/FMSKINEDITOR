@@ -8,7 +8,7 @@
 | profile id | `27.0.1.2494769-b3067d4518ba` | `27.0.1.2503222-dfa1892e861e` |
 | catalog.hash | `b3067d4518bae634aa41883811b94345` | `dfa1892e861eef5fd9c26d5c909a552f` (live `catalog.hash`) |
 | style bundles (sha256 prefix) | common `f8d2e274`, default `8afaf42e` | common `21a642f5`, default `28d4f719` |
-| source | `...\FM Blog Classic Skin 112 Restore\original\game\...\StandaloneWindows64` (same hashes also in `D:\drive\FM27-Crimson\workspace\vanilla\2026-11-02`) | the vanilla snapshot of 2026-11-13 |
+| source | `...\FM Blog Classic Skin 112 Restore\original\game\...\StandaloneWindows64` (same hashes also in `C:\Users\Admin\FMSKINNING\workspace\vanilla\2026-11-02`) | the vanilla snapshot of 2026-11-13 |
 | tokens / sheets / rules | 2059 / 49 / 13020 | 2059 / 49 / 13028 |
 
 Caveats, stated plainly: the old bundles carry no version stamp, so the build label is the user's. The old `catalog.hash` is the one that sits next to a byte-identical `catalog.bin` (md5 `071fc7e6...`) in `Downloads\FM VANILLA\aa`; the Restore folder has the `catalog.bin` but no `catalog.hash`. Only the two style bundles of the old build exist on disk, so icons and layouts could not be compared for this pair (the diff says so instead of guessing).

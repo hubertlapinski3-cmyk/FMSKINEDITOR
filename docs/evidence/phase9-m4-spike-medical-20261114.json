@@ -1,0 +1,1049 @@
+{
+ "layout": "MedicalCentreTile_4x2",
+ "dump": "C:\\Users\\Admin\\FMSKINNING\\workspace\\notes\\ui-dumps\\medical-tile-from-capture-20261114.json",
+ "root_size": [
+  311.5,
+  147.5
+ ],
+ "render_ms_warm_first_call_included": 1256.8,
+ "timing_ms": {
+  "cascade_ready": 0.0,
+  "expand": 0.3,
+  "compute": 3.6,
+  "total": 3.9
+ },
+ "compared": 33,
+ "passed": 26,
+ "failed": 7,
+ "not_in_dump": 1,
+ "hidden_branch": 13,
+ "rows": [
+  {
+   "i": 0,
+   "node": "BindingExpect#TileBindingExpect",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 1,
+   "node": "TutorialAnchorElement#",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 2,
+   "node": "BindingRemapper#",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 3,
+   "node": "TemplateContainer#",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 4,
+   "node": "BindingExpect#TileTemplateBindingExpect",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 5,
+   "node": "VisualElement#layout-tile-base-container",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 6,
+   "node": "BindingVariables#TileVariables",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 7,
+   "node": "SIButton#layout-tile-interaction-button",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 8,
+   "node": "VisualElement#Tile_Border",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    147.5
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    147.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 9,
+   "node": "VisualElement#title area frame",
+   "expected": [
+    0.0,
+    0,
+    311.5,
+    33.2
+   ],
+   "got": [
+    0,
+    0,
+    311.5,
+    34
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0,
+    "w": 0.0,
+    "h": 0.8
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 10,
+   "node": "VisualElement#",
+   "expected": [
+    11.7,
+    2,
+    0,
+    31.2
+   ],
+   "got": [
+    12,
+    2,
+    0,
+    32
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0,
+    "w": 0,
+    "h": 0.8
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 11,
+   "node": "VisualElement#TitleContainer",
+   "expected": [
+    11.7,
+    2,
+    288.1,
+    31.2
+   ],
+   "got": [
+    12,
+    2,
+    287.5,
+    32
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0,
+    "w": -0.6,
+    "h": 0.8
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 12,
+   "node": "AutoScroller#",
+   "expected": [
+    11.7,
+    8.8,
+    288.1,
+    17.6
+   ],
+   "got": [
+    12,
+    2,
+    287.5,
+    32
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": -6.8,
+    "w": -0.6,
+    "h": 14.4
+   },
+   "pass": {
+    "x": true,
+    "y": false,
+    "w": true,
+    "h": false
+   },
+   "verdict": "FAIL"
+  },
+  {
+   "i": 13,
+   "node": "SIText#title-text",
+   "expected": [
+    11.7,
+    8.8,
+    85,
+    17.6
+   ],
+   "got": [
+    12,
+    2,
+    283.5,
+    16
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": -6.8,
+    "w": 198.5,
+    "h": -1.6
+   },
+   "pass": {
+    "x": true,
+    "y": false,
+    "w": false,
+    "h": false
+   },
+   "verdict": "FAIL"
+  },
+  {
+   "i": 14,
+   "node": "SIVisible#",
+   "expected": [
+    11.7,
+    8.8,
+    0,
+    0
+   ],
+   "got": [
+    12,
+    18,
+    287.5,
+    16
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 9.2,
+    "w": 287.5,
+    "h": 16
+   },
+   "pass": {
+    "x": true,
+    "y": false,
+    "w": false,
+    "h": false
+   },
+   "verdict": "FAIL"
+  },
+  {
+   "i": 15,
+   "node": "SIText#title-text-alt",
+   "verdict": "NOT IN INSPECTOR DUMP"
+  },
+  {
+   "i": 16,
+   "node": "VisualElement#CarouselMask",
+   "expected": [
+    303.7,
+    2,
+    0,
+    31.2
+   ],
+   "got": [
+    303.5,
+    2,
+    0,
+    32
+   ],
+   "delta": {
+    "x": -0.2,
+    "y": 0,
+    "w": 0,
+    "h": 0.8
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 17,
+   "node": "TemplateContainer#states-templates-tile-content",
+   "expected": [
+    0.0,
+    33.2,
+    311.5,
+    114.3
+   ],
+   "got": [
+    0,
+    34,
+    311.5,
+    113.5
+   ],
+   "delta": {
+    "x": 0.0,
+    "y": 0.8,
+    "w": 0.0,
+    "h": -0.8
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 18,
+   "node": "VisualElement#",
+   "expected": [
+    11.7,
+    33.2,
+    288.1,
+    106.4
+   ],
+   "got": [
+    12,
+    34,
+    287.5,
+    105.5
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0.8,
+    "w": -0.6,
+    "h": -0.9
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 19,
+   "node": "BindableSwitchElement#",
+   "expected": [
+    11.7,
+    33.2,
+    288.1,
+    106.4
+   ],
+   "got": [
+    12,
+    34,
+    287.5,
+    105.5
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0.8,
+    "w": -0.6,
+    "h": -0.9
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 20,
+   "node": "VisualElement#",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 21,
+   "node": "VisualElement#Frame",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 22,
+   "node": "VisualElement#Frame",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 23,
+   "node": "VisualElement#",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 24,
+   "node": "VisualElement#Frame",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 25,
+   "node": "VisualElement#Frame",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 26,
+   "node": "SIText#text",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 27,
+   "node": "StreamedObjectList#",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 28,
+   "node": "TemplateContainer#",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 29,
+   "node": "VisualElement#layout-divider-solid-horizontal",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 30,
+   "node": "VisualElement#data_display-string-list-item-default-unpacked",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 31,
+   "node": "VisualElement#",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 32,
+   "node": "SIText#text",
+   "verdict": "HIDDEN BRANCH (switch)"
+  },
+  {
+   "i": 33,
+   "node": "VisualElement#",
+   "expected": [
+    11.7,
+    33.2,
+    288.1,
+    106.4
+   ],
+   "got": [
+    12,
+    34,
+    287.5,
+    105.5
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0.8,
+    "w": -0.6,
+    "h": -0.9
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 34,
+   "node": "VisualElement#Frame",
+   "expected": [
+    11.7,
+    33.2,
+    288.1,
+    79.1
+   ],
+   "got": [
+    12,
+    34,
+    287.5,
+    77.9
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0.8,
+    "w": -0.6,
+    "h": -1.2
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 35,
+   "node": "VisualElement#Frame",
+   "expected": [
+    11.7,
+    33.2,
+    288.1,
+    79.1
+   ],
+   "got": [
+    12,
+    34,
+    287.5,
+    77.9
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0.8,
+    "w": -0.6,
+    "h": -1.2
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 36,
+   "node": "VisualElement#scaling-icons-condition",
+   "expected": [
+    11.7,
+    33.2,
+    23.4,
+    24.4
+   ],
+   "got": [
+    12,
+    34,
+    24,
+    24
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0.8,
+    "w": 0.6,
+    "h": -0.4
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 37,
+   "node": "VisualElement#Frame",
+   "expected": [
+    39.0,
+    33.2,
+    260.7,
+    79.1
+   ],
+   "got": [
+    40,
+    34,
+    259.5,
+    77.9
+   ],
+   "delta": {
+    "x": 1.0,
+    "y": 0.8,
+    "w": -1.2,
+    "h": -1.2
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 38,
+   "node": "VisualElement#Frame",
+   "expected": [
+    42.9,
+    33.2,
+    256.8,
+    24.4
+   ],
+   "got": [
+    44,
+    34,
+    255.5,
+    24.4
+   ],
+   "delta": {
+    "x": 1.1,
+    "y": 0.8,
+    "w": -1.3,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 39,
+   "node": "SIText#text",
+   "expected": [
+    42.9,
+    33.2,
+    147.5,
+    24.4
+   ],
+   "got": [
+    44,
+    34,
+    127.2,
+    24.4
+   ],
+   "delta": {
+    "x": 1.1,
+    "y": 0.8,
+    "w": -20.3,
+    "h": 0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": false,
+    "h": true
+   },
+   "verdict": "FAIL"
+  },
+  {
+   "i": 40,
+   "node": "StreamedObjectList#",
+   "expected": [
+    39.0,
+    65.5,
+    260.7,
+    46.9
+   ],
+   "got": [
+    40,
+    66.4,
+    259.5,
+    45.5
+   ],
+   "delta": {
+    "x": 1.0,
+    "y": 0.9,
+    "w": -1.2,
+    "h": -1.4
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 41,
+   "node": "VisualElement#Frame",
+   "expected": [
+    11.7,
+    112.3,
+    288.1,
+    27.3
+   ],
+   "got": [
+    12,
+    111.9,
+    287.5,
+    27.6
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": -0.4,
+    "w": -0.6,
+    "h": 0.3
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 42,
+   "node": "TemplateContainer#layout-divider-solid-horizontal",
+   "expected": [
+    11.7,
+    112.3,
+    288.1,
+    1
+   ],
+   "got": [
+    12,
+    111.9,
+    287.5,
+    1
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": -0.4,
+    "w": -0.6,
+    "h": 0
+   },
+   "pass": {
+    "x": true,
+    "y": false,
+    "w": true,
+    "h": true
+   },
+   "verdict": "FAIL"
+  },
+  {
+   "i": 43,
+   "node": "VisualElement#layout-divider-solid-horizontal",
+   "expected": [
+    11.7,
+    112.3,
+    288.1,
+    1
+   ],
+   "got": [
+    12,
+    111.9,
+    287.5,
+    1
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": -0.4,
+    "w": -0.6,
+    "h": 0
+   },
+   "pass": {
+    "x": true,
+    "y": false,
+    "w": true,
+    "h": true
+   },
+   "verdict": "FAIL"
+  },
+  {
+   "i": 44,
+   "node": "VisualElement#data_display-string-list-item-default-unpacked",
+   "expected": [
+    11.7,
+    121.1,
+    283.2,
+    18.6
+   ],
+   "got": [
+    12,
+    120.9,
+    283.5,
+    18.6
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": -0.2,
+    "w": 0.3,
+    "h": -0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 45,
+   "node": "VisualElement#",
+   "expected": [
+    11.7,
+    122.1,
+    15.6,
+    16.6
+   ],
+   "got": [
+    12,
+    122.2,
+    16,
+    16
+   ],
+   "delta": {
+    "x": 0.3,
+    "y": 0.1,
+    "w": 0.4,
+    "h": -0.6
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": true,
+    "h": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "i": 46,
+   "node": "SIText#text",
+   "expected": [
+    31.2,
+    121.1,
+    143.6,
+    18.6
+   ],
+   "got": [
+    32,
+    120.9,
+    131.4,
+    18.6
+   ],
+   "delta": {
+    "x": 0.8,
+    "y": -0.2,
+    "w": -12.2,
+    "h": -0.0
+   },
+   "pass": {
+    "x": true,
+    "y": true,
+    "w": false,
+    "h": true
+   },
+   "verdict": "FAIL"
+  }
+ ]
+}

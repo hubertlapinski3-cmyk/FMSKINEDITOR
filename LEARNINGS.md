@@ -11,8 +11,8 @@ Everything about macOS is [I] or [U]. Everything about bundle contents is [V] on
 
 Source documents that back this file (all on the Windows machine):
 - `D:\drive\FM27_SKIN_BRIEF.md` (31 KB): the original skin brief, token mapping, tooling, verification.
-- `D:\drive\FM27-Crimson\workspace\tools\` : `token_patch.py`, `uss_decompile.py`, `uss_dump.py`, `uxml_dump.py`, `uxml_edit.py`, `uxml_hide.py`, `grid_patch.py`, `verify_build.py`, `make_crimson_json.py`, `live_reach.py`, `contrast_gate.py`.
-- `D:\drive\FM27-Crimson\workspace\notes\` : `token-map.md`, `colour-reach-report.md`, `tile-grid-analysis.md`, `inspector-spec.md`, `keyword-encoding-proof.md`, `CONTINUE-SKIN-tacticalnavy.md`.
+- `C:\Users\Admin\FMSKINNING\workspace\tools\` : `token_patch.py`, `uss_decompile.py`, `uss_dump.py`, `uxml_dump.py`, `uxml_edit.py`, `uxml_hide.py`, `grid_patch.py`, `verify_build.py`, `make_crimson_json.py`, `live_reach.py`, `contrast_gate.py`.
+- `C:\Users\Admin\FMSKINNING\workspace\notes\` : `token-map.md`, `colour-reach-report.md`, `tile-grid-analysis.md`, `inspector-spec.md`, `keyword-encoding-proof.md`, `CONTINUE-SKIN-tacticalnavy.md`.
 - `C:\Users\Admin\Downloads\FM27_ColorFinder_v2\` : the Colour Finder (HTML/JS) and its `verify\` scripts and `REPORT.md`.
 - `C:\Users\Admin\Downloads\FM27_LayoutMCP\` : the layout index (`tools\build_index.py`, `layoutdb.py`, `server.py`, `docs\layout-format.md`, `docs\phase3-notes.md`) and `C:\Users\Admin\Downloads\FM27_LAYOUT_MCP.md` (spec incl. Part 2 Figma round trip).
 - `C:\Users\Admin\Downloads\SKIN\` : `01_CURRENT_SKIN_install_this` (final crimson skin), `02_history_versions`, `03_backups_original_game_files`, `04_patch_specs`, `README.md`.
@@ -391,3 +391,14 @@ Limits: hover/pressed states cannot appear in a static screenshot unless the use
 - Layout dump staleness now uses file hashes (fmlayout-index/2 meta.source vs the manifest's reference hashes); catalog.hash alone does not change when a single bundle is modified.
 
 - Correction (measured on Windows, 2026-11-12): the 67 ui-*.bundle files total about 189 MB, not the 1.4 GB stated above; the whole aa platform folder is about 4.0 GB in 534 bundles. A reference hash was checked against `certutil -hashfile ... SHA256` and matches.
+
+## Phase 9 (offline visualiser), what was learned (2026-11-14, build 27.0.1.2503222)
+
+Full detail and sources: docs/PHASE9-PLAN.md (progress logs and the RESUME STATE block at its end) and docs/evidence/phase9-*.
+- **Pipeline:** layout bundle -> parsed layout -> includes by GUID -> cascade over the root sheets -> render tree -> screen assembly (`render/screen.py`) -> static HTML measured in headless Edge, and the Studio React view. Measured values come from inspector captures (`fm-capture/1`, plugin 0.3.x/0.4.0: mode 1 resolved styles and boxes, mode 2 template sources, bindings reading).
+- **Grid and pitch:** hosts are absolutely positioned inline px: `left/top = padding + 82 x n`, `width/height = 82 x n - 16`; grid columns/rows = `round((container - 2 x padding + 16) / 82)`; the grid follows the PANEL and the composition follows the grid (12 x 8 Small, 16 x 8 Standard, 20 x 10+ Large). Pitch per composition in `skin_editor/render/pitch.json`; unmeasured compositions return an ESTIMATE flag.
+- **Render rules proven in game:** percentage main-axis size under a flexed parent is treated as auto (`percent_main_axis_rule`, two sources, strict firing condition); a switch shows one branch (`switch_branch_rule`).
+- **Assets:** `asset(F:P)` = index F into the externals of the bundle the SHEET was read from -> CAB -> bundle -> object P (`render/assets.py`). The UI font is a TextMeshPro SDF asset (ABC Social): named, never rendered.
+- **Binding:** `Binder.ToString()` is a template-position path, not a data path; bound text is shown as the layout's sample or nothing, labelled.
+- **Sheets:** six named root sheets plus Bundesliga identify by content signature; three empty-named root sheets are run-time created (negative instance ids, not in the census); the table control attaches no sheet.
+- **Capture API facts:** `inline` holds only code-set styles (uxml `style=` values are not in it); `resolved.flexBasis` is the layout-computed basis (NaN = auto); the quit dialog cannot be confirmed with actions off.

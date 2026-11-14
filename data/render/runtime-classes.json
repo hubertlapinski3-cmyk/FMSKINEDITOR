@@ -1,0 +1,372 @@
+{
+ "dump_files": 66,
+ "min_instances": 15,
+ "nodes": 180211,
+ "schema": "fm-runtime-classes/1",
+ "share": 0.97,
+ "source": "inspector dumps",
+ "types": {
+  "AutoScroller": {
+   "classes": [
+    "sitext-hover-cursor",
+    "unity-scroll-view",
+    "unity-scroll-view--horizontal",
+    "unity-scroll-view--scroll"
+   ],
+   "n": 158
+  },
+  "BindableSwitchElement": {
+   "classes": [
+    "bindable-switch-element",
+    "switch-element"
+   ],
+   "n": 6922
+  },
+  "BindableVariableSizedGridElement": {
+   "classes": [
+    "grid-element-scope",
+    "si-tile"
+   ],
+   "n": 215
+  },
+  "BlockElement": {
+   "classes": [
+    "grid-element--Block"
+   ],
+   "n": 57
+  },
+  "Button": {
+   "classes": [
+    "header-button",
+    "unity-button",
+    "unity-text-element"
+   ],
+   "n": 340
+  },
+  "ButtonGroup": {
+   "classes": [
+    "buttongroup"
+   ],
+   "n": 41
+  },
+  "Cell": {
+   "classes": [
+    "streamed-table__cell"
+   ],
+   "n": 6275
+  },
+  "DayCell": {
+   "classes": [
+    "date-selector-grid-element__inactive",
+    "navigatable"
+   ],
+   "n": 72
+  },
+  "DropTarget": {
+   "classes": [
+    "virtualised-list__view"
+   ],
+   "n": 839
+  },
+  "ExpandableContentElement": {
+   "classes": [
+    "switch-element"
+   ],
+   "n": 18
+  },
+  "ExpandedToggle": {
+   "classes": [
+    "streamed-table__checkbox",
+    "unity-base-field",
+    "unity-toggle"
+   ],
+   "n": 192
+  },
+  "ExpandingList": {
+   "classes": [
+    "HasSIClickable",
+    "align-self-stretch",
+    "flex-grow-class",
+    "row-direction-normal"
+   ],
+   "n": 283
+  },
+  "FMActionButton": {
+   "classes": [
+    "flex-grow-class"
+   ],
+   "n": 27
+  },
+  "FMPitchPositionIcon": {
+   "classes": [
+    "pitch-position-icon-picked"
+   ],
+   "n": 88
+  },
+  "FixedAspectGridLayoutElement": {
+   "classes": [
+    "si-tile-layout"
+   ],
+   "n": 36
+  },
+  "Footer": {
+   "classes": [
+    "streamed-table__column",
+    "streamed-table__footer"
+   ],
+   "n": 40
+  },
+  "GridElement": {
+   "classes": [
+    "grid-element-scope",
+    "si-tile"
+   ],
+   "n": 32
+  },
+  "GridSelectorNavigatable": {
+   "classes": [
+    "HasSIClickable",
+    "align-items-stretch",
+    "navigatable-no-cursor",
+    "virtualised-list__item"
+   ],
+   "n": 30
+  },
+  "HighlightOverlayElement": {
+   "classes": [
+    "highlighting"
+   ],
+   "n": 17
+  },
+  "Image": {
+   "classes": [
+    "unity-image"
+   ],
+   "n": 398
+  },
+  "Label": {
+   "classes": [
+    "unity-label",
+    "unity-text-element"
+   ],
+   "n": 353
+  },
+  "NavigableLink": {
+   "classes": [
+    "HasSIClickable",
+    "align-self-start",
+    "cell-medium",
+    "max-width-100-percent",
+    "navigatable-no-cursor"
+   ],
+   "n": 1102
+  },
+  "NavigatableVisualElement": {
+   "classes": [
+    "HasSIClickable",
+    "navigatable-no-cursor"
+   ],
+   "n": 421
+  },
+  "Pane": {
+   "classes": [
+    "pane"
+   ],
+   "n": 329
+  },
+  "Panel": {
+   "classes": [
+    "panel"
+   ],
+   "n": 102
+  },
+  "PluginContextMenuBindings": {
+   "classes": [
+    "navigatable-no-cursor",
+    "plugin-context-menu-bindings"
+   ],
+   "n": 367
+  },
+  "RepeatButton": {
+   "classes": [
+    "unity-repeat-button",
+    "unity-text-element"
+   ],
+   "n": 4598
+  },
+  "ResizablePanes": {
+   "classes": [
+    "resizable-panes",
+    "row-direction-normal"
+   ],
+   "n": 67
+  },
+  "SIButton": {
+   "classes": [
+    "HasSIClickable",
+    "navigatable",
+    "sibutton"
+   ],
+   "n": 3107
+  },
+  "SICheckBox": {
+   "classes": [
+    "sicheckbox",
+    "unity-base-field",
+    "unity-base-field--no-label",
+    "unity-toggle"
+   ],
+   "n": 45
+  },
+  "SIDropdown": {
+   "classes": [
+    "HasSIClickable",
+    "navigatable-no-cursor"
+   ],
+   "n": 708
+  },
+  "SIFloatingPopupWidget": {
+   "classes": [
+    "HasSIClickable",
+    "navigatable-no-cursor"
+   ],
+   "n": 36
+  },
+  "SIGradient": {
+   "classes": [
+    "sigradient"
+   ],
+   "n": 1698
+  },
+  "SIImage": {
+   "classes": [
+    "unity-image"
+   ],
+   "n": 2874
+  },
+  "SIRadialGauge": {
+   "classes": [
+    "siradialgauge"
+   ],
+   "n": 28
+  },
+  "SIRadioButton": {
+   "classes": [
+    "HasSIClickable",
+    "sicontainer_horizontal_align",
+    "unity-radio-button"
+   ],
+   "n": 247
+  },
+  "SIRadioGroup": {
+   "classes": [
+    "radio-group-tight",
+    "unity-group-box",
+    "unity-radio-button-group"
+   ],
+   "n": 37
+  },
+  "SIScrollView": {
+   "classes": [
+    "siscrollview",
+    "unity-scroll-view",
+    "unity-scroll-view--scroll"
+   ],
+   "n": 1126
+  },
+  "SIStepper": {
+   "classes": [
+    "stepper"
+   ],
+   "n": 84
+  },
+  "SIText": {
+   "classes": [
+    "sitext"
+   ],
+   "n": 14302
+  },
+  "Scroller": {
+   "classes": [
+    "unity-scroller"
+   ],
+   "n": 2302
+  },
+  "ScrollerSlider": {
+   "classes": [
+    "unity-base-field",
+    "unity-base-field--no-label",
+    "unity-base-slider",
+    "unity-scroller__slider",
+    "unity-slider"
+   ],
+   "n": 2299
+  },
+  "SecondaryNavigationBarShortcutElement": {
+   "classes": [
+    "flex-grow-class",
+    "min-width-none-class",
+    "row-direction-normal",
+    "tile-mockups-navigation-secondary-nav-hi-standard-res-default"
+   ],
+   "n": 16
+  },
+  "SelectionCell": {
+   "classes": [
+    "streamed-table__cell"
+   ],
+   "n": 244
+  },
+  "Sliding": {
+   "classes": [
+    "button_fill",
+    "flex-grow-class",
+    "row-direction-normal",
+    "unity-disabled"
+   ],
+   "n": 16
+  },
+  "StreamedObjectList": {
+   "classes": [
+    "navigatable-no-cursor",
+    "streamed-list-view"
+   ],
+   "n": 760
+  },
+  "StreamedTable": {
+   "classes": [
+    "navigatable-no-cursor",
+    "streamed-list-view",
+    "streamed-table"
+   ],
+   "n": 68
+  },
+  "Toggle": {
+   "classes": [
+    "radio-toggle",
+    "unity-base-field",
+    "unity-base-field--no-label",
+    "unity-toggle"
+   ],
+   "n": 52
+  },
+  "Tooltip": {
+   "classes": [
+    "sitooltip"
+   ],
+   "n": 2160
+  },
+  "UIDocumentRootElement": {
+   "classes": [
+    "unity-ui-document__root"
+   ],
+   "n": 119
+  },
+  "WrappedObjectList": {
+   "classes": [
+    "wrapped-object-list"
+   ],
+   "n": 63
+  }
+ }
+}

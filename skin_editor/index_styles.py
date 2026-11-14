@@ -6,7 +6,8 @@ from . import bundles, colour, uss
 
 VAR_RE = re.compile(r"var\((--[\w-]+)")
 REFERENCE_SHEET = "AlwaysAppliedStyleSheet"
-CACHE_SCHEMA = 3      # 2: literals carry the decoded alpha float. 3: out-of-range bundle colours are decode
+CACHE_SCHEMA = 4      # 4: nested function arguments decode correctly (uss._items_end); older caches are rebuilt
+#                       (history:) 3     # 2: literals carry the decoded alpha float. 3: out-of-range bundle colours are decode
                       # failures, not rescaled. Older caches are never migrated, only rebuilt from the bundles.
 
 
