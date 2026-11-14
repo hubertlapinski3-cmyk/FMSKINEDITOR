@@ -324,3 +324,6 @@ Fixture framework (data folders, generic test, fixture add/run CLI, published re
 
 ### I3 Session F, solo attempt (2026-11-14): aborted at startup
 Plugin 0.5.1 (hover and press dispatch) built and staged, sha EBF1BE4B...; the solo session aborted before any action: the game's main loop stalled at startup (pipe game_busy 7 minutes, Player.log silent, window not foreground). Restored by value and verified. No I3 data; the M7 calibration report stays a draft. Decision needed from the owner: retry solo (one launch with the window brought forward at once) or the ten-minute manual session. Details: docs/evidence/phase9-i3-session-F-20261114.md.
+
+### I3 Session F2, the authorised solo retry (2026-11-14): stalled again, aborted at 90 s
+The game's own window was focused (confirmed; focus is not the cause). The game stalls in its own start-up before GAME_PLUGIN::initialise() (present in every good launch, absent in F and F2); BepInEx and all plugins finished loading at +2 s and the Probe's frame counter shows the main loop alive until at least +27 s. Restored and verified; no more solo attempts. Next: the manual session with the owner at the PC; first launch with the baseline DLL to isolate the inspector from the environment, then 0.5.1 for the hover holds. Details and the quoted log lines: docs/evidence/phase9-i3-session-F2-20261114.md.
