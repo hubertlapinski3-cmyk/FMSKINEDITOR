@@ -1,0 +1,42 @@
+{
+ "checks": [
+  {
+   "id": "header-skin",
+   "kind": "table",
+   "skin": true,
+   "header": [
+    "position-dropdown",
+    "inf-team",
+    "portrait-name",
+    "attribute-pace",
+    "attribute-acceleration",
+    "attribute-agility",
+    "attribute-balance",
+    "attribute-natural-fitness",
+    "attribute-stamina",
+    "attribute-strength"
+   ],
+   "absent": [
+    "attribute-jumping-reach"
+   ]
+  },
+  {
+   "id": "header-vanilla",
+   "kind": "table",
+   "skin": false,
+   "header": [
+    "position-dropdown",
+    "inf-team",
+    "portrait-name",
+    "attribute-acceleration",
+    "attribute-agility",
+    "attribute-balance",
+    "attribute-jumping-reach",
+    "attribute-natural-fitness",
+    "attribute-pace",
+    "attribute-stamina",
+    "attribute-strength"
+   ]
+  }
+ ]
+}

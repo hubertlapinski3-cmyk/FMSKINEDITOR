@@ -169,6 +169,8 @@ def placeholder_kind(node):
     if node.get("type") not in TEXT_TYPES:
         return None
     a = node.get("attrs") or {}
+    if node.get("delivered"):
+        return "delivered"                                   # the text a capture recorded the game delivering to this element
     if a.get("text") not in (None, ""):
         return "set"
     return "sample" if a.get("DebugDisplay") not in (None, "") else "empty"

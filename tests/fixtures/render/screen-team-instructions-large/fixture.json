@@ -1,0 +1,57 @@
+{
+ "name": "screen-team-instructions-large",
+ "build": "27.0.1.2503222",
+ "kind": "screen",
+ "skin": false,
+ "screen": {
+  "composition": "TacticalPlannerTeamInstructionsTabComposition-Large",
+  "area": [
+   2361.3,
+   1213.9
+  ],
+  "padding": 0,
+  "reserved_right": 4,
+  "origin": [
+   28.3,
+   194.3
+  ],
+  "runtime_slots": [
+   {
+    "element_id": "ClubTeamReport",
+    "col": 25,
+    "row": 0,
+    "w": 4,
+    "h": 2
+   },
+   {
+    "element_id": "SetPieces",
+    "col": 25,
+    "row": 8,
+    "w": 4,
+    "h": 2
+   },
+   {
+    "element_id": "DataHub",
+    "col": 25,
+    "row": 2,
+    "w": 4,
+    "h": 4
+   },
+   {
+    "element_id": "Penalties",
+    "col": 25,
+    "row": 10,
+    "w": 4,
+    "h": 2
+   },
+   {
+    "element_id": "Captains",
+    "col": 25,
+    "row": 6,
+    "w": 4,
+    "h": 2
+   }
+  ]
+ },
+ "source": "capture styles-d2-team-instructions-20261114-111314.ndjson (plugin 0.3.1-capture); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions"
+}

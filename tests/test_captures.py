@@ -96,6 +96,34 @@ class Bindings(unittest.TestCase):
         self.assertIn("0.4.0", s["note"])
 
 
+class Transitions(unittest.TestCase):
+    """Plugin 0.5.0 mode 3 (polling): a hover session summarised without inference."""
+
+    def test_the_summary_counts_classes_and_pseudo_changes_and_keeps_events_out_of_the_elements(self):
+        hdr = dict(HEADER, mode="transitions", plugin="0.5.0-capture", watched=3)
+        rows = [{"frame": 5, "t": 1.0, "path": "P1/0/3", "type": "SIButton", "name": "b", "pseudo": [0, 2], "added": ["hover-class"], "removed": []},
+                {"frame": 9, "t": 1.5, "path": "P1/0/3", "type": "SIButton", "name": "b", "pseudo": [2, 0], "added": [], "removed": ["hover-class"]},
+                {"frame": 12, "t": 2.0, "path": "P1/0/9", "type": "VisualElement", "name": "", "appeared": True, "pseudo": [0, 0], "classes": "tooltip"},
+                {"frame": 14, "t": 2.1, "path": "P1/0/4", "type": "SIButton", "name": "c", "pseudo": [2, 2], "added": ["pressed"], "removed": []}]
+        d = Path(tempfile.mkdtemp())
+        f = d / "c.ndjson"
+        f.write_text("\n".join(json.dumps(x) for x in [hdr, *rows, FOOTER]) + "\n", encoding="utf-8")
+        c = captures.read_capture(f)
+        self.assertEqual(len(c.elements), 0)                                 # the lines are events, not elements
+        s = c.transition_summary()
+        self.assertEqual((s["events"], s["appeared"]), (3, 1))
+        self.assertEqual(s["classes"]["hover-class"], {"added": 1, "removed": 1, "types": {"SIButton": 2}})
+        self.assertEqual(s["classes"]["pressed"]["added"], 1)
+        self.assertEqual(s["pseudo_changes"]["0->2"]["classes_added"], {"hover-class": 1})
+        self.assertNotIn("2->2", s["pseudo_changes"])                        # a class change with the same mask is not a pseudo-state change
+
+    def test_another_mode_says_so(self):
+        d = Path(tempfile.mkdtemp())
+        f = d / "c.ndjson"
+        f.write_text("\n".join(json.dumps(x) for x in [HEADER, *ROWS[:1], FOOTER]) + "\n", encoding="utf-8")
+        self.assertFalse(captures.read_capture(f).transition_summary()["available"])
+
+
 class Readers(unittest.TestCase):
     def test_reads_header_elements_footer_and_summarises(self):
         c = captures.read_capture(write(ROWS))

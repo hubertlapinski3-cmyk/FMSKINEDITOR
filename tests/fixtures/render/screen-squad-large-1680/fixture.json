@@ -1,0 +1,21 @@
+{
+ "name": "screen-squad-large-1680",
+ "build": "27.0.1.2503222",
+ "kind": "screen",
+ "skin": false,
+ "screen": {
+  "composition": "SquadComposition-Large",
+  "area": [
+   1648.5,
+   828.2
+  ],
+  "padding": 12,
+  "reserved_right": 0,
+  "origin": [
+   15.8,
+   101.1
+  ],
+  "runtime_slots": []
+ },
+ "source": "capture styles-e2-squad-small-20261114-115336.ndjson (plugin 0.4.0-capture); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions"
+}

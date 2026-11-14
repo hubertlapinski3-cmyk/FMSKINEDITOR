@@ -1,0 +1,60 @@
+{
+ "schema": 2,
+ "name": "p6-class-test",
+ "game_build": null,
+ "vanilla_manifest": null,
+ "options": {
+  "flatten_gradients": false,
+  "skip_sheets": [],
+  "raise_specificity": true,
+  "contrast_backdrop": {
+   "rgb": "#171717",
+   "a": 1.0
+  },
+  "output": "bundles"
+ },
+ "token_overrides": [],
+ "literal_swaps": [],
+ "scoped_rules": [
+  {
+   "sheet": "AlwaysAppliedStyleSheet",
+   "selector": ".p6-loud",
+   "props": {
+    "background-color": {
+     "rgb": "#FF00FF",
+     "a": 1.0
+    }
+   }
+  }
+ ],
+ "rename_classes": {},
+ "contrast_pairs": [],
+ "tile_placement": [],
+ "reverts": [],
+ "image_swaps": [],
+ "layout_patches": [
+  {
+   "schema": 1,
+   "layout": {
+    "bundle": "ui-visualtreeassets_assets_globalvisualtreeassetpreload.bundle",
+    "name": "PreferencesFMMenuCard",
+    "path_id": "-3406188192083544136"
+   },
+   "ops": [
+    {
+     "op": "set-classes",
+     "id": 685404427,
+     "guard": {
+      "type": "VisualElement",
+      "name": "reload-skin-button"
+     },
+     "add": [
+      "p6-loud"
+     ]
+    }
+   ]
+  }
+ ],
+ "font_swaps": [],
+ "table_patches": []
+}

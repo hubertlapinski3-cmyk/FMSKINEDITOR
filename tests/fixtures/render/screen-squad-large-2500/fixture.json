@@ -1,0 +1,43 @@
+{
+ "name": "screen-squad-large-2500",
+ "build": "27.0.1.2503222",
+ "kind": "screen",
+ "skin": false,
+ "screen": {
+  "composition": "SquadComposition-Large",
+  "area": [
+   2468.8,
+   1319.3
+  ],
+  "padding": 12,
+  "reserved_right": 0,
+  "origin": [
+   15.6,
+   85.9
+  ],
+  "runtime_slots": [
+   {
+    "element_id": "SquadHierachy",
+    "col": 26,
+    "row": 10,
+    "w": 4,
+    "h": 2
+   },
+   {
+    "element_id": "MedicalCentre",
+    "col": 26,
+    "row": 12,
+    "w": 4,
+    "h": 2
+   },
+   {
+    "element_id": "Loans",
+    "col": 26,
+    "row": 14,
+    "w": 4,
+    "h": 2
+   }
+  ]
+ },
+ "source": "capture styles-d1-squad-overview-20261114-111054.ndjson (plugin 0.3.1-capture); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions"
+}

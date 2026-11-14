@@ -318,3 +318,6 @@ Overlay (tokens, literal swaps, rules, class/inline/attr patches), tile moves in
 
 ### M6 built (2026-11-14, resumed session)
 Tile move verified end to end through the real dump and placement store; the L, V, USS and token editor endpoints exercised through RPC on real data; side panel: element -> rule/token (project rule opens in the editor at its line, game rule read-only with an override, token chain and override), editor caret -> elements (rule and token). 323 engine + 52 studio tests. The structural template path was not wired (nothing to pair in the render; kept for M7 live pairing). Report: docs/evidence/phase9-m6-report-20261114.md. Next: M7.
+
+### M7 offline build (2026-11-14, resumed session)
+Fixture framework (data folders, generic test, fixture add/run CLI, published report with causes), 17 fixtures: the six plan fixtures plus Atmosphere, Training and six screens; draft report 660 pass / 77 fail (all with named causes) / 431 n/a. Delivered text wired by structural path (small; one row improved, stated). Plugin 0.5.0-capture adds mode 3 (polling transitions), built not run. Waiting on the I3 hover session before the report is finalized. Details: docs/evidence/phase9-m7-offline-report-20261114.md.

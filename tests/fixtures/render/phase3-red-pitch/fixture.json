@@ -1,0 +1,6 @@
+{
+ "name": "phase3-red-pitch",
+ "build": "27.0.1.2503222",
+ "kind": "rule",
+ "source": "LEARNINGS.md Phase 3 rule and the in-game screenshot held by the owner. NOTE: no layout holds an element with this class (the game adds it in code), so the check runs on a synthetic node carrying the class: it verifies the cascade (the project's rule wins over the game's), NOT that the element is the pitch container. CORRECTION recorded 2026-11-14: the first version of this fixture expected the game's own colour to be #DA0037, as LEARNINGS.md (section on the Crimson skin's pitch) states; the framework's first run showed the game's own rule in this build is #036150 (AlwaysAppliedStyleSheet rule 3904 and FigmaGeneratedStyles 2964; no pitch rule holds #DA0037), so the expectation was a fixture error taken from a note about a skin, and it was fixed to the game's data, not to the render's output by tolerance."
+}

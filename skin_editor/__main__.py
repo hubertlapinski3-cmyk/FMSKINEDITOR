@@ -26,6 +26,12 @@ def main(argv=None):
     s = sub.add_parser("check-layout"); s.add_argument("dump")
     s = sub.add_parser("import-layout"); s.add_argument("dump")
     sub.add_parser("paths")
+    s = sub.add_parser("fixture", help="render calibration fixtures: add one from a capture, or run them and publish the report")
+    fs = s.add_subparsers(dest="fcmd")
+    f = fs.add_parser("add"); f.add_argument("--name", required=True); f.add_argument("--capture", required=True); f.add_argument("--host", required=True, help="the host element of the subtree (e.g. Loans)")
+    f.add_argument("--layout", required=True, help="the layout the host shows (e.g. LoansTile_4x2)"); f.add_argument("--screenshot"); f.add_argument("--project", help="a project model (JSON) the render applies")
+    f.add_argument("--no-delivered", action="store_true", help="render with the layout's sample text instead of the captured text")
+    f = fs.add_parser("run"); f.add_argument("--report", help="write calibration-report.json and .md to this folder"); f.add_argument("--only", action="append", default=[])
     s = sub.add_parser("methods", help="list the API methods"); s.add_argument("--markdown", action="store_true")
     s = sub.add_parser("rpc", help="call one API method: rpc METHOD ['{json params}']")
     s.add_argument("method"); s.add_argument("params", nargs="?", default="{}")
@@ -44,6 +50,25 @@ def main(argv=None):
             return 1
         print(json.dumps(r, indent=1))
         return 0 if r["valid"] else 1
+    if a.cmd == "fixture":
+        from .render import fixtures
+        if a.fcmd == "add":
+            d = fixtures.add_from_capture(a.name, a.capture, a.host, a.layout, screenshot=a.screenshot, project_file=a.project, delivered=not a.no_delivered)
+            print("created %s (boxes and values checks filled from the capture)" % d)
+            return 0
+        if a.fcmd == "run":
+            ctx = fixtures.Context()
+            res = fixtures.run_all(ctx, only=set(a.only))
+            tot = {v: sum(r["counts"][v] for r in res) for v in ("PASS", "FAIL", "N/A")}
+            for r in res:
+                print("%-34s pass %-3d fail %-3d n/a %-3d" % (r["name"], r["counts"]["PASS"], r["counts"]["FAIL"], r["counts"]["N/A"]))
+            print("TOTAL pass %(PASS)d fail %(FAIL)d n/a %(N/A)d" % tot)
+            if a.report:
+                fixtures.report(res, a.report)
+                print("report written to", a.report)
+            return 0
+        print("usage: fixture add|run")
+        return 2
     if a.cmd == "methods":
         from .api.methods import methods
         rows = [m.info() for m in methods().values()]

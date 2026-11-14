@@ -166,7 +166,7 @@ def apply_layout_patches(top_nodes, docs):
     return applied, notes
 
 
-def table_placeholder(T, path_id, project=None):
+def table_placeholder(T, path_id, project=None, breakpoint=None):
     """A table view as a LABELLED PLACEHOLDER table: the header row is the view's column order (with the project's column edits applied when `project` is given), the cells
     are placeholders (no data). `T` is a `tables.Tables`. The column edits are the ones the build makes (`tables.apply_to_view` on a copy of the view)."""
     from .. import tables as tables_mod
@@ -189,7 +189,10 @@ def table_placeholder(T, path_id, project=None):
                 cols.append({"index": i, "id": c["m_columnID"], "width": m["m_widthOverride"], "required": bool(m["m_required"]), "cell": cells.get(c["m_columnID"])})
         except ValueError as e:
             notes.append(str(e))                                  # a stale op: the vanilla columns are shown and the reason is said
-    return {"view": base["name"], "path_id": base["path_id"], "edited": bool(doc) and not notes, "ops": len(doc["ops"]) if doc else 0, "notes": notes,
+    masks = {c["id"]: c["breakpoints"] for c in base["columns"]}
+    if breakpoint is not None:                    # a column shows at a breakpoint when its applicable-breakpoints mask has that bit (-1 = all): the screen's header row, not the view's whole list
+        cols = [c for c in cols if masks.get(c["id"], -1) == -1 or masks[c["id"]] & (1 << int(breakpoint))]
+    return {"view": base["name"], "path_id": base["path_id"], "edited": bool(doc) and not notes, "ops": len(doc["ops"]) if doc else 0, "notes": notes, "breakpoint": breakpoint,
             "columns": [{"id": c["id"], "width": c["width"], "header_text_id": (c.get("cell") or {}).get("header_text_id"), "cell_layout": (c.get("cell") or {}).get("cell_layout", "")} for c in cols],
             "label": "placeholder table: the header row is the view's column order, the cells hold no data"}
 

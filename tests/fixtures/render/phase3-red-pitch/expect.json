@@ -1,0 +1,38 @@
+{
+ "checks": [
+  {
+   "id": "project-rule-wins",
+   "kind": "rule",
+   "node": {
+    "type": "VisualElement",
+    "classes": [
+     "tactics-collapsable-pitch-container"
+    ]
+   },
+   "property": "background-color",
+   "expect": {
+    "value": "#6C001C",
+    "origin": "project",
+    "selector": ".tactics-collapsable-pitch-container.tactics-collapsable-pitch-container"
+   },
+   "above_vanilla": ".tactics-collapsable-pitch-container"
+  },
+  {
+   "id": "vanilla-is-the-games-colour",
+   "kind": "rule",
+   "skin": false,
+   "node": {
+    "type": "VisualElement",
+    "classes": [
+     "tactics-collapsable-pitch-container"
+    ]
+   },
+   "property": "background-color",
+   "expect": {
+    "value": "#036150",
+    "origin": "vanilla",
+    "selector": ".tactics-collapsable-pitch-container"
+   }
+  }
+ ]
+}

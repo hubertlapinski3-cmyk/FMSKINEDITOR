@@ -1,0 +1,47 @@
+{
+ "schema": 2,
+ "name": "p7-table-test-3",
+ "game_build": null,
+ "vanilla_manifest": null,
+ "options": {
+  "flatten_gradients": false,
+  "skip_sheets": [],
+  "raise_specificity": true,
+  "contrast_backdrop": {
+   "rgb": "#171717",
+   "a": 1.0
+  },
+  "output": "bundles"
+ },
+ "token_overrides": [],
+ "literal_swaps": [],
+ "scoped_rules": [],
+ "rename_classes": {},
+ "contrast_pairs": [],
+ "tile_placement": [],
+ "reverts": [],
+ "image_swaps": [],
+ "layout_patches": [],
+ "font_swaps": [],
+ "table_patches": [
+  {
+   "schema": 1,
+   "view": {
+    "bundle": "ui-tableviews_assets_all.bundle",
+    "name": "FirstTeamTableAttributesPhysical",
+    "path_id": "7888076823443905659"
+   },
+   "ops": [
+    {
+     "op": "hide-column",
+     "column": "attribute-jumping-reach"
+    },
+    {
+     "op": "move-column",
+     "column": "attribute-pace",
+     "after": "portrait-name"
+    }
+   ]
+  }
+ ]
+}

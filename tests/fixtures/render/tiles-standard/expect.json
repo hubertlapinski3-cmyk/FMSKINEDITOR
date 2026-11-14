@@ -1,0 +1,33 @@
+{
+ "checks": [
+  {
+   "id": "vanilla-pitch-left",
+   "kind": "tiles",
+   "skin": false,
+   "relations": [
+    {
+     "left": "TeamInstructionsPitch",
+     "right": "TeamInstructionsBlock",
+     "expect": true
+    }
+   ]
+  },
+  {
+   "id": "skin-instructions-left",
+   "kind": "tiles",
+   "skin": true,
+   "relations": [
+    {
+     "left": "TeamInstructionsBlock",
+     "right": "TeamInstructionsPitch",
+     "expect": true
+    },
+    {
+     "left": "TeamInstructionsPitch",
+     "right": "TeamInstructionsBlock",
+     "expect": false
+    }
+   ]
+  }
+ ]
+}

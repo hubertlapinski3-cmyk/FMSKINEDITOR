@@ -1,0 +1,11 @@
+{
+ "name": "tile-loans-c2-dump",
+ "build": "27.0.1.2503222",
+ "kind": "layout",
+ "layout": {
+  "name": "LoansTile_4x2"
+ },
+ "skin": false,
+ "delivered": false,
+ "source": "inspector fm_dump_tree of the Loans tile, c2 session 2026-11-13 (Small + Larger text): the M0 spike's reference"
+}

@@ -1,0 +1,21 @@
+{
+ "name": "screen-squad-standard",
+ "build": "27.0.1.2503222",
+ "kind": "screen",
+ "skin": false,
+ "screen": {
+  "composition": "SquadComposition-Standard",
+  "area": [
+   1319.9,
+   664.2
+  ],
+  "padding": 12,
+  "reserved_right": 0,
+  "origin": [
+   23.1,
+   94.8
+  ],
+  "runtime_slots": []
+ },
+ "source": "capture styles-e4-squad-1600x900-20261114-115839.ndjson (plugin 0.4.0-capture); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions"
+}

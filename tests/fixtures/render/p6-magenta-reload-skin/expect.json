@@ -1,0 +1,29 @@
+{
+ "checks": [
+  {
+   "id": "class-patch-paints-the-button",
+   "kind": "rule",
+   "element": {
+    "type": "VisualElement",
+    "name": "reload-skin-button"
+   },
+   "property": "background-color",
+   "expect": {
+    "value": "#FF00FF",
+    "origin": "project",
+    "selector": ".p6-loud"
+   }
+  },
+  {
+   "id": "vanilla-has-no-magenta",
+   "kind": "rule",
+   "skin": false,
+   "element": {
+    "type": "VisualElement",
+    "name": "reload-skin-button"
+   },
+   "property": "background-color",
+   "expect_absent": true
+  }
+ ]
+}

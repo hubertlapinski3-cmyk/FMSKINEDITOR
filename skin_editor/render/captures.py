@@ -21,9 +21,10 @@ def sheet_signature(rules):
 
 
 class Capture:
-    def __init__(self, header, elements, footer, order, sheet_contents=None):
+    def __init__(self, header, elements, footer, order, sheet_contents=None, transitions=None):
         self.header, self.elements, self.footer, self.order = header, elements, footer, order
         self.sheet_contents = sheet_contents or []
+        self.transitions = transitions or []
 
     def match_sheets(self, sheets):
         """Identify every sheet content line against indexed sheets (`index_styles` entries: {name, bundle, rules}).
@@ -64,6 +65,44 @@ class Capture:
             if e.get("type") == "SIText" and e.get("visible") and e.get("text") and (pre is None or p == subtree or p.startswith(pre)):
                 out[p] = {"text": e["text"], "width": (e.get("world") or [0, 0, 0])[2], "name": e.get("name")}
         return out
+
+    def delivered_binders(self, subtree=None):
+        """[{binder, text, width, path}] in capture order for the visible SIText that carry BOTH a delivered text and a Binder path (plugin 0.4.0+ with bindings): the pairs
+        `render.delivered` matches to layout nodes by structural path. Elements without a binder, or without text, are not listed."""
+        pre = subtree + "/" if subtree else None
+        out = []
+        for p in self.order:
+            e = self.elements[p]
+            if e.get("type") != "SIText" or not e.get("visible") or not e.get("text") or not isinstance(e.get("binding"), dict) or not e["binding"].get("binder"):
+                continue
+            if pre is None or p == subtree or p.startswith(pre):
+                out.append({"binder": e["binding"]["binder"], "text": e["text"], "width": (e.get("world") or [0, 0, 0])[2], "path": p})
+        return out
+
+    def transition_summary(self):
+        """Mode 3 (plugin 0.5.0, polling): what changed while the owner hovered and pressed. Per class: how often it was added and removed and on which element types, and per
+        pseudo-state mask change: how often, with the classes that came with it. A capture of another mode says so instead of returning zeros."""
+        if self.header.get("mode") != "transitions":
+            return {"available": False, "note": "not a transitions capture (mode %s)" % self.header.get("mode")}
+        classes, masks, appeared = {}, {}, 0
+        for e in self.transitions:
+            if e.get("appeared"):
+                appeared += 1
+                continue
+            for k in ("added", "removed"):
+                for c in e.get(k) or []:
+                    row = classes.setdefault(c, {"added": 0, "removed": 0, "types": {}})
+                    row[k] += 1
+                    row["types"][e.get("type")] = row["types"].get(e.get("type"), 0) + 1
+            old, new = (e.get("pseudo") or [0, 0])
+            if old != new:
+                row = masks.setdefault("%s->%s" % (old, new), {"count": 0, "types": {}, "classes_added": {}})
+                row["count"] += 1
+                row["types"][e.get("type")] = row["types"].get(e.get("type"), 0) + 1
+                for c in e.get("added") or []:
+                    row["classes_added"][c] = row["classes_added"].get(c, 0) + 1
+        return {"available": True, "events": len(self.transitions) - appeared, "appeared": appeared, "watched": self.header.get("watched"), "classes": classes, "pseudo_changes": masks,
+                "complete": self.complete}
 
     def bindings_summary(self):
         """Mode 4 (plugin 0.4.0+, `bindings` in the header): counts over every SIText: how many carry a `binding` object, how many report IsBound / IsReady, how many have
@@ -123,7 +162,7 @@ def label_of(e):
 
 
 def read_capture(path):
-    header, footer, elements, order, sheets = None, None, {}, [], []
+    header, footer, elements, order, sheets, events = None, None, {}, [], [], []
     for n, line in enumerate(Path(path).read_text(encoding="utf-8").splitlines()):
         if not line.strip():
             continue
@@ -137,6 +176,8 @@ def read_capture(path):
             header = o
         elif o.get("end"):
             footer = o
+        elif header is not None and header.get("mode") == "transitions":
+            events.append(o)                                   # 0.5.0+: one line per class or pseudo-state change, not an element
         elif o.get("sheet_content"):
             sheets.append(o)                                   # 0.3.1+: rule content of the sheets attached to captured elements
         else:
@@ -144,7 +185,7 @@ def read_capture(path):
             order.append(o["path"])
     if header is None:
         raise ValueError("empty capture: %s" % path)
-    return Capture(header, elements, footer, order, sheets)
+    return Capture(header, elements, footer, order, sheets, events)
 
 
 def match_layouts(capture, layouts, hash_of=None):

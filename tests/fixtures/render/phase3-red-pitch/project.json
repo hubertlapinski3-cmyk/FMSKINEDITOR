@@ -1,0 +1,38 @@
+{
+ "schema": 2,
+ "name": "phase3-red-pitch",
+ "game_build": null,
+ "vanilla_manifest": null,
+ "options": {
+  "flatten_gradients": false,
+  "skip_sheets": [],
+  "raise_specificity": true,
+  "contrast_backdrop": {
+   "rgb": "#171717",
+   "a": 1.0
+  }
+ },
+ "token_overrides": [],
+ "literal_swaps": [],
+ "scoped_rules": [
+  {
+   "sheet": "AlwaysAppliedStyleSheet",
+   "selector": ".tactics-collapsable-pitch-container.tactics-collapsable-pitch-container",
+   "props": {
+    "background-color": {
+     "rgb": "#6C001C",
+     "a": 1.0
+    }
+   },
+   "why": "hard-coded #DA0037 in the game's rule; the doubled class raises specificity above it"
+  }
+ ],
+ "rename_classes": {},
+ "contrast_pairs": [],
+ "tile_placement": [],
+ "reverts": [],
+ "image_swaps": [],
+ "layout_patches": [],
+ "font_swaps": [],
+ "table_patches": []
+}

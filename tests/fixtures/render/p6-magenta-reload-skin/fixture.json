@@ -1,0 +1,10 @@
+{
+ "name": "p6-magenta-reload-skin",
+ "build": "27.0.1.2503222",
+ "kind": "layout",
+ "layout": {
+  "name": "PreferencesFMMenuCard"
+ },
+ "skin": true,
+ "source": "p6-class-test (the owner's project), PHASE6-EVIDENCE: magenta seen around the Reload Skin row in game, screenshot held by the owner"
+}

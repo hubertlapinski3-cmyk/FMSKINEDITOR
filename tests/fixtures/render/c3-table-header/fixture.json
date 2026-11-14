@@ -1,0 +1,10 @@
+{
+ "name": "c3-table-header",
+ "build": "27.0.1.2503222",
+ "kind": "table",
+ "table": {
+  "name": "FirstTeamTableAttributesPhysical",
+  "breakpoint": 3
+ },
+ "source": "c3-table screenshot 2026-11-13 and the header row written down in INGAME-CHECKLIST.md (Picked, Inf, Player, Pace, Acceleration, Agility, Balance, Natural Fitness, Stamina, Strength; stock order with Jumping Reach); project p7-table-test-3"
+}

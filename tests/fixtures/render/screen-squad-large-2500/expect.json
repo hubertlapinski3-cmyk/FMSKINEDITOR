@@ -1,0 +1,40 @@
+{
+ "checks": [
+  {
+   "id": "hosts",
+   "kind": "screen",
+   "boxes": {
+    "Atmosphere": [
+     2160.2,
+     753.9,
+     311.5,
+     147.5
+    ],
+    "Tactics": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "Training": [
+     2160.2,
+     425.8,
+     311.5,
+     311.5
+    ],
+    "HumanActionsControlPanelBlock": [
+     28.3,
+     97.7,
+     2115.2,
+     66.4
+    ],
+    "FirstTeamOverview": [
+     28.3,
+     179.7,
+     2115.2,
+     1213.9
+    ]
+   }
+  }
+ ]
+}

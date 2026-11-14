@@ -495,7 +495,7 @@ class Engine:
         """A table view as a labelled placeholder table (its header row is the column order); with `project` (and skin not false) the project's column edits are applied."""
         project = project_mod.load(self.ws, b["project"]) if b.get("project") and b.get("skin", True) else None
         from .render import overlay
-        return overlay.table_placeholder(self._tables(), b["path_id"], project)
+        return overlay.table_placeholder(self._tables(), b["path_id"], project, b.get("breakpoint"))
 
     def render_screen(self, q, b):
         """A composition's cells placed on a grid container of `width` x `height` px (see render/screen.py). With `project` (and skin not false) the project's tile moves apply."""

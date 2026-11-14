@@ -2,6 +2,7 @@
 import time
 
 from . import cascade as cascade_mod
+from . import delivered as delivered_mod
 from . import overlay
 from .html import flatten, font_label, load_text_metrics, percent_main_axis_rule, placeholder_kind, placeholder_text, style_dict, switch_branch_rule
 from .assets import AssetResolver, Drawn, apply_assets
@@ -60,7 +61,7 @@ class Renderer:
             self._skin[p["name"]] = hit
         return hit[1], hit[2]
 
-    def layout(self, bundle, path_id, depth=3, branches=None, project=None):
+    def layout(self, bundle, path_id, depth=3, branches=None, project=None, delivered=None):
         t0 = time.perf_counter()
         notes, applied = [], 0
         if project is not None:
@@ -80,7 +81,8 @@ class Renderer:
             sheet_bundles = {n: b for b, n, _w in ROOT_SHEETS}
             sheet_bundles.update({s['name']: s['bundle'] for s in (self.bank.ix.sheets if self.bank.ix is not None else [])})
             asset_counts = apply_assets(top, self._assets, bundle, sheet_bundles, self._drawn)
-        switch_branch_rule(top, branches)                             # one branch per switch, the rest not drawn and said so
+        switch_branch_rule(top, branches)
+        delivered_report = delivered_mod.apply(top, delivered) if delivered else None      # M7: captured text for the nodes it pairs with, by structural path                             # one branch per switch, the rest not drawn and said so
         percent_main_axis_rule(top)                                   # a game rule CSS does not share (html.py); notes each node it changes in `layout_rules`
         for n in flatten(top):
             n["style"] = style_dict(n, self._metrics)               # what draws the element (mapped and partial properties only)
@@ -99,7 +101,7 @@ class Renderer:
                 walk(k)
         for n in top:
             walk(n)
-        return {"layout": tree["layout"], "bundle": bundle, "path_id": str(path_id), "notice": NOTICE, "tree": top, "includes": includes, "summary": summary, "assets": asset_counts,
+        return {"layout": tree["layout"], "bundle": bundle, "path_id": str(path_id), "notice": NOTICE, "tree": top, "includes": includes, "summary": summary, "assets": asset_counts, "delivered": delivered_report,
                 "overlay": ({"project": project["name"], "hash": overlay.project_hash(project), "output": (project.get("options") or {}).get("output", "bundles"),
                              "layout_patch_ops_applied": applied, "notes": notes, "not_applied": overlay.NOT_APPLIED} if project is not None else None),
                 "sheet_order": [{"position": i, "bundle": b, "sheet": n, "why": why} for i, (b, n, why) in enumerate(ROOT_SHEETS)],

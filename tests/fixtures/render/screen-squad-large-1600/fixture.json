@@ -1,0 +1,29 @@
+{
+ "name": "screen-squad-large-1600",
+ "build": "27.0.1.2503222",
+ "kind": "screen",
+ "skin": false,
+ "screen": {
+  "composition": "SquadComposition-Large",
+  "area": [
+   2057.3,
+   1074.4
+  ],
+  "padding": 12,
+  "reserved_right": 0,
+  "origin": [
+   16.3,
+   93.1
+  ],
+  "runtime_slots": [
+   {
+    "element_id": "SquadHierachy",
+    "col": 21,
+    "row": 10,
+    "w": 4,
+    "h": 2
+   }
+  ]
+ },
+ "source": "capture styles-d6-squad-overview-medium-20261114-113402.ndjson (plugin 0.3.1-capture); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions"
+}

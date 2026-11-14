@@ -1,0 +1,136 @@
+"""Builds the calibration fixtures that are not made by `fixture add` (docs/PHASE9-PLAN.md section 8), from the evidence held: the owner's phase test projects (p6-class-test,
+p7-table-test-3, p7-tile-test), the Phase 3 rule, the c2 Loans dump and the Session D/E captures of the screens. Run once; the folders are data in tests/fixtures/render.
+
+    python tools/make_phase_fixtures.py [--captures DIR]
+
+Every fixture says where its truth comes from in fixture.json `source`. Nothing here decides a verdict: the runners (skin_editor/render/fixtures.py) do."""
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from skin_editor import config, project, tiles                       # noqa: E402
+from skin_editor.render import captures, fixtures                     # noqa: E402
+
+UI = Path(r"C:\Users\Admin\FMSKINNING\workspace\notes\ui-dumps")
+BUILD = "27.0.1.2503222"
+
+
+def write(name, fixture, expect, dump=None, proj=None):
+    d = fixtures.FIXTURES / name
+    d.mkdir(parents=True, exist_ok=True)
+    fixture = dict({"name": name, "build": BUILD}, **fixture)
+    (d / "fixture.json").write_text(json.dumps(fixture, indent=1), encoding="utf-8")
+    (d / "expect.json").write_text(json.dumps({"checks": expect}, indent=1), encoding="utf-8")
+    if dump is not None:
+        (d / "dump.json").write_text(json.dumps(dump), encoding="utf-8")
+    if proj is not None:
+        (d / "project.json").write_text(json.dumps(proj, indent=1), encoding="utf-8")
+    print("fixture", name)
+
+
+def phase_projects(ws):
+    # 1. Phase 3: the red rule on the pitch container (LEARNINGS.md); the element is added in code, so a synthetic node carries the class
+    red = project.new("phase3-red-pitch")
+    red["scoped_rules"] = [{"sheet": "AlwaysAppliedStyleSheet", "selector": ".tactics-collapsable-pitch-container.tactics-collapsable-pitch-container",
+                            "props": {"background-color": {"rgb": "#6C001C", "a": 1.0}}, "why": "hard-coded #DA0037 in the game's rule; the doubled class raises specificity above it"}]
+    write("phase3-red-pitch", {"kind": "rule", "source": "LEARNINGS.md Phase 3 rule and the in-game screenshot held by the owner. NOTE: no layout holds an element with this class (the game adds it in code), "
+                               "so the check runs on a synthetic node carrying the class: it verifies the cascade (the project's rule wins over the game's), NOT that the element is the pitch container. "
+                               "CORRECTION recorded 2026-11-14: the first version of this fixture expected the game's own colour to be #DA0037, as LEARNINGS.md (section on the Crimson skin's pitch) states; the "
+                               "framework's first run showed the game's own rule in this build is #036150 (AlwaysAppliedStyleSheet rule 3904 and FigmaGeneratedStyles 2964; no pitch rule holds #DA0037), so the "
+                               "expectation was a fixture error taken from a note about a skin, and it was fixed to the game's data, not to the render's output by tolerance."},
+          [{"id": "project-rule-wins", "kind": "rule", "node": {"type": "VisualElement", "classes": ["tactics-collapsable-pitch-container"]}, "property": "background-color",
+            "expect": {"value": "#6C001C", "origin": "project", "selector": ".tactics-collapsable-pitch-container.tactics-collapsable-pitch-container"},
+            "above_vanilla": ".tactics-collapsable-pitch-container"},
+           {"id": "vanilla-is-the-games-colour", "kind": "rule", "skin": False, "node": {"type": "VisualElement", "classes": ["tactics-collapsable-pitch-container"]}, "property": "background-color",
+            "expect": {"value": "#036150", "origin": "vanilla", "selector": ".tactics-collapsable-pitch-container"}}], proj=red)
+    # 2. Phase 5/6: the class patch that made the Reload Skin row magenta
+    p6 = project.load(ws, "p6-class-test")
+    write("p6-magenta-reload-skin", {"kind": "layout", "layout": {"name": "PreferencesFMMenuCard"}, "skin": True,
+                                     "source": "p6-class-test (the owner's project), PHASE6-EVIDENCE: magenta seen around the Reload Skin row in game, screenshot held by the owner"},
+          [{"id": "class-patch-paints-the-button", "kind": "rule", "element": {"type": "VisualElement", "name": "reload-skin-button"}, "property": "background-color",
+            "expect": {"value": "#FF00FF", "origin": "project", "selector": ".p6-loud"}},
+           {"id": "vanilla-has-no-magenta", "kind": "rule", "skin": False, "element": {"type": "VisualElement", "name": "reload-skin-button"}, "property": "background-color",
+            "expect_absent": True}], proj=p6)
+    # 3. Phase 7 c3: the Squad overview Physical table
+    t3 = project.load(ws, "p7-table-test-3")
+    hdr = ["position-dropdown", "inf-team", "portrait-name", "attribute-acceleration", "attribute-agility", "attribute-balance", "attribute-jumping-reach", "attribute-natural-fitness",
+           "attribute-pace", "attribute-stamina", "attribute-strength"]
+    edited = ["position-dropdown", "inf-team", "portrait-name", "attribute-pace", "attribute-acceleration", "attribute-agility", "attribute-balance", "attribute-natural-fitness",
+              "attribute-stamina", "attribute-strength"]
+    write("c3-table-header", {"kind": "table", "table": {"name": "FirstTeamTableAttributesPhysical", "breakpoint": 3},
+                              "source": "c3-table screenshot 2026-11-13 and the header row written down in INGAME-CHECKLIST.md (Picked, Inf, Player, Pace, Acceleration, Agility, Balance, Natural Fitness, "
+                                        "Stamina, Strength; stock order with Jumping Reach); project p7-table-test-3"},
+          [{"id": "header-skin", "kind": "table", "skin": True, "header": edited, "absent": ["attribute-jumping-reach"]},
+           {"id": "header-vanilla", "kind": "table", "skin": False, "header": hdr}], proj=t3)
+    # 4. Phase 7 b1/b2: instructions left, pitch right, at Standard and Large
+    moves = tiles.ops_for(ws, "p7-tile-test")
+    for bp in ("Standard", "Large"):
+        comp = "TacticalPlannerTeamInstructionsTabComposition-" + bp
+        write("tiles-" + bp.lower(), {"kind": "tiles", "screen": {"composition": comp, "area": [2361.3, 1213.9], "padding": 0, "reserved_right": 4, "moves": [m for m in moves if m["composition"] == comp]},
+                                      "source": "p7-tile-test (the owner's project, stored placement edits) and the tile-1/tile-2 screenshots: instructions left, pitch right at Small and Large in game. "
+                                                "Only the left/right relation is checked: the absolute x of those screenshots (40 and 1274 / 865) was taken on another panel size."},
+              [{"id": "vanilla-pitch-left", "kind": "tiles", "skin": False, "relations": [{"left": "TeamInstructionsPitch", "right": "TeamInstructionsBlock", "expect": True}]},
+               {"id": "skin-instructions-left", "kind": "tiles", "skin": True, "relations": [{"left": "TeamInstructionsBlock", "right": "TeamInstructionsPitch", "expect": True},
+                                                                                              {"left": "TeamInstructionsPitch", "right": "TeamInstructionsBlock", "expect": False}]}])
+
+
+def c2_loans():
+    doc = json.loads((UI / "c2-loans-tile-tree-27_0_1_2503222-20261113.json").read_text(encoding="utf-8"))
+    nodes = {}
+    for p, n in doc["nodes"].items():
+        m = re.match(r"^([A-Za-z0-9_`]+)(?:#([^.]*))?", n.get("label", ""))
+        if m and n.get("bounds"):
+            nodes[p] = {"label": n["label"], "type": m.group(1), "name": m.group(2) or "", "visible": True, "depth": n.get("depth"), "bounds": n["bounds"], "text": n.get("text", ""),
+                        "binder": None, "resolved": {}}
+    write("tile-loans-c2-dump", {"kind": "layout", "layout": {"name": "LoansTile_4x2"}, "skin": False, "delivered": False,
+                                 "source": "inspector fm_dump_tree of the Loans tile, c2 session 2026-11-13 (Small + Larger text): the M0 spike's reference"},
+          [{"id": "geometry", "kind": "boxes"}], dump={"root": next(iter(nodes)), "host": "Loans", "nodes": nodes})
+
+
+SCREENS = [
+    ("screen-squad-large-2500", "styles-d1-squad-overview-20261114-111054.ndjson", "SquadComposition-Large", 0, 12, ["SquadHierachy", "MedicalCentre", "Loans"], "FirstTeamOverview"),
+    ("screen-squad-large-1600", "styles-d6-squad-overview-medium-20261114-113402.ndjson", "SquadComposition-Large", 0, 12, ["SquadHierachy"], "FirstTeamOverview"),
+    ("screen-squad-large-1680", "styles-e2-squad-small-20261114-115336.ndjson", "SquadComposition-Large", 0, 12, [], "FirstTeamOverview"),
+    ("screen-squad-standard", "styles-e4-squad-1600x900-20261114-115839.ndjson", "SquadComposition-Standard", 0, 12, [], "FirstTeamOverview"),
+    ("screen-squad-small", "styles-e3-squad-1152x864-20261114-115626.ndjson", "SquadComposition-Small", 0, 12, [], "FirstTeamOverview"),
+    ("screen-team-instructions-large", "styles-d2-team-instructions-20261114-111314.ndjson", "TacticalPlannerTeamInstructionsTabComposition-Large", 4, 0,
+     ["ClubTeamReport", "SetPieces", "DataHub", "Penalties", "Captains"], "TeamInstructionsPitch"),
+]
+
+
+def screens():
+    for name, file, comp, reserved, pad, runtime, anchor in SCREENS:
+        cap = captures.read_capture(UI / file)
+        hosts = [e for e in cap.elements.values() if e["type"] == "BindableVariableSizedGridElement"]
+        parent_path = next(h["path"].rsplit("/", 1)[0] for h in hosts if h["name"] == anchor)
+        parent = cap.elements[parent_path]
+        in_grid = {h["name"]: h for h in hosts if h["path"].rsplit("/", 1)[0] == parent_path}
+        slots = []
+        for n in runtime:
+            if n in in_grid:
+                px = in_grid[n]["inline"]
+                g = lambda k: int(str(px[k]).replace("px", ""))
+                slots.append({"element_id": n, "col": round((g("left") - pad) / 82), "row": round((g("top") - pad) / 82), "w": round((g("width") + 16) / 82), "h": round((g("height") + 16) / 82)})
+        predicted = {n: [round(v, 1) for v in h["world"]] for n, h in in_grid.items() if n not in runtime}
+        write(name, {"kind": "screen", "skin": False, "screen": {"composition": comp, "area": [round(parent["world"][2], 1), round(parent["world"][3], 1)], "padding": pad,
+                                                                  "reserved_right": reserved, "origin": [parent["world"][0], parent["world"][1]], "runtime_slots": slots},
+                     "source": "capture %s (plugin %s); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions" % (file, cap.header.get("plugin"))},
+              [{"id": "hosts", "kind": "screen", "boxes": predicted}])
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.parse_args()
+    ws = config.workspace(config.load())
+    phase_projects(ws)
+    c2_loans()
+    screens()
+
+
+if __name__ == "__main__":
+    main()

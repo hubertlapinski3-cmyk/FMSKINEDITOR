@@ -1,0 +1,49 @@
+{
+ "name": "tiles-standard",
+ "build": "27.0.1.2503222",
+ "kind": "tiles",
+ "screen": {
+  "composition": "TacticalPlannerTeamInstructionsTabComposition-Standard",
+  "area": [
+   2361.3,
+   1213.9
+  ],
+  "padding": 0,
+  "reserved_right": 4,
+  "moves": [
+   {
+    "op": "move-cell",
+    "bundle": "ui-tactics_assets_all.bundle",
+    "path_id": "-1926851257002345082",
+    "composition": "TacticalPlannerTeamInstructionsTabComposition-Standard",
+    "cell_index": 1,
+    "cell_id": "TeamInstructionsBlock",
+    "from": {
+     "x": 6,
+     "y": 0
+    },
+    "to": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "op": "move-cell",
+    "bundle": "ui-tactics_assets_all.bundle",
+    "path_id": "-1926851257002345082",
+    "composition": "TacticalPlannerTeamInstructionsTabComposition-Standard",
+    "cell_index": 0,
+    "cell_id": "TeamInstructionsPitch",
+    "from": {
+     "x": 0,
+     "y": 0
+    },
+    "to": {
+     "x": 6,
+     "y": 0
+    }
+   }
+  ]
+ },
+ "source": "p7-tile-test (the owner's project, stored placement edits) and the tile-1/tile-2 screenshots: instructions left, pitch right at Small and Large in game. Only the left/right relation is checked: the absolute x of those screenshots (40 and 1274 / 865) was taken on another panel size."
+}

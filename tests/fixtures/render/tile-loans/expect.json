@@ -1,0 +1,12 @@
+{
+ "checks": [
+  {
+   "id": "geometry",
+   "kind": "boxes"
+  },
+  {
+   "id": "values",
+   "kind": "values"
+  }
+ ]
+}

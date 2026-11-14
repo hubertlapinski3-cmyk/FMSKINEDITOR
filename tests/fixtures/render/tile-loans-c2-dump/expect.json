@@ -1,0 +1,8 @@
+{
+ "checks": [
+  {
+   "id": "geometry",
+   "kind": "boxes"
+  }
+ ]
+}

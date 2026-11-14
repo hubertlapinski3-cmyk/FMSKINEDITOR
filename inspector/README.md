@@ -76,3 +76,7 @@ mode 2 shows the template source only where the engine records one (elements cre
 ## 0.3.1 (2026-11-14)
 
 Adds the `sheet_content` capture line (rule content, signature and sample of every sheet attached to a captured element, so the three empty-named root sheets can be matched by content; Capture.match_sheets). DLL sha256 `7940B49F...C1665`, 61,440 bytes. Default `DumpFolder` is now `C:\Users\Admin\FMSKINNING\workspace\notes\ui-dumps`. Restore baselines after the C move: installed DLL `1C698C3D...`, installed cfg `9231F4BB...`. Staged 0.3.0 is kept in `staging\capture-0.3.0`.
+
+## 0.5.0 (2026-11-14)
+
+Adds mode `transitions` (polling, no hook): `capture_start {mode: transitions, tag, path?}`, gated by `[Capture] Transitions = true`; one line per class or pseudo-state change of the watched elements, re-walk every 45 frames for new elements, cap 40,000 watched. DLL sha256 `162C69A9...4423A`, 66,560 bytes; not yet run in game. Reader: `Capture.transition_summary()`.

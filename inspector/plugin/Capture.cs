@@ -37,7 +37,7 @@ namespace Crimson.Inspector
             Enabled = c.Bind("Capture", "Enabled", false, "Master switch for the capture modes. Off by default; read-only, session-scoped.");
             Styles = c.Bind("Capture", "Styles", false, "Mode 1: whole-tree resolved styles, classes, inline styles and bounds.");
             Sources = c.Bind("Capture", "Sources", false, "Mode 2: which VisualTreeAsset each subtree was instantiated from.");
-            Transitions = c.Bind("Capture", "Transitions", false, "Mode 3: class and pseudo-state transition log (not implemented in this build).");
+            Transitions = c.Bind("Capture", "Transitions", false, "Mode 3 (reading only, polling): log every class and pseudo-state change of the watched elements.");
             Bindings = c.Bind("Capture", "Bindings", false, "Mode 4 (reading only): add a `binding` object (Binder state) to every SIText of a capture started with bindings=true.");
             FrameBudgetMs = c.Bind("Capture", "FrameBudgetMs", 8, "Main-thread milliseconds a capture may use per frame.");
             MaxSeconds = c.Bind("Capture", "MaxSeconds", 90, "A session stops by itself after this many seconds.");
@@ -45,7 +45,7 @@ namespace Crimson.Inspector
             // Startup line (FM26 crash map rule): every launch states exactly what is live and the cfg state, so a crash pair always convicts the right suspect.
             // Modes 1 and 2 are property reads: no game method is patched, no delegate is handed to the game, no span or generic is touched.
             InspectorPlugin.Logger.LogInfo("[Capture] startup: hooks=none (property reads only); Enabled=" + Enabled.Value + " Styles=" + Styles.Value + " Sources=" + Sources.Value +
-                " Transitions=" + Transitions.Value + "(not built) Bindings=" + Bindings.Value + "(reads Binder state only, no hook); FrameBudgetMs=" + FrameBudgetMs.Value +
+                " Transitions=" + Transitions.Value + "(polling, no hook) Bindings=" + Bindings.Value + "(reads Binder state only, no hook); FrameBudgetMs=" + FrameBudgetMs.Value +
                 " MaxSeconds=" + MaxSeconds.Value + " MaxFrames=" + MaxFrames.Value);
         }
 
@@ -62,7 +62,15 @@ namespace Crimson.Inspector
             public StreamWriter Out;
             public readonly HashSet<int> SheetsSeen = new HashSet<int>();
             public readonly List<Open> Stack = new List<Open>(256);
+            // mode 3 (transitions)
+            public readonly List<Tracked> Tracked = new List<Tracked>(8192);
+            public readonly HashSet<long> Seen = new HashSet<long>();
+            public int Cursor, Events, Rewalk, Over;
         }
+
+        // Mode 3: an element kept under watch: the pseudo-state mask and the class list as last seen.
+        private sealed class Tracked { public VisualElement El; public string Path; public int Pseudo; public string Classes; }
+        private const int MaxTracked = 40000;
 
         // ---- pipe tools: capture_start / capture_status / capture_stop (all run on the main thread through the request queue)
         public static object Handle(string tool, JsonElement p)
@@ -80,8 +88,7 @@ namespace Crimson.Inspector
         {
             if (Enabled == null || !Enabled.Value) throw new ToolFault("disabled", "captures are off: set [Capture] Enabled = true in the plugin config (default false)");
             string mode = Tools.Str(p, "mode", "styles");
-            if (mode == "transitions")
-                throw new ToolFault("not_implemented", "mode '" + mode + "' is not in this build (planned: docs/PHASE9-PLAN.md section 9b, milestones I2 and I3)");
+            if (mode == "transitions") return StartTransitions(p);
             bool wantStyles = mode == "styles", wantSources = mode == "sources" || Tools.Bool(p, "sources", false);
             bool wantBindings = Tools.Bool(p, "bindings", false);
             if (wantBindings && !Bindings.Value) throw new ToolFault("disabled", "binding reads are off: set [Capture] Bindings = true (default false)");
@@ -121,6 +128,114 @@ namespace Crimson.Inspector
             return Status();
         }
 
+        // ---- mode 3 (0.5.0, READING ONLY, polling): which classes and pseudo-states change while the owner hovers or presses. No hook, no event registration, nothing is handed to the
+        // game: every frame a budgeted slice of the watched elements is re-read (pseudo-state mask, class list) and a line is written for each change. New elements (popups, tooltips)
+        // join the watch through a periodic re-walk of the tree. A session is bounded by the same seconds, frames and budget settings as every other.
+        private static object StartTransitions(JsonElement p)
+        {
+            if (!Transitions.Value) throw new ToolFault("disabled", "mode 'transitions' is off: set [Capture] Transitions = true (default false)");
+            if (_active) throw new ToolFault("game_busy", "a capture session is already running (" + _s.Id + "); capture_stop it first");
+            var roots = Ui.Roots();
+            string startPath = Tools.Str(p, "path", null);
+            var s = new Session { Id = DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture), Mode = "transitions", Tag = Ui.SafeFile(Tools.Str(p, "tag", "hover")), StartFrame = Time.frameCount };
+            var starts = new List<KeyValuePair<string, VisualElement>>();
+            if (startPath != null) starts.Add(new KeyValuePair<string, VisualElement>(startPath, Ui.Resolve(startPath)));
+            else for (int i = 0; i < roots.Count; i++) starts.Add(new KeyValuePair<string, VisualElement>("P" + i, roots[i].Element));
+            s.Stack.Clear();
+            foreach (var kv in starts) s.Stack.Add(new Open { El = kv.Value, Path = kv.Key, Depth = 0, Next = 0 });      // Stack is reused to remember where the re-walk starts
+            string folder = InspectorPlugin.DumpFolder.Value;
+            Directory.CreateDirectory(folder);
+            s.File = Path.Combine(folder, "transitions-" + s.Tag + "-" + s.Id + ".ndjson");
+            s.Out = new StreamWriter(s.File, false, new UTF8Encoding(false));
+            WalkInto(s, starts, true);
+            WriteLine(s, new Dictionary<string, object>
+            {
+                ["schema"] = "fm-capture/1", ["mode"] = "transitions", ["tag"] = s.Tag, ["start_path"] = startPath, ["game"] = Application.version, ["unity"] = Application.unityVersion,
+                ["plugin"] = InspectorPlugin.Version, ["frame"] = Time.frameCount, ["started"] = DateTime.Now.ToString("o", CultureInfo.InvariantCulture), ["roots"] = roots.Count,
+                ["watched"] = s.Tracked.Count, ["watch_cap"] = MaxTracked, ["limits"] = new Dictionary<string, object> { ["frame_budget_ms"] = FrameBudgetMs.Value, ["max_seconds"] = MaxSeconds.Value, ["max_frames"] = MaxFrames.Value },
+                ["note"] = "read-only polling; one line per change: pseudo = [old, new] state masks, added / removed = class names; `appeared` = an element that joined the watch after the start",
+            });
+            s.Stack.Clear();
+            s.Count = s.Tracked.Count;
+            _s = s;
+            _active = true;
+            InspectorPlugin.Logger.LogInfo("[Capture] session " + s.Id + " started: mode transitions watching " + s.Tracked.Count + " elements -> " + s.File);
+            return Status();
+        }
+
+        // Add every element under the given starts that is not watched yet; `first` = the start of the session (no `appeared` line).
+        private static void WalkInto(Session s, List<KeyValuePair<string, VisualElement>> starts, bool first)
+        {
+            var stack = new List<Open>();
+            foreach (var kv in starts) stack.Add(new Open { El = kv.Value, Path = kv.Key, Depth = 0, Next = 0 });
+            while (stack.Count > 0)
+            {
+                int i = stack.Count - 1;
+                Open top = stack[i];
+                stack.RemoveAt(i);
+                try
+                {
+                    long key = top.El.Pointer.ToInt64();
+                    if (s.Seen.Add(key))
+                    {
+                        if (s.Tracked.Count >= MaxTracked) { s.Over++; }
+                        else
+                        {
+                            var tr = new Tracked { El = top.El, Path = top.Path, Pseudo = StyleProbe.Pseudo(top.El), Classes = string.Join(" ", Ui.Classes(top.El)) };
+                            s.Tracked.Add(tr);
+                            if (!first) WriteLine(s, new Dictionary<string, object> { ["frame"] = Time.frameCount, ["t"] = Math.Round(s.Clock.Elapsed.TotalSeconds, 3), ["path"] = tr.Path, ["type"] = Ui.TypeName(top.El),
+                                ["name"] = top.El.name ?? "", ["appeared"] = true, ["pseudo"] = new[] { 0, tr.Pseudo }, ["classes"] = tr.Classes });
+                        }
+                    }
+                    int n = top.El.hierarchy.childCount;
+                    for (int c = n - 1; c >= 0; c--)
+                    {
+                        VisualElement ch = null;
+                        try { ch = top.El.hierarchy.ElementAt(c); } catch { }
+                        if (ch != null) stack.Add(new Open { El = ch, Path = top.Path + "/" + c, Depth = top.Depth + 1, Next = 0 });
+                    }
+                }
+                catch { s.Skipped++; }
+            }
+        }
+
+        private static void TickTransitions(Session s)
+        {
+            var frame = Stopwatch.StartNew();
+            double budget = Math.Max(2, FrameBudgetMs.Value);
+            int n = s.Tracked.Count, done = 0;
+            while (done < n && frame.Elapsed.TotalMilliseconds < budget)
+            {
+                if (s.Cursor >= n) s.Cursor = 0;
+                Tracked tr = s.Tracked[s.Cursor++];
+                done++;
+                try
+                {
+                    int ps = StyleProbe.Pseudo(tr.El);
+                    string cl = string.Join(" ", Ui.Classes(tr.El));
+                    if (ps == tr.Pseudo && cl == tr.Classes) continue;
+                    var added = new List<string>(); var removed = new List<string>();
+                    var oldSet = new HashSet<string>(tr.Classes.Length == 0 ? new string[0] : tr.Classes.Split(' '));
+                    var newSet = new HashSet<string>(cl.Length == 0 ? new string[0] : cl.Split(' '));
+                    foreach (string c in newSet) if (!oldSet.Contains(c)) added.Add(c);
+                    foreach (string c in oldSet) if (!newSet.Contains(c)) removed.Add(c);
+                    WriteLine(s, new Dictionary<string, object> { ["frame"] = Time.frameCount, ["t"] = Math.Round(s.Clock.Elapsed.TotalSeconds, 3), ["path"] = tr.Path, ["type"] = Ui.TypeName(tr.El),
+                        ["name"] = tr.El.name ?? "", ["pseudo"] = new[] { tr.Pseudo, ps }, ["added"] = added, ["removed"] = removed });
+                    tr.Pseudo = ps; tr.Classes = cl; s.Events++;
+                }
+                catch { s.Skipped++; }                                   // an element removed mid-session: dropped on the next re-walk, never fatal
+            }
+            if (++s.Rewalk >= 45)                                        // popups and tooltips are new elements: look for them now and then
+            {
+                s.Rewalk = 0;
+                var starts = new List<KeyValuePair<string, VisualElement>>();
+                var roots = Ui.Roots();
+                for (int i = 0; i < roots.Count; i++) starts.Add(new KeyValuePair<string, VisualElement>("P" + i, roots[i].Element));
+                try { WalkInto(s, starts, false); } catch (Exception e) { s.Error = e.Message; }
+                s.Count = s.Tracked.Count;
+            }
+        }
+
         private static object Status()
         {
             if (_s == null) return new Dictionary<string, object> { ["state"] = "none" };
@@ -137,6 +252,7 @@ namespace Crimson.Inspector
             {
                 s.FramesUsed++;
                 if (Time.frameCount - s.StartFrame > MaxFrames.Value || s.Clock.Elapsed.TotalSeconds > MaxSeconds.Value) { Finish("limit"); return; }
+                if (s.Mode == "transitions") { TickTransitions(s); return; }
                 var frame = Stopwatch.StartNew();
                 double budget = Math.Max(2, FrameBudgetMs.Value);
                 while (s.Stack.Count > 0 && frame.Elapsed.TotalMilliseconds < budget)
@@ -174,7 +290,7 @@ namespace Crimson.Inspector
             try
             {
                 WriteLine(s, new Dictionary<string, object> { ["end"] = true, ["state"] = state, ["elements"] = s.Count, ["skipped"] = s.Skipped, ["frames"] = s.FramesUsed,
-                    ["seconds"] = Math.Round(s.Clock.Elapsed.TotalSeconds, 2), ["unvisited"] = s.Stack.Count });
+                    ["seconds"] = Math.Round(s.Clock.Elapsed.TotalSeconds, 2), ["unvisited"] = s.Stack.Count, ["events"] = s.Events, ["watched"] = s.Tracked.Count, ["over_cap"] = s.Over });
                 s.Out?.Flush(); s.Out?.Dispose(); s.Out = null;
             }
             catch (Exception e) { s.Error = e.Message; }

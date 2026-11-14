@@ -13,7 +13,7 @@ namespace Crimson.Inspector
     public sealed class InspectorPlugin : BasePlugin
     {
         public const string Guid = "app.hubert.fm27inspector";
-        public const string Version = "0.4.0-capture";
+        public const string Version = "0.5.0-capture";
 
         internal static BepInEx.Logging.ManualLogSource Logger;
         internal static ConfigEntry<string> DumpFolder;

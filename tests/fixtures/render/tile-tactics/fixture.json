@@ -1,0 +1,14 @@
+{
+ "name": "tile-tactics",
+ "kind": "layout",
+ "layout": {
+  "name": "TacticsTile_4x4"
+ },
+ "skin": true,
+ "delivered": true,
+ "infer_branches": true,
+ "source": "capture styles-e1-squad-bindings-20261114-115217.ndjson, host Tactics",
+ "build": "27.0.1.2503222",
+ "plugin": "0.4.0-capture",
+ "date": "2026-11-14"
+}

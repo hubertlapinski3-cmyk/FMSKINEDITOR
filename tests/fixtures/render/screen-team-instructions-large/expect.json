@@ -1,0 +1,28 @@
+{
+ "checks": [
+  {
+   "id": "hosts",
+   "kind": "screen",
+   "boxes": {
+    "TeamInstructionsPitch": [
+     28.3,
+     194.3,
+     475.6,
+     1213.9
+    ],
+    "TeamInstructionsBlock": [
+     519.5,
+     194.3,
+     1214.8,
+     1213.9
+    ],
+    "PhasesAndTeamInstructions": [
+     1750,
+     194.3,
+     311.5,
+     1213.9
+    ]
+   }
+  }
+ ]
+}
