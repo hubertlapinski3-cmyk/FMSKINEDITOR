@@ -6,7 +6,23 @@
 
 
 
+
+
+
+
+
+
+
+
 The render draws any layout of Football Manager 27 inside the Studio without starting the game, and tells you, for every element, which rules styled it and where each value came from. It is an **approximation of the game, not the game's renderer**: it says so on every render, and `docs/evidence/phase9-m7-calibration-20261114/calibration-report.md` publishes every number it was measured against, pass and fail.
+
+
+
+
+
+
+
+
 
 
 
@@ -22,7 +38,19 @@ The render draws any layout of Football Manager 27 inside the Studio without sta
 
 
 
+
+
+
+
+
+
+
+
 - **Draw a layout.** Activity bar, `R`. The left list holds the game's layouts (type to filter by name; the number beside a name is its element count). Click one and it is drawn in the middle with the game's own style sheets applied in the game's order. Width, height and zoom change the stage; the corner markers (red = a property the render cannot draw, amber = partly drawn) can be switched off.
+
+
+
+
 
 
 
@@ -30,7 +58,15 @@ The render draws any layout of Football Manager 27 inside the Studio without sta
 
 
 
+
+
+
+
 - **Change it.** With a project open, a game rule offers "Override in <project>" (adds a rule to the project's sheet) and a token offers a value box (adds a token override). A rule that already lives in your project opens in the editor at its line.
+
+
+
+
 
 
 
@@ -38,7 +74,19 @@ The render draws any layout of Football Manager 27 inside the Studio without sta
 
 
 
+
+
+
+
 - **Vanilla or skin.** With a project open, the "skin" tick draws your edits over the game's styles; untick it to see the game as it ships. Every edit repaints the view (one repaint per change).
+
+
+
+
+
+
+
+
 
 
 
@@ -54,7 +102,23 @@ The render draws any layout of Football Manager 27 inside the Studio without sta
 
 
 
+
+
+
+
+
+
+
+
 Thirteen of the game's layouts went over the 200 ms budget; most hold 900 to 3,800 elements and the largest, `DetailedPreferencesBlock`, 5,487. Drawing all of them is slow and the data is large (29 MB for that one), so the render draws about **1,000 elements** first and says so: *"Large layout: 1,000 of 5,487 elements are drawn"*.
+
+
+
+
+
+
+
+
 
 
 
@@ -66,7 +130,15 @@ Thirteen of the game's layouts went over the 200 ms budget; most hold 900 to 3,8
 
 
 
+
+
+
+
 - **"draw all"** in the banner draws everything (seconds, a large payload); "back to the capped view" returns.
+
+
+
+
 
 
 
@@ -74,7 +146,19 @@ Thirteen of the game's layouts went over the 200 ms budget; most hold 900 to 3,8
 
 
 
+
+
+
+
 - Measured cached times for the 13 layouts that were over the 200 ms budget: all between 28 and 90 ms with the cap (the full renders took 23 to 545 ms; the first render after starting the engine is slower because the game's bundles are read once).
+
+
+
+
+
+
+
+
 
 
 
@@ -90,7 +174,23 @@ Thirteen of the game's layouts went over the 200 ms budget; most hold 900 to 3,8
 
 
 
+
+
+
+
+
+
+
+
 Read the notice at the top and the "What this render does not know" list under the stage. In short:
+
+
+
+
+
+
+
+
 
 
 
@@ -102,7 +202,15 @@ Read the notice at the top and the "What this render does not know" list under t
 
 
 
+
+
+
+
 - **No runtime state.** There is no hover, press, focus or animation in the picture. The calibration report checks the game's own state rules against readings taken by hand in the game: button, list-row and tile colours match what those rules declare; the navigation label's hover colour was read once, its own state flag read 0 while its colour changed, and the explanation (an ancestor-hover rule in a run-time sheet) is derived, not verified; pitch markers and instruction tiles get a hover flag with no style change.
+
+
+
+
 
 
 
@@ -110,7 +218,15 @@ Read the notice at the top and the "What this render does not know" list under t
 
 
 
+
+
+
+
 - **Fonts and images:** the game's fonts are named, not drawn (a stand-in font is used, so text widths differ); atlas icons and images are drawn where they can be found.
+
+
+
+
 
 
 
@@ -118,7 +234,19 @@ Read the notice at the top and the "What this render does not know" list under t
 
 
 
+
+
+
+
 - **Not applied in the skin view:** class renames, image and font swaps and raising a rule's specificity.
+
+
+
+
+
+
+
+
 
 
 
@@ -134,7 +262,23 @@ Read the notice at the top and the "What this render does not know" list under t
 
 
 
-The published report (`docs/evidence/phase9-m7-calibration-20261114/`, revised after the 1.0.0 review; the shipped 1.0.0 copy is the release asset `calibration-report-1.0.0.md`) compares the render with measurements taken inside the game. Boxes pass within 8 px or 5 percent of the measured size, colours and font sizes exactly. There is no single pass rate to quote: the pass count is made of different kinds of rows, and this is the coverage block, generated from the same rows as the report:
+
+
+
+
+
+
+
+
+The published report (the revised report, `docs/evidence/phase9-m7-calibration-revised-20261114/`, which is what the release asset `calibration-report-1.0.0.md` carries; the first version, as published at release, is kept unchanged in `docs/evidence/phase9-m7-calibration-20261114/`) compares the render with measurements taken inside the game. Boxes pass within 8 px or 5 percent of the measured size, colours and font sizes exactly. There is no single pass rate to quote: the pass count is made of different kinds of rows, and this is the coverage block, generated from the same rows as the report:
+
+
+
+
+
+
+
+
 
 
 
@@ -197,7 +341,23 @@ Geometry: 106 of 173 compared rows pass, of which 54 are the stage box (the firs
 
 
 
+
+
+
+
+
+
+
+
 Each failing row was examined individually and carries a cause, a grade (measured fact, magnitude only) or the label UNEXPLAINED; the author wrote the rules and no second person checked. The main causes are the ones above: code-built content, run-time classes and colours, text width with the stand-in font. The grid placement model is scoped per composition (reproduces the captures it was derived from; one held-out check failed on a screen it had never seen). Use the render to see structure, which rule wins and where a value comes from; confirm pixel-exact spacing and anything data-driven in the game (the PREVIEW tab reloads your skin in the running game).
+
+
+
+
+
+
+
+
 
 
 
@@ -213,7 +373,19 @@ Each failing row was examined individually and carries a cause, a grade (measure
 
 
 
+
+
+
+
+
+
+
+
 `render.layouts`, `render.layout` (`max_nodes`, `open` for large layouts), `render.rule`, `render.table`, `render.screen`. The table and screen calls (a table view's header row as a placeholder; a screen's tiles placed on a grid of a given size, with your tile moves applied) are engine-only: the Studio does not draw them yet. Details: `docs/API.md`.
+
+
+
+
 
 
 

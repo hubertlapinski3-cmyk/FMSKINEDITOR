@@ -80,11 +80,11 @@ def publish(out, ctx=None, results=None, update_guide=False):
     ex = rt.examination(results)
 
     def preface(results, tot):
-        lines = ["**Status: published, build 27.0.1.2503222, revised after the 1.0.0 review (this is a re-run of the calibration; the shipped 1.0.0 report is `calibration-report-1.0.0.md`). Not a draft.** Phase 9 M7 closed on the first version of this report. Read these first:", "",
+        lines = ["**Status: published, build 27.0.1.2503222, revised after the 1.0.0 review. This file is the revised report and is what the release asset `calibration-report-1.0.0.md` now carries; the first version of the report, as published at release, is retained unchanged in the repository at `docs/evidence/phase9-m7-calibration-20261114/` and in the git history. Not a draft.** Phase 9 M7 closed on the first version of this report. Read these first:", "",
                  "1. **Failure causes: each failing row was examined individually, and the examination is published row by row** (section \"The failures, examined row by row\"). Each of the %d failing rows: %d origin failures, %d displaced by an origin "
                  "listed beside them; %d causes rest on a measured capture fact, %d on magnitude only, %d are UNEXPLAINED. The 1.0.0 labels came from fixture-wide rules (one label per row type, list order deciding when two fitted, 78 rows labelled, none unexplained); "
-                 "they disagree with the examination on %d rows and both labels are kept. The examiner wrote the rules; no second person checked. Of the %d origin rows, %d name a class of cause without predicting the size of the gap." % (
-                     ex["fail_rows"], ex["origin_rows"], ex["displaced_rows"], ex["grades"]["measured fact"], ex["grades"]["magnitude only"], ex["unexplained"], ex["D"], ex["origin_rows"], ex["origin_magnitude_not_predicted"]),
+                 "they disagree with the examination on %d rows and both labels are kept. The examiner wrote the rules; no second person checked. Of the %d origin rows, %s a class of cause without predicting the size of the gap." % (
+                     ex["fail_rows"], ex["origin_rows"], ex["displaced_rows"], ex["grades"]["measured fact"], ex["grades"]["magnitude only"], ex["unexplained"], ex["D"], ex["origin_rows"], rt.names(ex["origin_magnitude_not_predicted"])),
                  "2. **Coverage is published by row class, and the pass count is not a headline** (table below). Many passes are flex rows at Yoga's initial value, which the render supplies when it declares nothing; the same condition is N/A for colour and font-size. "
                  "tile-loans and tile-loans-c2-dump are one tile counted twice.",
                  "3. **Delivered text pairing.** %s" % _delivered(results),

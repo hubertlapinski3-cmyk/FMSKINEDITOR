@@ -154,13 +154,18 @@ def _safe(test, x):
         return False
 
 
+def names(n):
+    """'one names' for 1, 'N name' otherwise (the generated sentence must read right at any count)."""
+    return "one names" if n == 1 else "%d name" % n
+
+
 def examination_md(results, ex):
     from .causes import RULES
     out = ["## The failures, examined row by row", "",
            "Each of the %d failing rows was examined individually (pairing, the x, y, w, h split against each tolerance, the parent's and the preceding sibling's displacement, and for origins a mechanism with one independent capture fact). %d are origin failures; %d are displaced by an origin listed beside them. %d causes rest on a measured capture fact, %d on magnitude only, %d are unexplained. The earlier rule label disagreed on %d rows; both are kept. The examiner wrote the rules; no second person checked." % (
                ex["fail_rows"], ex["origin_rows"], ex["displaced_rows"], ex["grades"]["measured fact"], ex["grades"]["magnitude only"], ex["unexplained"], ex["D"]), "",
-           "Of the origin rows graded measured fact, %d name a class of cause without predicting the size of the gap (the pitch is code-built; the height deficit of 41 px is not derived). %d rows have a primary cause and at least one further origin component with no mechanism (listed in the JSON as unexplained_components); %d rows were flagged at the pairing step (a live partner that is invisible, or text that differs). The 1.0.0 labels came from fixture-wide rules: %d rows satisfied two of them, so list order decided the label." % (
-               ex["origin_magnitude_not_predicted"], len(ex["rows_with_unexplained_secondary_component"]), len(ex["pair_flags"]), ex["legacy_rows_satisfying_two_rules"]), "",
+           "Of the origin rows graded measured fact, %s a class of cause without predicting the size of the gap (the pitch is code-built; the height deficit of 41 px is not derived). %d rows have a primary cause and at least one further origin component with no mechanism (listed in the JSON as unexplained_components); %d rows were flagged at the pairing step (a live partner that is invisible, or text that differs). The 1.0.0 labels came from fixture-wide rules: %d rows satisfied two of them, so list order decided the label." % (
+               names(ex["origin_magnitude_not_predicted"]), len(ex["rows_with_unexplained_secondary_component"]), len(ex["pair_flags"]), ex["legacy_rows_satisfying_two_rules"]), "",
            "| Root cause | Rows | Origin rows | Displaced rows |", "|---|---|---|---|"]
     for k, c in sorted(ex["by_cause"].items(), key=lambda kv: -kv[1]["rows"]):
         out.append("| %s | %d | %d | %d |" % (RULES[k][0] if k in RULES else "UNEXPLAINED (no supporting capture fact)", c["rows"], c["origin_rows"], c["displaced_rows"]))
