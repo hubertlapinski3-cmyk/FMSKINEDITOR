@@ -322,6 +322,7 @@ def run_screen(ctx, fx, check, res=None):
     out = screen.Assembler(d).assemble(s["composition"], tuple(s["area"]), reserved_right=s.get("reserved_right", 0), padding=s.get("padding", 12), moves=moves,
                                        runtime_slots=s.get("runtime_slots", []))
     px = {h["element_id"]: h["px"] for h in out["hosts"]}
+    given = {h["element_id"] for h in out["runtime_slots"]}                       # cells GIVEN to the assembler from the capture (not in the composition): their rows compare a given box with itself
     px.update({h["element_id"]: h["px"] for h in out["runtime_slots"]})
     ox, oy = s["origin"]
     rows, name = [], f["name"]
@@ -332,7 +333,7 @@ def run_screen(ctx, fx, check, res=None):
         g = [ox + px[el]["left"], oy + px[el]["top"], px[el]["width"], px[el]["height"]]
         dl = [g[0] - box[0], g[1] - box[1], g[2] - box[2], g[3] - box[3]]
         ok = abs(dl[0]) <= tol(box[2], box[2]) and abs(dl[1]) <= tol(box[3], box[3]) and abs(dl[2]) <= tol(box[2], box[2]) and abs(dl[3]) <= tol(box[3], box[3])
-        rows.append(_row(name, check["id"], el, "box", [round(v, 1) for v in box], [round(v, 1) for v in g], "PASS" if ok else "FAIL", [round(v, 1) for v in dl]))
+        rows.append(_row(name, check["id"], el, "box", [round(v, 1) for v in box], [round(v, 1) for v in g], "PASS" if ok else "FAIL", [round(v, 1) for v in dl], given=el in given))
     return rows
 
 
@@ -365,11 +366,42 @@ def _state_chain(ctx, check, key="chain"):
     return casc, nodes
 
 
+def ui_dumps_dir(ctx=None):
+    """Where the inspector captures live: $FM27_UI_DUMPS, the workspace's notes/ui-dumps, or the owner's FMSKINNING workspace. The first that exists."""
+    import os
+    cands = [os.environ.get("FM27_UI_DUMPS"), (Path(ctx.ws.root) / "notes" / "ui-dumps") if ctx is not None else None, Path.home() / "FMSKINNING" / "workspace" / "notes" / "ui-dumps"]
+    for c in cands:
+        if c and Path(c).is_dir():
+            return Path(c)
+    return Path(cands[-1])
+
+
+def cascade_with_runtime_sheet(ctx, capture_name):
+    """The game's applied sheets plus the RECORDED run-time sheet(s) of a capture (empty name, negative instance id): the rules the capture sampled from them, as one extra sheet at the end.
+    The sample is partial (80 of 190 rules in the squad capture), so a rule absent from it proves nothing; a rule present is the game's own."""
+    from . import captures, cascade as cascade_mod, sheets as sheets_mod
+    key = ("runtime", capture_name)
+    if key not in ctx.__dict__.setdefault("_cache", {}):
+        cap = captures.read_capture(ui_dumps_dir(ctx) / capture_name)
+        rules = []
+        for sc in cap.sheet_contents:
+            if sc.get("name") == "" and (sc.get("instance") or 0) < 0:
+                for s in sc.get("sample", []):
+                    props = [[p.split(":", 1)[0].strip(), p.split(":", 1)[1].strip(), []] for p in s.get("p", []) if ":" in p]
+                    rules.append({"i": len(rules), "s": [s["s"]], "p": props, "t": False})
+        sheet = sheets_mod.Sheet(99, "", "recorded run-time sheet (sample)", {"rules": rules})
+        ctx._cache[key] = cascade_mod.Cascade(ctx.R.bank.ordered() + [sheet], ctx.R._rc)
+    return ctx._cache[key]
+
+
 def run_state(ctx, fx, check, res=None):
     """I3 (docs/evidence/phase9-i3-session-G-20261114.md): a runtime state (hover, focus, press) read in the game against what the game's own `:pseudo` rules declare for the same
     element. `rest` and `state` are the values the inspector read; the render predicts the state value from the rules (`Cascade.state_declarations`) and, when no state rule
     declares the property, predicts no change from the rest value. A check with `noop` is the explicit verdict that a state changes nothing the render needs."""
     casc, path = _state_chain(ctx, check)
+    if check.get("runtime_sheet_capture"):                                    # evaluate with the recorded run-time sheet added to the game's own
+        casc = cascade_with_runtime_sheet(ctx, check["runtime_sheet_capture"])
+        casc.compute([path[0]])
     node, name = path[-1], fx["fixture"]["name"]
     prop = check["property"]
     label = "%s#%s" % (node["type"], node.get("name") or "") + ("." + ".".join(node["classes"][:2]) if node["classes"] and not node.get("name") else "")
@@ -380,7 +412,7 @@ def run_state(ctx, fx, check, res=None):
     if "rest" in check:
         na = (NA_NO_DECL_INITIAL if (prop in INITIAL and same(prop, check["rest"], INITIAL[prop])) else NA_NO_DECL_PARENT_ABSENT) if not rest else None          # a state check holds no live parent: only the initial value is certain
         rows.append(_row(name, check["id"], label, prop + " (rest)", check["rest"], rest["value"] if rest else None, "PASS" if rest and same(prop, check["rest"], rest["value"]) else ("N/A" if not rest else "FAIL"),
-                         note="" if rest else "the render declares no %s here" % prop, **({"na_reason": na} if na else {})))
+                         note="" if rest else "the render declares no %s here" % prop, **dict({"na_reason": na} if na else {}, **{k: check[k] for k in ("conditional", "variant_of") if k in check})))
     if decl:
         pred = decl["value"]
     elif rest:
@@ -391,7 +423,8 @@ def run_state(ctx, fx, check, res=None):
     note = ("state rule %s" % decl["source"]["selector"]) if decl else "no state rule declares %s: the render predicts no change" % prop
     if check.get("noop"):
         note = "explicit no-op: " + note
-    rows.append(_row(name, check["id"], label, "%s (%s)" % (prop, state_txt), check["state"], pred, "PASS" if ok else "FAIL", note=note + ((" | " + check["note"]) if check.get("note") else "")))
+    extra = {k: check[k] for k in ("observation", "interpretations", "conditional", "variant_of") if k in check}
+    rows.append(_row(name, check["id"], label, "%s (%s)" % (prop, state_txt), check["state"], pred, "PASS" if ok else "FAIL", note=note + ((" | " + check["note"]) if check.get("note") else ""), **extra))
     return rows
 
 
@@ -418,7 +451,10 @@ def run(folder, ctx):
     for check in fx["expect"]["checks"]:
         if (check["kind"] in ("boxes", "values") or (check["kind"] == "rule" and "node" not in check)) and (res is None or check.get("rerender")):
             res = _render(ctx, fx)
-        rows.extend(RUNNERS[check["kind"]](ctx, fx, check, res))
+        new = RUNNERS[check["kind"]](ctx, fx, check, res)
+        for r_ in new:
+            r_.setdefault("kind", check["kind"])                 # the kind of check that made the row: the coverage tables group by it
+        rows.extend(new)
     from . import causes
     seen = {}
     for r_ in rows:                                           # every row gets a unique id (the old fixture|check|element|property key collided on same-named rows)
@@ -465,7 +501,7 @@ def cause(row, fixture=None):
 
 
 # ---------------------------------------------------------------- the published report
-def report(results, out_dir, title="Render calibration report", preface=None):
+def report(results, out_dir, title="Render calibration report", preface=None, appendix=None, extra=None):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     tot = {v: sum(r["counts"][v] for r in results) for v in ("PASS", "FAIL", "N/A")}
@@ -473,12 +509,15 @@ def report(results, out_dir, title="Render calibration report", preface=None):
         for x in r["rows"]:
             if x["verdict"] == "FAIL":
                 x["cause"] = cause(x, r["name"])
-    (out_dir / "calibration-report.json").write_text(json.dumps({"schema": "fm-calibration/1", "totals": tot, "fixtures": results}, indent=1), encoding="utf-8")
+    doc = {"schema": "fm-calibration/1", "totals": dict(tot, **({"coverage": extra["coverage"]} if extra and "coverage" in extra else {})), "fixtures": results}
+    doc.update({k: v for k, v in (extra or {}).items() if k != "coverage"})
+    (out_dir / "calibration-report.json").write_text(json.dumps(doc, indent=1, default=str), encoding="utf-8")
     md = ["# %s" % title, ""] + (list(preface(results, tot)) + [""] if callable(preface) else list(preface or [])) + ["Tolerance: box x, y, width, height within 8 px or 5 percent of the measured size, whichever is tighter; colours, font sizes and flex values exactly equal. Every row is published: "
           "PASS, FAIL, or N/A (nothing to compare). Nothing is filtered, averaged or re-toleranced.", "",
           "**Totals: %d pass, %d fail, %d n/a.**" % (tot["PASS"], tot["FAIL"], tot["N/A"]), "", "| Fixture | Pass | Fail | N/A | Source |", "|---|---|---|---|---|"]
     for r in results:
         md.append("| %s | %d | %d | %d | %s |" % (r["name"], r["counts"]["PASS"], r["counts"]["FAIL"], r["counts"]["N/A"], r["source"]))
+    md += [""] + (list(appendix(results)) if callable(appendix) else list(appendix or []))
     for r in results:
         md += ["", "## %s" % r["name"], ""]
         if r.get("delivered"):
@@ -486,14 +525,27 @@ def report(results, out_dir, title="Render calibration report", preface=None):
             md.append("")
         md += ["| Verdict | Check | Element | Property | Expected | Got | Delta | Note / cause |", "|---|---|---|---|---|---|---|---|"]
         for x in r["rows"]:
-            note = x["note"] or ((("cause (by rule): " + (cause(x, r["name"]) or "UNEXPLAINED")) if x["verdict"] == "FAIL" else ""))
+            if x["verdict"] == "FAIL":
+                e = x.get("exam") or {}
+                note = (x["note"] + " | " if x["note"] else "") + "cause (examined, %s): %s" % (x.get("cause_grade") or "no supporting fact", x.get("cause_key") or "UNEXPLAINED") + (
+                    "; displaced by %s" % ", ".join(o for o in e.get("origin_ids", []) if o != x["id"]) if e.get("status") == "inherited" else "")
+            else:
+                note = x["note"] or ""
+            if x.get("conditional"):
+                note += " | CONDITIONAL on the inference that the label is hovered (the mask read 0)"
+            if x.get("variant_of"):
+                note += " | variant of " + x["variant_of"]
+            for it in x.get("interpretations") or []:
+                note += " | interpretation (%s): %s" % (it["status"], it["text"] + ((" [" + it["note"] + "]") if it.get("note") else ""))
+            if x.get("observation"):
+                note = "observation: " + x["observation"] + " | " + note
             md.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (x["verdict"], x["check"], x["element"], x["property"], json.dumps(x["expected"]), json.dumps(x["got"]), json.dumps(x["delta"]) if x["delta"] else "", note))
     (out_dir / "calibration-report.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     return tot
 
 
 def failures(results):
-    return sorted(x["id"] for r in results for x in r["rows"] if x["verdict"] == "FAIL")
+    return sorted(x.get("id") or "%s|%s|%s|%s" % (r["name"], x["check"], x["element"], x["property"]) for r in results for x in r["rows"] if x["verdict"] == "FAIL")
 
 
 # ---------------------------------------------------------------- fixture add

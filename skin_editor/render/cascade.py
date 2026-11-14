@@ -85,6 +85,8 @@ class Cascade:
                             for p in ps:
                                 pseudos[p] = pseudos.get(p, 0) + 1
                         continue
+                    if any(t == P_PSEUDO for _c, parts in chain[:-1] for t, _v in parts):          # a pseudo-class on an ANCESTOR compound (a hovered tab colouring its label): never matches in the render, kept for the state fixtures
+                        self.state_entries.append(Entry(spec, sh.pos, rule, chain, text, sh))
                     ids = [v for t, v in last if t == P_ID]
                     cls = [v for t, v in last if t == P_CLASS]
                     typ = [v for t, v in last if t == P_ELEMENT]
@@ -145,7 +147,7 @@ class Cascade:
         hits = {}
         for e in self.state_entries:
             for chain, spec, text in e.rule["chains"]:
-                if any(t == P_PSEUDO for t, _v in chain[-1][1]) and match(chain, len(chain) - 1, len(path) - 1):
+                if any(t == P_PSEUDO for _c, parts in chain for t, _v in parts) and match(chain, len(chain) - 1, len(path) - 1):
                     cur = hits.get((e.pos, e.rule["i"]))
                     if cur is None or spec > cur[0].spec:
                         hits[(e.pos, e.rule["i"])] = (Entry(spec, e.pos, e.rule, chain, text, e.sheet),)

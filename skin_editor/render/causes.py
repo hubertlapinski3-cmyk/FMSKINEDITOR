@@ -41,10 +41,26 @@ RULES = {
                       "render text equals live text; live font size; |width residual| at most a quarter of the live width"),
     "code-built-children": ("a widget the game fills in code: the live element has children in the capture and no template source, the layout holds none (its size is set by that content; the size itself is not predicted)",
                             "render node has no children; live element has children in the capture; live source absent"),
+    "runtime-sheet-declares-value": ("a recorded run-time sheet declares the value (assigned by a listed per-row override: the twin variant that includes that sheet passes)",
+                                     "the variant row with the recorded run-time sheet; see OVERRIDES"),
     "sub-pixel-tolerance": ("a sub-pixel offset on an element whose tolerance (5 percent of its size) is under half a pixel: the same offset the passing rows of the fixture carry",
                             "tolerance of the component; |delta| under 1 px; the median delta of the rows that pass in the same fixture"),
 }
 GRADE_FACT, GRADE_MAGNITUDE = "measured fact", "magnitude only"
+
+# Per-row overrides: the only place a cause is assigned by hand rather than by a rule. Each is listed by row id, with the reason, in the published report.
+OVERRIDES = {
+    "state-i3-session-g|nav-tab-label-as-read|SIText#text|color (rest)|-": {
+        "key": "runtime-sheet-declares-value", "grade": GRADE_FACT,
+        "label": "the recorded run-time sheet declares the value: the same chain plus that sheet (variant nav-tab-label-as-read-runtime-sheet) reproduces the live rest colour; the applied sheets alone do not",
+        "evidence": "variant row nav-tab-label-as-read-runtime-sheet, color (rest): PASS; the capture's run-time sheet sample holds .nav-on-light .navigation-tab-portal-default-active-false .portal-text {color: var(--global-text-primary)}",
+        "why": "this row is a deliberate variant that omits the run-time sheet; its twin with the sheet passes"},
+    "state-i3-session-g|nav-tab-label-as-read|SIText#text|color (enabled)|-": {
+        "key": "runtime-sheet-declares-value", "grade": GRADE_FACT,
+        "label": "the recorded run-time sheet declares the value: the same chain plus that sheet (variant nav-tab-label-as-read-runtime-sheet) yields #FFFFFF through an ancestor-hover rule; the applied sheets alone predict another colour",
+        "evidence": "variant row nav-tab-label-as-read-runtime-sheet, color (enabled): PASS; rule .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text in the capture's run-time sheet sample",
+        "why": "this row is a deliberate variant that omits the run-time sheet; its twin with the sheet passes"},
+}
 MASK_BITS = {1: "active", 2: "hover", 8: "checked", 32: "disabled", 64: "focus"}
 
 
@@ -283,11 +299,27 @@ def rule_runtime_sheet_colour(rec, runtime_values):
     return None
 
 
-def rule_wrapper_gap(rec, comp=None):
+def rule_wrapper_gap(rec, casc, comp=None):
+    """Wrapper elements built in code sit between the node and its layout parent. Applies to the WIDTH only, and only when (a) the game's own sheets declare a row direction for one of the
+    wrappers' classes (a content container that lays its child out at its natural width), (b) the render stretched the node to its parent's width and (c) the live node is much narrower than
+    its live parent: the direction predicts exactly that residual (render width - live width = parent width - natural width)."""
     w = (rec.get("pair") or {}).get("wrappers")
-    if not w or rec["property"] != "box":
+    pb = rec.get("parent_boxes")
+    if not w or rec["property"] != "box" or comp != "w" or not pb:
         return None
-    return GRADE_FACT, {"wrappers_in_capture_not_in_layout": [{"name": x["name"], "classes": x["classes"][:2]} for x in w]}
+    rows = []
+    for x in w:
+        n = {"type": "VisualElement", "name": "", "classes": list(x.get("all_classes") or x["classes"]), "children": [], "inline": [], "attrs": {}, "id": None, "layout": None}
+        casc.compute([n])
+        d = n["computed"].get("flex-direction")
+        if d and str(d["value"]).lower() == "row":
+            rows.append({"wrapper": x["name"], "declares_flex_direction": "row"})
+    stretched = abs(rec["got_box"][2] - pb["got"][2]) <= 2.0 + 0.02 * pb["got"][2]
+    narrow = rec["expected_box"][2] < 0.5 * pb["expected"][2]
+    if rows and stretched and narrow:
+        return GRADE_FACT, {"wrappers_in_capture_not_in_layout": [{"name": x["name"], "classes": x["classes"][:2]} for x in w], "game_sheet_declares": rows, "render_width_equals_parent_width": True,
+                            "live_width": rec["expected_box"][2], "live_parent_width": pb["expected"][2], "magnitude_predicted": True}
+    return None
 
 
 def rule_stand_in_font(rec, comp=None):
@@ -325,7 +357,7 @@ def mechanisms(rec, comp, casc, runtime_values):
     for key, fn in (("runtime-class", lambda: rule_runtime_class(rec, casc, comp)), ("empty-code-list", lambda: rule_empty_code_list(rec, comp)),
                     ("inline-display-none", lambda: rule_inline_display_none(rec, comp)), ("state-captured", lambda: rule_state_captured(rec, casc)),
                     ("runtime-sheet-colour", lambda: rule_runtime_sheet_colour(rec, runtime_values)), ("stand-in-font", lambda: rule_stand_in_font(rec, comp)),
-                    ("sub-pixel-tolerance", lambda: rule_sub_pixel(rec, comp)), ("code-built-wrapper", lambda: rule_wrapper_gap(rec, comp)),
+                    ("sub-pixel-tolerance", lambda: rule_sub_pixel(rec, comp)), ("code-built-wrapper", lambda: rule_wrapper_gap(rec, casc, comp)),
                     ("code-built-children", lambda: rule_code_built_children(rec, comp))):
         try:
             r = fn()
@@ -454,6 +486,8 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
             t = tab[node]
             if r["property"] == "box":
                 rec["d"], rec["expected_box"], rec["got_box"] = t["d"], t["expected"], t["got"]
+                if t["parent"] is not None and tab[t["parent"]]["expected"]:
+                    rec["parent_boxes"] = {"expected": tab[t["parent"]]["expected"], "got": tab[t["parent"]]["got"]}
             pp = parent.get(id(n))
             live_path = t["live"]
             if live_path:
@@ -470,7 +504,7 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
                                    "children_in_capture": cap.children_count(live_path), "font_size": res_live.get("fontSize"), "display": res_live.get("display")}
                     if par_live and live_path.startswith(par_live + "/") and par_live in cap.elements:
                         wr = [q for q in cap.order if q.startswith(par_live + "/") and live_path.startswith(q + "/")]
-                        rec["pair"]["wrappers"] = [{"name": cap.elements[q]["name"], "classes": cap.elements[q]["classes"][:3]} for q in wr] or None
+                        rec["pair"]["wrappers"] = [{"name": cap.elements[q]["name"], "classes": cap.elements[q]["classes"][:3], "all_classes": cap.elements[q]["classes"]} for q in wr] or None
         elif name.startswith("state-") or r["property"].startswith("background-color"):
             rec["state_fixture"] = True
         recs[rec["id"]] = rec
@@ -529,6 +563,7 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
             ex.setdefault("origin_components", []).append({"c": comp, "mechanisms": [{"key": k, "grade": g, "evidence": e} for k, g, e in ms]})
             if best is None or (ms and not best[1]) or (bool(ms) == bool(best[1]) and size > best[2]):
                 best = (comp, ms, size)
+        ex["unexplained_components"] = [oc["c"] for oc in ex.get("origin_components", []) if not oc["mechanisms"]]
         if best and best[1]:
             key, grade, evidence = best[1][0]
             ex.update({"cause_key": key, "cause": RULES[key][0], "grade": grade, "evidence": evidence, "also_fits": [k for k, _g, _e in best[1][1:]]})
@@ -546,6 +581,9 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
                 ex.update({"cause_key": first["cause_key"], "cause": first["cause"] if first["cause_key"] else UNEXPLAINED, "grade": first["grade"], "evidence": "displaced by " + ", ".join(ex["origin_ids"])})
             else:
                 ex.update({"cause_key": None, "cause": UNEXPLAINED, "grade": None})
+    for rid, ov in OVERRIDES.items():
+        if rid in out:
+            out[rid].update({"cause_key": ov["key"], "cause": ov["label"], "grade": ov["grade"], "evidence": ov["evidence"], "override": ov["why"]})
     for ex in out.values():
         ex.pop("_rec", None)
     return out
@@ -554,9 +592,7 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
 def examine_all(ctx, results, ui_dir=None):
     """Attach the examination to every FAIL row of `results` (the output of fixtures.run_all): row["id"], row["exam"], row["cause"], row["cause_grade"], row["legacy_cause"]. Returns the list of exams."""
     from . import fixtures
-    ui_dir = Path(ui_dir) if ui_dir else Path(ctx.ws.root) / "notes" / "ui-dumps"
-    if not ui_dir.is_dir():
-        ui_dir = Path(r"C:\Users\Admin\FMSKINNING\workspace\notes\ui-dumps")
+    ui_dir = Path(ui_dir) if ui_dir else fixtures.ui_dumps_dir(ctx)
     casc = ctx.R.cascade()
     base = next((p for p in sorted(ui_dir.glob("styles-e1-squad-bindings-*.ndjson"))), None)
     fallback = runtime_sheet_values(__import__("skin_editor.render.captures", fromlist=["x"]).read_capture(base)) if base else None
@@ -573,6 +609,7 @@ def examine_all(ctx, results, ui_dir=None):
                 row["cause"] = ex["cause"] if ex and ex["cause"] else UNEXPLAINED
                 row["cause_grade"] = ex["grade"] if ex and ex["grade"] else None
                 row["cause_key"] = ex["cause_key"] if ex else None
+                row["override"] = ex.get("override") if ex else None
                 row["legacy_cause"] = fixtures.legacy_cause(row, r["name"])
                 exams.append(ex)
     return exams

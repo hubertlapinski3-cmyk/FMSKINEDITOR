@@ -142,19 +142,32 @@ def i3_states():
             d["rest"] = rest
         d.update(kw)
         return d
-    nav_chain = lambda st: [el("SIButton", "buttons-button-navigation-default", "sibutton navigatable HasSIClickable navigation-tab-portal-default-active-false margin-horizontal-global-gap-none buttongroup__button", ["hover"]),
+    nav_chain = lambda st, light=False: ([el("VisualElement", "MainNav", "tile-mockups-navigation-core-primary-hi-res nav-on-light")] if light else []) + [
+                            el("SIButton", "buttons-button-navigation-default", "sibutton navigatable HasSIClickable navigation-tab-portal-default-active-false margin-horizontal-global-gap-none buttongroup__button", ["hover"]),
                             el("VisualElement", "", "thematic-md justify-content-center", ["hover"]),
                             el("VisualElement", "MainFrame", "row-direction-normal align-items-center", ["hover"]),
                             el("SIVisible", "TextVisible", ""),
                             el("SIText", "text", "sitext portal-text margin-right-global-gap-none sitext-hover-cursor margin-right-global-gap-small thematic-md", st)]
     checks = [
         chk("filter-hover", [el("SIButton", "", btn, ["hover"])], "#FFFFFF33", "#FFFFFF24"),
-        chk("filter-press-held", [el("SIButton", "", btn, ["hover", "active", "focus"])], "#FFFFFF24", "#FFFFFF24", note="read with mask 67 (active+hover+focus); the game shows #FFFFFF24 while pressed. EXPLAINED (owner's lookup): the static rule .buttons-button-base-default:active:enabled (specificity 31) sets background-color var(--core-controls-surface-pc-pressed) = var(--colours-alpha-light-14) = #FFFFFF24, equal to the rest colour, and outranks :hover (21). The first run omitted :enabled and so predicted #FFFFFF33"),
+        chk("filter-press-held", [el("SIButton", "", btn, ["hover", "active", "focus"])], "#FFFFFF24", "#FFFFFF24", observation="read with mask 67 (active+hover+focus); background #FFFFFF24 while pressed (one reading)",
+            interpretations=[{"text": "the static rule .buttons-button-base-default:active:enabled (specificity 31) declares var(--core-controls-surface-pc-pressed) = #FFFFFF24, equal to rest, and outranks :hover (21)", "status": "derived",
+                              "note": "single source: a lookup made AFTER the model was changed (:enabled added) on this same reading; not an independent observation of the press state"}]),
         chk("filter-dragged-off-held", [el("SIButton", "", btn, ["focus"])], "#FFFFFF24", "#FFFFFF24", noop=True, note="mask 64 (focus only) with the mouse still held"),
         chk("filter-released", [el("SIButton", "", btn)], "#FFFFFF24", "#FFFFFF24", noop=True),
         chk("loans-tile-hover", [el("SIButton", "layout-tile-interaction-button", tile, ["hover"])], "#2E3138", "#17223F"),
-        chk("nav-tab-label-hover", nav_chain(["hover"]), "#FFFFFF", "#EBEBEB", prop="color",
-            note="the label's own mask read 0 while its colour was #FFFFFF (its ancestors read 2): the rule that matches is the label's :hover, so the mask read of a text element lags what the style engine applies"),
+        chk("nav-tab-label-hover", nav_chain(["hover"]), "#FFFFFF", "#EBEBEB", prop="color", conditional=True,
+            observation="Measured: label colour #FFFFFF under the pointer, rest #EBEBEB; label mask 0; ancestors 2 (SIButton, the two wrappers). Not measured: why.",
+            interpretations=[{"text": "this row sets hover on the label itself, which the mask did not show: it is CONDITIONAL on that inference", "status": "inferred"},
+                             {"text": "a rule in the game's applied sheets, .navigation-tab-portal-default-active-false .portal-text:hover, declares #FFFFFF for a hovered label", "status": "derived"}]),
+        chk("nav-tab-label-as-read", nav_chain([], True), "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover",
+            observation="the same reading with the states AS READ: label 0, ancestors hover (2); the game's applied sheets only",
+            interpretations=[{"text": "if this FAILS, no rule in the applied sheets colours the label through a hovered ancestor", "status": "derived"}]),
+        chk("nav-tab-label-as-read-runtime-sheet", nav_chain([], True), "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover", runtime_sheet_capture="styles-e1-squad-bindings-20261114-115217.ndjson",
+            observation="the same reading with the states AS READ (label 0, ancestors hover), plus the RECORDED run-time sheet (empty name, negative instance id) of the squad capture, whose sampled rules include "
+                        ".nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text { color: var(--colours-base-neutral-white) }; the label's ancestor MainNav carries nav-on-light in that capture",
+            interpretations=[{"text": "an ancestor-hover rule yields #FFFFFF under the masks as read, so the label's own hover is not needed to explain the colour", "status": "derived"},
+                             {"text": "whether the game applies that recorded rule to this label at this moment is not observed; a stale mask read is NOT excluded (no repeated reads were taken), and inheritance was not tested", "status": "inferred"}]),
         chk("table-row-hover", [el("BindingRoot", "", row, ["hover"])], "#FFFFFF1A", "#FFFFFF00", note="even row of the zebra list; odd rows rest at #FFFFFF0F (the zebra rule is not part of this check)"),
         chk("inbox-row-hover", [el("SIButton", "NewsItemButton", news, ["hover"])], "#FFFFFF14", "#00000000"),
         chk("inbox-row-clicked-focus", [el("SIButton", "NewsItemButton", news, ["focus"])], "#00000000", "#00000000", noop=True, note="after the selection click the row's button carries mask 64 and no colour change"),

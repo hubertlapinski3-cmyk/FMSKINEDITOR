@@ -1,0 +1,530 @@
+[
+ {
+  "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+  "host": "TransferRoomIn",
+  "composition": "RecruitmentComposition-Large",
+  "predicted": [
+   668,
+   668,
+   312,
+   148
+  ],
+  "real": [
+   668,
+   1160,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   -492,
+   0,
+   0
+  ],
+  "max_abs": 492
+ },
+ {
+  "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+  "host": "TransferRoomOut",
+  "composition": "RecruitmentComposition-Large",
+  "predicted": [
+   996,
+   668,
+   312,
+   148
+  ],
+  "real": [
+   996,
+   1160,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   -492,
+   0,
+   0
+  ],
+  "max_abs": 492
+ },
+ {
+  "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+  "host": "TransferWindow",
+  "composition": "RecruitmentComposition-Large",
+  "predicted": [
+   2308,
+   668,
+   148,
+   148
+  ],
+  "real": [
+   1652,
+   1160,
+   312,
+   148
+  ],
+  "residual": [
+   656,
+   -492,
+   -164,
+   0
+  ],
+  "max_abs": 656
+ },
+ {
+  "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+  "host": "HumanActionsControlPanelBlock",
+  "composition": "RecruitmentComposition-Large",
+  "predicted": [
+   12,
+   12,
+   2444,
+   66
+  ],
+  "real": [
+   12,
+   12,
+   2444,
+   66
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+  "host": "RecruitmentContentBlock",
+  "composition": "RecruitmentComposition-Large",
+  "predicted": [
+   12,
+   94,
+   2444,
+   1050
+  ],
+  "real": [
+   12,
+   94,
+   2444,
+   1050
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+  "host": "ClubSubgroupStaff",
+  "composition": "RecruitmentComposition-Large",
+  "predicted": [
+   340,
+   668,
+   312,
+   148
+  ],
+  "real": [
+   340,
+   1160,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   -492,
+   0,
+   0
+  ],
+  "max_abs": 492
+ },
+ {
+  "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+  "host": "TransferActivity",
+  "composition": "RecruitmentComposition-Large",
+  "predicted": [
+   1324,
+   668,
+   148,
+   148
+  ],
+  "real": [
+   1324,
+   1160,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   -492,
+   -164,
+   0
+  ],
+  "max_abs": 492
+ },
+ {
+  "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+  "host": "AgentOffers",
+  "composition": "RecruitmentComposition-Large",
+  "predicted": [
+   12,
+   668,
+   312,
+   148
+  ],
+  "real": [
+   12,
+   1160,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   -492,
+   0,
+   0
+  ],
+  "max_abs": 492
+ },
+ {
+  "capture": "styles-d4-inbox-20261114-111746.ndjson",
+  "host": "Messages",
+  "composition": "Portal-Large",
+  "predicted": [
+   12,
+   12,
+   476,
+   1296
+  ],
+  "real": [
+   12,
+   12,
+   476,
+   1296
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-d4-inbox-20261114-111746.ndjson",
+  "host": "ClubTeamReport",
+  "composition": "Portal-Large",
+  "predicted": [
+   2144,
+   12,
+   312,
+   148
+  ],
+  "real": [
+   2144,
+   12,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-d4-inbox-20261114-111746.ndjson",
+  "host": "DataHub",
+  "composition": "Portal-Large",
+  "predicted": [
+   2144,
+   176,
+   312,
+   148
+  ],
+  "real": [
+   2144,
+   176,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-d4-inbox-20261114-111746.ndjson",
+  "host": "TransferBudget",
+  "composition": "Portal-Large",
+  "predicted": [
+   2144,
+   340,
+   312,
+   148
+  ],
+  "real": [
+   2144,
+   340,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-d4-inbox-20261114-111746.ndjson",
+  "host": "WageBudget",
+  "composition": "Portal-Large",
+  "predicted": [
+   2144,
+   504,
+   312,
+   148
+  ],
+  "real": [
+   2144,
+   504,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-d4-inbox-20261114-111746.ndjson",
+  "host": "PortalAdaptiveContent",
+  "composition": "Portal-Large",
+  "predicted": [
+   504,
+   12,
+   1624,
+   1296
+  ],
+  "real": [
+   504,
+   12,
+   1624,
+   1296
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-d4-inbox-20261114-111746.ndjson",
+  "host": "Training",
+  "composition": "Portal-Large",
+  "predicted": [
+   2144,
+   668,
+   312,
+   148
+  ],
+  "real": [
+   2144,
+   668,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-sessionB-start-screen-20261114-103457.ndjson",
+  "host": "LoadMostRecentSave",
+  "composition": "MainMenuHasSaveComposition-Large-IM",
+  "predicted": [
+   12,
+   12,
+   640,
+   312
+  ],
+  "real": [
+   12,
+   12,
+   640,
+   312
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-sessionB-start-screen-20261114-103457.ndjson",
+  "host": "MainMenuStartNewCareer",
+  "composition": "MainMenuHasSaveComposition-Large-IM",
+  "predicted": [
+   12,
+   340,
+   312,
+   148
+  ],
+  "real": [
+   12,
+   340,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-sessionB-start-screen-20261114-103457.ndjson",
+  "host": "MainMenuLoadGame",
+  "composition": "MainMenuHasSaveComposition-Large-IM",
+  "predicted": [
+   340,
+   340,
+   148,
+   148
+  ],
+  "real": [
+   340,
+   340,
+   148,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-sessionB-start-screen-20261114-103457.ndjson",
+  "host": "MainMenuOnline",
+  "composition": "MainMenuHasSaveComposition-Large-IM",
+  "predicted": [
+   504,
+   340,
+   148,
+   148
+  ],
+  "real": [
+   504,
+   340,
+   148,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-sessionB-start-screen-20261114-103457.ndjson",
+  "host": "MarketingBanner",
+  "composition": "MainMenuHasSaveComposition-Large-IM",
+  "predicted": [
+   12,
+   668,
+   640,
+   148
+  ],
+  "real": [
+   12,
+   668,
+   640,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-sessionB-start-screen-20261114-103457.ndjson",
+  "host": "MainMenuStartNewCareerNationalTeam",
+  "composition": "MainMenuHasSaveComposition-Large-IM",
+  "predicted": [
+   340,
+   504,
+   312,
+   148
+  ],
+  "real": [
+   340,
+   504,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ },
+ {
+  "capture": "styles-sessionB-start-screen-20261114-103457.ndjson",
+  "host": "MainMenuStartNewCareerShuffleDraft",
+  "composition": "MainMenuHasSaveComposition-Large-IM",
+  "predicted": [
+   12,
+   504,
+   312,
+   148
+  ],
+  "real": [
+   12,
+   504,
+   312,
+   148
+  ],
+  "residual": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "max_abs": 0
+ }
+]
