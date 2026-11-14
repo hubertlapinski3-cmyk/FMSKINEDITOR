@@ -12,6 +12,7 @@ import Tables from './Tables'
 import Checklist from './Checklist'
 import Search from './Search'
 import Gutter, { useStoredSize } from './Gutter'
+import { RenderScreenView, RenderTableView } from './RenderScreens'
 import { RenderBrowser, RenderCanvas, ruleAtLine, rulePaths, tokenAt, tokenPaths, type LayoutRow, type RResult } from './Render'
 
 interface Tab { path: string; text: string; saved: string; readonly?: boolean }
@@ -60,6 +61,7 @@ export default function App() {
   const [planErr, setPlanErr] = useState('')
   const [sheets, setSheets] = useState<{ name: string; bundle: string; rules: number }[]>([])
   const [sheetQ, setSheetQ] = useState('')
+  const [rmode, setRmode] = useState<'layout' | 'screen' | 'table'>('layout')          // what the render view shows: one layout, a whole screen on the grid, or a table view
   const [rl, setRl] = useState<LayoutRow | null>(null)                             // the layout picked in the render view
   const [sideW, setSideW] = useStoredSize('studio.sideW', 250, 160, 640)           // resizable panels, remembered between runs
   const [panelH, setPanelH] = useStoredSize('studio.panelH', 210, 80, 560)
@@ -260,7 +262,8 @@ export default function App() {
         {view === 'layouts' && <Guard name="Layouts"><Layouts key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
         {view === 'tiles' && <Guard name="Tile layout"><Tiles key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
         {view === 'tables' && <Guard name="Table views"><Tables key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
-        {view === 'render' && <Guard name="Render browser"><RenderBrowser picked={rl ? rl.bundle + rl.path_id : null} onPick={setRl} say={say} /></Guard>}
+        {view === 'render' && <div className="rmodes" role="tablist">{(['layout', 'screen', 'table'] as const).map((m) => <button key={m} role="tab" aria-selected={rmode === m} className={rmode === m ? 'on' : ''} onClick={() => setRmode(m)}>{m}</button>)}</div>}
+        {view === 'render' && rmode === 'layout' && <Guard name="Render browser"><RenderBrowser picked={rl ? rl.bundle + rl.path_id : null} onPick={setRl} say={say} /></Guard>}
         {view === 'checklist' && <Guard name="In-game checklist"><Checklist say={say} /></Guard>}
         {view === 'updates' && <Guard name="Game updates"><Updates project={project} say={say} onChanged={reloadClean} /></Guard>}
         {view === 'palette' && project && <Palette project={project} onChanged={reloadClean} say={say} />}
@@ -280,7 +283,7 @@ export default function App() {
         </>}
       </aside>
       <main className="editor">
-        {view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
+        {view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
         <div className="tabs">{tabs.map((t) => <div key={t.path} className={'tab' + (t.path === active ? ' on' : '')} onClick={() => setActive(t.path)}>{t.path.split('/').pop()}{t.readonly ? ' (game)' : ''}{dirty(t.path) ? ' •' : ''}<button onClick={(e) => { e.stopPropagation(); closeTab(t.path) }}>×</button></div>)}</div>
         <div className="surface">
           {tab ? <Editor path={tab.path} language={langOf(tab.path)} theme="vs-dark" value={tab.text}

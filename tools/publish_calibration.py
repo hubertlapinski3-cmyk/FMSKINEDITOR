@@ -117,7 +117,7 @@ def publish(out, ctx=None, results=None, update_guide=False):
         g = ROOT / "docs" / "RENDER-GUIDE.md"
         txt = g.read_text(encoding="utf-8").replace("\r\n", "\n")
         a, b = txt.index("<!-- coverage:start -->") + len("<!-- coverage:start -->"), txt.index("<!-- coverage:end -->")
-        g.write_text((txt[:a] + "\n" + "\n".join(rt.coverage_md(cv)) + "\n" + txt[b:]).replace("\n", "\r\n"), encoding="utf-8")
+        g.write_bytes((txt[:a] + "\n" + "\n".join(rt.coverage_md(cv)) + "\n" + txt[b:]).replace("\n", "\r\n").encode("utf-8"))      # bytes: write_text would turn \r\n into \r\r\n on Windows
     print("TOTAL", tot, "fixtures", len(results), "| failures", ex["fail_rows"], "origin", ex["origin_rows"], "displaced", ex["displaced_rows"], "grades", ex["grades"], "D", ex["D"])
     return results, cv, ex
 
