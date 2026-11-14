@@ -17,12 +17,12 @@ from skin_editor.render.measure import edge_path
 ROOT = Path(__file__).resolve().parent.parent
 try:
     from skin_editor import config
-    AA = Path(config.load().get("aa_dir") or "")
+    AA = Path(config.load()["aa_dir"]) if (config.load() or {}).get("aa_dir") else None
 except Exception:
-    AA = Path("")
+    AA = None
 
 
-@unittest.skipUnless(AA.is_dir() and edge_path() and fixtures.ui_dumps_dir().is_dir(), "needs the game install, Microsoft Edge and the inspector captures")
+@unittest.skipUnless(AA is not None and AA.is_dir() and edge_path() and fixtures.ui_dumps_dir().is_dir(), "needs the game install, Microsoft Edge and the inspector captures")
 class FixRound(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

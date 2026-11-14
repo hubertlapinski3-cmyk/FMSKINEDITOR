@@ -82,13 +82,13 @@ class Cap(unittest.TestCase):
         self.assertEqual(cap.count(t), 242)
 
 
-AA = Path(config.load().get("aa_dir") or "") if config.load() else Path("")
+AA = Path(config.load()["aa_dir"]) if (config.load() or {}).get("aa_dir") else None
 THIRTEEN = ["DetailedPreferencesBlock", "GameCreationLoadingScreen", "GameCreationManagerSelectionScreen", "IGEEditDetailsBlock", "ManagerPersonaDetailsScreen_EditMode", "NewsTransfersHubSiteHeader",
             "OnThePitchComparisonMainBlock", "PhoneDashboardHeaderNavigationTabs", "PlayerReportHeader", "ShotMapTile_4x4", "StaffTransferActivityBlock_12x8", "TeamShotMapTile_4x6",
             "data_display-graph-shotmap-default"]
 
 
-@unittest.skipUnless(AA.is_dir(), "needs the game install")
+@unittest.skipUnless(AA is not None and AA.is_dir(), "needs the game install")
 class Budget(unittest.TestCase):
     """The 13 layouts the plan published as exceptions to the 200 ms cached budget: with the cap every one is inside it, and the 5,487-element one renders cold in seconds."""
 
