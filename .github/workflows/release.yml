@@ -72,6 +72,15 @@ jobs:
           if (Test-Path sigtest.txt.sig) { Write-Host "::notice title=signing test::signed OK" }
           else { $m = (($out -split "`n" | Select-String 'rror|failed' | Select-Object -First 3) -join ' / '); Write-Host "::error title=signing test failed::$m"; exit 1 }
 
+      - name: Release notes (docs/RELEASE-NOTES-<version>.md, else the Phase 8 pointer)
+        shell: pwsh
+        run: |
+          $v = (Get-Content studio/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
+          $f = "docs/RELEASE-NOTES-$v.md"
+          $body = if (Test-Path $f) { Get-Content $f -Raw } else { "See docs/PHASE8-PLAN.md for what is in this release." }
+          $d = [guid]::NewGuid().ToString("N")
+          "RELEASE_NOTES<<$d`n$body`n$d" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+
       - name: Build, sign and publish
         uses: tauri-apps/tauri-action@v0
         env:
@@ -82,8 +91,21 @@ jobs:
           projectPath: studio
           tagName: ${{ github.ref_name }}
           releaseName: FM Skin Studio ${{ github.ref_name }}
-          releaseBody: See docs/PHASE8-PLAN.md for what is in this release.
+          releaseBody: ${{ env.RELEASE_NOTES }}
           releaseDraft: false
           prerelease: false
           includeUpdaterJson: true
           args: --config src-tauri/tauri.release.conf.json
+
+      # The calibration report ships alongside the installer as release assets (it is not part of the update feed).
+      - name: Attach the calibration report
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $v = (Get-Content studio/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
+          $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like 'phase9-m7-calibration-2*' } | Sort-Object Name | Select-Object -Last 1
+          if (-not $src) { throw "no published calibration report under docs/evidence" }
+          Copy-Item "$($src.FullName)/calibration-report.md" "calibration-report-$v.md"
+          Copy-Item "$($src.FullName)/calibration-report.json" "calibration-report-$v.json"
+          gh release upload "${{ github.ref_name }}" "calibration-report-$v.md" "calibration-report-$v.json" --clobber
