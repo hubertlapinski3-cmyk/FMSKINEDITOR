@@ -149,7 +149,7 @@ def i3_states():
                             el("SIText", "text", "sitext portal-text margin-right-global-gap-none sitext-hover-cursor margin-right-global-gap-small thematic-md", st)]
     checks = [
         chk("filter-hover", [el("SIButton", "", btn, ["hover"])], "#FFFFFF33", "#FFFFFF24"),
-        chk("filter-press-held", [el("SIButton", "", btn, ["hover", "active", "focus"])], "#FFFFFF24", "#FFFFFF24", note="read with mask 67 (active+hover+focus); the game shows the REST colour while pressed, the hover rule alone predicts #FFFFFF33"),
+        chk("filter-press-held", [el("SIButton", "", btn, ["hover", "active", "focus"])], "#FFFFFF24", "#FFFFFF24", note="read with mask 67 (active+hover+focus); the game shows #FFFFFF24 while pressed. EXPLAINED (owner's lookup): the static rule .buttons-button-base-default:active:enabled (specificity 31) sets background-color var(--core-controls-surface-pc-pressed) = var(--colours-alpha-light-14) = #FFFFFF24, equal to the rest colour, and outranks :hover (21). The first run omitted :enabled and so predicted #FFFFFF33"),
         chk("filter-dragged-off-held", [el("SIButton", "", btn, ["focus"])], "#FFFFFF24", "#FFFFFF24", noop=True, note="mask 64 (focus only) with the mouse still held"),
         chk("filter-released", [el("SIButton", "", btn)], "#FFFFFF24", "#FFFFFF24", noop=True),
         chk("loans-tile-hover", [el("SIButton", "layout-tile-interaction-button", tile, ["hover"])], "#2E3138", "#17223F"),

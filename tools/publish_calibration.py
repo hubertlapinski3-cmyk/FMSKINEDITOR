@@ -38,8 +38,10 @@ def preface(results, tot):
            "allowed, owner at the PC); the readings are the fixture `state-i3-session-g`, source `docs/evidence/phase9-i3-session-G-20261114.md`. The render applies NO runtime state; the "
            "fixture compares each reading with what the game's own `:hover`/`:focus` rules declare for the same element (`Cascade.state_declarations`). Result: %d pass, %d fail, %d n/a. "
            "Hover colours of buttons, list rows, the Loans tile and the nav tab label equal the game's own rules exactly. Pitch markers and instruction tiles get a hover flag and no style "
-           "change (explicit no-op verdicts). The inspector's mask for a text label read 0 while its hover colour was applied (noted on the row). **Open:** the pressed Filter button showed "
-           "its rest colour (#FFFFFF24) where the hover rule alone predicts #FFFFFF33: one reading, UNEXPLAINED, listed as a known failure. The Inbox selection is a class swap on a "
+           "change (explicit no-op verdicts). The inspector's mask for a text label read 0 while its hover colour was applied (noted on the row). The pressed Filter button showed "
+           "its rest colour (#FFFFFF24); the first run predicted #FFFFFF33 and failed, because the state model left out Unity's `:enabled`. With it, the static rule "
+           "`.buttons-button-base-default:active:enabled` (specificity 31, above `:hover`) declares the pressed colour, #FFFFFF24, equal to rest, and the row passes: the game's own "
+           "rule explains it, nothing was unexplained in the game. The Inbox selection is a class swap on a "
            "style-setter; the one property the render sees differ (colour) was not measured, so that row is N/A." % (
                st["counts"]["PASS"], st["counts"]["FAIL"], st["counts"]["N/A"])]
     return out

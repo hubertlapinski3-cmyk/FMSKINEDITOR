@@ -1,5 +1,4 @@
 [
-"state-i3-session-g|filter-press-held|SIButton#.HasSIClickable.row-direction-normal|background-color (active+focus+hover)",
 "state-i3-session-g|loans-tile-hover|SIButton#layout-tile-interaction-button|background-color (rest)",
 "tile-atmosphere|geometry|AutoScroller#|box",
 "tile-atmosphere|geometry|SIText#title-text|box",

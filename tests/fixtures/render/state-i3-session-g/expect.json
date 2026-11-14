@@ -47,7 +47,7 @@
    "property": "background-color",
    "state": "#FFFFFF24",
    "rest": "#FFFFFF24",
-   "note": "read with mask 67 (active+hover+focus); the game shows the REST colour while pressed, the hover rule alone predicts #FFFFFF33"
+   "note": "read with mask 67 (active+hover+focus); the game shows #FFFFFF24 while pressed. EXPLAINED (owner's lookup): the static rule .buttons-button-base-default:active:enabled (specificity 31) sets background-color var(--core-controls-surface-pc-pressed) = var(--colours-alpha-light-14) = #FFFFFF24, equal to the rest colour, and outranks :hover (21). The first run omitted :enabled and so predicted #FFFFFF33"
   },
   {
    "id": "filter-dragged-off-held",

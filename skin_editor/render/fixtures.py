@@ -317,7 +317,7 @@ def _state_chain(ctx, check, key="chain"):
     nodes = []
     for s in check[key]:
         nodes.append({"type": s["type"], "name": s.get("name", ""), "classes": list(s.get("classes", [])), "children": [], "inline": [], "attrs": {}, "id": None, "layout": None,
-                      "_states": set(s.get("states", []))})
+                      "_states": set(s.get("states", [])) | (set() if "disabled" in s.get("states", []) else {"enabled"})})     # Unity's :enabled holds unless the element is disabled (mask 32)
     for a, b in zip(nodes, nodes[1:]):
         a["children"] = [b]
     casc = ctx.R.cascade()
