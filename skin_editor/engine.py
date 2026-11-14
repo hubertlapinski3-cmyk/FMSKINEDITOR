@@ -315,8 +315,9 @@ class Engine:
         return {"packages": out[: int(b.get("limit") or 40)]}
 
     # ---- the real layout index -> the editor's layout dump
-    LAYOUT_INDEX = r"C:\Users\Admin\Downloads\FM27_LayoutMCP\index\layout-vanilla.sqlite"
-    LAYOUT_AREAS = r"C:\Users\Admin\Downloads\FM27_LayoutMCP\config\areas.json"
+    # overridable (FM27_LAYOUT_INDEX, FM27_LAYOUT_AREAS); the defaults are the owner's FM27_LayoutMCP checkout
+    LAYOUT_INDEX = os.environ.get("FM27_LAYOUT_INDEX") or r"C:\Users\Admin\Downloads\FM27_LayoutMCP\index\layout-vanilla.sqlite"
+    LAYOUT_AREAS = os.environ.get("FM27_LAYOUT_AREAS") or r"C:\Users\Admin\Downloads\FM27_LayoutMCP\config\areas.json"
 
     def layout_export(self, q, b):
         """Build the fmlayout-index/2 dump from the FM27_LayoutMCP sqlite index and the game's composition bundles, cross-check every cell against

@@ -28397,6 +28397,16 @@
   }
  ],
  "examination": {
+  "origin_grades": {
+   "measured fact": 22,
+   "magnitude only": 10,
+   "unexplained": 6
+  },
+  "displaced_grades": {
+   "measured fact": 40,
+   "magnitude only": 0,
+   "unexplained": 2
+  },
   "pair_flags": [
    "tile-atmosphere|geometry|SIText#title-text|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0",
    "tile-atmosphere|geometry|SIVisible#|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/1",

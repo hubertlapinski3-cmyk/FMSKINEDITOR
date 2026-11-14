@@ -1,0 +1,2 @@
+# Evidence files are published and hashed: keep their bytes verbatim (no line-ending conversion on any machine).
+docs/evidence/** -text

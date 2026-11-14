@@ -14,3 +14,6 @@ An approximation, and it says so on every render: there is no hover, press or an
 
 ### Updating
 Installed copies update through Check for updates, then Install and restart. Docs: `docs/RENDER-GUIDE.md`. Evidence: `docs/evidence/` (reports for every milestone, the calibration report and the in-game sessions behind it).
+
+### Revision of the calibration report (2026-11-14, after a review)
+The paragraph above describes the report as first published (680 passing, 78 failing, causes assigned by rule). The report asset was replaced in place after a review: no published row changed, 5 rows were added, every failing row is now examined individually, coverage is broken down by row class, the grid model has a held-out test, and the start-up stall is written up. Totals of the revised report: 683 pass, 80 fail, 435 not comparable. The update dialog of the installed 1.0.0 shows the original notes (latest.json is part of the published release and was left untouched); the release page carries the dated note. Details: `docs/evidence/phase9-fix-round-20261114.md`.

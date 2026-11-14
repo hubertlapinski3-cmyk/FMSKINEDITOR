@@ -36,6 +36,16 @@ def state_lines(results):
     return out
 
 
+def chain_caution():
+    """The state fixture feeds the cascade a chain of ancestors per check; most checks give it ONE element, so no ancestor-dependent rule can match. Said in the report, counted from the fixture."""
+    cks = json.loads((ROOT / "tests" / "fixtures" / "render" / "state-i3-session-g" / "expect.json").read_text(encoding="utf-8"))["checks"]
+    st = [c for c in cks if c["kind"] == "state"]
+    one = sum(1 for c in st if len(c["chain"]) == 1)
+    return ("Caution on the state rows: %d of the %d state checks give the cascade a chain of ONE element, so no rule that depends on an ancestor can match. For the navigation label this matters: with its real ancestor "
+            "(MainNav, nav-on-light) the applied sheets alone predict a different REST colour (#000000B2, not #EBEBEB), so the conditional row's rest PASS depends on its truncated chain, not on the hover inference its label names, "
+            "and the as-read variants changed two things at once (the ancestor and the label's state). The button, list-row and tile colours were checked on one-element chains." % (one, len(st)))
+
+
 def grid_md(results):
     g = rt.grid_scoping(results, HELDOUT)
     pred = json.loads(PRED.read_text(encoding="utf-8")) if PRED.is_file() else None
@@ -82,14 +92,15 @@ def publish(out, ctx=None, results=None, update_guide=False):
     def preface(results, tot):
         lines = ["**Status: published, build 27.0.1.2503222, revised after the 1.0.0 review. This file is the revised report and is what the release asset `calibration-report-1.0.0.md` now carries; the first version of the report, as published at release, is retained unchanged in the repository at `docs/evidence/phase9-m7-calibration-20261114/` and in the git history. Not a draft.** Phase 9 M7 closed on the first version of this report. Read these first:", "",
                  "1. **Failure causes: each failing row was examined individually, and the examination is published row by row** (section \"The failures, examined row by row\"). Each of the %d failing rows: %d origin failures, %d displaced by an origin "
-                 "listed beside them; %d causes rest on a measured capture fact, %d on magnitude only, %d are UNEXPLAINED. The 1.0.0 labels came from fixture-wide rules (one label per row type, list order deciding when two fitted, 78 rows labelled, none unexplained); "
+                 "listed beside them. The causes are the ORIGIN rows: %d rest on a measured capture fact, %d on magnitude only, %d are UNEXPLAINED; the displaced rows repeat their origin's cause (%d with a measured-fact origin, %d unexplained), so the row counts %d / %d / %d over all failing rows count rows, not independent causes. The 1.0.0 labels came from fixture-wide rules (one label per row type, list order deciding when two fitted, 78 rows labelled, none unexplained); "
                  "they disagree with the examination on %d rows and both labels are kept. The examiner wrote the rules; no second person checked. Of the %d origin rows, %s a class of cause without predicting the size of the gap." % (
-                     ex["fail_rows"], ex["origin_rows"], ex["displaced_rows"], ex["grades"]["measured fact"], ex["grades"]["magnitude only"], ex["unexplained"], ex["D"], ex["origin_rows"], rt.names(ex["origin_magnitude_not_predicted"])),
+                     ex["fail_rows"], ex["origin_rows"], ex["displaced_rows"], ex["origin_grades"]["measured fact"], ex["origin_grades"]["magnitude only"], ex["origin_grades"]["unexplained"], ex["displaced_grades"]["measured fact"], ex["displaced_grades"]["unexplained"],
+                     ex["grades"]["measured fact"], ex["grades"]["magnitude only"], ex["unexplained"], ex["D"], ex["origin_rows"], rt.names(ex["origin_magnitude_not_predicted"])),
                  "2. **Coverage is published by row class, and the pass count is not a headline** (table below). Many passes are flex rows at Yoga's initial value, which the render supplies when it declares nothing; the same condition is N/A for colour and font-size. "
                  "tile-loans and tile-loans-c2-dump are one tile counted twice.",
                  "3. **Delivered text pairing.** %s" % _delivered(results),
                  "4. **State findings come from the I3 session (Session G)**, hover, press, focus and selection read by hand on the baseline inspector with the owner at the PC; observation and interpretation are separate fields on each row, each interpretation marked observed, "
-                 "derived or inferred. The render applies NO runtime state. " + " ".join(state_lines(results)),
+                 "derived or inferred. The render applies NO runtime state. " + " ".join(state_lines(results)) + " " + chain_caution(),
                  "5. **Grid placement is scoped** to what was measured, with a held-out test: see \"Grid placement: what it was measured on\".", ""]
         return lines + rt.coverage_md(cv) + [""]
 

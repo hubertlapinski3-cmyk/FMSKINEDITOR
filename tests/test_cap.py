@@ -82,7 +82,7 @@ class Cap(unittest.TestCase):
         self.assertEqual(cap.count(t), 242)
 
 
-AA = Path(config.load().get("aa_dir", "")) if config.load() else Path("")
+AA = Path(config.load().get("aa_dir") or "") if config.load() else Path("")
 THIRTEEN = ["DetailedPreferencesBlock", "GameCreationLoadingScreen", "GameCreationManagerSelectionScreen", "IGEEditDetailsBlock", "ManagerPersonaDetailsScreen_EditMode", "NewsTransfersHubSiteHeader",
             "OnThePitchComparisonMainBlock", "PhoneDashboardHeaderNavigationTabs", "PlayerReportHeader", "ShotMapTile_4x4", "StaffTransferActivityBlock_12x8", "TeamShotMapTile_4x6",
             "data_display-graph-shotmap-default"]

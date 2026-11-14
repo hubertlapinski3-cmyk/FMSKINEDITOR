@@ -17,7 +17,7 @@ from skin_editor.render.measure import edge_path
 ROOT = Path(__file__).resolve().parent.parent
 try:
     from skin_editor import config
-    AA = Path(config.load().get("aa_dir", ""))
+    AA = Path(config.load().get("aa_dir") or "")
 except Exception:
     AA = Path("")
 
@@ -55,9 +55,9 @@ class FixRound(unittest.TestCase):
 
     def test_the_preface_counts_are_the_json_counts(self):
         ex, t = self.doc["examination"], self.doc["totals"]
-        m = re.search(r"Each of the (\d+) failing rows: (\d+) origin failures, (\d+) displaced.*?; (\d+) causes rest on a measured capture fact, (\d+) on magnitude only, (\d+) are UNEXPLAINED", self.md)
+        m = re.search(r"Each of the (\d+) failing rows: (\d+) origin failures, (\d+) displaced by an origin listed beside them\. The causes are the ORIGIN rows: (\d+) rest on a measured capture fact, (\d+) on magnitude only, (\d+) are UNEXPLAINED", self.md)
         self.assertIsNotNone(m, "the preface sentence is missing")
-        self.assertEqual(tuple(int(g) for g in m.groups()), (ex["fail_rows"], ex["origin_rows"], ex["displaced_rows"], ex["grades"]["measured fact"], ex["grades"]["magnitude only"], ex["unexplained"]))
+        self.assertEqual(tuple(int(g) for g in m.groups()), (ex["fail_rows"], ex["origin_rows"], ex["displaced_rows"], ex["origin_grades"]["measured fact"], ex["origin_grades"]["magnitude only"], ex["origin_grades"]["unexplained"]))
         self.assertEqual(ex["fail_rows"], t["FAIL"])
         m = re.search(r"\*\*Totals: (\d+) pass, (\d+) fail, (\d+) n/a", self.md)
         self.assertEqual(tuple(int(g) for g in m.groups()), (t["PASS"], t["FAIL"], t["N/A"]))

@@ -38,7 +38,7 @@ jobs:
         shell: pwsh
         run: |
           $v = (Get-Content studio/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
-          if ("v$v" -ne "${{ github.ref_name }}" -and "${{ github.event_name }}" -eq "push") { throw "tag ${{ github.ref_name }} does not match tauri.conf.json version $v" }
+          if ("v$v" -ne "${{ github.ref_name }}") { throw "tag ${{ github.ref_name }} does not match tauri.conf.json version $v" }
 
       - name: Freeze the engine (PyInstaller one-dir sidecar)
         shell: pwsh
@@ -104,7 +104,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $v = (Get-Content studio/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
-          $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like 'phase9-m7-calibration-2*' } | Sort-Object Name | Select-Object -Last 1
+          $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like 'phase9-m7-calibration-*' } | Sort-Object Name | Select-Object -Last 1   # the folder names sort so that '-revised-' comes after the first '-2026...' version
           if (-not $src) { throw "no published calibration report under docs/evidence" }
           Copy-Item "$($src.FullName)/calibration-report.md" "calibration-report-$v.md"
           Copy-Item "$($src.FullName)/calibration-report.json" "calibration-report-$v.json"
