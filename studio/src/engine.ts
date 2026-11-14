@@ -45,7 +45,7 @@ export async function rpc<T = any>(method: string, params: Record<string, unknow
 export function subscribe(on: (type: string, data: any) => void): () => void {
   if (!conn) return () => {}
   const es = new EventSource(`${conn.url}/events?t=${encodeURIComponent(conn.token)}`)
-  for (const t of ['job.queued', 'job.started', 'job.progress', 'job.done', 'job.failed', 'job.cancelled'])
+  for (const t of ['job.queued', 'job.started', 'job.progress', 'job.done', 'job.failed', 'job.cancelled', 'render.invalidate'])
     es.addEventListener(t, (ev) => on(t, JSON.parse((ev as MessageEvent).data).data))
   return () => es.close()
 }

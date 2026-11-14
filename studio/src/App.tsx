@@ -277,7 +277,7 @@ export default function App() {
         </>}
       </aside>
       <main className="editor">
-        {view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} /></Guard> : <>
+        {view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} /></Guard> : <>
         <div className="tabs">{tabs.map((t) => <div key={t.path} className={'tab' + (t.path === active ? ' on' : '')} onClick={() => setActive(t.path)}>{t.path.split('/').pop()}{t.readonly ? ' (game)' : ''}{dirty(t.path) ? ' •' : ''}<button onClick={(e) => { e.stopPropagation(); closeTab(t.path) }}>×</button></div>)}</div>
         <div className="surface">
           {tab ? <Editor path={tab.path} language={langOf(tab.path)} theme="vs-dark" value={tab.text}

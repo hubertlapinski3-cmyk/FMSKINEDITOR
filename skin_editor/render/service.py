@@ -2,6 +2,7 @@
 import time
 
 from . import cascade as cascade_mod
+from . import overlay
 from .html import flatten, font_label, load_text_metrics, percent_main_axis_rule, placeholder_kind, placeholder_text, style_dict, switch_branch_rule
 from .assets import AssetResolver, Drawn, apply_assets
 from .layouts import LayoutStore
@@ -24,6 +25,7 @@ class Renderer:
         self.bank = SheetBank(folder, cache_dir, style_index)
         self._rc = runtime_classes
         self._cascade = None
+        self._skin = {}                      # project name -> (project hash, Cascade, notes): the cascade with that project's edits, dropped by invalidate()
         self._metrics = load_text_metrics()
         self._assets = AssetResolver(folder, cache_dir) if cache_dir else None      # M4: asset(F:P) values; none without a cache folder
         self._drawn = Drawn(self._assets) if self._assets else None
@@ -41,13 +43,37 @@ class Renderer:
             self._cascade = cascade_mod.Cascade(self.bank.ordered(), self._rc)
         return self._cascade
 
-    def layout(self, bundle, path_id, depth=3, branches=None):
+    def invalidate(self, project=None):
+        """Drop the cached skin cascade of one project (or of all): the next render with that project is built again."""
+        if project is None:
+            self._skin.clear()
+        else:
+            self._skin.pop(project, None)
+
+    def skin_cascade(self, p):
+        """(Cascade, notes) with the project's edits applied to in-memory copies of the sheets; cached per project and rebuilt when its content hash changes."""
+        h = overlay.project_hash(p)
+        hit = self._skin.get(p["name"])
+        if not hit or hit[0] != h:
+            sheets, notes = overlay.build_sheets(self.bank, p)
+            hit = (h, cascade_mod.Cascade(sheets, self._rc), notes)
+            self._skin[p["name"]] = hit
+        return hit[1], hit[2]
+
+    def layout(self, bundle, path_id, depth=3, branches=None, project=None):
         t0 = time.perf_counter()
-        c = self.cascade()
+        notes, applied = [], 0
+        if project is not None:
+            c, notes = self.skin_cascade(project)
+        else:
+            c = self.cascade()
         t1 = time.perf_counter()
         tree = self.layouts.expand(bundle, path_id, depth)
         t2 = time.perf_counter()
         top = tree["children"]
+        if project is not None:
+            applied, pnotes = overlay.apply_layout_patches(top, project.get("layout_patches"))
+            notes = notes + pnotes
         summary = c.compute(top)
         asset_counts = None
         if self._assets:
@@ -74,6 +100,8 @@ class Renderer:
         for n in top:
             walk(n)
         return {"layout": tree["layout"], "bundle": bundle, "path_id": str(path_id), "notice": NOTICE, "tree": top, "includes": includes, "summary": summary, "assets": asset_counts,
+                "overlay": ({"project": project["name"], "hash": overlay.project_hash(project), "output": (project.get("options") or {}).get("output", "bundles"),
+                             "layout_patch_ops_applied": applied, "notes": notes, "not_applied": overlay.NOT_APPLIED} if project is not None else None),
                 "sheet_order": [{"position": i, "bundle": b, "sheet": n, "why": why} for i, (b, n, why) in enumerate(ROOT_SHEETS)],
                 "gaps": GAPS + (["%d selectors with runtime states (%s) are not applied" % (c.stats["state_selectors_skipped"],
                                                                                           ", ".join("%s %d" % kv for kv in c.stats["state_pseudo_classes"].items()))]

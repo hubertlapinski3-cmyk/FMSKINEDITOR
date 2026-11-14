@@ -41,14 +41,20 @@ class Assembler:
         cs = self.cells[composition]
         return max(c["x"] + c["w"] for c in cs), max(c["y"] + c["h"] for c in cs)
 
-    def place(self, composition, cols, rows, reserved_right=0):
+    def place(self, composition, cols, rows, reserved_right=0, moves=()):
         """{element_id: {col,row,w,h,mode}} for the composition's cells on a cols x rows grid, `reserved_right` columns held back on the right for slots the composition lacks."""
         c0, r0 = self.design_size(composition)
         dx, dy = (cols - reserved_right) - c0, rows - r0
         out = {}
+        moved = {o["cell_id"]: o["to"] for o in moves if o.get("composition") == composition}        # project tile moves (placement store): a cell's position in the design
         for c in self.cells[composition]:
+            right = c["x"] + c["w"] == c0                                                              # anchoring is judged on the cell's ORIGINAL position
+            if c["element_id"] in moved:
+                c = dict(c, x=moved[c["element_id"]]["x"], y=moved[c["element_id"]]["y"])
+                moved_note = True
+            else:
+                moved_note = False
             flex_w, flex_h = c["max_w"] >= 100 or c["max_w"] == 0, c["max_h"] >= 100 or c["max_h"] == 0
-            right = c["x"] + c["w"] == c0
             col, w = c["x"], c["w"]
             mode = []
             if flex_w:
@@ -61,7 +67,7 @@ class Assembler:
             if flex_h and c["h"] >= 5:
                 h += dy
                 mode.append("flexible height")
-            out.setdefault(c["element_id"], {"col": col, "row": row, "w": w, "h": h, "mode": mode or ["fixed"]})
+            out.setdefault(c["element_id"], {"col": col, "row": row, "w": w, "h": h, "mode": (mode or ["fixed"]) + (["moved by the project"] if moved_note else [])})
         return out
 
     def tile_for(self, composition, element_id, w, h):
@@ -77,12 +83,12 @@ class Assembler:
             return self.layouts[fit[0]["tile_layout_id"]]["name"], "largest config that fits (%dx%d), ASSUMED" % (fit[0]["size"]["w"], fit[0]["size"]["h"])
         return None, "no config fits"
 
-    def assemble(self, composition, area, composition_pitch=None, reserved_right=0, runtime_slots=(), padding=PADDING):
+    def assemble(self, composition, area, composition_pitch=None, reserved_right=0, runtime_slots=(), padding=PADDING, moves=()):
         """The screen: grid, placed cells with px boxes (relative to the grid container), tile layouts, and the slots the composition does not hold.
         `area` is the grid container's size in px (the screen chrome around it is not modelled)."""
         p = pitch_mod.lookup(composition_pitch or composition)
         cols, rows = grid_dims(area[0], area[1], p, padding)
-        placed = self.place(composition, cols, rows, reserved_right)
+        placed = self.place(composition, cols, rows, reserved_right, moves)
         hosts = []
         for eid, g in placed.items():
             layout, how = self.tile_for(composition, eid, g["w"], g["h"])

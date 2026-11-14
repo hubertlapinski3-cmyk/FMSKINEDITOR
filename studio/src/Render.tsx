@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
-import { rpc, RpcError } from './engine'
+import { rpc, RpcError, subscribe } from './engine'
 import Gutter, { useStoredSize } from './Gutter'
 
 /* Offline render of a game layout (Phase 9, docs/PHASE9-PLAN.md): the engine resolves the tree, the cascade and the computed declarations; this draws them with CSS.
@@ -17,6 +17,7 @@ export interface RNode {
 export interface RResult {
   layout: string; notice: string; tree: RNode[]; includes: unknown[]; summary: { elements: number; properties: number; by_status: Record<string, number>; unresolved_variables: Record<string, number> }
   sheet_order: { position: number; sheet: string; why: string }[]; gaps: string[]; timing_ms: { total: number }
+  overlay?: { project: string; output: string; layout_patch_ops_applied: number; notes: string[]; not_applied: string[] } | null
 }
 export interface LayoutRow { name: string; bundle: string; path_id: string; elements: number }
 
@@ -102,7 +103,7 @@ export function Explain({ n }: { n: RNode | null }) {
 }
 
 /** One layout drawn from its render tree, with the explain panel beside it. */
-export function RenderCanvas({ layout, say }: { layout: LayoutRow | null; say: (s: string) => void }) {
+export function RenderCanvas({ layout, say, project = null }: { layout: LayoutRow | null; say: (s: string) => void; project?: string | null }) {
   const [res, setRes] = useState<RResult | null>(null)
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
@@ -111,15 +112,18 @@ export function RenderCanvas({ layout, say }: { layout: LayoutRow | null; say: (
   const [h, setH] = useState(600)
   const [zoom, setZoom] = useState(1)
   const [markers, setMarkers] = useState(true)
+  const [skin, setSkin] = useState(true)          // the vanilla/skin toggle: on = the open project's edits are drawn, off = the game as it ships
+  const [tick, setTick] = useState(0)             // bumped by every `render.invalidate` event of the open project, so the view repaints after any edit
   const [explainW, setExplainW] = useStoredSize('studio.explainW', 400, 240, 800)
   useEffect(() => {
     if (!layout) return
     let live = true
     setBusy(true); setErr(''); setSel(null)
-    rpc<RResult>('render.layout', { bundle: layout.bundle, path_id: layout.path_id }).then((r) => { if (live) { setRes(r); setBusy(false) } })
+    rpc<RResult>('render.layout', { bundle: layout.bundle, path_id: layout.path_id, ...(project ? { project, skin } : {}) }).then((r) => { if (live) { setRes(r); setBusy(false) } })
       .catch((e) => { if (live) { const m = e instanceof RpcError ? e.message : String(e); setErr(m); setBusy(false); say('ERROR ' + m) } })
     return () => { live = false }
-  }, [layout, say])
+  }, [layout, say, project, skin, tick])
+  useEffect(() => subscribe((t, d) => { if (t === 'render.invalidate' && project && d?.project === project) setTick((n) => n + 1) }), [project])
   const node = useMemo(() => (res ? at(res.tree, sel) : null), [res, sel])
   if (!layout) return <div className="empty">Pick a game layout on the left to see it drawn.</div>
   const by = res?.summary.by_status ?? {}
@@ -128,6 +132,7 @@ export function RenderCanvas({ layout, say }: { layout: LayoutRow | null; say: (
       <div className="rmain">
         <div className="rbar">
           <b>{layout.name}</b>
+          {project && <label title="Draw the open project's edits over the game's own styles"><input type="checkbox" checked={skin} onChange={(e) => setSkin(e.target.checked)} /> skin: {project}</label>}
           <label>width <input type="number" value={w} min={10} max={4000} onChange={(e) => setW(Number(e.target.value) || 10)} /></label>
           <label>height <input type="number" value={h} min={10} max={4000} onChange={(e) => setH(Number(e.target.value) || 10)} /></label>
           <label>zoom <select value={zoom} onChange={(e) => setZoom(Number(e.target.value))}>{[0.25, 0.5, 0.75, 1, 1.5, 2].map((z) => <option key={z} value={z}>{z * 100}%</option>)}</select></label>
@@ -144,6 +149,8 @@ export function RenderCanvas({ layout, say }: { layout: LayoutRow | null; say: (
             {res?.tree.map((n, i) => <Node key={i} n={n} path={String(i)} sel={sel} onSel={setSel} markers={markers} />)}
           </div>
         </div>
+        {res?.overlay && <details className="small pad" open={res.overlay.notes.length > 0}><summary>Project overlay: {res.overlay.project} ({res.overlay.output}), {res.overlay.layout_patch_ops_applied} layout patch op(s) applied{res.overlay.notes.length ? `, ${res.overlay.notes.length} note(s)` : ''}</summary>
+          <ul>{res.overlay.notes.map((n, i) => <li key={i}>{n}</li>)}</ul><div className="dim">Not applied in this view: {res.overlay.not_applied.join('; ')}</div></details>}
         {res && res.gaps.length > 0 && <details className="small pad"><summary>What this render does not know ({res.gaps.length})</summary><ul>{res.gaps.map((g, i) => <li key={i}>{g}</li>)}</ul>
           <div>Sheet order: {res.sheet_order.map((s) => s.sheet).join(' → ')}</div></details>}
       </div>

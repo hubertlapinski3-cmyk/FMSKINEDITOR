@@ -300,12 +300,18 @@ def load(ws, name):
 def save(ws, p):
     """Store a project model. A folder project has its generated files rewritten from the model (hand-written comments in them
     are not kept: the text API, projfmt.write_file, is the way to edit files as text)."""
-    from . import projfmt
+    from . import changes, projfmt
     p = validate(migrate(p))
+    try:
+        old = load(ws, p["name"])
+    except Exception:                                       # a new project, or one that does not load: everything in it counts as new
+        old = None
     if projfmt.is_folder(ws, p["name"]):
         projfmt.write(ws, p)
     else:
         path(ws, p["name"]).write_text(json.dumps(p, indent=2), encoding="utf-8")
+    for reason, scope in changes.diff_reasons(old, p):      # one record per kind of change; the dispatcher turns them into one event (changes.batch)
+        changes.record(p["name"], reason, scope)
     return p
 
 
@@ -339,4 +345,6 @@ def delete(ws, name):
     stored = Path(ws.placements) / ("%s.placements.json" % name)       # the project's stored position edits go with it, or a new project of that name inherits them
     if stored.is_file():
         shutil.move(str(stored), str(dest / stored.name))
+    from . import changes
+    changes.record(name, "file", ["project removed"])
     return str(dest)

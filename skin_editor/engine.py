@@ -15,6 +15,7 @@ from pathlib import Path
 from . import bundles, colour, config, detect, images, native, preview, skins, index_styles, install, launcher, layout, layout_dump, layout_join, layout_view, patcher, placement, verify
 from .presets import PRESETS
 from . import project as project_mod
+from . import changes
 from .api.jobs import EventBus, JobQueue
 
 
@@ -35,6 +36,7 @@ class Engine:
         self._ld = (None, None)           # (current.json mtime, LayoutData)
         self._view = (None, None)         # (LayoutData it was built from, View)
         self.events = EventBus()
+        changes.set_sink(self._project_changed)
         self.jobs = JobQueue(self.events)
         self.lock = threading.Lock()
         if self.cfg.get("game_dir"):
@@ -416,6 +418,13 @@ class Engine:
             raise RuntimeError("the game's layout bundles are not stock (%s); restore them or take a new snapshot" % (", ".join(bad[:3]) or t.get("message", "")))
         return uxml.Layouts(aa, self.ws.cache)
 
+    def _project_changed(self, ev):
+        """A project changed (skin_editor/changes.py): the render's cached overlay for it is dropped and `render.invalidate` goes out on the event bus."""
+        rd = getattr(self, "_rd", None)
+        if rd:
+            rd[1].invalidate(ev["project"])
+        self.events.publish("render.invalidate", ev)
+
     # ---- offline render (Phase 9, docs/PHASE9-PLAN.md): an approximation of the game's UI, never the game's renderer
     def _renderer(self):
         """One Renderer per game folder/profile; the layout bundles are read from the snapshot or from the stock game folder, as `_layouts` does."""
@@ -453,7 +462,29 @@ class Engine:
             if not rows:
                 raise KeyError("no layout named %r" % b.get("name"))
             bundle, pid = rows[0]["bundle"], rows[0]["path_id"]
-        return self._renderer().layout(bundle, pid, int(b.get("depth") or 3))
+        project = None
+        if b.get("project") and b.get("skin", True):                      # the skin toggle: skin=false renders the vanilla game whatever the project holds
+            project = project_mod.load(self.ws, b["project"])
+        return self._renderer().layout(bundle, pid, int(b.get("depth") or 3), project=project)
+
+    def render_table(self, q, b):
+        """A table view as a labelled placeholder table (its header row is the column order); with `project` (and skin not false) the project's column edits are applied."""
+        project = project_mod.load(self.ws, b["project"]) if b.get("project") and b.get("skin", True) else None
+        from .render import overlay
+        return overlay.table_placeholder(self._tables(), b["path_id"], project)
+
+    def render_screen(self, q, b):
+        """A composition's cells placed on a grid container of `width` x `height` px (see render/screen.py). With `project` (and skin not false) the project's tile moves apply."""
+        from .render import screen
+        moves = []
+        if b.get("project") and b.get("skin", True):
+            from . import tiles
+            moves = tiles.ops_for(self.ws, b["project"])
+        d = layout_dump.load(self.ws)
+        if d is None:
+            raise RuntimeError("no layout dump is imported")
+        return screen.Assembler(d).assemble(b["composition"], (float(b["width"]), float(b["height"])), reserved_right=int(b.get("reserved_right") or 0),
+                                            padding=int(b.get("padding") if b.get("padding") is not None else 12), moves=moves)
 
     def layouts_list(self, q, b):
         rows = self._layouts().list()
@@ -647,6 +678,7 @@ class Engine:
         p = project_mod.new(name, (self.ws.vanilla_manifest() or {}).get("game_build"))
         p["options"]["output"] = b.get("target", "native")
         projfmt.write(self.ws, p)
+        changes.record(name, "options", ["project created"])
         return {"project": project_mod.load(self.ws, name), "files": [t["path"] for t in projfmt.tree(self.ws, name)]}
 
     def pf_migrate(self, q, b):

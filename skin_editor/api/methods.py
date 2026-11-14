@@ -31,7 +31,14 @@ def _q(params):
 
 
 def call(engine, method, params):
-    """Validate and run one method. Returns the JSON-able result."""
+    """Validate and run one method. Returns the JSON-able result. Every project change the method makes is held and raised as ONE `render.invalidate` event per project
+    when the call ends (skin_editor/changes.py)."""
+    from .. import changes
+    with changes.batch():
+        return _call(engine, method, params)
+
+
+def _call(engine, method, params):
     p = validate(method.schema, params)
     if method.attr is None:
         return NATIVE[method.name](engine, p)
@@ -106,7 +113,9 @@ _TABLE = [
     ("builds.list", None, {"project": "str?", "limit": "int?"}, "builds_list", "call", "Prepared packages: every build with a package.json (project, id, gate result, files with hashes, plan digest); `latest` marks what Install build would install."),
     ("layout.export_index", None, {"index": "str?", "game_build": "str?", "areas": "str?"}, "layout_export", "call", "Build the fmlayout-index/2 dump from the FM27_LayoutMCP sqlite index plus the game's composition bundles (cross-checked cell by cell against the bundles) and import it."),
     ("render.layouts", None, {"q": "str?", "limit": "int?"}, "render_layouts", "call", "The game's layouts (VisualTreeAssets) for the render browser: name, bundle, path id, element count, filtered by name; `total` is the number that match."),
-    ("render.layout", None, {"bundle": "str?", "path_id": "id?", "name": "str?", "depth": "int?"}, "render_layout", "call", "Offline render of one layout (an approximation, never the game's renderer): its element tree with template includes resolved by GUID, the matched rules per element in cascade order and the computed declarations, each flagged mapped, partial, unmapped or unknown; plus the sheet order, the named gaps and timings."),
+    ("render.layout", None, {"bundle": "str?", "path_id": "id?", "name": "str?", "depth": "int?", "project": "str?", "skin": "bool?"}, "render_layout", "call", "Offline render of one layout (an approximation, never the game's renderer): its element tree with template includes resolved by GUID, the matched rules per element in cascade order and the computed declarations, each flagged mapped, partial, unmapped or unknown; plus the sheet order, the named gaps and timings."),
+    ("render.table", None, {"path_id": "id", "project": "str?", "skin": "bool?"}, "render_table", "call", "A table view as a labelled placeholder table: its header row is the column order; with project (and skin not false) the project's column edits are applied."),
+    ("render.screen", None, {"composition": "str", "width": "num", "height": "num", "reserved_right": "int?", "padding": "int?", "project": "str?", "skin": "bool?"}, "render_screen", "call", "A composition's cells placed on a grid container of width x height px, with measured pitch, tile layouts and flags; with project (and skin not false) the project's tile moves apply."),
     ("tables.list", None, {"q": "str?", "limit": "int?"}, "tables_list", "call", "The game's table views (ui-tableviews): name, path id, column count."),
     ("tables.view", None, {"path_id": "id", "project": "str?"}, "tables_view", "call", "One table view: its columns in order with width and flags, what each column's row cell draws (factory, default width, cell layout), the columns the factory could add; with a project, its patch file."),
     ("tables.usage", None, {"index": "str?"}, "tables_usage", "call", "Where table views are used: decode the view GUIDs from the layouts' InitFunction arguments in the FM27_LayoutMCP index (read-only) and store the map in the workspace; `tables.view` then returns `used_by` (layout, tile, compositions) and `used_by_summary`."),

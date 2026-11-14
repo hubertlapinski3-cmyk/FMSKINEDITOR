@@ -157,6 +157,8 @@ def _write(ws, doc):
     tmp = p.with_name(p.name + ".tmp")
     tmp.write_text(json.dumps(doc, indent=1), encoding="utf-8")
     os.replace(tmp, p)
+    from . import changes
+    changes.record(doc["project"], "tile-move")
 
 
 def _grid(ws):

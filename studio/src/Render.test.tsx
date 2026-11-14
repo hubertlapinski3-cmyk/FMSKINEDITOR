@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { RenderBrowser, RenderCanvas, Explain, styleOf, type LayoutRow, type RNode } from './Render'
 
 vi.mock('./engine', () => ({ rpc: vi.fn(), RpcError: class extends Error {}, connect: vi.fn(), subscribe: vi.fn(() => () => {}) }))
-import { rpc } from './engine'
+import { rpc, subscribe } from './engine'
 
 const comp = (value: string, status: string, extra: Partial<Record<string, any>> = {}) => ({ value, raw: null, tokens: null, source: { sheet: 'AlwaysAppliedStyleSheet', selector: '.card', specificity: 11 },
   unresolved: null, status, note: status === 'unmapped' ? 'transitions are not animated in the render' : '', css: [], ...extra })
@@ -108,5 +108,36 @@ describe('canvas and explain', () => {
     render(<RenderCanvas layout={null} say={() => {}} />)
     expect(screen.getByText(/Pick a game layout/)).toBeTruthy()
     expect(rpc).not.toHaveBeenCalled()
+  })
+})
+
+describe('project overlay and the skin toggle', () => {
+  it('without a project the render asks for the vanilla layout and shows no toggle', async () => {
+    render(<RenderCanvas layout={rows[1]} say={() => {}} />)
+    await screen.findByRole('note')
+    expect(rpc).toHaveBeenCalledWith('render.layout', { bundle: 'b.bundle', path_id: '2' })
+    expect(screen.queryByLabelText(/skin:/)).toBeNull()
+  })
+  it('with a project the toggle sends skin on and off, and the overlay notes are listed', async () => {
+    ;(rpc as any).mockImplementation(async (m: string) => (m === 'render.layout' ? { ...result, overlay: { project: 'demo', output: 'bundles', layout_patch_ops_applied: 2, notes: ['token --x has no definition'], not_applied: ['class renames'] } } : null))
+    render(<RenderCanvas layout={rows[1]} say={() => {}} project="demo" />)
+    await screen.findByRole('note')
+    expect(rpc).toHaveBeenCalledWith('render.layout', { bundle: 'b.bundle', path_id: '2', project: 'demo', skin: true })
+    expect(screen.getByText(/Project overlay: demo/)).toBeTruthy()
+    expect(screen.getByText('token --x has no definition')).toBeTruthy()
+    fireEvent.click(screen.getByLabelText(/skin: demo/))
+    await waitFor(() => expect(rpc).toHaveBeenCalledWith('render.layout', { bundle: 'b.bundle', path_id: '2', project: 'demo', skin: false }))
+  })
+  it('an invalidate event of the open project repaints, one of another project does not', async () => {
+    let on: (t: string, d: any) => void = () => {}
+    ;(subscribe as any).mockImplementation((f: any) => { on = f; return () => {} })
+    render(<RenderCanvas layout={rows[1]} say={() => {}} project="demo" />)
+    await screen.findByRole('note')
+    const before = (rpc as any).mock.calls.filter((c: any[]) => c[0] === 'render.layout').length
+    on('render.invalidate', { project: 'other', reason: 'tokens' })
+    await new Promise((r) => setTimeout(r, 50))
+    expect((rpc as any).mock.calls.filter((c: any[]) => c[0] === 'render.layout').length).toBe(before)
+    on('render.invalidate', { project: 'demo', reason: 'tokens' })
+    await waitFor(() => expect((rpc as any).mock.calls.filter((c: any[]) => c[0] === 'render.layout').length).toBe(before + 1))
   })
 })

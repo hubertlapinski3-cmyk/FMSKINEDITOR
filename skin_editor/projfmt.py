@@ -504,6 +504,8 @@ def import_native_skin(ws, src, name):
     except Exception:
         shutil.rmtree(d, ignore_errors=True)
         raise
+    from . import changes
+    changes.record(name, "file", ["imported native skin"])
     return {"folder": str(d), "name": p["native_name"], "sheets": len(sheets), "files": len(tree(ws, name)),
             "images": sum(1 for v in asset_dest.values() if v.startswith("images/")), "fonts": sum(1 for v in asset_dest.values() if v.startswith("fonts/")), "notes": notes}
 
@@ -519,6 +521,8 @@ def create_sheet(ws, name, sheet):
     p, _ = read(ws, name, strict=False)
     _put(f, "/* Rules for the game stylesheet %s. A comment 'replace: .sel' before a rule edits the game's own rule in place;\n   'remove: .sel | prop' deletes declarations (bundle target). */\n" % sheet)
     write(ws, p)
+    from . import changes
+    changes.record(name, "file", [rel])
     return rel
 
 
@@ -599,6 +603,8 @@ def write_file(ws, name, rel, text):
         raise ValueError("file too large")
     f.parent.mkdir(parents=True, exist_ok=True)
     _put(f, text)
+    from . import changes
+    changes.record(name, "file", [rel])
     return read(ws, name, strict=False)[1]
 
 
@@ -607,6 +613,8 @@ def delete_file(ws, name, rel):
     if rel in (MARK, "mapping.json", "config/options.json", TOKENS):
         raise ValueError("%s is part of every project and cannot be deleted" % rel)
     f.unlink()
+    from . import changes
+    changes.record(name, "file", [rel])
     return read(ws, name, strict=False)[1]
 
 
@@ -630,6 +638,8 @@ def migrate_legacy(ws, name):
         shutil.rmtree(d, ignore_errors=True)
         raise
     legacy.rename(legacy.with_name(legacy.name + ".migrated"))
+    from . import changes
+    changes.record(name, "file", ["migrated to a folder project"])
     return {"folder": str(d), "files": [t["path"] for t in tree(ws, name)]}
 
 
