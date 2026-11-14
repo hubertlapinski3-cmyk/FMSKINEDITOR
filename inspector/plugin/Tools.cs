@@ -31,6 +31,8 @@ namespace Crimson.Inspector
                 case "describe": return Actions.Describe(p);
                 case "click": return Actions.Click(p);
                 case "scroll": return Actions.Scroll(p);
+                case "hover": return Actions.Hover(p);
+                case "press": return Actions.Press(p);
                 default: throw new ToolFault("unknown_tool", "no tool named '" + tool + "'");
             }
         }

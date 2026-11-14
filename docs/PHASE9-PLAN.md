@@ -321,3 +321,6 @@ Tile move verified end to end through the real dump and placement store; the L, 
 
 ### M7 offline build (2026-11-14, resumed session)
 Fixture framework (data folders, generic test, fixture add/run CLI, published report with causes), 17 fixtures: the six plan fixtures plus Atmosphere, Training and six screens; draft report 660 pass / 77 fail (all with named causes) / 431 n/a. Delivered text wired by structural path (small; one row improved, stated). Plugin 0.5.0-capture adds mode 3 (polling transitions), built not run. Waiting on the I3 hover session before the report is finalized. Details: docs/evidence/phase9-m7-offline-report-20261114.md.
+
+### I3 Session F, solo attempt (2026-11-14): aborted at startup
+Plugin 0.5.1 (hover and press dispatch) built and staged, sha EBF1BE4B...; the solo session aborted before any action: the game's main loop stalled at startup (pipe game_busy 7 minutes, Player.log silent, window not foreground). Restored by value and verified. No I3 data; the M7 calibration report stays a draft. Decision needed from the owner: retry solo (one launch with the window brought forward at once) or the ten-minute manual session. Details: docs/evidence/phase9-i3-session-F-20261114.md.

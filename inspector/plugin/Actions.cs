@@ -108,6 +108,69 @@ namespace Crimson.Inspector
                 ["next"] = "read the screen again to verify; paths may have changed" };
         }
 
+        // ---- 0.5.1: synthetic pointer states for the I3 transition capture. Same machinery as the proven click fallback (a pooled event, `target` set, `SendEvent` on the element), one event
+        // per call group, nothing generic, no hook. `hover` {path, expect, state: enter|leave} sends the over/enter (or out/leave) pointer and mouse events to the target;
+        // `press` {path, expect, state: down|release} sends pointer-down and mouse-down to the target, and `release` sends pointer-up and mouse-up to the panel's ROOT element, not the
+        // target, so the press is cancelled instead of completing a click: the :active state is recorded without triggering the button's action. A target inside a dropdown is refused
+        // (the one proven crash source): any ancestor whose type or name contains "Dropdown".
+        private static void RefuseDropdown(VisualElement el)
+        {
+            for (VisualElement a = el; a != null; a = a.hierarchy.parent)
+                if (Ui.TypeName(a).IndexOf("Dropdown", StringComparison.OrdinalIgnoreCase) >= 0 || (a.name ?? "").IndexOf("dropdown", StringComparison.OrdinalIgnoreCase) >= 0)
+                    throw new ToolFault("refused", "the target is inside a dropdown (" + Ui.Label(a) + "): never dispatched, a dropdown is the one proven crash source");
+        }
+
+        private static void Send(VisualElement target, params Func<EventBase>[] makers)
+        {
+            foreach (var make in makers)
+            {
+                EventBase evt = make();
+                try { evt.target = target.Cast<IEventHandler>(); target.SendEvent(evt); }
+                finally { evt.Dispose(); }
+            }
+        }
+
+        public static object Hover(JsonElement p) => PointerAction("hover", p, HoverCore);
+        public static object Press(JsonElement p) => PointerAction("press", p, PressCore);
+
+        private static object PointerAction(string tool, JsonElement p, Func<JsonElement, object> core)
+        {
+            string path = Tools.Str(p, "path", null), expect = Tools.Str(p, "expect", null), state = Tools.Str(p, "state", "?");
+            try { object r = core(p); ActionLog(tool, path, expect, "ok state=" + state); return r; }
+            catch (ToolFault f) { ActionLog(tool, path, expect, "fault " + f.Kind + ": " + f.Message); throw; }
+            catch (Exception e) { ActionLog(tool, path, expect, "error " + e.GetType().Name + ": " + e.Message); throw; }
+        }
+
+        private static object HoverCore(JsonElement p)
+        {
+            VisualElement el = Target(p, out string label, out string text);
+            RefuseDropdown(el);
+            string state = Tools.Str(p, "state", "enter");
+            if (state == "enter") Send(el, () => PointerOverEvent.GetPooled(), () => PointerEnterEvent.GetPooled(), () => MouseOverEvent.GetPooled(), () => MouseEnterEvent.GetPooled());
+            else if (state == "leave") Send(el, () => PointerOutEvent.GetPooled(), () => PointerLeaveEvent.GetPooled(), () => MouseOutEvent.GetPooled(), () => MouseLeaveEvent.GetPooled());
+            else throw new ToolFault("bad_request", "state must be enter or leave");
+            return new Dictionary<string, object> { ["dispatched"] = true, ["state"] = state, ["label"] = label, ["text"] = text, ["pseudo"] = StyleProbe.Pseudo(el) };
+        }
+
+        private static object PressCore(JsonElement p)
+        {
+            string state = Tools.Str(p, "state", "down");
+            if (state == "release")
+            {
+                var roots = Ui.Roots();
+                if (roots.Count == 0) throw new ToolFault("not_found", "no panel root");
+                if (!InspectorPlugin.AllowActions.Value) throw new ToolFault("actions_disabled", "set [Inspector] AllowActions = true");
+                VisualElement root = roots[0].Element;
+                Send(root, () => PointerUpEvent.GetPooled(), () => MouseUpEvent.GetPooled());       // not the button: a press released elsewhere is cancelled
+                return new Dictionary<string, object> { ["dispatched"] = true, ["state"] = state, ["to"] = "panel root (press cancelled, no click)" };
+            }
+            VisualElement el = Target(p, out string label, out string text);
+            RefuseDropdown(el);
+            if (state != "down") throw new ToolFault("bad_request", "state must be down or release");
+            Send(el, () => PointerDownEvent.GetPooled(), () => MouseDownEvent.GetPooled());
+            return new Dictionary<string, object> { ["dispatched"] = true, ["state"] = state, ["label"] = label, ["text"] = text, ["pseudo"] = StyleProbe.Pseudo(el) };
+        }
+
         private static readonly Dictionary<string, Type> WrapperCache = new Dictionary<string, Type>();
 
         // The managed interop wrapper for an IL2CPP class name (hierarchy walks return the declared type, not the runtime one).

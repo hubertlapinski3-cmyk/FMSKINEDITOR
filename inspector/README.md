@@ -80,3 +80,7 @@ Adds the `sheet_content` capture line (rule content, signature and sample of eve
 ## 0.5.0 (2026-11-14)
 
 Adds mode `transitions` (polling, no hook): `capture_start {mode: transitions, tag, path?}`, gated by `[Capture] Transitions = true`; one line per class or pseudo-state change of the watched elements, re-walk every 45 frames for new elements, cap 40,000 watched. DLL sha256 `162C69A9...4423A`, 66,560 bytes; not yet run in game. Reader: `Capture.transition_summary()`.
+
+## 0.5.1 (2026-11-14)
+
+Adds two write-capable actions for the I3 transition capture, both behind AllowActions and the same `expect` guard as click: `hover {path, expect, state: enter|leave}` (pointer and mouse over/enter or out/leave events sent to the target) and `press {path, expect, state: down|release}` (pointer and mouse down to the target; release goes to the panel ROOT, so the press is cancelled and no click completes). Both refuse any target with a dropdown ancestor. Same dispatch machinery as the click fallback (pooled event, target set, SendEvent); nothing generic, no hook. DLL sha256 `EBF1BE4B...9F74A`, 70,656 bytes, staged in `staging\capture-0.5.1` (git-ignored). Run once, solo, in Session F: the game never became ready (see docs/evidence/phase9-i3-session-F-20261114.md); the new actions have not run.
