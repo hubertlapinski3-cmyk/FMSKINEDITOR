@@ -1,0 +1,245 @@
+{
+ "model": {
+  "head": "5a661f39a623d598f5e7a9cbe253d7fd43e25166",
+  "screen.py": "2c50023f3bfe6385",
+  "pitch.json": "4775b145a1e99ed6",
+  "layout_dump_cells": "d54fc6193c33d05a"
+ },
+ "assumptions": "composition = the one whose cells hold all host names, the -Large variant when the grid is >= 20 columns; padding 12; reserved_right 0; hosts not in the composition are run-time slots and are not predicted",
+ "screens": [
+  {
+   "capture": "styles-d3-transfers-activity-20261114-111518.ndjson",
+   "container_area": [
+    2468.8,
+    1319.3
+   ],
+   "grid": [
+    30,
+    16
+   ],
+   "host_names_seen": [
+    "AgentOffers",
+    "ClubSubgroupStaff",
+    "HumanActionsControlPanelBlock",
+    "RecruitmentContentBlock",
+    "TransferActivity",
+    "TransferHistory",
+    "TransferRoomIn",
+    "TransferRoomOut",
+    "TransferWindow"
+   ],
+   "composition": "RecruitmentComposition-Large",
+   "candidates_considered": [
+    "RecruitmentComposition-Large",
+    "RecruitmentComposition-Small",
+    "RecruitmentComposition-Standard"
+   ],
+   "covered": 8,
+   "predictions_px": {
+    "TransferRoomIn": [
+     668,
+     668,
+     312,
+     148
+    ],
+    "TransferRoomOut": [
+     996,
+     668,
+     312,
+     148
+    ],
+    "TransferWindow": [
+     2308,
+     668,
+     148,
+     148
+    ],
+    "HumanActionsControlPanelBlock": [
+     12,
+     12,
+     2444,
+     66
+    ],
+    "RecruitmentContentBlock": [
+     12,
+     94,
+     2444,
+     1050
+    ],
+    "ClubSubgroupStaff": [
+     340,
+     668,
+     312,
+     148
+    ],
+    "TransferActivity": [
+     1324,
+     668,
+     148,
+     148
+    ],
+    "AgentOffers": [
+     12,
+     668,
+     312,
+     148
+    ]
+   },
+   "predicted_but_not_in_capture": [],
+   "capture_hosts_not_in_composition": [
+    "TransferHistory"
+   ]
+  },
+  {
+   "capture": "styles-d4-inbox-20261114-111746.ndjson",
+   "container_area": [
+    2468.8,
+    1319.3
+   ],
+   "grid": [
+    30,
+    16
+   ],
+   "host_names_seen": [
+    "ClubTeamReport",
+    "DataHub",
+    "Messages",
+    "PlayerRecommendations",
+    "PlayerSearch",
+    "PortalAdaptiveContent",
+    "Shortlist",
+    "Training",
+    "TransferBudget",
+    "WageBudget"
+   ],
+   "composition": "Portal-Large",
+   "candidates_considered": [
+    "Portal-Large"
+   ],
+   "covered": 7,
+   "predictions_px": {
+    "Messages": [
+     12,
+     12,
+     476,
+     1296
+    ],
+    "ClubTeamReport": [
+     2144,
+     12,
+     312,
+     148
+    ],
+    "DataHub": [
+     2144,
+     176,
+     312,
+     148
+    ],
+    "TransferBudget": [
+     2144,
+     340,
+     312,
+     148
+    ],
+    "WageBudget": [
+     2144,
+     504,
+     312,
+     148
+    ],
+    "PortalAdaptiveContent": [
+     504,
+     12,
+     1624,
+     1296
+    ],
+    "Training": [
+     2144,
+     668,
+     312,
+     148
+    ]
+   },
+   "predicted_but_not_in_capture": [],
+   "capture_hosts_not_in_composition": [
+    "PlayerRecommendations",
+    "PlayerSearch",
+    "Shortlist"
+   ]
+  },
+  {
+   "capture": "styles-sessionB-start-screen-20261114-103457.ndjson",
+   "container_area": [
+    664.1,
+    828.1
+   ],
+   "grid": [
+    8,
+    10
+   ],
+   "host_names_seen": [
+    "LoadMostRecentSave",
+    "MainMenuLoadGame",
+    "MainMenuOnline",
+    "MainMenuStartNewCareer",
+    "MainMenuStartNewCareerNationalTeam",
+    "MainMenuStartNewCareerShuffleDraft",
+    "MarketingBanner"
+   ],
+   "composition": "MainMenuHasSaveComposition-Large-IM",
+   "candidates_considered": [
+    "MainMenuHasSaveComposition-Large-IM",
+    "MainMenuHasSaveComposition-Small-IM",
+    "MainMenuHasSaveComposition-Standard-IM"
+   ],
+   "covered": 7,
+   "predictions_px": {
+    "LoadMostRecentSave": [
+     12,
+     12,
+     640,
+     312
+    ],
+    "MainMenuStartNewCareer": [
+     12,
+     340,
+     312,
+     148
+    ],
+    "MainMenuLoadGame": [
+     340,
+     340,
+     148,
+     148
+    ],
+    "MainMenuOnline": [
+     504,
+     340,
+     148,
+     148
+    ],
+    "MarketingBanner": [
+     12,
+     668,
+     640,
+     148
+    ],
+    "MainMenuStartNewCareerNationalTeam": [
+     340,
+     504,
+     312,
+     148
+    ],
+    "MainMenuStartNewCareerShuffleDraft": [
+     12,
+     504,
+     312,
+     148
+    ]
+   },
+   "predicted_but_not_in_capture": [],
+   "capture_hosts_not_in_composition": []
+  }
+ ]
+}
