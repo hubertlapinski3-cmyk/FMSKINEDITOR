@@ -340,3 +340,6 @@ Baseline plugin 0.2.2, AllowActions false, nothing installed; the owner hovered,
 
 ### M8 (2026-11-14): CLOSED. Build done.
 Node cap and lazy expansion (render/cap.py; `render.layout` `max_nodes` default 1,000, `open`), all 13 published budget exceptions now inside 200 ms cached (largest 88 ms), user guide `docs/RENDER-GUIDE.md`, README section, API.md regenerated, a `tsc` type error from M6 fixed. Report: `docs/evidence/phase9-m8-report-20261114.md`. Engine 342 tests, Studio 55. **Next: the release pass** (1.0, package, publish through the proven updater, the calibration report shipping alongside).
+
+### Release 1.0.0 (2026-11-14): LIVE
+Tag 1.0.0, workflow run 43622793044 succeeded, release published 17:52:14Z. Installer FM.Skin.Studio_1.0.0_x64-setup.exe 43,471,398 bytes, sha256 `F2FC4F1304387009B1334C528E1DA3C9C1676E6AEB2727597EDFF9CCA616012B`; `latest.json` version 1.0.0, its signature equals the `.sig` asset, the installer URL answers 200; assets also include `calibration-report-1.0.0.md` and `.json`. Studio `npm test` now runs `tsc -b` first. Smoke test (install through the update path, vanilla render, toggle, element to token, verify-stock) is the owner's.
