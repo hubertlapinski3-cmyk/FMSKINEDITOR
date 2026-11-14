@@ -49,6 +49,28 @@ def chain_caution():
             "five levels). Where a real-ancestry variant fails or passes differently, the report says so in its own row." % (len(trunc), len(st), len(real)))
 
 
+FROZEN = ROOT / "docs" / "evidence" / "phase9-m7-calibration-revised-20261114" / "calibration-report.json"
+
+
+def pairing_effect(results):
+    """What the new pairing did to COMPARED coverage on the tile fixtures (the only ones it touches), against the frozen 1.0.0 report, generated."""
+    if not FROZEN.is_file():
+        return []
+    old = json.loads(FROZEN.read_text(encoding="utf-8"))
+    def tally(fixs):
+        c = {"PASS": 0, "FAIL": 0, "N/A": 0}
+        for f in fixs:
+            if f["name"].startswith("tile-"):
+                for x in f["rows"]:
+                    c[x["verdict"]] += 1
+        return c
+    a, b = tally(old["fixtures"]), tally([{"name": r["name"], "rows": r["rows"]} for r in results])
+    ca, cb = a["PASS"] + a["FAIL"], b["PASS"] + b["FAIL"]
+    return ["Effect on compared coverage (tile fixtures, frozen 1.0.0 report against this one): compared rows %d -> %d (%+d), of which pass %d -> %d and fail %d -> %d; N/A rows %d -> %d. The rows that left are the ones the 1.0.0 pairing built against "
+            "invisible live elements (a box compared with a live box of 0 by 0, and the values of those elements); they are no longer compared, so compared coverage went DOWN, and the pass rate on what is compared is not a gain." % (
+                ca, cb, cb - ca, a["PASS"], b["PASS"], a["FAIL"], b["FAIL"], a["N/A"], b["N/A"]), ""]
+
+
 def grid_md(results):
     g = rt.grid_scoping(results, HELDOUT)
     pred = json.loads(PRED.read_text(encoding="utf-8")) if PRED.is_file() else None
@@ -83,7 +105,7 @@ def grid_md(results):
     return out
 
 
-def publish(out, ctx=None, results=None, update_guide=False):
+def publish(out, ctx=None, results=None, update_guide=False, version=None):
     """Run, examine, write the report into `out`; returns (results, coverage, examination)."""
     out = Path(out)
     ctx = ctx or fixtures.Context()
@@ -95,7 +117,8 @@ def publish(out, ctx=None, results=None, update_guide=False):
     pd = rt.pairing_delta(ctx)
 
     def preface(results, tot):
-        lines = ["**Status: published, build 27.0.1.2503222, revised after the 1.0.0 review. This file is the revised report and is what the release asset `calibration-report-1.0.0.md` now carries; the first version of the report, as published at release, is retained unchanged in the repository at `docs/evidence/phase9-m7-calibration-20261114/` and in the git history. Not a draft.** Phase 9 M7 closed on the first version of this report. Read these first:", "",
+        status = ("**Status: published, build 27.0.1.2503222, the calibration report of FM Skin Studio %s.** The two 1.0.0 reports (the first, and the revised one the 1.0.0 release assets carried) are frozen history in `docs/evidence/phase9-m7-calibration-20261114/` and `docs/evidence/phase9-m7-calibration-revised-20261114/`; this report re-runs the whole calibration with structural pairing (the v1.1 default, no invisible live elements), the real-ancestry state chains, the optional layers as separate rows, and the row-by-row examination on whatever changed. Read these first:" % version) if version else None
+        lines = [status or "**Status: published, build 27.0.1.2503222, revised after the 1.0.0 review. This file is the revised report and is what the release asset `calibration-report-1.0.0.md` now carries; the first version of the report, as published at release, is retained unchanged in the repository at `docs/evidence/phase9-m7-calibration-20261114/` and in the git history. Not a draft.** Phase 9 M7 closed on the first version of this report. Read these first:", "",
                  "1. **Failure causes: each failing row was examined individually, and the examination is published row by row** (section \"The failures, examined row by row\"). Each of the %d failing rows: %d origin failures, %d displaced by an origin "
                  "listed beside them. The causes are the ORIGIN rows: %d rest on a measured capture fact, %d on magnitude only, %d are UNEXPLAINED; the displaced rows repeat their origin's cause (%d with a measured-fact origin, %d unexplained), so the row counts %d / %d / %d over all failing rows count rows, not independent causes. The 1.0.0 labels came from fixture-wide rules (one label per row type, list order deciding when two fitted, 78 rows labelled, none unexplained); "
                  "they disagree with the examination on %d rows and both labels are kept. The examiner wrote the rules; no second person checked. Of the %d origin rows, %s a class of cause without predicting the size of the gap." % (
@@ -110,7 +133,7 @@ def publish(out, ctx=None, results=None, update_guide=False):
         return lines + rt.coverage_md(cv) + [""]
 
     def appendix(results):
-        return rt.examination_md(results, ex) + [""] + rt.pairing_md(pd) + [""] + layers_mod.layers_md(lay) + grid_md(results)
+        return rt.examination_md(results, ex) + [""] + rt.pairing_md(pd) + [""] + pairing_effect(results) + layers_mod.layers_md(lay) + grid_md(results)
     tot = fixtures.report(results, out, title="Render calibration report (published, revised)", preface=preface, appendix=appendix,
                           extra={"coverage": cv, "examination": ex, "layers": lay, "pairing": pd, "grid": rt.grid_scoping(results, HELDOUT), "duplicates": rt.DUPLICATES})
     if update_guide:                                                       # the guide's trust section carries the same coverage block, between its markers
@@ -123,7 +146,7 @@ def publish(out, ctx=None, results=None, update_guide=False):
 
 
 def main():
-    publish(sys.argv[1], update_guide=True)
+    publish(sys.argv[1], update_guide=True, version=sys.argv[sys.argv.index("--version") + 1] if "--version" in sys.argv else None)
 
 
 def _delivered(results):

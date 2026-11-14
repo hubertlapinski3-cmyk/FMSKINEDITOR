@@ -87,6 +87,16 @@ class FixRound(unittest.TestCase):
             if c["dump_nodes"]:
                 self.assertEqual(c["dump_paired"] + c["dump_unpaired"], c["dump_nodes"], r["name"])
 
+    def test_release_notes_numbers_are_read_from_the_report_json(self):
+        spec = importlib.util.spec_from_file_location("make_release_notes", ROOT / "tools" / "make_release_notes.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        txt = mod.notes("9.9.9", self.out)
+        t, cv, ex = self.doc["totals"], self.doc["totals"]["coverage"], self.doc["examination"]
+        for needle in ("%d rows pass, %d fail and %d cannot be compared" % (t["PASS"], t["FAIL"], t["N/A"]), "Of %d slots, %d were compared" % (cv["total_rows"], cv["compared"]),
+                       "Each of the %d failing rows" % ex["fail_rows"], "calibration-report-9.9.9.md"):
+            self.assertIn(needle, txt)
+
     def test_layers_are_separate_inferred_and_never_touch_the_base_rows(self):
         lay = self.doc["layers"]
         self.assertEqual(set(lay), {"live-classes", "recorded-runtime-sheet"})

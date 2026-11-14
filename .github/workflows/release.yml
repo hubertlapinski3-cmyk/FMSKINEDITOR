@@ -104,7 +104,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $v = (Get-Content studio/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
-          $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like 'phase9-m7-calibration-*' } | Sort-Object Name | Select-Object -Last 1   # the folder names sort so that '-revised-' comes after the first '-2026...' version
+          $tag = $v -replace '\.', ''                                    # 1.1.0 -> 110: the report folder of THIS version is phase9-v110-calibration-*
+          $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like "phase9-v$tag-calibration-*" } | Sort-Object Name | Select-Object -Last 1
+          if (-not $src) { $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like 'phase9-m7-calibration-*' } | Sort-Object Name | Select-Object -Last 1 }   # 1.0.x: the frozen revised report sorts after the first one
           if (-not $src) { throw "no published calibration report under docs/evidence" }
           Copy-Item "$($src.FullName)/calibration-report.md" "calibration-report-$v.md"
           Copy-Item "$($src.FullName)/calibration-report.json" "calibration-report-$v.json"

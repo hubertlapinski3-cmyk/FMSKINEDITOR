@@ -2686,6 +2686,10 @@ Thirteen of the game's layouts went over the 200 ms budget; most hold 900 to 3,8
 
 
 
+## Optional layers (engine level, off by default)
+
+Two layers exist for the calibration and are NOT switched on in the Studio or in `render.layout`: the **live-class layer** adds, to a layout's nodes, the classes the live element carries in a capture and the layout lacks (a sprite class on an icon setter, for instance); the **recorded run-time sheet layer** appends the 80 rules a capture sampled from the game's run-time sheet (of 190) as one more sheet. Both are INFERRED (one capture of one save) and the second is a CAPTURED SAMPLE: a rule absent from it proves nothing. The report publishes what they do as separate layer rows beside the base rows, never inside the base totals. The base render already applies the per-type classes learned from many dumps (`data/render/runtime-classes.json`, the "runtime classes (learned)" in the explain panel); that file is part of the base and is not a layer.
+
 ## What the render does not do
 
 
@@ -3326,134 +3330,7 @@ Read the notice at the top and the "What this render does not know" list under t
 
 
 
-- **No runtime state.** There is no hover, press, focus or animation in the picture. The calibration report checks the game's own state rules against readings taken by hand in the game: button, list-row and tile colours match what those rules declare on the real ancestors of the same elements as well as on the elements alone (the one rest colour that does not is the Loans tile's, a club colour from a run-time sheet); the navigation label's hover colour was read once, its own state flag read 0 while its colour changed, and the explanation (an ancestor-hover rule in a run-time sheet) is derived, not verified; pitch markers and instruction tiles get a hover flag with no style change. The first published checks fed the cascade a single element; the report now also runs every one on the element's real ancestry, and for the navigation label the real ancestor changes the applied-sheet prediction.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- **No runtime state.** There is no hover, press, focus or animation in the picture. The calibration report checks the game's own state rules against readings taken by hand in the game, on single elements AND on the real ancestors of the same elements from the captures. Button, list-row and tile colours match what those rules declare either way (the one rest colour that does not is the Loans tile's, a club colour from a run-time sheet). The navigation label is the case that depends on the ancestors: with its real ancestor the game's applied sheets predict another colour, the label's own hover is not needed to reach the observed colour, and what restores the observed colours is the recorded run-time sheet, a captured 80-rule sample; the mechanism is unverified. Pitch markers and instruction tiles get a hover flag with no style change.
 - **Code-built visuals are approximated or missing:** the tactics pitch and its players, the Training tile's schedule, charts and shot maps are drawn in code by the game.
 
 
@@ -4350,7 +4227,7 @@ Read the notice at the top and the "What this render does not know" list under t
 
 
 
-The published report (the revised report, `docs/evidence/phase9-m7-calibration-revised-20261114/`, which is what the release asset `calibration-report-1.0.0.md` carries; the first version, as published at release, is kept unchanged in `docs/evidence/phase9-m7-calibration-20261114/`) compares the render with measurements taken inside the game. Boxes pass within 8 px or 5 percent of the measured size, colours and font sizes exactly. There is no single pass rate to quote: the pass count is made of different kinds of rows, and this is the coverage block, generated from the same rows as the report:
+The published report (for this version `docs/evidence/phase9-v110-calibration-20261114/`; the 1.0.0 reports are frozen history: the revised one the 1.0.0 release assets carry in `docs/evidence/phase9-m7-calibration-revised-20261114/`, and the first one, as published at release, in `docs/evidence/phase9-m7-calibration-20261114/`) compares the render with measurements taken inside the game. Boxes pass within 8 px or 5 percent of the measured size, colours and font sizes exactly. There is no single pass rate to quote: the pass count is made of different kinds of rows, and this is the coverage block, generated from the same rows as the report:
 
 
 

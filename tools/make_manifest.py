@@ -10,7 +10,9 @@ ROOT = Path(__file__).resolve().parent.parent
 FILES = ["docs/evidence/phase9-m7-calibration-20261114/calibration-report.md", "docs/evidence/phase9-m7-calibration-20261114/calibration-report.json",
          "docs/evidence/phase9-m7-calibration-revised-20261114/calibration-report.md", "docs/evidence/phase9-m7-calibration-revised-20261114/calibration-report.json",
          "docs/evidence/phase9-fix-round-heldout-predictions.json", "docs/evidence/phase9-fix-round-heldout-results.json",
-         "docs/evidence/phase9-m0-session-B-logs-20261114/LogOutput.log"]
+         "docs/evidence/phase9-m0-session-B-logs-20261114/LogOutput.log",
+         "docs/evidence/phase9-v110-calibration-20261114/calibration-report.md", "docs/evidence/phase9-v110-calibration-20261114/calibration-report.json",
+         "docs/evidence/phase9-v110-grid-vertical-flow-design.json"]
 
 
 HEADER = [
