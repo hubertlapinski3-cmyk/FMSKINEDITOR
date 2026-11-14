@@ -158,8 +158,22 @@ def _render(ctx, fx, skin=None):
     return ctx.R.layout(row["bundle"], row["path_id"], branches=chosen, project=project, delivered=delivered)
 
 
-def _row(fixture, check, element, prop, expected, got, verdict, delta=None, note=""):
-    return {"fixture": fixture, "check": check, "element": element, "property": prop, "expected": expected, "got": got, "delta": delta, "verdict": verdict, "note": note}
+def _row(fixture, check, element, prop, expected, got, verdict, delta=None, note="", **extra):
+    """One published row. `extra` carries what identifies it and why (added in the fix round after 1.0.0; no verdict depends on it): `live` the capture path of the paired live
+    element, `node` the index of the render node, `value_source` declared or default (flex rows), `na_reason` a code for every N/A row."""
+    row = {"fixture": fixture, "check": check, "element": element, "property": prop, "expected": expected, "got": got, "delta": delta, "verdict": verdict, "note": note}
+    row.update(extra)
+    return row
+
+
+# why a row is N/A (every N/A row carries one of these codes; the text stays in `note`)
+NA_NO_DECL_INITIAL = "no-declaration-live-initial-or-inherited"      # the render declares nothing and the live value is the initial value or the live parent's (inherited)
+NA_NO_DECL_NONDEFAULT = "no-declaration-live-non-default"            # the render declares nothing and the live value is something else (a real gap)
+NA_HIDDEN_BRANCH = "descendant-of-hidden-switch-branch"              # the render chose not to show this branch (one branch per switch), so it has no live partner by design
+NA_LIVE_ABSENT = "live-element-absent-or-not-captured"               # a drawn node with no live partner and not in a hidden branch
+NA_NO_DECL_PARENT_ABSENT = "no-declaration-parent-not-in-dump"     # as above, but the dump holds no live parent to tell inherited from non-default (the host root of a fixture)
+NA_NOT_MEASURED = "not-measured-live"                                # the session recorded the event but measured no property to compare
+INITIAL = {"background-color": "#00000000"}                          # CSS initial values; color and font-size inherit, so their "initial" is the live parent's value
 
 
 def run_boxes(ctx, fx, check, res):
@@ -169,41 +183,67 @@ def run_boxes(ctx, fx, check, res):
     pairs, root = pair(top, fx["dump"])
     W, H = root[2], root[3]
     html, nodes = to_html(top, W, H, res["layout"])
+    fx["box_nodes"] = len(nodes)
     rects = measure(html, ctx.ws.cache / "fixtures-edge")
     rows, name = [], fx["fixture"]["name"]
+    hidden = _hidden_ids(top)
+    skips = fx.setdefault("skips", {})
+    fx.setdefault("paired", set()).update(p for p, _n in pairs.values())
     for i, n in enumerate(nodes):
         label = "%s#%s" % (n["type"], n.get("name") or "")
         if id(n) not in pairs:
             if "switch-branch-not-shown" in (n.get("layout_rules") or ()):
+                skips["boxes: root of a hidden switch branch (never emitted)"] = skips.get("boxes: root of a hidden switch branch (never emitted)", 0) + 1
                 continue
-            rows.append(_row(name, check["id"], label, "box", None, [round(v, 1) for v in rects[i]], "N/A", note="no live element paired (not on screen, or not reached by the capture)"))
+            hid = id(n) in hidden
+            rows.append(_row(name, check["id"], label, "box", None, [round(v, 1) for v in rects[i]], "N/A", node=i, live=None, na_reason=NA_HIDDEN_BRANCH if hid else NA_LIVE_ABSENT,
+                             note=("descendant of a switch branch the render chose not to show (one branch per switch): no live partner by design" if hid else
+                                   "no live element paired: the drawn node has no partner in the capture (absent or not captured)")))
             continue
         e = pairs[id(n)][1]["bounds"]
         ex = [e[0] - root[0], e[1] - root[1], e[2], e[3]]
         g = rects[i]
         d = [g[0] - ex[0], g[1] - ex[1], g[2] - ex[2], g[3] - ex[3]]
         ok = abs(d[0]) <= tol(ex[2], W) and abs(d[1]) <= tol(ex[3], H) and abs(d[2]) <= tol(ex[2], W) and abs(d[3]) <= tol(ex[3], H)
-        rows.append(_row(name, check["id"], label, "box", [round(v, 1) for v in ex], [round(v, 1) for v in g], "PASS" if ok else "FAIL", [round(v, 1) for v in d]))
+        rows.append(_row(name, check["id"], label, "box", [round(v, 1) for v in ex], [round(v, 1) for v in g], "PASS" if ok else "FAIL", [round(v, 1) for v in d], node=i, live=pairs[id(n)][0],
+                         stage=bool(abs(ex[2] - W) < 0.05 and abs(ex[3] - H) < 0.05 and abs(ex[0]) < 0.05 and abs(ex[1]) < 0.05)))
     return rows
+
+
+def _na_code(rk, live_value, path, dump):
+    """Why a value row with no declaration is N/A: the live value is the property's initial value or the live parent's (inherited), or it is something else."""
+    if rk in INITIAL and same(rk, live_value, INITIAL[rk]):
+        return NA_NO_DECL_INITIAL
+    parent = dump["nodes"].get(path.rsplit("/", 1)[0]) if "/" in path else None
+    if parent is None:
+        return NA_NO_DECL_PARENT_ABSENT
+    pv = parent["resolved"].get(next(k for k, v in RESOLVED.items() if v == rk))
+    return NA_NO_DECL_INITIAL if (pv is not None and same(rk, live_value, pv)) else NA_NO_DECL_NONDEFAULT
 
 
 def run_values(ctx, fx, check, res):
     pairs, _root = pair(res["tree"], fx["dump"])
     rows, name = [], fx["fixture"]["name"]
+    skips = fx.setdefault("skips", {})
+    fx.setdefault("paired", set()).update(p for p, _n in pairs.values())
     for n in _flat(res["tree"]):
         if id(n) not in pairs:
+            skips["values: drawn node with no live partner (every property skipped)"] = skips.get("values: drawn node with no live partner (every property skipped)", 0) + len(RESOLVED)
             continue
-        live = pairs[id(n)][1]
+        path, live = pairs[id(n)]
         for lk, rk in RESOLVED.items():
             if lk not in live["resolved"]:
+                skips["values: property absent from the dump"] = skips.get("values: property absent from the dump", 0) + 1
                 continue
             d = n["computed"].get(rk)
             got = d["value"] if d else DEFAULTS.get(rk)
+            src = "declared" if d else ("default" if rk in DEFAULTS else None)
             label = "%s#%s" % (n["type"], n.get("name") or "")
             if got is None:
-                rows.append(_row(name, check["id"], label, rk, live["resolved"][lk], None, "N/A", note="the render declares no %s here" % rk))
+                rows.append(_row(name, check["id"], label, rk, live["resolved"][lk], None, "N/A", note="the render declares no %s here" % rk, live=path, value_source=None,
+                                 na_reason=_na_code(rk, live["resolved"][lk], path, fx["dump"])))
             else:
-                rows.append(_row(name, check["id"], label, rk, live["resolved"][lk], got, "PASS" if same(rk, live["resolved"][lk], got) else "FAIL"))
+                rows.append(_row(name, check["id"], label, rk, live["resolved"][lk], got, "PASS" if same(rk, live["resolved"][lk], got) else "FAIL", live=path, value_source=src))
     return rows
 
 
@@ -338,8 +378,9 @@ def run_state(ctx, fx, check, res=None):
     rows = []
     state_txt = "+".join(sorted(node["_states"])) or "rest"
     if "rest" in check:
+        na = (NA_NO_DECL_INITIAL if (prop in INITIAL and same(prop, check["rest"], INITIAL[prop])) else NA_NO_DECL_PARENT_ABSENT) if not rest else None          # a state check holds no live parent: only the initial value is certain
         rows.append(_row(name, check["id"], label, prop + " (rest)", check["rest"], rest["value"] if rest else None, "PASS" if rest and same(prop, check["rest"], rest["value"]) else ("N/A" if not rest else "FAIL"),
-                         note="" if rest else "the render declares no %s here" % prop))
+                         note="" if rest else "the render declares no %s here" % prop, **({"na_reason": na} if na else {})))
     if decl:
         pred = decl["value"]
     elif rest:
@@ -364,7 +405,7 @@ def run_classswap(ctx, fx, check, res=None):
             if (pa[-1]["computed"].get(k) or {}).get("value") != (pb[-1]["computed"].get(k) or {}).get("value")}
     label = "%s#%s" % (check["element"]["type"], check["element"].get("name", ""))
     rows = [_row(name, check["id"], label, "class swap " + " -> ".join(x[-1] for x in (check["from"], check["to"])), check.get("observed"), diff or "no declared difference",
-                 "N/A", note=check.get("note", "the session recorded the class swap but measured no property on the swapped element: nothing to compare"))]
+                 "N/A", note=check.get("note", "the session recorded the class swap but measured no property on the swapped element: nothing to compare"), na_reason=NA_NOT_MEASURED)]
     return rows
 
 
@@ -378,8 +419,17 @@ def run(folder, ctx):
         if (check["kind"] in ("boxes", "values") or (check["kind"] == "rule" and "node" not in check)) and (res is None or check.get("rerender")):
             res = _render(ctx, fx)
         rows.extend(RUNNERS[check["kind"]](ctx, fx, check, res))
+    from . import causes
+    seen = {}
+    for r_ in rows:                                           # every row gets a unique id (the old fixture|check|element|property key collided on same-named rows)
+        rid = causes.row_id(fx["fixture"]["name"], r_)
+        seen[rid] = seen.get(rid, 0) + 1
+        r_["id"] = rid if seen[rid] == 1 else "%s#%d" % (rid, seen[rid])
     delivered = (res or {}).get("delivered")
-    return {"name": fx["fixture"]["name"], "source": fx["fixture"].get("source", ""), "build": fx["fixture"].get("build", ""), "rows": rows,
+    dump = fx["dump"]
+    coverage = {"render_nodes": len(_flat(res["tree"])) if res else 0, "box_nodes": fx.get("box_nodes", 0), "skipped": fx.get("skips", {}),
+                "dump_nodes": len(dump["nodes"]) if dump else 0, "dump_paired": len(fx.get("paired", ())), "dump_unpaired": (len(dump["nodes"]) - len(fx.get("paired", ()))) if dump else 0}
+    return {"name": fx["fixture"]["name"], "source": fx["fixture"].get("source", ""), "build": fx["fixture"].get("build", ""), "rows": rows, "coverage": coverage,
             "delivered": delivered, "counts": {v: sum(1 for r in rows if r["verdict"] == v) for v in ("PASS", "FAIL", "N/A")}}
 
 
@@ -387,7 +437,7 @@ def run_all(ctx, root=None, only=None):
     return [run(f, ctx) for f in discover(root) if not only or f.name in only]
 
 
-CAUSES = [
+LEGACY_CAUSES = [                           # the 1.0.0 labels: one rule per row type, fixture-wide; kept only to publish how often they disagree with the row-by-row examination (render/causes.py)
     ("sub-pixel offset on a very small element: the owner's tolerance is 5 percent of the size, 0.05 px for a 1 px divider", lambda r, f: r["property"] == "box" and r["expected"] and min(r["expected"][2], r["expected"][3]) <= 2 and max(abs(d) for d in (r["delta"] or [0])) < 1.5),
     ("run-time club-colour sheet (an empty-named root sheet, not applied): the game paints this from the club's colours", lambda r, f: r["property"].startswith("background-color") and str(r["expected"]).upper().startswith("#17223F")),
     ("code-built or binding-driven colour (not in any style sheet)", lambda r, f: r["property"].split(" ")[0] in ("color", "background-color") and "(" not in r["property"]),
@@ -398,15 +448,20 @@ CAUSES = [
 ]
 
 
-def cause(row, fixture):
-    """A named cause for a FAIL row, from rules over the row (not verified row by row); None when no rule fits, so an unexplained failure stays visibly unexplained."""
-    for text, test in CAUSES:
+def legacy_cause(row, fixture):
+    """The 1.0.0 label of a FAIL row, from rules over the row only (list order decided when two fitted); None when no rule fit. Superseded by `cause`, kept for the confusion table."""
+    for text, test in LEGACY_CAUSES:
         try:
             if test(row, fixture):
                 return text
         except (TypeError, ValueError, KeyError):
             continue
     return None
+
+
+def cause(row, fixture=None):
+    """The cause of a FAIL row, from its own examination (render/causes.py); UNEXPLAINED when no supporting fact was found. Never a fixture-wide rule."""
+    return row.get("cause") or "UNEXPLAINED"
 
 
 # ---------------------------------------------------------------- the published report
@@ -438,7 +493,7 @@ def report(results, out_dir, title="Render calibration report", preface=None):
 
 
 def failures(results):
-    return sorted("%s|%s|%s|%s" % (r["name"], x["check"], x["element"], x["property"]) for r in results for x in r["rows"] if x["verdict"] == "FAIL")
+    return sorted(x["id"] for r in results for x in r["rows"] if x["verdict"] == "FAIL")
 
 
 # ---------------------------------------------------------------- fixture add
