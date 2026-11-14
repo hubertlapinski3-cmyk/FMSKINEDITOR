@@ -92,6 +92,7 @@ def publish(out, ctx=None, results=None, update_guide=False):
     cv = rt.coverage(results)
     ex = rt.examination(results)
     lay = layers_mod.run_layers(ctx, results)
+    pd = rt.pairing_delta(ctx)
 
     def preface(results, tot):
         lines = ["**Status: published, build 27.0.1.2503222, revised after the 1.0.0 review. This file is the revised report and is what the release asset `calibration-report-1.0.0.md` now carries; the first version of the report, as published at release, is retained unchanged in the repository at `docs/evidence/phase9-m7-calibration-20261114/` and in the git history. Not a draft.** Phase 9 M7 closed on the first version of this report. Read these first:", "",
@@ -109,9 +110,9 @@ def publish(out, ctx=None, results=None, update_guide=False):
         return lines + rt.coverage_md(cv) + [""]
 
     def appendix(results):
-        return rt.examination_md(results, ex) + [""] + layers_mod.layers_md(lay) + grid_md(results)
+        return rt.examination_md(results, ex) + [""] + rt.pairing_md(pd) + [""] + layers_mod.layers_md(lay) + grid_md(results)
     tot = fixtures.report(results, out, title="Render calibration report (published, revised)", preface=preface, appendix=appendix,
-                          extra={"coverage": cv, "examination": ex, "layers": lay, "grid": rt.grid_scoping(results, HELDOUT), "duplicates": rt.DUPLICATES})
+                          extra={"coverage": cv, "examination": ex, "layers": lay, "pairing": pd, "grid": rt.grid_scoping(results, HELDOUT), "duplicates": rt.DUPLICATES})
     if update_guide:                                                       # the guide's trust section carries the same coverage block, between its markers
         g = ROOT / "docs" / "RENDER-GUIDE.md"
         txt = g.read_text(encoding="utf-8").replace("\r\n", "\n")

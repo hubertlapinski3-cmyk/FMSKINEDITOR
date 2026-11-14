@@ -190,6 +190,39 @@ def examination_md(results, ex):
     return out
 
 
+# ---------------------------------------------------------------- pairing delta (v1.1.0: structural pairing replaces the greedy one)
+def pairing_delta(ctx):
+    """Per layout fixture: render nodes drawn, how many the 1.0.0 (greedy, invisible elements included) and the v1.1 (structural, visible only) pairing pair, how many keep the same live partner,
+    how many change it, how many only one of them pairs. Live-side coverage = live elements paired / live elements in the dump."""
+    from . import fixtures
+    rows = []
+    for folder in fixtures.discover():
+        fx = fixtures.load(folder)
+        if fx["fixture"].get("kind") != "layout" or not fx["dump"]:
+            continue
+        res = fixtures._render(ctx, fx)
+        g, _ = fixtures.pair_greedy(res["tree"], fx["dump"])
+        s, _ = fixtures.pair_structural(res["tree"], fx["dump"])
+        nodes = len(fixtures._flat(res["tree"]))
+        same = sum(1 for k in g if k in s and g[k][0] == s[k][0])
+        rows.append({"fixture": fx["fixture"]["name"], "render_nodes": nodes, "dump_nodes": len(fx["dump"]["nodes"]), "greedy_paired": len(g), "structural_paired": len(s), "same_partner": same,
+                     "changed_partner": sum(1 for k in g if k in s and g[k][0] != s[k][0]), "only_greedy": sum(1 for k in g if k not in s), "only_structural": sum(1 for k in s if k not in g),
+                     "greedy_invisible_partners": sum(1 for k in g if not g[k][1]["visible"])})
+    return rows
+
+
+def pairing_md(rows):
+    out = ["## Pairing: structural, with no invisible live elements (the v1.1 default)", "",
+           "The 1.0.0 report paired render nodes with live elements greedily by type and name over the whole capture dump, invisible elements included. The v1.1 pairing is structural: a node pairs with the first visible live element "
+           "of its type and name inside its parent's live partner's subtree, after its previous sibling's. The live-side coverage the audit measured (live elements paired out of live elements in the dump) is bounded by the number of "
+           "render nodes drawn, so a better pairing can only change WHICH live element a node gets, or remove pairs that were wrong; it cannot raise the count past the render's node count. Result, generated:", "",
+           "| Fixture | Render nodes | Live elements in the dump | Paired, 1.0.0 | Paired, v1.1 | Same partner | Partner changed | Only 1.0.0 | Only v1.1 | 1.0.0 partners that were invisible |", "|---|---|---|---|---|---|---|---|---|---|"]
+    for x in rows:
+        out.append("| %s | %d | %d | %d | %d | %d | %d | %d | %d | %d |" % (x["fixture"], x["render_nodes"], x["dump_nodes"], x["greedy_paired"], x["structural_paired"], x["same_partner"], x["changed_partner"], x["only_greedy"], x["only_structural"], x["greedy_invisible_partners"]))
+    out += ["", "The baseline to beat (the audit): Loans 19 of 343 and Training 34 of 762 live elements paired. It is NOT beaten: see the table; the count fell where the 1.0.0 pairing had taken invisible live elements."]
+    return out
+
+
 # ---------------------------------------------------------------- grid scoping
 def grid_scoping(results, heldout_file=None):
     from . import pitch as pitch_mod

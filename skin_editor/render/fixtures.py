@@ -121,8 +121,9 @@ def _hidden_ids(top):
     return hidden
 
 
-def pair(top, dump):
-    """{id(node): live element} by greedy in-order matching of (type, name), the live side starting at the element that is the render's top node."""
+def pair_greedy(top, dump):
+    """The 1.0.0 pairing, kept to reproduce the frozen report: {id(node): live element} by greedy in-order matching of (type, name) over the WHOLE dump, invisible live elements included,
+    the live side starting at the element that is the render's top node."""
     live = [(p, n) for p, n in dump["nodes"].items() if n["visible"] or True]
     first = top[0]
     start = next((i for i, (_p, n) in enumerate(live) if n["type"] == first["type"] and n["name"] == (first.get("name") or "")), 0)
@@ -135,6 +136,44 @@ def pair(top, dump):
             out[id(n)] = live[j]
             pos = j + 1
     return out, live[start][1]["bounds"]
+
+
+def pair_structural(top, dump):
+    """The v1.1 pairing: by STRUCTURE. A render node pairs with the first VISIBLE live element of the same type and name that sits inside the subtree of its parent's live partner, after its
+    previous sibling's partner (live wrapper elements between them are allowed; an unpaired parent hands its range down). Hidden switch branches are skipped. Invisible live elements are never
+    paired: the 1.0.0 pairing took them and drew the render's box against a live box of 0 by 0."""
+    live = [(p, n) for p, n in dump["nodes"].items()]
+    hidden = _hidden_ids(top)
+
+    def span(i):
+        pre = live[i][0] + "/"
+        j = i + 1
+        while j < len(live) and live[j][0].startswith(pre):
+            j += 1
+        return j
+    first = top[0]
+    start = next((i for i, (_p, n) in enumerate(live) if n["visible"] and n["type"] == first["type"] and n["name"] == (first.get("name") or "")), 0)
+    out = {}
+
+    def walk(nodes, lo, hi):
+        ptr = lo
+        for n in nodes:
+            if id(n) in hidden:
+                continue
+            j = next((k for k in range(ptr, hi) if live[k][1]["visible"] and live[k][1]["type"] == n["type"] and live[k][1]["name"] == (n.get("name") or "")), None)
+            if j is not None:
+                out[id(n)] = live[j]
+                walk(n.get("children", []), j + 1, span(j))
+                ptr = span(j)
+            else:
+                walk(n.get("children", []), ptr, hi)
+    walk(top, start, len(live))
+    return out, live[start][1]["bounds"]
+
+
+def pair(top, dump, mode=None):
+    """{id(node): (path, live element)} and the root box. `mode` "structural" (the v1.1 default) or "greedy" (the 1.0.0 pairing, to reproduce the frozen report)."""
+    return pair_greedy(top, dump) if mode == "greedy" else pair_structural(top, dump)
 
 
 def delivered_of(dump):
@@ -172,6 +211,7 @@ NA_NO_DECL_NONDEFAULT = "no-declaration-live-non-default"            # the rende
 NA_HIDDEN_BRANCH = "descendant-of-hidden-switch-branch"              # the render chose not to show this branch (one branch per switch), so it has no live partner by design
 NA_LIVE_ABSENT = "live-element-absent-or-not-captured"               # a drawn node with no live partner and not in a hidden branch
 NA_NO_DECL_PARENT_ABSENT = "no-declaration-parent-not-in-dump"     # as above, but the dump holds no live parent to tell inherited from non-default (the host root of a fixture)
+NA_LIVE_INVISIBLE = "live-element-present-but-invisible"       # the render node has a live partner by name, but it is invisible (display none, 0 by 0): not paired, nothing to compare
 NA_NOT_MEASURED = "not-measured-live"                                # the session recorded the event but measured no property to compare
 INITIAL = {"background-color": "#00000000"}                          # CSS initial values; color and font-size inherit, so their "initial" is the live parent's value
 
@@ -187,6 +227,7 @@ def run_boxes(ctx, fx, check, res):
     rects = measure(html, ctx.ws.cache / "fixtures-edge")
     rows, name = [], fx["fixture"]["name"]
     hidden = _hidden_ids(top)
+    legacy = pair_greedy(top, fx["dump"])[0]                       # who the 1.0.0 pairing would have paired: tells "invisible" from "absent" for an unpaired node
     skips = fx.setdefault("skips", {})
     fx.setdefault("paired", set()).update(p for p, _n in pairs.values())
     for i, n in enumerate(nodes):
@@ -196,9 +237,10 @@ def run_boxes(ctx, fx, check, res):
                 skips["boxes: root of a hidden switch branch (never emitted)"] = skips.get("boxes: root of a hidden switch branch (never emitted)", 0) + 1
                 continue
             hid = id(n) in hidden
-            rows.append(_row(name, check["id"], label, "box", None, [round(v, 1) for v in rects[i]], "N/A", node=i, live=None, na_reason=NA_HIDDEN_BRANCH if hid else NA_LIVE_ABSENT,
+            inv = id(n) in legacy and not legacy[id(n)][1]["visible"]
+            rows.append(_row(name, check["id"], label, "box", None, [round(v, 1) for v in rects[i]], "N/A", node=i, live=None, na_reason=NA_HIDDEN_BRANCH if hid else (NA_LIVE_INVISIBLE if inv else NA_LIVE_ABSENT),
                              note=("descendant of a switch branch the render chose not to show (one branch per switch): no live partner by design" if hid else
-                                   "no live element paired: the drawn node has no partner in the capture (absent or not captured)")))
+                                   ("the live element of this name is invisible (display none): not paired, nothing to compare" if inv else "no live element paired: the drawn node has no partner in the capture (absent or not captured)"))))
             continue
         e = pairs[id(n)][1]["bounds"]
         ex = [e[0] - root[0], e[1] - root[1], e[2], e[3]]
