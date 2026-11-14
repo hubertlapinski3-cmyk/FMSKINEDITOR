@@ -1,0 +1,372 @@
+{
+ "checks": [
+  {
+   "id": "filter-hover",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF33",
+   "rest": "#FFFFFF24"
+  },
+  {
+   "id": "filter-press-held",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "hover",
+      "active",
+      "focus"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF24",
+   "rest": "#FFFFFF24",
+   "note": "read with mask 67 (active+hover+focus); the game shows the REST colour while pressed, the hover rule alone predicts #FFFFFF33"
+  },
+  {
+   "id": "filter-dragged-off-held",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "focus"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF24",
+   "rest": "#FFFFFF24",
+   "noop": true,
+   "note": "mask 64 (focus only) with the mouse still held"
+  },
+  {
+   "id": "filter-released",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "states": []
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF24",
+   "rest": "#FFFFFF24",
+   "noop": true
+  },
+  {
+   "id": "loans-tile-hover",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "layout-tile-interaction-button",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "interactable-tile",
+      "layout-tile-interaction-button",
+      "layout-tile-interaction-button-background",
+      "anchor-loans"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#2E3138",
+   "rest": "#17223F"
+  },
+  {
+   "id": "nav-tab-label-hover",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "buttons-button-navigation-default",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "navigation-tab-portal-default-active-false",
+      "margin-horizontal-global-gap-none",
+      "buttongroup__button"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "thematic-md",
+      "justify-content-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainFrame",
+     "classes": [
+      "row-direction-normal",
+      "align-items-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIVisible",
+     "name": "TextVisible",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "SIText",
+     "name": "text",
+     "classes": [
+      "sitext",
+      "portal-text",
+      "margin-right-global-gap-none",
+      "sitext-hover-cursor",
+      "margin-right-global-gap-small",
+      "thematic-md"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "color",
+   "state": "#FFFFFF",
+   "rest": "#EBEBEB",
+   "note": "the label's own mask read 0 while its colour was #FFFFFF (its ancestors read 2): the rule that matches is the label's :hover, so the mask read of a text element lags what the style engine applies"
+  },
+  {
+   "id": "table-row-hover",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "streamed-table__row",
+      "row-direction-normal",
+      "streamed-list-view__disable-controller-cell",
+      "streamed-list-view-item",
+      "streamed-list-view__row--interactable",
+      "virtualised-list__item"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF1A",
+   "rest": "#FFFFFF00",
+   "note": "even row of the zebra list; odd rows rest at #FFFFFF0F (the zebra rule is not part of this check)"
+  },
+  {
+   "id": "inbox-row-hover",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "NewsItemButton",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "portal-messages-item-default-style-unread-property-1-message-property-2-default",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-left-global-padding-regular",
+      "padding-right-global-padding-large",
+      "border-color-theme-core-base-border-base-default",
+      "padding-vertical-global-padding-extra-large",
+      "margin-vertical-global-gap-none",
+      "message-button"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF14",
+   "rest": "#00000000"
+  },
+  {
+   "id": "inbox-row-clicked-focus",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "NewsItemButton",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "portal-messages-item-default-style-unread-property-1-message-property-2-default",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-left-global-padding-regular",
+      "padding-right-global-padding-large",
+      "border-color-theme-core-base-border-base-default",
+      "padding-vertical-global-padding-extra-large",
+      "margin-vertical-global-gap-none",
+      "message-button"
+     ],
+     "states": [
+      "focus"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#00000000",
+   "rest": "#00000000",
+   "noop": true,
+   "note": "after the selection click the row's button carries mask 64 and no colour change"
+  },
+  {
+   "id": "pitch-marker-hover",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "projected--position--filled"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#00000000",
+   "rest": "#00000000",
+   "noop": true,
+   "note": "mask 2 on the marker and every descendant read; colour and background unchanged"
+  },
+  {
+   "id": "pitch-marker-label-hover",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "projected--position--filled"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "content-tactics-visualiser-player-indicator-simple"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "color",
+   "state": "#EBEBEB",
+   "rest": "#EBEBEB",
+   "noop": true
+  },
+  {
+   "id": "instruction-tile-hover",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "TemplateContainer",
+     "name": "TeamInstructionTile",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#00000000",
+   "rest": "#00000000",
+   "noop": true,
+   "note": "mask 2 five levels down; colour, background and border unchanged at every level read"
+  },
+  {
+   "id": "inbox-selection-class-swap",
+   "kind": "classswap",
+   "element": {
+    "type": "SIStyleSetter",
+    "name": "SIStyleSetter_IsLastSelected"
+   },
+   "from": [
+    "flex-grow-class",
+    "row-direction-normal",
+    "message-not-last-selected"
+   ],
+   "to": [
+    "flex-grow-class",
+    "row-direction-normal",
+    "message-last-selected"
+   ],
+   "observed": "class swap seen; no property measured on the setter",
+   "note": "the class swap was seen (setters idx 1,22 -> 3,24); no colour was read on the setter, so the render's one declared difference (colour #EBEBEB on the selected setter, inherited by its children) has nothing to compare against"
+  }
+ ]
+}

@@ -78,6 +78,20 @@ class Calibration(unittest.TestCase):
         for r in results:
             self.assertGreater(r["counts"]["PASS"] + r["counts"]["FAIL"], 0, r["name"])           # a fixture that compares nothing is not a fixture
 
+    def test_state_rules_come_from_the_games_pseudo_selectors(self):
+        """I3: hover colours are what the game's own :hover rules declare; a state with no rule predicts no change (the cascade of the render itself still applies no state)."""
+        casc = fixtures.Context().R.cascade()
+
+        def node(classes, states):
+            n = {"type": "SIButton", "name": "", "classes": classes.split(), "children": [], "inline": [], "attrs": {}, "id": None, "layout": None}
+            casc.compute([n])
+            n["_states"] = set(states)
+            return n
+        hov = node("buttons-button-base-default", ["hover"])
+        self.assertEqual(casc.state_declarations([hov], ("background-color",))["background-color"]["value"], "#FFFFFF33")
+        self.assertNotIn("background-color", casc.state_declarations([node("buttons-button-base-default", ["focus"])], ("background-color",)))
+        self.assertEqual(hov["computed"]["background-color"]["value"], "#FFFFFF24")               # the render's own computed value stays the rest value
+
 
 if __name__ == "__main__":
     unittest.main()

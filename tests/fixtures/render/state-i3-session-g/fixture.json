@@ -1,0 +1,6 @@
+{
+ "name": "state-i3-session-g",
+ "build": "27.0.1.2503222",
+ "kind": "state",
+ "source": "I3 Session G, manual hover/press/select holds on the baseline plugin 0.2.2 (AllowActions false), 2026-11-14; replies saved as g-*.json in workspace/notes/ui-dumps/i3g-20261114; log docs/evidence/phase9-i3-session-G-20261114.md. Predictions come from the game's own :pseudo rules (Cascade.state_declarations); the render itself still applies no state"
+}

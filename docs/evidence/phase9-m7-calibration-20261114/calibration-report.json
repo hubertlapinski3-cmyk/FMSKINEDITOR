@@ -1,9 +1,9 @@
 {
  "schema": "fm-calibration/1",
  "totals": {
-  "PASS": 660,
-  "FAIL": 77,
-  "N/A": 431
+  "PASS": 679,
+  "FAIL": 79,
+  "N/A": 435
  },
  "fixtures": [
   {
@@ -1006,6 +1006,301 @@
     "PASS": 3,
     "FAIL": 0,
     "N/A": 0
+   }
+  },
+  {
+   "name": "state-i3-session-g",
+   "source": "I3 Session G, manual hover/press/select holds on the baseline plugin 0.2.2 (AllowActions false), 2026-11-14; replies saved as g-*.json in workspace/notes/ui-dumps/i3g-20261114; log docs/evidence/phase9-i3-session-G-20261114.md. Predictions come from the game's own :pseudo rules (Cascade.state_declarations); the render itself still applies no state",
+   "build": "27.0.1.2503222",
+   "rows": [
+    {
+     "fixture": "state-i3-session-g",
+     "check": "filter-hover",
+     "element": "SIButton#.HasSIClickable.row-direction-normal",
+     "property": "background-color (rest)",
+     "expected": "#FFFFFF24",
+     "got": "#FFFFFF24",
+     "delta": null,
+     "verdict": "PASS",
+     "note": ""
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "filter-hover",
+     "element": "SIButton#.HasSIClickable.row-direction-normal",
+     "property": "background-color (hover)",
+     "expected": "#FFFFFF33",
+     "got": "#FFFFFF33",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "state rule .buttons-button-base-default:hover"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "filter-press-held",
+     "element": "SIButton#.HasSIClickable.row-direction-normal",
+     "property": "background-color (rest)",
+     "expected": "#FFFFFF24",
+     "got": "#FFFFFF24",
+     "delta": null,
+     "verdict": "PASS",
+     "note": ""
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "filter-press-held",
+     "element": "SIButton#.HasSIClickable.row-direction-normal",
+     "property": "background-color (active+focus+hover)",
+     "expected": "#FFFFFF24",
+     "got": "#FFFFFF33",
+     "delta": null,
+     "verdict": "FAIL",
+     "note": "state rule .buttons-button-base-default:hover | read with mask 67 (active+hover+focus); the game shows the REST colour while pressed, the hover rule alone predicts #FFFFFF33",
+     "cause": null
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "filter-dragged-off-held",
+     "element": "SIButton#.HasSIClickable.row-direction-normal",
+     "property": "background-color (rest)",
+     "expected": "#FFFFFF24",
+     "got": "#FFFFFF24",
+     "delta": null,
+     "verdict": "PASS",
+     "note": ""
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "filter-dragged-off-held",
+     "element": "SIButton#.HasSIClickable.row-direction-normal",
+     "property": "background-color (focus)",
+     "expected": "#FFFFFF24",
+     "got": "#FFFFFF24",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "explicit no-op: no state rule declares background-color: the render predicts no change | mask 64 (focus only) with the mouse still held"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "filter-released",
+     "element": "SIButton#.HasSIClickable.row-direction-normal",
+     "property": "background-color (rest)",
+     "expected": "#FFFFFF24",
+     "got": "#FFFFFF24",
+     "delta": null,
+     "verdict": "PASS",
+     "note": ""
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "filter-released",
+     "element": "SIButton#.HasSIClickable.row-direction-normal",
+     "property": "background-color (rest)",
+     "expected": "#FFFFFF24",
+     "got": "#FFFFFF24",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "explicit no-op: no state rule declares background-color: the render predicts no change"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "loans-tile-hover",
+     "element": "SIButton#layout-tile-interaction-button",
+     "property": "background-color (rest)",
+     "expected": "#17223F",
+     "got": "#1E2129",
+     "delta": null,
+     "verdict": "FAIL",
+     "note": "",
+     "cause": "run-time club-colour sheet (an empty-named root sheet, not applied): the game paints this from the club's colours"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "loans-tile-hover",
+     "element": "SIButton#layout-tile-interaction-button",
+     "property": "background-color (hover)",
+     "expected": "#2E3138",
+     "got": "#2E3138",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "state rule .layout-tile-interaction-button:hover"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "nav-tab-label-hover",
+     "element": "SIText#text",
+     "property": "color (rest)",
+     "expected": "#EBEBEB",
+     "got": "#EBEBEB",
+     "delta": null,
+     "verdict": "PASS",
+     "note": ""
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "nav-tab-label-hover",
+     "element": "SIText#text",
+     "property": "color (hover)",
+     "expected": "#FFFFFF",
+     "got": "#FFFFFF",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "state rule .navigation-tab-portal-default-active-false .portal-text:hover | the label's own mask read 0 while its colour was #FFFFFF (its ancestors read 2): the rule that matches is the label's :hover, so the mask read of a text element lags what the style engine applies"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "table-row-hover",
+     "element": "BindingRoot#.streamed-table__row.row-direction-normal",
+     "property": "background-color (rest)",
+     "expected": "#FFFFFF00",
+     "got": "#FFFFFF00",
+     "delta": null,
+     "verdict": "PASS",
+     "note": ""
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "table-row-hover",
+     "element": "BindingRoot#.streamed-table__row.row-direction-normal",
+     "property": "background-color (hover)",
+     "expected": "#FFFFFF1A",
+     "got": "#FFFFFF1A",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "state rule .streamed-table__row.virtualised-list__item:hover | even row of the zebra list; odd rows rest at #FFFFFF0F (the zebra rule is not part of this check)"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "inbox-row-hover",
+     "element": "SIButton#NewsItemButton",
+     "property": "background-color (rest)",
+     "expected": "#00000000",
+     "got": "#00000000",
+     "delta": null,
+     "verdict": "PASS",
+     "note": ""
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "inbox-row-hover",
+     "element": "SIButton#NewsItemButton",
+     "property": "background-color (hover)",
+     "expected": "#FFFFFF14",
+     "got": "#FFFFFF14",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "state rule .message-button:hover"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "inbox-row-clicked-focus",
+     "element": "SIButton#NewsItemButton",
+     "property": "background-color (rest)",
+     "expected": "#00000000",
+     "got": "#00000000",
+     "delta": null,
+     "verdict": "PASS",
+     "note": ""
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "inbox-row-clicked-focus",
+     "element": "SIButton#NewsItemButton",
+     "property": "background-color (focus)",
+     "expected": "#00000000",
+     "got": "#00000000",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "explicit no-op: no state rule declares background-color: the render predicts no change | after the selection click the row's button carries mask 64 and no colour change"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "pitch-marker-hover",
+     "element": "VisualElement#.projected--position--filled",
+     "property": "background-color (rest)",
+     "expected": "#00000000",
+     "got": null,
+     "delta": null,
+     "verdict": "N/A",
+     "note": "the render declares no background-color here"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "pitch-marker-hover",
+     "element": "VisualElement#.projected--position--filled",
+     "property": "background-color (hover)",
+     "expected": "#00000000",
+     "got": "unchanged (no declaration, no state rule)",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "explicit no-op: no state rule declares background-color: the render predicts no change | mask 2 on the marker and every descendant read; colour and background unchanged"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "pitch-marker-label-hover",
+     "element": "VisualElement#.content-tactics-visualiser-player-indicator-simple",
+     "property": "color (rest)",
+     "expected": "#EBEBEB",
+     "got": null,
+     "delta": null,
+     "verdict": "N/A",
+     "note": "the render declares no color here"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "pitch-marker-label-hover",
+     "element": "VisualElement#.content-tactics-visualiser-player-indicator-simple",
+     "property": "color (hover)",
+     "expected": "#EBEBEB",
+     "got": "unchanged (no declaration, no state rule)",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "explicit no-op: no state rule declares color: the render predicts no change"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "instruction-tile-hover",
+     "element": "TemplateContainer#TeamInstructionTile",
+     "property": "background-color (rest)",
+     "expected": "#00000000",
+     "got": null,
+     "delta": null,
+     "verdict": "N/A",
+     "note": "the render declares no background-color here"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "instruction-tile-hover",
+     "element": "TemplateContainer#TeamInstructionTile",
+     "property": "background-color (hover)",
+     "expected": "#00000000",
+     "got": "unchanged (no declaration, no state rule)",
+     "delta": null,
+     "verdict": "PASS",
+     "note": "explicit no-op: no state rule declares background-color: the render predicts no change | mask 2 five levels down; colour, background and border unchanged at every level read"
+    },
+    {
+     "fixture": "state-i3-session-g",
+     "check": "inbox-selection-class-swap",
+     "element": "SIStyleSetter#SIStyleSetter_IsLastSelected",
+     "property": "class swap message-not-last-selected -> message-last-selected",
+     "expected": "class swap seen; no property measured on the setter",
+     "got": {
+      "color": [
+       null,
+       "#EBEBEB"
+      ]
+     },
+     "delta": null,
+     "verdict": "N/A",
+     "note": "the class swap was seen (setters idx 1,22 -> 3,24); no colour was read on the setter, so the render's one declared difference (colour #EBEBEB on the selected setter, inherited by its children) has nothing to compare against"
+    }
+   ],
+   "delivered": null,
+   "counts": {
+    "PASS": 19,
+    "FAIL": 2,
+    "N/A": 4
    }
   },
   {

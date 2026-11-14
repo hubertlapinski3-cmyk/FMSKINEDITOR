@@ -7,7 +7,8 @@
 
 Kinds: `boxes` (element boxes against the dump), `values` (resolved colours, font sizes and flex values against the dump, EXACT), `rule` (which rule wins a declaration and whether it
 is the project's), `table` (the placeholder table's header row), `tiles` (left/right relations and x positions of cells after a tile move), `screen` (the assembler's host boxes against
-the dump). Every row is PASS, FAIL or N/A (the render makes no declaration to compare, said as such); nothing is filtered, averaged or re-toleranced.
+the dump), `state` (I3: a hover/press/focus reading against the game's own `:pseudo` rules, with explicit no-op verdicts), `classswap` (a run-time class swap against the declared difference).
+Every row is PASS, FAIL or N/A (the render makes no declaration to compare, said as such); nothing is filtered, averaged or re-toleranced.
 Tolerance (owner): a box passes when each of x, y, width, height is within 8 px or 5 percent of the measured size, whichever is tighter; colours and font sizes must be exactly equal.
 `run_all` returns every fixture's rows; `report` writes the published JSON and Markdown; `add_from_capture` builds a fixture from a capture host subtree and fills expect.json."""
 import copy
@@ -311,7 +312,63 @@ def run_tiles(ctx, fx, check, res=None):
     return rows
 
 
-RUNNERS = {"boxes": run_boxes, "values": run_values, "rule": run_rule, "table": run_table, "screen": run_screen, "tiles": run_tiles}
+def _state_chain(ctx, check, key="chain"):
+    """The synthetic ancestor chain of a state check, computed through the vanilla cascade: nodes {type, name, classes, states}, root first, the element under test last."""
+    nodes = []
+    for s in check[key]:
+        nodes.append({"type": s["type"], "name": s.get("name", ""), "classes": list(s.get("classes", [])), "children": [], "inline": [], "attrs": {}, "id": None, "layout": None,
+                      "_states": set(s.get("states", []))})
+    for a, b in zip(nodes, nodes[1:]):
+        a["children"] = [b]
+    casc = ctx.R.cascade()
+    casc.compute([nodes[0]])
+    return casc, nodes
+
+
+def run_state(ctx, fx, check, res=None):
+    """I3 (docs/evidence/phase9-i3-session-G-20261114.md): a runtime state (hover, focus, press) read in the game against what the game's own `:pseudo` rules declare for the same
+    element. `rest` and `state` are the values the inspector read; the render predicts the state value from the rules (`Cascade.state_declarations`) and, when no state rule
+    declares the property, predicts no change from the rest value. A check with `noop` is the explicit verdict that a state changes nothing the render needs."""
+    casc, path = _state_chain(ctx, check)
+    node, name = path[-1], fx["fixture"]["name"]
+    prop = check["property"]
+    label = "%s#%s" % (node["type"], node.get("name") or "") + ("." + ".".join(node["classes"][:2]) if node["classes"] and not node.get("name") else "")
+    decl = casc.state_declarations(path, (prop,)).get(prop)
+    rest = node["computed"].get(prop)
+    rows = []
+    state_txt = "+".join(sorted(node["_states"])) or "rest"
+    if "rest" in check:
+        rows.append(_row(name, check["id"], label, prop + " (rest)", check["rest"], rest["value"] if rest else None, "PASS" if rest and same(prop, check["rest"], rest["value"]) else ("N/A" if not rest else "FAIL"),
+                         note="" if rest else "the render declares no %s here" % prop))
+    if decl:
+        pred = decl["value"]
+    elif rest:
+        pred = rest["value"]
+    else:
+        pred = "unchanged (no declaration, no state rule)"          # the render declares nothing: its prediction is that the state changes nothing
+    ok = same(prop, check["state"], pred) if (decl or rest) else ("rest" in check and same(prop, check["state"], check["rest"]))
+    note = ("state rule %s" % decl["source"]["selector"]) if decl else "no state rule declares %s: the render predicts no change" % prop
+    if check.get("noop"):
+        note = "explicit no-op: " + note
+    rows.append(_row(name, check["id"], label, "%s (%s)" % (prop, state_txt), check["state"], pred, "PASS" if ok else "FAIL", note=note + ((" | " + check["note"]) if check.get("note") else "")))
+    return rows
+
+
+def run_classswap(ctx, fx, check, res=None):
+    """A class that the game swaps at run time (the Inbox selection): which declared properties differ between the two class sets, against the property values the session read, if it read any."""
+    name = fx["fixture"]["name"]
+    a, b = check["from"], check["to"]
+    casc, pa = _state_chain(ctx, dict(check, chain=[dict(check["element"], classes=a)]))
+    _c, pb = _state_chain(ctx, dict(check, chain=[dict(check["element"], classes=b)]))
+    diff = {k: [(pa[-1]["computed"].get(k) or {}).get("value"), (pb[-1]["computed"].get(k) or {}).get("value")] for k in sorted(set(pa[-1]["computed"]) | set(pb[-1]["computed"]))
+            if (pa[-1]["computed"].get(k) or {}).get("value") != (pb[-1]["computed"].get(k) or {}).get("value")}
+    label = "%s#%s" % (check["element"]["type"], check["element"].get("name", ""))
+    rows = [_row(name, check["id"], label, "class swap " + " -> ".join(x[-1] for x in (check["from"], check["to"])), check.get("observed"), diff or "no declared difference",
+                 "N/A", note=check.get("note", "the session recorded the class swap but measured no property on the swapped element: nothing to compare"))]
+    return rows
+
+
+RUNNERS = {"boxes": run_boxes, "values": run_values, "rule": run_rule, "table": run_table, "screen": run_screen, "tiles": run_tiles, "state": run_state, "classswap": run_classswap}
 
 
 def run(folder, ctx):
@@ -332,8 +389,8 @@ def run_all(ctx, root=None, only=None):
 
 CAUSES = [
     ("sub-pixel offset on a very small element: the owner's tolerance is 5 percent of the size, 0.05 px for a 1 px divider", lambda r, f: r["property"] == "box" and r["expected"] and min(r["expected"][2], r["expected"][3]) <= 2 and max(abs(d) for d in (r["delta"] or [0])) < 1.5),
-    ("run-time club-colour sheet (an empty-named root sheet, not applied): the game paints this from the club's colours", lambda r, f: r["property"] == "background-color" and str(r["expected"]).upper().startswith("#17223F")),
-    ("code-built or binding-driven colour (not in any style sheet)", lambda r, f: r["property"] in ("color", "background-color")),
+    ("run-time club-colour sheet (an empty-named root sheet, not applied): the game paints this from the club's colours", lambda r, f: r["property"].startswith("background-color") and str(r["expected"]).upper().startswith("#17223F")),
+    ("code-built or binding-driven colour (not in any style sheet)", lambda r, f: r["property"].split(" ")[0] in ("color", "background-color") and "(" not in r["property"]),
     ("code-built content: the Training tile's weekly schedule, calendar and training lists are built at run time (the capture holds 'This Week's Schedule', Mon to Sun, the counts), so everything below them is displaced in the render", lambda r, f: f == "tile-training" and r["property"] == "box"),
     ("code-built content: the tactics pitch and its players are drawn in code, so the render's boxes around it differ", lambda r, f: f == "tile-tactics" and r["property"] == "box"),
     ("component-drawn image (SIImage, SIStyleSetter): its size and shrink come from component fields, not from style sheets", lambda r, f: r["property"] == "flex-shrink" or (r["property"] == "box" and "SIStyleSetter" in r["element"]) or (r["property"] == "box" and "SIImage" in r["element"])),
@@ -353,7 +410,7 @@ def cause(row, fixture):
 
 
 # ---------------------------------------------------------------- the published report
-def report(results, out_dir, title="Render calibration report"):
+def report(results, out_dir, title="Render calibration report", preface=None):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     tot = {v: sum(r["counts"][v] for r in results) for v in ("PASS", "FAIL", "N/A")}
@@ -362,7 +419,7 @@ def report(results, out_dir, title="Render calibration report"):
             if x["verdict"] == "FAIL":
                 x["cause"] = cause(x, r["name"])
     (out_dir / "calibration-report.json").write_text(json.dumps({"schema": "fm-calibration/1", "totals": tot, "fixtures": results}, indent=1), encoding="utf-8")
-    md = ["# %s" % title, "", "Tolerance: box x, y, width, height within 8 px or 5 percent of the measured size, whichever is tighter; colours, font sizes and flex values exactly equal. Every row is published: "
+    md = ["# %s" % title, ""] + (list(preface(results, tot)) + [""] if callable(preface) else list(preface or [])) + ["Tolerance: box x, y, width, height within 8 px or 5 percent of the measured size, whichever is tighter; colours, font sizes and flex values exactly equal. Every row is published: "
           "PASS, FAIL, or N/A (nothing to compare). Nothing is filtered, averaged or re-toleranced.", "",
           "**Totals: %d pass, %d fail, %d n/a.**" % (tot["PASS"], tot["FAIL"], tot["N/A"]), "", "| Fixture | Pass | Fail | N/A | Source |", "|---|---|---|---|---|"]
     for r in results:

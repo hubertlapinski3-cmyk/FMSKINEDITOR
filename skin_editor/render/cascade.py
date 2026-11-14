@@ -64,7 +64,7 @@ class Cascade:
         t0 = time.perf_counter()
         self.sheets = sheets
         self.rc = runtime_classes if runtime_classes is not None else load_runtime_classes()
-        self.by_key, self.root_vars = {}, {}
+        self.by_key, self.root_vars, self.state_entries = {}, {}, []
         self.stats = {"sheets": len(sheets), "rules": 0, "selectors": 0, "state_selectors_skipped": 0, "root_variables": 0}
         pseudos = {}
         for sh in sheets:
@@ -80,6 +80,7 @@ class Cascade:
                                 if name.startswith("--"):
                                     self.root_vars[name] = (val, sh.name, text)
                         else:
+                            self.state_entries.append(Entry(spec, sh.pos, rule, chain, text, sh))      # kept for `state_declarations` (I3 state fixtures); the render itself never applies them
                             self.stats["state_selectors_skipped"] += 1
                             for p in ps:
                                 pseudos[p] = pseudos.get(p, 0) + 1
@@ -116,6 +117,56 @@ class Cascade:
                     if ident not in best or e.spec > best[ident].spec:
                         best[ident] = e
         return sorted(best.values(), key=lambda e: (e.spec, e.pos, e.rule["i"]))
+
+    # ---- runtime state (hover, active, focus ...): not part of the render, used by the state fixtures
+    def state_declarations(self, path, props=("background-color", "color")):
+        """For the last node of `path` (nodes already computed, each may carry `_states`, a set of pseudo-class names such as {"hover"}): the declarations of the rules whose
+        pseudo-class selector matches in that state, with the winner per property: {prop: {"value", "source"}}. The result of a state rule is only what the sheets declare."""
+        def ok(node, parts):
+            for t, v in parts:
+                if t == P_ID and node.get("name") != v:
+                    return False
+                if t == P_CLASS and v not in node["_classes"]:
+                    return False
+                if t == P_ELEMENT and node.get("type") != v:
+                    return False
+                if t == P_PSEUDO and v not in node.get("_states", ()):
+                    return False
+            return True
+
+        def match(chain, k, i):
+            if not ok(path[i], chain[k][1]):
+                return False
+            if k == 0:
+                return True
+            if chain[k][0] == 1:
+                return i > 0 and match(chain, k - 1, i - 1)
+            return any(match(chain, k - 1, j) for j in range(i - 1, -1, -1))
+        hits = {}
+        for e in self.state_entries:
+            for chain, spec, text in e.rule["chains"]:
+                if any(t == P_PSEUDO for t, _v in chain[-1][1]) and match(chain, len(chain) - 1, len(path) - 1):
+                    cur = hits.get((e.pos, e.rule["i"]))
+                    if cur is None or spec > cur[0].spec:
+                        hits[(e.pos, e.rule["i"])] = (Entry(spec, e.pos, e.rule, chain, text, e.sheet),)
+        scope = {k: (v[0], v[1], v[2]) for k, v in self.root_vars.items()}
+        for nd in path:
+            for p, d in (nd.get("computed") or {}).items():
+                if p.startswith("--"):
+                    scope[p] = (d["value"], "", "")
+        look = self._lookup_factory(scope)
+        out = {}
+        for e, in sorted(hits.values(), key=lambda t: (t[0].spec, t[0].pos, t[0].rule["i"])):
+            for name, val, _c in e.rule["props"]:
+                cname, _inf = values.canonical(name)
+                if cname.startswith("--"):
+                    scope[cname] = (val, e.sheet.name, e.text)
+                    continue
+                resolved, unresolved = values.resolve_vars(val, look, [])
+                for lh, text in values.expand(cname, resolved):
+                    if lh in props:
+                        out[lh] = {"value": text, "source": {"sheet": e.sheet.name, "rule": e.rule["i"], "selector": e.text, "specificity": e.spec}, "unresolved": unresolved or None}
+        return out
 
     # ---- compute
     def compute(self, top_nodes):

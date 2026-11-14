@@ -123,10 +123,60 @@ def screens():
               [{"id": "hosts", "kind": "screen", "boxes": predicted}])
 
 
+def i3_states():
+    """Session G (docs/evidence/phase9-i3-session-G-20261114.md): state readings taken by hand on the baseline plugin, 2026-11-14. Values are the inspector's resolved values, copied
+    from the saved replies (workspace/notes/ui-dumps/i3g-20261114/g-*.json), not from the render."""
+    def el(ty, name, classes, states=()):
+        return {"type": ty, "name": name, "classes": classes.split(), "states": list(states)}
+    btn = "HasSIClickable row-direction-normal buttons-button-base-default button-size-medium navigatable-no-cursor"
+    row = "streamed-table__row row-direction-normal streamed-list-view__disable-controller-cell streamed-list-view-item streamed-list-view__row--interactable virtualised-list__item"
+    news = ("sibutton navigatable HasSIClickable portal-messages-item-default-style-unread-property-1-message-property-2-default row-direction-normal margin-horizontal-global-gap-none "
+            "padding-left-global-padding-regular padding-right-global-padding-large border-color-theme-core-base-border-base-default padding-vertical-global-padding-extra-large "
+            "margin-vertical-global-gap-none message-button")
+    tile = "sibutton navigatable HasSIClickable interactable-tile layout-tile-interaction-button layout-tile-interaction-button-background anchor-loans"
+    bg = "background-color"
+
+    def chk(i, chain, state, rest=None, prop=bg, **kw):
+        d = {"id": i, "kind": "state", "chain": chain, "property": prop, "state": state}
+        if rest is not None:
+            d["rest"] = rest
+        d.update(kw)
+        return d
+    nav_chain = lambda st: [el("SIButton", "buttons-button-navigation-default", "sibutton navigatable HasSIClickable navigation-tab-portal-default-active-false margin-horizontal-global-gap-none buttongroup__button", ["hover"]),
+                            el("VisualElement", "", "thematic-md justify-content-center", ["hover"]),
+                            el("VisualElement", "MainFrame", "row-direction-normal align-items-center", ["hover"]),
+                            el("SIVisible", "TextVisible", ""),
+                            el("SIText", "text", "sitext portal-text margin-right-global-gap-none sitext-hover-cursor margin-right-global-gap-small thematic-md", st)]
+    checks = [
+        chk("filter-hover", [el("SIButton", "", btn, ["hover"])], "#FFFFFF33", "#FFFFFF24"),
+        chk("filter-press-held", [el("SIButton", "", btn, ["hover", "active", "focus"])], "#FFFFFF24", "#FFFFFF24", note="read with mask 67 (active+hover+focus); the game shows the REST colour while pressed, the hover rule alone predicts #FFFFFF33"),
+        chk("filter-dragged-off-held", [el("SIButton", "", btn, ["focus"])], "#FFFFFF24", "#FFFFFF24", noop=True, note="mask 64 (focus only) with the mouse still held"),
+        chk("filter-released", [el("SIButton", "", btn)], "#FFFFFF24", "#FFFFFF24", noop=True),
+        chk("loans-tile-hover", [el("SIButton", "layout-tile-interaction-button", tile, ["hover"])], "#2E3138", "#17223F"),
+        chk("nav-tab-label-hover", nav_chain(["hover"]), "#FFFFFF", "#EBEBEB", prop="color",
+            note="the label's own mask read 0 while its colour was #FFFFFF (its ancestors read 2): the rule that matches is the label's :hover, so the mask read of a text element lags what the style engine applies"),
+        chk("table-row-hover", [el("BindingRoot", "", row, ["hover"])], "#FFFFFF1A", "#FFFFFF00", note="even row of the zebra list; odd rows rest at #FFFFFF0F (the zebra rule is not part of this check)"),
+        chk("inbox-row-hover", [el("SIButton", "NewsItemButton", news, ["hover"])], "#FFFFFF14", "#00000000"),
+        chk("inbox-row-clicked-focus", [el("SIButton", "NewsItemButton", news, ["focus"])], "#00000000", "#00000000", noop=True, note="after the selection click the row's button carries mask 64 and no colour change"),
+        chk("pitch-marker-hover", [el("VisualElement", "", "projected--position--filled", ["hover"])], "#00000000", "#00000000", noop=True, note="mask 2 on the marker and every descendant read; colour and background unchanged"),
+        chk("pitch-marker-label-hover", [el("VisualElement", "", "projected--position--filled", ["hover"]), el("VisualElement", "", "content-tactics-visualiser-player-indicator-simple", ["hover"])],
+            "#EBEBEB", "#EBEBEB", prop="color", noop=True),
+        chk("instruction-tile-hover", [el("TemplateContainer", "TeamInstructionTile", "height-100-percent", ["hover"])], "#00000000", "#00000000", noop=True,
+            note="mask 2 five levels down; colour, background and border unchanged at every level read"),
+        {"id": "inbox-selection-class-swap", "kind": "classswap", "element": {"type": "SIStyleSetter", "name": "SIStyleSetter_IsLastSelected"},
+         "from": ["flex-grow-class", "row-direction-normal", "message-not-last-selected"], "to": ["flex-grow-class", "row-direction-normal", "message-last-selected"],
+         "observed": "class swap seen; no property measured on the setter",
+         "note": "the class swap was seen (setters idx 1,22 -> 3,24); no colour was read on the setter, so the render's one declared difference (colour #EBEBEB on the selected setter, inherited by its children) has nothing to compare against"}]
+    write("state-i3-session-g", {"kind": "state", "source": "I3 Session G, manual hover/press/select holds on the baseline plugin 0.2.2 (AllowActions false), 2026-11-14; replies saved as g-*.json in "
+                                                              "workspace/notes/ui-dumps/i3g-20261114; log docs/evidence/phase9-i3-session-G-20261114.md. Predictions come from the game's own :pseudo rules "
+                                                              "(Cascade.state_declarations); the render itself still applies no state"}, checks)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.parse_args()
     ws = config.workspace(config.load())
+    i3_states()
     phase_projects(ws)
     c2_loans()
     screens()
