@@ -604,7 +604,9 @@ class Launcher(unittest.TestCase):
             self.assertIn("""PROJECT='/Users/me/It'"'"'s here/fm27'""", txt)
             self.assertIn("WS=%s" % shlex.quote(str(Path(tmp + "/w s"))), txt); self.assertNotIn("@", txt.split("LOG=")[0])   # the path as the OS writes it (backslashes on Windows)
             for sh in ("bash", "sh", "dash"):
-                if shutil.which(sh): self.assertEqual(subprocess.run([sh, "-n", str(exe)]).returncode, 0)
+                if shutil.which(sh):
+                    r_ = subprocess.run([sh, "-n", exe.as_posix()], capture_output=True, text=True)           # the syntax check; the shell and its message are in the failure text
+                    self.assertEqual(r_.returncode, 0, "%s -n: %s (%s)" % (sh, r_.stderr.strip()[:300], shutil.which(sh)))
             launcher.generate(cfg, tmp + "/out", project="/new/place", venv="/new/place/.venv")   # regenerate
             self.assertIn("PROJECT=/new/place", exe.read_text())
             (app / "Contents/Info.plist").write_bytes(plistlib.dumps({"CFBundleIdentifier": "com.other.app"}))
