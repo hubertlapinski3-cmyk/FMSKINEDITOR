@@ -4531,6 +4531,293 @@
    "note": ""
   },
   {
+   "id": "loans-tile-hover@runtime-sheet-layer",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Loans",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "grid-element--Tile"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "TileBindingExpect",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "tile-wide-4x2",
+     "classes": [
+      "height-100-percent",
+      "tile-content"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "TileTemplateBindingExpect",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "layout-tile-base-container",
+     "classes": [
+      "layout-tile-base-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "TileVariables",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "BackgroundStyleSetter",
+     "classes": [
+      "width-100-percent",
+      "height-100-px",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIButton",
+     "name": "layout-tile-interaction-button",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "interactable-tile",
+      "layout-tile-interaction-button",
+      "layout-tile-interaction-button-background",
+      "anchor-loans"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#2E3138",
+   "rest": "#17223F",
+   "variant_of": "loans-tile-hover",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 26 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "isolates": "the recorded run-time sheet layer (a captured 80-rule sample) added to the real-ancestry chain",
+   "runtime_sheet_capture": "styles-e1-squad-bindings-20261114-115217.ndjson",
+   "layer": "recorded run-time sheet (captured 80-rule sample)"
+  },
+  {
    "id": "nav-tab-label-hover@V1-real-ancestry-only",
    "kind": "state",
    "chain": [

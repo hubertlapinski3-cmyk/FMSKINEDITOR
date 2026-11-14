@@ -2,6 +2,7 @@
 import time
 
 from . import cap as cap_mod
+from . import layers as layers_mod
 from . import cascade as cascade_mod
 from . import delivered as delivered_mod
 from . import overlay
@@ -27,6 +28,7 @@ class Renderer:
         self.bank = SheetBank(folder, cache_dir, style_index)
         self._rc = runtime_classes
         self._cascade = None
+        self._extra = {}
         self._skin = {}                      # project name -> (project hash, Cascade, notes): the cascade with that project's edits, dropped by invalidate()
         self._metrics = load_text_metrics()
         self._assets = AssetResolver(folder, cache_dir) if cache_dir else None      # M4: asset(F:P) values; none without a cache folder
@@ -62,12 +64,23 @@ class Renderer:
             self._skin[p["name"]] = hit
         return hit[1], hit[2]
 
-    def layout(self, bundle, path_id, depth=3, branches=None, project=None, delivered=None, max_nodes=None, open=()):
+    def cascade_with_sheet(self, rules, name="recorded run-time sheet (sample)"):
+        """The cascade with one extra sheet appended (layers.py, `recorded-runtime-sheet`); cached by the rules' content."""
+        import json
+        key = (name, json.dumps(rules, sort_keys=True))
+        if key not in self._extra:
+            from .sheets import Sheet
+            self._extra[key] = cascade_mod.Cascade(self.bank.ordered() + [Sheet(99, "", name, {"rules": rules})], self._rc)
+        return self._extra[key]
+
+    def layout(self, bundle, path_id, depth=3, branches=None, project=None, delivered=None, max_nodes=None, open=(), layers=None):
         """`max_nodes` caps the drawn tree (render/cap.py): None or 0 draws every node (the fixtures do); `open` lists the paths of collapsed nodes the caller expanded."""
         t0 = time.perf_counter()
         notes, applied = [], 0
         if project is not None:
             c, notes = self.skin_cascade(project)
+        elif layers and layers.get("runtime_sheet"):
+            c = self.cascade_with_sheet(layers["runtime_sheet"])
         else:
             c = self.cascade()
         t1 = time.perf_counter()
@@ -77,6 +90,12 @@ class Renderer:
         if project is not None:
             applied, pnotes = overlay.apply_layout_patches(top, project.get("layout_patches"))
             notes = notes + pnotes
+        layers_mod.stamp_positions(top)                                  # before the cascade drops the non-visual nodes
+        layer_info = {}
+        if layers and layers.get("class_layer"):
+            layer_info["class_layer"] = {"nodes": layers_mod.apply_class_layer(top, layers["class_layer"]), "inferred": True}
+        if layers and layers.get("runtime_sheet"):
+            layer_info["runtime_sheet"] = {"rules": len(layers["runtime_sheet"]), "captured_sample": True, "inferred": True}
         truncated = cap_mod.cap_tree(top, max_nodes, open) if max_nodes else None          # before the cascade: only the shown nodes are computed
         summary = c.compute(top)
         asset_counts = None
@@ -104,7 +123,7 @@ class Renderer:
                 walk(k)
         for n in top:
             walk(n)
-        return {"layout": tree["layout"], "bundle": bundle, "path_id": str(path_id), "notice": NOTICE, "tree": top, "includes": includes, "truncated": truncated, "summary": summary, "assets": asset_counts, "delivered": delivered_report,
+        return {"layout": tree["layout"], "bundle": bundle, "path_id": str(path_id), "notice": NOTICE, "tree": top, "includes": includes, "truncated": truncated, "layers": layer_info or None, "summary": summary, "assets": asset_counts, "delivered": delivered_report,
                 "overlay": ({"project": project["name"], "hash": overlay.project_hash(project), "output": (project.get("options") or {}).get("output", "bundles"),
                              "layout_patch_ops_applied": applied, "notes": notes, "not_applied": overlay.NOT_APPLIED} if project is not None else None),
                 "sheet_order": [{"position": i, "bundle": b, "sheet": n, "why": why} for i, (b, n, why) in enumerate(ROOT_SHEETS)],

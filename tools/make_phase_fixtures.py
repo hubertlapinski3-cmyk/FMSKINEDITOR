@@ -210,6 +210,9 @@ def i3_states():
         for cid, key, st, want, rest, o in pairs:
             checks.append(chk(cid + "@real-ancestry", real(key, st, o.get("anc", True)), want, rest, variant_of=cid, isolates="ancestry (the chain is the real one; the states are those of the published row)", chain_source=src(key),
                               note="the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)" if key == "filter-button" else ""))
+        checks.append(chk("loans-tile-hover@runtime-sheet-layer", real("loans-tile-button", ["hover"]), "#2E3138", "#17223F", variant_of="loans-tile-hover", chain_source=src("loans-tile-button"),
+                          isolates="the recorded run-time sheet layer (a captured 80-rule sample) added to the real-ancestry chain", runtime_sheet_capture="styles-e1-squad-bindings-20261114-115217.ndjson",
+                          layer="recorded run-time sheet (captured 80-rule sample)"))
         # the navigation label: one variable per variant (ancestry, label state, both, both plus the recorded run-time sheet)
         nl = "nav-tab-label"
         chk_ = lambda i, chain, **kw: checks.append(chk(i, chain, "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover", **kw))

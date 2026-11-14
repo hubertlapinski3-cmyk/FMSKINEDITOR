@@ -87,6 +87,29 @@ class FixRound(unittest.TestCase):
             if c["dump_nodes"]:
                 self.assertEqual(c["dump_paired"] + c["dump_unpaired"], c["dump_nodes"], r["name"])
 
+    def test_layers_are_separate_inferred_and_never_touch_the_base_rows(self):
+        lay = self.doc["layers"]
+        self.assertEqual(set(lay), {"live-classes", "recorded-runtime-sheet"})
+        for k, v in lay.items():
+            self.assertEqual(v["default"], "off")
+            self.assertEqual(v["status"], "inferred")
+            for x in v["rows"]:
+                self.assertEqual(x["layer"], k)
+                self.assertEqual(x["status"], "inferred")
+                base = next(b for n, b in self.rows() if b["id"] == x["base_id"])
+                self.assertEqual(base["verdict"], x["base_verdict"], "the base row is untouched by the layer")
+        self.assertEqual(self.doc["totals"]["PASS"] + self.doc["totals"]["FAIL"] + self.doc["totals"]["N/A"], self.doc["totals"]["coverage"]["total_rows"],
+                         "layer rows are not in the base totals")
+
+    def test_state_variants_isolate_one_variable_and_the_published_rows_are_marked_truncated(self):
+        st = next(r for r in self.results if r["name"] == "state-i3-session-g")
+        checks = {x["check"] for x in st["rows"]}
+        for c in ("nav-tab-label-hover@V1-real-ancestry-only", "nav-tab-label-hover@V2-label-state-only", "nav-tab-label-hover@V3-real-ancestry-and-as-read", "nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet"):
+            self.assertIn(c, checks)
+        pub = [x for x in st["rows"] if x["check"] == "nav-tab-label-hover" and "(rest)" not in x["property"]]
+        self.assertEqual(pub[0]["verdict"], "PASS")
+        self.assertTrue(pub[0].get("chain_truncated"))
+
     def test_the_as_read_variants_sit_beside_the_conditional_row(self):
         st = next(r for r in self.results if r["name"] == "state-i3-session-g")
         checks = {x["check"] for x in st["rows"]}

@@ -143,7 +143,7 @@ def delivered_of(dump):
 
 
 # ---------------------------------------------------------------- the checks
-def _render(ctx, fx, skin=None):
+def _render(ctx, fx, skin=None, layers=None):
     from . import captures
     f = fx["fixture"]
     spec = f["layout"]
@@ -155,7 +155,7 @@ def _render(ctx, fx, skin=None):
         elems = [{"type": n["type"], "name": n["name"], "visible": n["visible"]} for n in fx["dump"]["nodes"].values()]
         chosen = dict(captures.infer_branches(ctx.R.layout(row["bundle"], row["path_id"])["tree"], elems)["branches"], **chosen)
     delivered = delivered_of(fx["dump"]) if (f.get("delivered") and fx["dump"]) else None
-    return ctx.R.layout(row["bundle"], row["path_id"], branches=chosen, project=project, delivered=delivered)
+    return ctx.R.layout(row["bundle"], row["path_id"], branches=chosen, project=project, delivered=delivered, layers=layers)
 
 
 def _row(fixture, check, element, prop, expected, got, verdict, delta=None, note="", **extra):
