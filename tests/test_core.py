@@ -603,7 +603,7 @@ class Launcher(unittest.TestCase):
             self.assertIsNone(re.search(r"(?<![\w.$/])python3(?![\w.])\s*(-m|\"|\)|;|\n)", txt.split("# ---- Python environment")[1].split("export FM27SE_WORKSPACE")[0].replace("python3.1", "")), "bare python3 candidate")
             self.assertIn("""PROJECT='/Users/me/It'"'"'s here/fm27'""", txt)
             self.assertIn("WS=%s" % shlex.quote(str(Path(tmp + "/w s"))), txt); self.assertNotIn("@", txt.split("LOG=")[0])   # the path as the OS writes it (backslashes on Windows)
-            for sh in ("bash", "sh", "dash"):
+            for sh in (() if sys.platform == "win32" else ("bash", "sh", "dash")):          # the launcher is a macOS script; Git for Windows' bash wrapper does not run -n on it (exit 1, no message on the GitHub runner), the pattern checks above still run everywhere
                 if shutil.which(sh):
                     r_ = subprocess.run([sh, "-n", exe.as_posix()], capture_output=True, text=True)           # the syntax check; the shell and its message are in the failure text
                     self.assertEqual(r_.returncode, 0, "%s -n: %s (%s)" % (sh, r_.stderr.strip()[:300], shutil.which(sh)))
