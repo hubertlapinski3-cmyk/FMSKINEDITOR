@@ -465,7 +465,31 @@ class Engine:
         project = None
         if b.get("project") and b.get("skin", True):                      # the skin toggle: skin=false renders the vanilla game whatever the project holds
             project = project_mod.load(self.ws, b["project"])
-        return self._renderer().layout(bundle, pid, int(b.get("depth") or 3), project=project)
+        res = self._renderer().layout(bundle, pid, int(b.get("depth") or 3), project=project)
+        if project is not None:
+            from .render import origins
+            res["origins"] = origins.resolve(self.ws, project, res["tree"])          # where the project's own rules and token overrides are, for the side panel
+        return res
+
+    def render_rule(self, q, b):
+        """One rule of the render's cascade as USS text, with where it lives: a rule of the game's sheets is read-only (`origin` null, `vanilla` true); a rule the project appended
+        gives its file and line. `sheet` is the name the render showed (a project's native author sheet included)."""
+        from .render import origins
+        project = project_mod.load(self.ws, b["project"]) if b.get("project") and b.get("skin", True) else None
+        rd = self._renderer()
+        casc = rd.skin_cascade(project)[0] if project is not None else rd.cascade()
+        sheet = next((s for s in casc.sheets if s.name == b["sheet"]), None)
+        rule = next((r for r in sheet.rules if r["i"] == int(b["rule"])), None) if sheet else None
+        if rule is None:
+            raise KeyError("no rule %s in sheet %r" % (b["rule"], b["sheet"]))
+        o = rule.get("origin")
+        loc = None
+        if o and project is not None:
+            rel = origins.file_of(o)
+            hit = next((x for x in origins._lines(self.ws, project["name"], rel) if x[0] == origins._norm(o["selector"])), None)
+            loc = {"file": rel, "line": hit[1] if hit else None, "end": hit[2] if hit else None}
+        return {"sheet": sheet.name, "rule": rule["i"], "text": origins.rule_text(rule), "vanilla": not o, "origin": loc,
+                "properties": [{"name": n, "value": v} for n, v, _c in rule["props"]], "token_rule": bool(rule["token"])}
 
     def render_table(self, q, b):
         """A table view as a labelled placeholder table (its header row is the column order); with `project` (and skin not false) the project's column edits are applied."""

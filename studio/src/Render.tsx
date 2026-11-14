@@ -17,8 +17,14 @@ export interface RNode {
 export interface RResult {
   layout: string; notice: string; tree: RNode[]; includes: unknown[]; summary: { elements: number; properties: number; by_status: Record<string, number>; unresolved_variables: Record<string, number> }
   sheet_order: { position: number; sheet: string; why: string }[]; gaps: string[]; timing_ms: { total: number }
+  origins?: Origins | null
   overlay?: { project: string; output: string; layout_patch_ops_applied: number; notes: string[]; not_applied: string[] } | null
 }
+/** Where a project's own rules and token overrides live in its files (engine `render.layout` with a project). */
+export interface Origin { file: string; line: number | null; end: number | null; selector: string; sheet: string; ids: { sheet: string; rule: number }[] }
+export interface Origins { rules: Origin[]; tokens: Record<string, { file: string; line: number }> }
+export interface RuleData { sheet: string; rule: number; text: string; vanilla: boolean; origin: { file: string; line: number | null; end: number | null } | null; properties: { name: string; value: string }[]; token_rule: boolean }
+export interface TokenData { name: string; value: string | null; chain: string[]; defs: Record<string, string> }
 export interface LayoutRow { name: string; bundle: string; path_id: string; elements: number }
 
 const DEFAULTS: CSSProperties = { boxSizing: 'border-box', display: 'flex', flexDirection: 'column', flexGrow: 0, flexShrink: 1, flexBasis: 'auto', alignItems: 'stretch', alignSelf: 'auto',
@@ -54,13 +60,13 @@ export function RenderBrowser({ picked, onPick, say }: { picked: string | null; 
   )
 }
 
-function Node({ n, path, sel, onSel, markers }: { n: RNode; path: string; sel: string | null; onSel: (p: string) => void; markers: boolean }) {
+function Node({ n, path, sel, onSel, markers, hl }: { n: RNode; path: string; sel: string | null; onSel: (p: string) => void; markers: boolean; hl: Set<string> }) {
   return (
-    <div className={'rnode' + (sel === path ? ' sel' : '')} data-path={path} data-flag={markers && n.flag ? n.flag : undefined} data-placeholder={n.placeholder === 'sample' || n.placeholder === 'empty' ? n.placeholder : undefined}
+    <div className={'rnode' + (sel === path ? ' sel' : '') + (hl.has(path) ? ' hl' : '')} data-path={path} data-flag={markers && n.flag ? n.flag : undefined} data-placeholder={n.placeholder === 'sample' || n.placeholder === 'empty' ? n.placeholder : undefined}
       title={labelOf(n) + (n.placeholder === 'sample' ? ' | sample text from the layout, not the delivered value' : n.placeholder === 'empty' ? ' | no text known (bound or set from code)' : '') + (n.font ? ' | font ' + n.font + ' (stand-in drawn)' : '')} style={styleOf(n)}
       onClick={(e) => { e.stopPropagation(); onSel(path) }}>
       {n.text}
-      {n.children.map((c, i) => <Node key={i} n={c} path={path + '/' + i} sel={sel} onSel={onSel} markers={markers} />)}
+      {n.children.map((c, i) => <Node key={i} n={c} path={path + '/' + i} sel={sel} onSel={onSel} markers={markers} hl={hl} />)}
     </div>
   )
 }
@@ -73,12 +79,60 @@ function at(tree: RNode[], path: string | null): RNode | null {
   return n ?? null
 }
 
+/** Paths of the nodes for which `test` holds (the Node paths used for selection: "0/2/1"). */
+export function pathsWhere(tree: RNode[], test: (n: RNode) => boolean): string[] {
+  const out: string[] = []
+  const walk = (n: RNode, p: string) => { if (test(n)) out.push(p); n.children.forEach((c, i) => walk(c, p + '/' + i)) }
+  tree.forEach((n, i) => walk(n, String(i)))
+  return out
+}
+/** Rule -> elements: the nodes the cascade matched with any of these rule ids. */
+export const rulePaths = (tree: RNode[], ids: { sheet: string; rule: number }[]) => pathsWhere(tree, (n) => n.matched.some((m) => ids.some((i) => i.sheet === m.sheet && i.rule === m.rule)))
+/** Token -> elements: the nodes with a property whose value came through this token. */
+export const tokenPaths = (tree: RNode[], token: string) => pathsWhere(tree, (n) => Object.values(n.computed).some((d) => d.tokens?.includes(token)))
+/** Editor caret -> the project rule whose lines hold it. */
+export const ruleAtLine = (o: Origins | null | undefined, file: string, line: number): Origin | null => o?.rules.find((r) => r.file === file && r.line != null && line >= r.line && line <= (r.end ?? r.line)) ?? null
+/** The --token under a column of one line of USS text. */
+export function tokenAt(text: string, col: number): string | null {
+  for (const m of text.matchAll(/--[\w-]+/g)) if (m.index! < col && col <= m.index! + m[0].length) return m[0]
+  return null
+}
+
 const ORDER: Record<string, number> = { unknown: 0, unmapped: 1, partial: 2, mapped: 3, variable: 4, shorthand: 5 }
 const sourceText = (s: Record<string, any>) => s.inline ? 'inline (layout)' : s.inherited ? `inherited from ${s.from?.selector ?? s.from?.sheet ?? 'parent'}` : `${s.sheet}  ${s.selector}  (spec ${s.specificity})`
 
-/** The explain panel: why this element looks the way it does, in the engine's cascade order, with every property that could not be drawn faithfully flagged. */
-export function Explain({ n }: { n: RNode | null }) {
+/** The explain panel: why this element looks the way it does, in the engine's cascade order, with every property that could not be drawn faithfully flagged. Rules and tokens
+    are clickable: a rule opens as USS text (a project's own rule in the editor at its line, a game rule as read-only text with an override), a token shows its alias chain and
+    definitions, and the open project's override of it. */
+export function Explain({ n, project = null, skin = true, origins = null, onOpenFile, say = () => {} }: { n: RNode | null; project?: string | null; skin?: boolean; origins?: Origins | null; onOpenFile?: (file: string, line?: number) => void; say?: (s: string) => void }) {
   const [flaggedOnly, setFlaggedOnly] = useState(false)
+  const [box, setBox] = useState<{ kind: 'rule'; data: RuleData; selector: string } | { kind: 'token'; data: TokenData } | null>(null)
+  const [value, setValue] = useState('')
+  const fail = (e: unknown) => say('ERROR ' + (e instanceof RpcError ? e.message : String(e)))
+  const openRule = (sheet: string, rule: number | undefined, selector: string) => {
+    if (rule == null) return
+    rpc<RuleData>('render.rule', { sheet, rule, ...(project ? { project, skin } : {}) }).then((data) => data && setBox({ kind: 'rule', data, selector })).catch(fail)
+  }
+  const openToken = (name: string) => { rpc<TokenData>('tokens.get', { name }).then((data) => { if (data) { setBox({ kind: 'token', data }); setValue('') } }).catch(fail) }
+  const override = async (d: RuleData, selector: string) => {
+    if (!project) return
+    try {
+      const p = await rpc<any>('project.get', { name: project })
+      p.scoped_rules = [...(p.scoped_rules ?? []), { sheet: d.sheet, selector, props: Object.fromEntries(d.properties.map((x) => [x.name, x.value])), why: 'override started from the render' }]
+      await rpc('project.save', { project: p })
+      say(`override of ${selector} added to styles/${d.sheet}.uss`)
+      onOpenFile?.(`styles/${d.sheet}.uss`)
+    } catch (e) { fail(e) }
+  }
+  const setOverride = async (token: string) => {
+    if (!project || !value.trim()) return
+    try {
+      const p = await rpc<any>('project.get', { name: project })
+      p.token_overrides = [...(p.token_overrides ?? []).filter((x: any) => x.token !== token), { token, value: value.trim() }]
+      await rpc('project.save', { project: p })
+      say(`${token} overridden in ${project}`)
+    } catch (e) { fail(e) }
+  }
   if (!n) return <div className="dim pad">Click an element to see which rules matched it and where each value comes from.</div>
   const props = Object.entries(n.computed).sort((a, b) => (ORDER[a[1].status] ?? 9) - (ORDER[b[1].status] ?? 9) || a[0].localeCompare(b[0]))
     .filter(([, d]) => !flaggedOnly || ['unknown', 'unmapped', 'partial'].includes(d.status))
@@ -87,23 +141,39 @@ export function Explain({ n }: { n: RNode | null }) {
       <div className="pad"><b className="mono">{labelOf(n)}</b>{n.runtime_classes.length > 0 && <div className="small dim" title="Classes the control adds in code, learned from inspector captures">runtime classes (learned): {n.runtime_classes.join(' ')}</div>}
         {n.include && <div className="small dim">template {n.include.alias} {n.include.resolved ? `-> ${n.include.layout} (${n.include.slot})` : `NOT resolved: ${n.include.problem}`}</div>}
         {n.layout && <div className="small dim">from layout {n.layout}</div>}</div>
+      {box && <div className="rbox pad" data-testid="rulebox">
+        {box.kind === 'rule' ? <>
+          <div className="head">RULE · {box.data.sheet} #{box.data.rule} · {box.data.vanilla ? 'game (read-only)' : 'project'}<button className="x" aria-label="close" onClick={() => setBox(null)}>×</button></div>
+          <pre className="mono small">{box.data.text}</pre>
+          {box.data.origin
+            ? <button onClick={() => onOpenFile?.(box.data.origin!.file, box.data.origin!.line ?? undefined)}>Open {box.data.origin.file}{box.data.origin.line ? ':' + box.data.origin.line : ''} in the editor</button>
+            : project ? <button onClick={() => override(box.data, box.selector)}>Override in {project}</button> : <span className="dim small">Open a project to override this rule.</span>}
+        </> : <>
+          <div className="head">TOKEN · {box.data.name}<button className="x" aria-label="close" onClick={() => setBox(null)}>×</button></div>
+          <div className="small mono">{box.data.chain.join(' → ')}{box.data.value ? ' = ' + box.data.value : ''}</div>
+          <ul className="small">{Object.entries(box.data.defs ?? {}).map(([s, v]) => <li key={s}><span className="dim">{s}</span> <span className="mono">{v}</span></li>)}</ul>
+          {origins?.tokens[box.data.name]
+            ? <button onClick={() => onOpenFile?.(origins.tokens[box.data.name].file, origins.tokens[box.data.name].line)}>Open the project's override ({origins.tokens[box.data.name].file}:{origins.tokens[box.data.name].line})</button>
+            : project ? <span><input placeholder="new value, e.g. #FF0000" value={value} onChange={(e) => setValue(e.target.value)} /> <button disabled={!value.trim()} onClick={() => setOverride(box.data.name)}>Override in {project}</button></span> : <span className="dim small">Open a project to override this token.</span>}
+        </>}
+      </div>}
       <div className="head">MATCHED RULES ({n.matched.length}), lowest first, the last one wins</div>
       {n.matched.length === 0 && <div className="dim pad small">No rule matched; only the layout's inline style and inheritance apply.</div>}
-      <table className="rtable"><tbody>{n.matched.map((m, i) => <tr key={i}><td>{m.sheet}</td><td className="mono">{m.selector}</td><td>{m.specificity}</td></tr>)}</tbody></table>
+      <table className="rtable"><tbody>{n.matched.map((m, i) => <tr key={i} className="clickable" title={m.origin ? 'a rule of the open project' : 'a rule of the game'} onClick={() => openRule(m.sheet, m.rule, m.selector)}><td>{m.sheet}{m.origin && <span className="badge" title="project rule">project</span>}</td><td className="mono">{m.selector}</td><td>{m.specificity}</td></tr>)}</tbody></table>
       <div className="head">COMPUTED ({props.length}) <label className="small"><input type="checkbox" checked={flaggedOnly} onChange={(e) => setFlaggedOnly(e.target.checked)} /> flagged only</label></div>
       <table className="rtable"><tbody>{props.map(([k, d]) => (
         <tr key={k} className={'st-' + d.status}>
           <td className="mono">{k}{d.inferred_name_from && <span className="badge" title={`name inferred from ${d.inferred_name_from} by numbering and value pattern`}>inferred</span>}</td>
-          <td className="mono" title={d.raw ?? ''}>{d.value}{d.tokens && <div className="small dim">{d.tokens.join(' → ')}</div>}{d.unresolved && <div className="small bad">unresolved: {d.unresolved.join(', ')}</div>}</td>
+          <td className="mono" title={d.raw ?? ''}>{d.value}{d.tokens && <div className="small dim">{d.tokens.map((tk, i) => <span key={tk}>{i > 0 && ' → '}<button className="chip" onClick={() => openToken(tk)}>{tk}</button></span>)}</div>}{d.unresolved && <div className="small bad">unresolved: {d.unresolved.join(', ')}</div>}</td>
           <td><span className={'badge st ' + d.status} title={d.note}>{d.status}</span></td>
-          <td className="small dim">{sourceText(d.source)}</td>
+          <td className="small dim">{d.source.rule != null && !d.source.inherited ? <button className="chip" onClick={() => openRule(d.source.sheet, d.source.rule, d.source.selector)}>{sourceText(d.source)}</button> : sourceText(d.source)}</td>
         </tr>))}</tbody></table>
     </div>
   )
 }
 
 /** One layout drawn from its render tree, with the explain panel beside it. */
-export function RenderCanvas({ layout, say, project = null }: { layout: LayoutRow | null; say: (s: string) => void; project?: string | null }) {
+export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult, highlight = [] }: { layout: LayoutRow | null; say: (s: string) => void; project?: string | null; onOpenFile?: (file: string, line?: number) => void; onResult?: (r: RResult | null, layout: LayoutRow | null) => void; highlight?: string[] }) {
   const [res, setRes] = useState<RResult | null>(null)
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
@@ -119,12 +189,13 @@ export function RenderCanvas({ layout, say, project = null }: { layout: LayoutRo
     if (!layout) return
     let live = true
     setBusy(true); setErr(''); setSel(null)
-    rpc<RResult>('render.layout', { bundle: layout.bundle, path_id: layout.path_id, ...(project ? { project, skin } : {}) }).then((r) => { if (live) { setRes(r); setBusy(false) } })
+    rpc<RResult>('render.layout', { bundle: layout.bundle, path_id: layout.path_id, ...(project ? { project, skin } : {}) }).then((r) => { if (live) { setRes(r); setBusy(false); onResult?.(r, layout) } })
       .catch((e) => { if (live) { const m = e instanceof RpcError ? e.message : String(e); setErr(m); setBusy(false); say('ERROR ' + m) } })
     return () => { live = false }
   }, [layout, say, project, skin, tick])
   useEffect(() => subscribe((t, d) => { if (t === 'render.invalidate' && project && d?.project === project) setTick((n) => n + 1) }), [project])
   const node = useMemo(() => (res ? at(res.tree, sel) : null), [res, sel])
+  const hl = useMemo(() => new Set(highlight), [highlight])
   if (!layout) return <div className="empty">Pick a game layout on the left to see it drawn.</div>
   const by = res?.summary.by_status ?? {}
   return (
@@ -146,7 +217,7 @@ export function RenderCanvas({ layout, say, project = null }: { layout: LayoutRo
         {err && <div className="warn pad">{err}</div>}
         <div className="rscroll" onClick={() => setSel(null)}>
           <div className="rstage" data-testid="stage" style={{ width: w, height: h, transform: `scale(${zoom})` }}>
-            {res?.tree.map((n, i) => <Node key={i} n={n} path={String(i)} sel={sel} onSel={setSel} markers={markers} />)}
+            {res?.tree.map((n, i) => <Node key={i} n={n} path={String(i)} sel={sel} onSel={setSel} markers={markers} hl={hl} />)}
           </div>
         </div>
         {res?.overlay && <details className="small pad" open={res.overlay.notes.length > 0}><summary>Project overlay: {res.overlay.project} ({res.overlay.output}), {res.overlay.layout_patch_ops_applied} layout patch op(s) applied{res.overlay.notes.length ? `, ${res.overlay.notes.length} note(s)` : ''}</summary>
@@ -155,7 +226,7 @@ export function RenderCanvas({ layout, say, project = null }: { layout: LayoutRo
           <div>Sheet order: {res.sheet_order.map((s) => s.sheet).join(' → ')}</div></details>}
       </div>
       <Gutter axis="x" invert inflow value={explainW} min={240} max={800} def={400} onChange={setExplainW} label="Explain panel width" />
-      <aside className="rexplain" style={{ width: explainW }}><Explain n={node} /></aside>
+      <aside className="rexplain" style={{ width: explainW }}><Explain n={node} project={project} skin={skin} origins={res?.origins ?? null} onOpenFile={onOpenFile} say={say} /></aside>
     </div>
   )
 }

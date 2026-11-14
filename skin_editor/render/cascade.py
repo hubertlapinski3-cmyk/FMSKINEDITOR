@@ -140,11 +140,13 @@ class Cascade:
         node["_classes"] = self.classes_of(node)
         path = ancestors + [node]
         ent = self.matches(path)
-        node["matched"] = [{"sheet": e.sheet.name, "rule": e.rule["i"], "selector": e.text, "specificity": e.spec} for e in ent]
+        node["matched"] = [dict({"sheet": e.sheet.name, "rule": e.rule["i"], "selector": e.text, "specificity": e.spec}, **({"origin": e.rule["origin"]} if e.rule.get("origin") else {})) for e in ent]
         decls = []                                              # (source, name, text) in winning order, inline last
         inferred = {}                                           # property name -> the raw id name it was inferred from (values.ID_NAMES)
         for e in ent:
             src = {"sheet": e.sheet.name, "rule": e.rule["i"], "selector": e.text, "specificity": e.spec}
+            if e.rule.get("origin"):
+                src["origin"] = e.rule["origin"]                    # a project's own rule: the editor opens it by (file, selector)
             for name, val, _cols in e.rule["props"]:
                 cname, inf = values.canonical(name)
                 if inf:

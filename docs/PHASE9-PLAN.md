@@ -315,3 +315,6 @@ Resolver (sheet bundle -> externals -> CAB -> object), sprites and textures draw
 
 ### M5 built (2026-11-14, resumed session)
 Overlay (tokens, literal swaps, rules, class/inline/attr patches), tile moves in the assembler, table placeholder, skin toggle, ender.invalidate with one event per call. 318 engine + 48 studio tests. Thin spots listed in docs/evidence/phase9-m5-report-20261114.md (end-to-end tile move, per-endpoint RPC checks). RESUME STATE above is superseded on one point: M5 is built, next is M6.
+
+### M6 built (2026-11-14, resumed session)
+Tile move verified end to end through the real dump and placement store; the L, V, USS and token editor endpoints exercised through RPC on real data; side panel: element -> rule/token (project rule opens in the editor at its line, game rule read-only with an override, token chain and override), editor caret -> elements (rule and token). 323 engine + 52 studio tests. The structural template path was not wired (nothing to pair in the render; kept for M7 live pairing). Report: docs/evidence/phase9-m6-report-20261114.md. Next: M7.

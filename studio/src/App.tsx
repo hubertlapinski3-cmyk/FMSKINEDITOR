@@ -12,7 +12,7 @@ import Tables from './Tables'
 import Checklist from './Checklist'
 import Search from './Search'
 import Gutter, { useStoredSize } from './Gutter'
-import { RenderBrowser, RenderCanvas, type LayoutRow } from './Render'
+import { RenderBrowser, RenderCanvas, ruleAtLine, rulePaths, tokenAt, tokenPaths, type LayoutRow, type RResult } from './Render'
 
 interface Tab { path: string; text: string; saved: string; readonly?: boolean }
 interface Plan { target: string; operations: { op: string; count: number; summary: string; detail: any[] }[]; dropped: { item: string; reason: string }[]; warnings: string[] }
@@ -52,6 +52,9 @@ export default function App() {
   const [mode, setMode] = useState<Mode>((localStorage.getItem('studio.mode') as Mode) || 'expert')
   const [view, setView] = useState<View>('explorer')
   const editorRef = useRef<any>(null)
+  const [lastRender, setLastRender] = useState<{ res: RResult | null; layout: LayoutRow | null }>({ res: null, layout: null })   // the render the editor's caret is matched against
+  const [highlight, setHighlight] = useState<string[]>([])         // render nodes to outline (set from the editor: this rule or token styles them)
+  const [caret, setCaret] = useState<{ line: number; col: number; text: string } | null>(null)
   const restored = useRef(false)
   const [plan, setPlan] = useState<Plan | null>(null)
   const [planErr, setPlanErr] = useState('')
@@ -277,7 +280,7 @@ export default function App() {
         </>}
       </aside>
       <main className="editor">
-        {view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} /></Guard> : <>
+        {view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
         <div className="tabs">{tabs.map((t) => <div key={t.path} className={'tab' + (t.path === active ? ' on' : '')} onClick={() => setActive(t.path)}>{t.path.split('/').pop()}{t.readonly ? ' (game)' : ''}{dirty(t.path) ? ' •' : ''}<button onClick={(e) => { e.stopPropagation(); closeTab(t.path) }}>×</button></div>)}</div>
         <div className="surface">
           {tab ? <Editor path={tab.path} language={langOf(tab.path)} theme="vs-dark" value={tab.text}
@@ -288,10 +291,27 @@ export default function App() {
               const run = () => { const m = ed.getModel(); if (m && m.uri.path.endsWith('.uss')) lint(m) }
               ed.onDidChangeModelContent(() => { clearTimeout(timer); timer = setTimeout(run, 400) })
               ed.onDidChangeModel(run); run()
+              ed.onDidChangeCursorPosition((e: any) => { const m = ed.getModel(); setCaret(m ? { line: e.position.lineNumber, col: e.position.column, text: m.getLineContent(e.position.lineNumber) } : null) })
             }}
             options={{ minimap: { enabled: false }, fontSize: 13, automaticLayout: true, colorDecorators: true, tabSize: 4, readOnly: !!tab.readonly }} />
             : <div className="empty">{project ? 'Open a file from the explorer. Ctrl+S saves; Ctrl+F / Ctrl+H find and replace; Ctrl+Z undo (per file).' : 'Open or create a project.'}</div>}
         </div>
+        {(() => {
+          const res = lastRender.res
+          if (!res || !tab || !caret || !res.origins) return null
+          const rule = ruleAtLine(res.origins, tab.path, caret.line)
+          const token = tokenAt(caret.text, caret.col)
+          const rp = rule ? rulePaths(res.tree, rule.ids) : []
+          const tp = token ? tokenPaths(res.tree, token) : []
+          if (!rp.length && !tp.length) return null
+          const show = (paths: string[]) => { setHighlight(paths); setView('render') }
+          return <div className="caretbar" data-testid="caretbar">
+            {rule && <span>This rule styles <b>{rp.length}</b> element(s) in {lastRender.layout?.name}</span>}
+            {rp.length > 0 && <button onClick={() => show(rp)}>Show in render</button>}
+            {token && tp.length > 0 && <span>Token <b className="mono">{token}</b> paints <b>{tp.length}</b></span>}
+            {tp.length > 0 && <button onClick={() => show(tp)}>Show in render</button>}
+          </div>
+        })()}
         </>}
       </main>
       <section className="panel">

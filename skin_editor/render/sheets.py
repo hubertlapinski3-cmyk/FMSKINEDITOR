@@ -52,7 +52,7 @@ class Sheet:
             for text in r["s"]:
                 for ch in tp.parse_selector(text):
                     chains.append((ch, tp.specificity(ch), text))
-            self.rules.append({"i": r["i"], "chains": chains, "props": r["p"], "token": r["t"]})
+            self.rules.append({"i": r["i"], "chains": chains, "props": r["p"], "token": r["t"], "origin": r.get("origin")})        # origin: set on a project's rules (overlay.py)
 
 
 class SheetBank:

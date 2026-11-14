@@ -35,9 +35,12 @@ def _is_token_rule(sels):
     return any(s == ":root" or s.endswith(" :root") for s in sels)
 
 
-def _rule(sheet_rules, selector, props):
+def _rule(sheet_rules, selector, props, origin=None):
     sels = _selectors(selector)
-    sheet_rules.append({"i": len(sheet_rules), "s": sels, "t": _is_token_rule(sels), "p": [[k, str(v), []] for k, v in props.items()]})
+    r = {"i": len(sheet_rules), "s": sels, "t": _is_token_rule(sels), "p": [[k, str(v), []] for k, v in props.items()]}
+    if origin:
+        r["origin"] = origin                      # {"kind": "project", "sheet": <game sheet its file is named for>, "selector": ...}: where the editor finds this rule
+    sheet_rules.append(r)
 
 
 def _swap_literals(entry, rgb_map, rgba_swaps):
@@ -105,15 +108,15 @@ def build_sheets(bank, p, order=None):
                             tokens_left.pop(pr[0], None)
             _edit_rules(entry, spec["edit_rules_by_sheet"].get(n, []), notes)
             for e in spec["append_rules_by_sheet"].get(n, []):
-                _rule(entry["rules"], e["selector"], e["props"])
+                _rule(entry["rules"], e["selector"], e["props"], {"kind": "project", "sheet": n, "selector": e["selector"]})
         _swap_literals(entry, spec["literal_map"], spec["rgba_swaps"])
         sheets.append(entry)
     if native:
         if spec["tokens"]:
-            _rule(author["rules"], ":root", spec["tokens"])
+            _rule(author["rules"], ":root", spec["tokens"], {"kind": "project", "sheet": "tokens", "selector": ":root"})
         for sheet_name, rules in spec["append_rules_by_sheet"].items():
             for e in rules:
-                _rule(author["rules"], e["selector"], e["props"])
+                _rule(author["rules"], e["selector"], e["props"], {"kind": "project", "sheet": sheet_name, "selector": e["selector"]})
         for sheet_name, edits in spec["edit_rules_by_sheet"].items():
             notes.append("%d replace/remove edit(s) on %s do not exist in a native skin: not drawn" % (len(edits), sheet_name))
         sheets.append(author)

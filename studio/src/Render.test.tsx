@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { RenderBrowser, RenderCanvas, Explain, styleOf, type LayoutRow, type RNode } from './Render'
+import { RenderBrowser, RenderCanvas, Explain, styleOf, rulePaths, tokenPaths, ruleAtLine, tokenAt, type LayoutRow, type RNode, type Origins } from './Render'
 
 vi.mock('./engine', () => ({ rpc: vi.fn(), RpcError: class extends Error {}, connect: vi.fn(), subscribe: vi.fn(() => () => {}) }))
 import { rpc, subscribe } from './engine'
@@ -78,7 +78,7 @@ describe('canvas and explain', () => {
     expect(screen.getByText(/Click an element to see/)).toBeTruthy()
     fireEvent.click(screen.getByTestId('stage').querySelector('[data-path="0/0"]')!)
     expect(await screen.findByText('.heading-md')).toBeTruthy()                                  // the matched rule
-    expect(screen.getByText('--heading-md-size → --typography-size-16')).toBeTruthy()           // the token chain
+    expect(screen.getByText('--heading-md-size')).toBeTruthy(); expect(screen.getByText('--typography-size-16')).toBeTruthy()           // the token chain, one clickable chip per token
     expect(screen.getAllByText('unmapped').length).toBeGreaterThan(0)
     expect(screen.getByTitle('transitions are not animated in the render')).toBeTruthy()         // the reason is one hover away
     expect(screen.getByText('inferred')).toBeTruthy()                                           // a name inferred from a property id is marked
@@ -139,5 +139,66 @@ describe('project overlay and the skin toggle', () => {
     expect((rpc as any).mock.calls.filter((c: any[]) => c[0] === 'render.layout').length).toBe(before)
     on('render.invalidate', { project: 'demo', reason: 'tokens' })
     await waitFor(() => expect((rpc as any).mock.calls.filter((c: any[]) => c[0] === 'render.layout').length).toBe(before + 1))
+  })
+})
+
+const card: RNode = { ...root, name: 'card', matched: [{ sheet: 'AlwaysAppliedStyleSheet', rule: 3, selector: '.card', specificity: 11 }, { sheet: 'proj', rule: 0, selector: '.card', specificity: 11, origin: { kind: 'project', sheet: 'AlwaysAppliedStyleSheet', selector: '.card' } } as any],
+  computed: { 'background-color': comp('#112233', 'mapped', { tokens: ['--surface', '--colours-ui-soft'], source: { sheet: 'proj', rule: 0, selector: '.card', specificity: 11 } }) }, children: [text] }
+const origins: Origins = { rules: [{ file: 'styles/AlwaysAppliedStyleSheet.uss', line: 2, end: 4, selector: '.card', sheet: 'AlwaysAppliedStyleSheet', ids: [{ sheet: 'proj', rule: 0 }] }], tokens: { '--surface': { file: 'styles/tokens.uss', line: 3 } } }
+
+describe('click to rule to token, and back', () => {
+  it('finds elements by rule id and by token, and the rule or token under an editor caret', () => {
+    expect(rulePaths([card], [{ sheet: 'proj', rule: 0 }])).toEqual(['0'])
+    expect(rulePaths([card], [{ sheet: 'proj', rule: 9 }])).toEqual([])
+    expect(tokenPaths([card], '--colours-ui-soft')).toEqual(['0'])
+    expect(tokenPaths([card], '--other')).toEqual([])
+    expect(ruleAtLine(origins, 'styles/AlwaysAppliedStyleSheet.uss', 3)?.selector).toBe('.card')
+    expect(ruleAtLine(origins, 'styles/AlwaysAppliedStyleSheet.uss', 5)).toBeNull()
+    expect(ruleAtLine(origins, 'styles/other.uss', 3)).toBeNull()
+    expect(tokenAt('  color: var(--surface-1);', 15)).toBe('--surface-1')
+    expect(tokenAt('  color: red;', 5)).toBeNull()
+  })
+  it("a project rule opens in the editor at its line; a game rule shows read-only text and offers an override that saves a scoped rule", async () => {
+    const open = vi.fn(); const say = vi.fn()
+    ;(rpc as any).mockImplementation(async (m: string, p: any) => {
+      if (m === 'render.rule') return p.sheet === 'proj' ? { sheet: 'proj', rule: 0, text: '.card {\n  color: red;\n}', vanilla: false, origin: { file: 'styles/AlwaysAppliedStyleSheet.uss', line: 2, end: 4 }, properties: [], token_rule: false }
+        : { sheet: p.sheet, rule: p.rule, text: '.card {\n  padding-left: 4px;\n}', vanilla: true, origin: null, properties: [{ name: 'padding-left', value: '4px' }], token_rule: false }
+      if (m === 'project.get') return { name: 'demo', scoped_rules: [] }
+      return null
+    })
+    render(<Explain n={card} project="demo" skin origins={origins} onOpenFile={open} say={say} />)
+    fireEvent.click(screen.getAllByText('.card')[1])                                         // the project's rule (second row)
+    expect(await screen.findByText(/Open styles\/AlwaysAppliedStyleSheet.uss:2 in the editor/)).toBeTruthy()
+    fireEvent.click(screen.getByText(/Open styles\/AlwaysAppliedStyleSheet.uss:2/))
+    expect(open).toHaveBeenCalledWith('styles/AlwaysAppliedStyleSheet.uss', 2)
+    expect(rpc).toHaveBeenCalledWith('render.rule', { sheet: 'proj', rule: 0, project: 'demo', skin: true })
+    fireEvent.click(screen.getAllByText('.card')[0])                                         // the game's rule
+    expect(await screen.findByText(/game \(read-only\)/)).toBeTruthy()
+    fireEvent.click(screen.getByText('Override in demo'))
+    await waitFor(() => expect(rpc).toHaveBeenCalledWith('project.save', { project: { name: 'demo', scoped_rules: [{ sheet: 'AlwaysAppliedStyleSheet', selector: '.card', props: { 'padding-left': '4px' }, why: 'override started from the render' }] } }))
+    expect(open).toHaveBeenLastCalledWith('styles/AlwaysAppliedStyleSheet.uss')
+  })
+  it('a token chip shows its chain and definitions, opens the project override when there is one, and sets one when there is not', async () => {
+    const open = vi.fn()
+    ;(rpc as any).mockImplementation(async (m: string, p: any) => {
+      if (m === 'tokens.get') return { name: p.name, value: '#1E2129', chain: [p.name, '--base'], defs: { AlwaysAppliedStyleSheet: '#1E2129' } }
+      if (m === 'project.get') return { name: 'demo', token_overrides: [{ token: '--old', value: '#000000' }] }
+      return null
+    })
+    render(<Explain n={card} project="demo" skin origins={origins} onOpenFile={open} say={() => {}} />)
+    fireEvent.click(screen.getByText('--surface'))                                          // has a project override: opens it at its line
+    fireEvent.click(await screen.findByText(/Open the project's override \(styles\/tokens.uss:3\)/))
+    expect(open).toHaveBeenCalledWith('styles/tokens.uss', 3)
+    fireEvent.click(screen.getByText('--colours-ui-soft'))                                  // none yet: set one
+    fireEvent.change(await screen.findByPlaceholderText(/new value/), { target: { value: '#FF0000' } })
+    fireEvent.click(screen.getByText('Override in demo'))
+    await waitFor(() => expect(rpc).toHaveBeenCalledWith('project.save', { project: { name: 'demo', token_overrides: [{ token: '--old', value: '#000000' }, { token: '--colours-ui-soft', value: '#FF0000' }] } }))
+  })
+  it('the nodes the editor asks for are outlined in the render', async () => {
+    ;(rpc as any).mockImplementation(async (m: string) => (m === 'render.layout' ? { ...result, tree: [card] } : null))
+    render(<RenderCanvas layout={rows[1]} say={() => {}} highlight={['0']} />)
+    await screen.findByRole('note')
+    expect(screen.getByTestId('stage').querySelector('[data-path="0"]')!.className).toContain('hl')
+    expect(screen.getByTestId('stage').querySelector('[data-path="0/0"]')!.className).not.toContain('hl')
   })
 })
