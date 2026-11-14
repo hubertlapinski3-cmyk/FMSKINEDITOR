@@ -194,7 +194,7 @@ def generate(cfg, target_dir, project=None, venv=None):
                        "LSMinimumSystemVersion": "11.0", "NSHighResolutionCapable": True}, f)
     exe = macos / "launcher"
     exe.write_text(script_text(project or p["project"], ws.root, config.default_workspace(), venv or p["venv"]),
-                   encoding="utf-8")
+                   encoding="utf-8", newline="\n")                   # a shell script keeps LF on every OS (a CRLF script does not parse under bash)
     exe.chmod(0o755)
     return {"app": str(app), "project": str(project or p["project"]), "workspace": str(ws.root),
             "venv": str(venv or p["venv"]), "log": str(ws.logs / "launcher.log")}
