@@ -1,7 +1,12 @@
 [
+"state-i3-session-g|loans-tile-hover@real-ancestry|SIButton#layout-tile-interaction-button|background-color (rest)|-",
 "state-i3-session-g|loans-tile-hover|SIButton#layout-tile-interaction-button|background-color (rest)|-",
 "state-i3-session-g|nav-tab-label-as-read|SIText#text|color (enabled)|-",
 "state-i3-session-g|nav-tab-label-as-read|SIText#text|color (rest)|-",
+"state-i3-session-g|nav-tab-label-hover@V1-real-ancestry-only|SIText#text|color (enabled+hover)|-",
+"state-i3-session-g|nav-tab-label-hover@V1-real-ancestry-only|SIText#text|color (rest)|-",
+"state-i3-session-g|nav-tab-label-hover@V3-real-ancestry-and-as-read|SIText#text|color (enabled)|-",
+"state-i3-session-g|nav-tab-label-hover@V3-real-ancestry-and-as-read|SIText#text|color (rest)|-",
 "tile-atmosphere|geometry|AutoScroller#|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0",
 "tile-atmosphere|geometry|SIText#title-text|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0",
 "tile-atmosphere|geometry|SIVisible#|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/1",

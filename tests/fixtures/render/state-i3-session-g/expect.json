@@ -21,7 +21,8 @@
    ],
    "property": "background-color",
    "state": "#FFFFFF33",
-   "rest": "#FFFFFF24"
+   "rest": "#FFFFFF24",
+   "chain_truncated": true
   },
   {
    "id": "filter-press-held",
@@ -54,7 +55,8 @@
      "status": "derived",
      "note": "single source: a lookup made AFTER the model was changed (:enabled added) on this same reading; not an independent observation of the press state"
     }
-   ]
+   ],
+   "chain_truncated": true
   },
   {
    "id": "filter-dragged-off-held",
@@ -79,7 +81,8 @@
    "state": "#FFFFFF24",
    "rest": "#FFFFFF24",
    "noop": true,
-   "note": "mask 64 (focus only) with the mouse still held"
+   "note": "mask 64 (focus only) with the mouse still held",
+   "chain_truncated": true
   },
   {
    "id": "filter-released",
@@ -101,7 +104,8 @@
    "property": "background-color",
    "state": "#FFFFFF24",
    "rest": "#FFFFFF24",
-   "noop": true
+   "noop": true,
+   "chain_truncated": true
   },
   {
    "id": "loans-tile-hover",
@@ -126,7 +130,8 @@
    ],
    "property": "background-color",
    "state": "#2E3138",
-   "rest": "#17223F"
+   "rest": "#17223F",
+   "chain_truncated": true
   },
   {
    "id": "nav-tab-label-hover",
@@ -205,7 +210,8 @@
      "text": "a rule in the game's applied sheets, .navigation-tab-portal-default-active-false .portal-text:hover, declares #FFFFFF for a hovered label",
      "status": "derived"
     }
-   ]
+   ],
+   "chain_truncated": true
   },
   {
    "id": "nav-tab-label-as-read",
@@ -287,7 +293,8 @@
      "text": "if this FAILS, no rule in the applied sheets colours the label through a hovered ancestor",
      "status": "derived"
     }
-   ]
+   ],
+   "chain_truncated": true
   },
   {
    "id": "nav-tab-label-as-read-runtime-sheet",
@@ -374,7 +381,8 @@
      "text": "whether the game applies that recorded rule to this label at this moment is not observed; a stale mask read is NOT excluded (no repeated reads were taken), and inheritance was not tested",
      "status": "inferred"
     }
-   ]
+   ],
+   "chain_truncated": true
   },
   {
    "id": "table-row-hover",
@@ -399,7 +407,8 @@
    "property": "background-color",
    "state": "#FFFFFF1A",
    "rest": "#FFFFFF00",
-   "note": "even row of the zebra list; odd rows rest at #FFFFFF0F (the zebra rule is not part of this check)"
+   "note": "even row of the zebra list; odd rows rest at #FFFFFF0F (the zebra rule is not part of this check)",
+   "chain_truncated": true
   },
   {
    "id": "inbox-row-hover",
@@ -429,7 +438,8 @@
    ],
    "property": "background-color",
    "state": "#FFFFFF14",
-   "rest": "#00000000"
+   "rest": "#00000000",
+   "chain_truncated": true
   },
   {
    "id": "inbox-row-clicked-focus",
@@ -461,7 +471,8 @@
    "state": "#00000000",
    "rest": "#00000000",
    "noop": true,
-   "note": "after the selection click the row's button carries mask 64 and no colour change"
+   "note": "after the selection click the row's button carries mask 64 and no colour change",
+   "chain_truncated": true
   },
   {
    "id": "pitch-marker-hover",
@@ -482,7 +493,8 @@
    "state": "#00000000",
    "rest": "#00000000",
    "noop": true,
-   "note": "mask 2 on the marker and every descendant read; colour and background unchanged"
+   "note": "mask 2 on the marker and every descendant read; colour and background unchanged",
+   "chain_truncated": true
   },
   {
    "id": "pitch-marker-label-hover",
@@ -512,7 +524,8 @@
    "property": "color",
    "state": "#EBEBEB",
    "rest": "#EBEBEB",
-   "noop": true
+   "noop": true,
+   "chain_truncated": true
   },
   {
    "id": "instruction-tile-hover",
@@ -533,7 +546,8 @@
    "state": "#00000000",
    "rest": "#00000000",
    "noop": true,
-   "note": "mask 2 five levels down; colour, background and border unchanged at every level read"
+   "note": "mask 2 five levels down; colour, background and border unchanged at every level read",
+   "chain_truncated": true
   },
   {
    "id": "inbox-selection-class-swap",
@@ -554,6 +568,4993 @@
    ],
    "observed": "class swap seen; no property measured on the setter",
    "note": "the class swap was seen (setters idx 1,22 -> 3,24); no colour was read on the setter, so the render's one declared difference (colour #EBEBEB on the selected setter, inherited by its children) has nothing to compare against"
+  },
+  {
+   "id": "filter-hover@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "FirstTeamOverview",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "frame-1000002298",
+     "classes": [
+      "base-template-grow",
+      "padding-horizontal-global-padding-none",
+      "tool-states-tool-states-all-players"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "framebox",
+     "classes": [
+      "frame-panel-squad",
+      "border-color-layout-modules-block-border-colour"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "align-items-center",
+      "justify-content-space-between",
+      "align-self-stretch",
+      "flex-no-shrink-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIFloatingPopupWidget",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF33",
+   "rest": "#FFFFFF24",
+   "variant_of": "filter-hover",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 24 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": "the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)"
+  },
+  {
+   "id": "filter-press-held@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "FirstTeamOverview",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "frame-1000002298",
+     "classes": [
+      "base-template-grow",
+      "padding-horizontal-global-padding-none",
+      "tool-states-tool-states-all-players"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "framebox",
+     "classes": [
+      "frame-panel-squad",
+      "border-color-layout-modules-block-border-colour"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "align-items-center",
+      "justify-content-space-between",
+      "align-self-stretch",
+      "flex-no-shrink-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIFloatingPopupWidget",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "hover",
+      "active",
+      "focus"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF24",
+   "rest": "#FFFFFF24",
+   "variant_of": "filter-press-held",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 24 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": "the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)"
+  },
+  {
+   "id": "filter-dragged-off-held@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": []
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": []
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": []
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": []
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "FirstTeamOverview",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": []
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "ComponentElement",
+     "name": "frame-1000002298",
+     "classes": [
+      "base-template-grow",
+      "padding-horizontal-global-padding-none",
+      "tool-states-tool-states-all-players"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "framebox",
+     "classes": [
+      "frame-panel-squad",
+      "border-color-layout-modules-block-border-colour"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "align-items-center",
+      "justify-content-space-between",
+      "align-self-stretch",
+      "flex-no-shrink-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "SIFloatingPopupWidget",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "focus"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF24",
+   "rest": "#FFFFFF24",
+   "variant_of": "filter-dragged-off-held",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 24 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": "the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)"
+  },
+  {
+   "id": "filter-released@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": []
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": []
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": []
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": []
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "FirstTeamOverview",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": []
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "ComponentElement",
+     "name": "frame-1000002298",
+     "classes": [
+      "base-template-grow",
+      "padding-horizontal-global-padding-none",
+      "tool-states-tool-states-all-players"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "framebox",
+     "classes": [
+      "frame-panel-squad",
+      "border-color-layout-modules-block-border-colour"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "align-items-center",
+      "justify-content-space-between",
+      "align-self-stretch",
+      "flex-no-shrink-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "SIFloatingPopupWidget",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "states": []
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF24",
+   "rest": "#FFFFFF24",
+   "variant_of": "filter-released",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 24 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": "the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)"
+  },
+  {
+   "id": "loans-tile-hover@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Loans",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "grid-element--Tile"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "TileBindingExpect",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "tile-wide-4x2",
+     "classes": [
+      "height-100-percent",
+      "tile-content"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "TileTemplateBindingExpect",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "layout-tile-base-container",
+     "classes": [
+      "layout-tile-base-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "TileVariables",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "BackgroundStyleSetter",
+     "classes": [
+      "width-100-percent",
+      "height-100-px",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIButton",
+     "name": "layout-tile-interaction-button",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "interactable-tile",
+      "layout-tile-interaction-button",
+      "layout-tile-interaction-button-background",
+      "anchor-loans"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#2E3138",
+   "rest": "#17223F",
+   "variant_of": "loans-tile-hover",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 26 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": ""
+  },
+  {
+   "id": "table-row-hover@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "FirstTeamOverview",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "frame-1000002298",
+     "classes": [
+      "base-template-grow",
+      "padding-horizontal-global-padding-none",
+      "tool-states-tool-states-all-players"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "framebox",
+     "classes": [
+      "frame-panel-squad",
+      "border-color-layout-modules-block-border-colour"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "StreamedTable",
+     "name": "playertable",
+     "classes": [
+      "streamed-list-view",
+      "streamed-table",
+      "margin-right-global-gap-large",
+      "align-items-start",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VirtualisedList",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "virtualised-list__scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical-horizontal",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical-horizontal"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical-horizontal"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "DropTarget",
+     "name": "View",
+     "classes": [
+      "virtualised-list__view"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "streamed-table__row",
+      "row-direction-normal",
+      "streamed-list-view__disable-controller-cell",
+      "streamed-list-view-item",
+      "streamed-list-view__row--interactable",
+      "virtualised-list__item"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF1A",
+   "rest": "#FFFFFF00",
+   "variant_of": "table-row-hover",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 29 elements root first, 16 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": ""
+  },
+  {
+   "id": "inbox-row-hover@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "PortalScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "HumanInitialised",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "MultiGridLayoutElement",
+     "name": "",
+     "classes": [
+      "dashboard-grid-layout",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "MultiGridLayoutElementVisible",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Messages",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "messages-tile-background",
+      "midnight-background-colour",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TabGroup",
+     "name": "Content",
+     "classes": [
+      "tabgroup",
+      "padding-horizontal-global-padding-large",
+      "padding-top-global-padding-large",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Messages",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "portal-messages-small-res",
+      "flex-grow-class",
+      "tabgroup__tabscontent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "AllTab",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "HasMessagesSwitch",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "MessagesStreamedObjectList",
+     "name": "",
+     "classes": [
+      "streamed-list-view",
+      "messages---processing",
+      "item-remove-background",
+      "flex-grow-class",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VirtualisedList",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "virtualised-list__scroll-view",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "DropTarget",
+     "name": "View",
+     "classes": [
+      "virtualised-list__view"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "streamed-object-list-item",
+      "streamed-list-view-item",
+      "streamed-list-view__row--interactable",
+      "virtualised-list__item",
+      "virtualised-list__item--first"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "width-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "SIStyleSetter_IsLastSelected",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal",
+      "message-last-selected"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIButton",
+     "name": "NewsItemButton",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "portal-messages-item-default-style-unread-property-1-message-property-2-default",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-left-global-padding-regular",
+      "padding-right-global-padding-large",
+      "border-color-theme-core-base-border-base-default",
+      "padding-vertical-global-padding-extra-large",
+      "margin-vertical-global-gap-none",
+      "message-button"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#FFFFFF14",
+   "rest": "#00000000",
+   "variant_of": "inbox-row-hover",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-e5-inbox-bindings-20261114-120119.ndjson: 45 elements root first, 16 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": ""
+  },
+  {
+   "id": "inbox-row-clicked-focus@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": []
+    },
+    {
+     "type": "Panel",
+     "name": "PortalScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "HumanInitialised",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "MultiGridLayoutElement",
+     "name": "",
+     "classes": [
+      "dashboard-grid-layout",
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "MultiGridLayoutElementVisible",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": []
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": []
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Messages",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": []
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "messages-tile-background",
+      "midnight-background-colour",
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "TabGroup",
+     "name": "Content",
+     "classes": [
+      "tabgroup",
+      "padding-horizontal-global-padding-large",
+      "padding-top-global-padding-large",
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "Messages",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "portal-messages-small-res",
+      "flex-grow-class",
+      "tabgroup__tabscontent"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingVariables",
+     "name": "AllTab",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "HasMessagesSwitch",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": []
+    },
+    {
+     "type": "MessagesStreamedObjectList",
+     "name": "",
+     "classes": [
+      "streamed-list-view",
+      "messages---processing",
+      "item-remove-background",
+      "flex-grow-class",
+      "navigatable-no-cursor"
+     ],
+     "states": []
+    },
+    {
+     "type": "VirtualisedList",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "virtualised-list__scroll-view",
+      "siscrollview"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": []
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": []
+    },
+    {
+     "type": "DropTarget",
+     "name": "View",
+     "classes": [
+      "virtualised-list__view"
+     ],
+     "states": []
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "streamed-object-list-item",
+      "streamed-list-view-item",
+      "streamed-list-view__row--interactable",
+      "virtualised-list__item",
+      "virtualised-list__item--first"
+     ],
+     "states": []
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "width-100-percent"
+     ],
+     "states": []
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "SIStyleSetter_IsLastSelected",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal",
+      "message-last-selected"
+     ],
+     "states": []
+    },
+    {
+     "type": "SIButton",
+     "name": "NewsItemButton",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "portal-messages-item-default-style-unread-property-1-message-property-2-default",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-left-global-padding-regular",
+      "padding-right-global-padding-large",
+      "border-color-theme-core-base-border-base-default",
+      "padding-vertical-global-padding-extra-large",
+      "margin-vertical-global-gap-none",
+      "message-button"
+     ],
+     "states": [
+      "focus"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#00000000",
+   "rest": "#00000000",
+   "variant_of": "inbox-row-clicked-focus",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-e5-inbox-bindings-20261114-120119.ndjson: 45 elements root first, 16 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": ""
+  },
+  {
+   "id": "pitch-marker-hover@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "TacticalPlannerTool",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "root",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "non-phone-panels",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TacticCreated",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BaseCardTemplateImpl",
+     "name": "CardController",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "543219c0235e5834d9a9a6ac1bae3bc0",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContainer",
+     "classes": [
+      "tool-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContent",
+     "classes": [
+      "tool-content-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "SpeakToVariables",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "speakto-panel-left-aligned"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIImage",
+     "name": "Card-frame",
+     "classes": [
+      "unity-image",
+      "siimage",
+      "padding-horizontal-global-padding-none",
+      "justify-content-space-between"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "GridSafeArea",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "GridLayout",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Body",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIVisible",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "EventTrigger",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingSetter",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TemplateContainer",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TabGroup",
+     "name": "",
+     "classes": [
+      "tabgroup",
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "base-template-grow",
+      "tabgroup__tabscontent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Body",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "UseDarkerHeaderIfFMC",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "TeamInstructionsTabGrid",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "TeamInstructionsPitch",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "team-instructions-pitch"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal",
+      "tactics-collapsable-pitch-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "pitch-remapper",
+     "classes": [
+      "base-template-grow",
+      "phases-pitch-max-height"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "DiggableVisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "padding-right-global-padding-large",
+      "padding-left-global-padding-large",
+      "margin-left-global-gap-large",
+      "padding-vertical-global-padding-extra-large",
+      "border-radius-layout-modules-block-radius",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FMTacticsWithPhases",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "tactics-collapsable-pitch-grass-colour"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FMPitchIndicator",
+     "name": "",
+     "classes": [
+      "projected--position--filled"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#00000000",
+   "rest": "#00000000",
+   "variant_of": "pitch-marker-hover",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-d2-team-instructions-20261114-111314.ndjson: 70 elements root first, 11 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": ""
+  },
+  {
+   "id": "instruction-tile-hover@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "TacticalPlannerTool",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "root",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "non-phone-panels",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TacticCreated",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BaseCardTemplateImpl",
+     "name": "CardController",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "543219c0235e5834d9a9a6ac1bae3bc0",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContainer",
+     "classes": [
+      "tool-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContent",
+     "classes": [
+      "tool-content-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "SpeakToVariables",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "speakto-panel-left-aligned"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIImage",
+     "name": "Card-frame",
+     "classes": [
+      "unity-image",
+      "siimage",
+      "padding-horizontal-global-padding-none",
+      "justify-content-space-between"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "GridSafeArea",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "GridLayout",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Body",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIVisible",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "EventTrigger",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingSetter",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TemplateContainer",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TabGroup",
+     "name": "",
+     "classes": [
+      "tabgroup",
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "base-template-grow",
+      "tabgroup__tabscontent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Body",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "UseDarkerHeaderIfFMC",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "TeamInstructionsTabGrid",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "TeamInstructionsBlock",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "Body",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "flex-grow-class",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "WrappedObjectList",
+     "name": "TeamInstructionTiles",
+     "classes": [
+      "wrapped-object-list"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "team-instruction-tile-list-item"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "TileBindingExpect",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "TileParams",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "tile-phase-relevant-state",
+     "classes": [
+      "height-100-percent",
+      "team-instruction-tile--phase-relevant"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TeamInstructionTile",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "background-color",
+   "state": "#00000000",
+   "rest": "#00000000",
+   "variant_of": "instruction-tile-hover",
+   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "chain_source": "real ancestry from styles-d2-team-instructions-20261114-111314.ndjson: 72 elements root first, 18 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": ""
+  },
+  {
+   "id": "nav-tab-label-hover@V1-real-ancestry-only",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuTitle",
+     "classes": [
+      "main-card-report-height"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "OverviewTitleBar",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "TitleBarBindingRoot",
+     "classes": [
+      "main-navigation-overview-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingSetter",
+     "name": "NavBarBindingSetter",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "PrimaryNavigationBar",
+     "classes": [
+      "align-self-stretch",
+      "width-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "align-self-stretch"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainNav",
+     "classes": [
+      "row-direction-normal",
+      "tile-mockups-navigation-core-primary-hi-res",
+      "flex-grow-class",
+      "align-self-stretch-class",
+      "nav-on-light"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "NavForegroundStyleSetter",
+     "classes": [
+      "base-template-grow",
+      "align-self-centre"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainNavigationBar",
+     "classes": [
+      "row-direction-normal",
+      "padding-right-global-padding-regular",
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "GlobalNavigationTutorialAnchor",
+     "classes": [
+      "tutorial-anchor-offset-default-y",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "MenuBar",
+     "classes": [
+      "flex-grow-class",
+      "justify-content-center",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "MenuBarBindingExpect",
+     "classes": [
+      "base-template-grow",
+      "align-items-start"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "employed-switch",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "base-template-grow",
+      "width-100-percent",
+      "justify-content-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Employed",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ButtonGroup",
+     "name": "ManagingClubButtons",
+     "classes": [
+      "buttongroup",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-horizontal-global-padding-none",
+      "base-template-grow",
+      "None"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "ClubTacticsButton",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "NavigationTabPortalBindingExpect",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "NavigationTabPortalBindingVariables",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIButton",
+     "name": "buttons-button-navigation-default",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "navigation-tab-portal-default-active-false",
+      "margin-horizontal-global-gap-none",
+      "buttongroup__button"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "thematic-md",
+      "justify-content-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainFrame",
+     "classes": [
+      "row-direction-normal",
+      "padding-bottom-global-padding-none",
+      "padding-left-global-padding-none",
+      "padding-top-global-padding-none",
+      "padding-right-global-padding-large",
+      "align-items-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIVisible",
+     "name": "TextVisible",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIText",
+     "name": "text",
+     "classes": [
+      "sitext",
+      "portal-text",
+      "margin-right-global-gap-none",
+      "sitext-hover-cursor",
+      "margin-right-global-gap-small",
+      "thematic-md"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "color",
+   "state": "#FFFFFF",
+   "rest": "#EBEBEB",
+   "variant_of": "nav-tab-label-hover",
+   "isolates": "ancestry alone: real chain, the label hovered as in the published conditional row",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 28 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)"
+  },
+  {
+   "id": "nav-tab-label-hover@V2-label-state-only",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "SIButton",
+     "name": "buttons-button-navigation-default",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "navigation-tab-portal-default-active-false",
+      "margin-horizontal-global-gap-none",
+      "buttongroup__button"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "thematic-md",
+      "justify-content-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainFrame",
+     "classes": [
+      "row-direction-normal",
+      "align-items-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIVisible",
+     "name": "TextVisible",
+     "classes": [],
+     "states": []
+    },
+    {
+     "type": "SIText",
+     "name": "text",
+     "classes": [
+      "sitext",
+      "portal-text",
+      "margin-right-global-gap-none",
+      "sitext-hover-cursor",
+      "margin-right-global-gap-small",
+      "thematic-md"
+     ],
+     "states": []
+    }
+   ],
+   "property": "color",
+   "state": "#FFFFFF",
+   "rest": "#EBEBEB",
+   "variant_of": "nav-tab-label-hover",
+   "isolates": "the label's state alone: the published truncated chain, the label NOT hovered (ancestors hovered, as read)",
+   "chain_truncated": true
+  },
+  {
+   "id": "nav-tab-label-hover@V3-real-ancestry-and-as-read",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuTitle",
+     "classes": [
+      "main-card-report-height"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "OverviewTitleBar",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "TitleBarBindingRoot",
+     "classes": [
+      "main-navigation-overview-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingSetter",
+     "name": "NavBarBindingSetter",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "PrimaryNavigationBar",
+     "classes": [
+      "align-self-stretch",
+      "width-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "align-self-stretch"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainNav",
+     "classes": [
+      "row-direction-normal",
+      "tile-mockups-navigation-core-primary-hi-res",
+      "flex-grow-class",
+      "align-self-stretch-class",
+      "nav-on-light"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "NavForegroundStyleSetter",
+     "classes": [
+      "base-template-grow",
+      "align-self-centre"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainNavigationBar",
+     "classes": [
+      "row-direction-normal",
+      "padding-right-global-padding-regular",
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "GlobalNavigationTutorialAnchor",
+     "classes": [
+      "tutorial-anchor-offset-default-y",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "MenuBar",
+     "classes": [
+      "flex-grow-class",
+      "justify-content-center",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "MenuBarBindingExpect",
+     "classes": [
+      "base-template-grow",
+      "align-items-start"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "employed-switch",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "base-template-grow",
+      "width-100-percent",
+      "justify-content-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Employed",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ButtonGroup",
+     "name": "ManagingClubButtons",
+     "classes": [
+      "buttongroup",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-horizontal-global-padding-none",
+      "base-template-grow",
+      "None"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "ClubTacticsButton",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "NavigationTabPortalBindingExpect",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "NavigationTabPortalBindingVariables",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIButton",
+     "name": "buttons-button-navigation-default",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "navigation-tab-portal-default-active-false",
+      "margin-horizontal-global-gap-none",
+      "buttongroup__button"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "thematic-md",
+      "justify-content-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainFrame",
+     "classes": [
+      "row-direction-normal",
+      "padding-bottom-global-padding-none",
+      "padding-left-global-padding-none",
+      "padding-top-global-padding-none",
+      "padding-right-global-padding-large",
+      "align-items-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIVisible",
+     "name": "TextVisible",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIText",
+     "name": "text",
+     "classes": [
+      "sitext",
+      "portal-text",
+      "margin-right-global-gap-none",
+      "sitext-hover-cursor",
+      "margin-right-global-gap-small",
+      "thematic-md"
+     ],
+     "states": []
+    }
+   ],
+   "property": "color",
+   "state": "#FFFFFF",
+   "rest": "#EBEBEB",
+   "variant_of": "nav-tab-label-hover",
+   "isolates": "both, applied sheets only: real chain, the label not hovered (as read), ancestors hovered",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 28 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)"
+  },
+  {
+   "id": "nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuTitle",
+     "classes": [
+      "main-card-report-height"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "OverviewTitleBar",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "TitleBarBindingRoot",
+     "classes": [
+      "main-navigation-overview-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingSetter",
+     "name": "NavBarBindingSetter",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "PrimaryNavigationBar",
+     "classes": [
+      "align-self-stretch",
+      "width-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "align-self-stretch"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainNav",
+     "classes": [
+      "row-direction-normal",
+      "tile-mockups-navigation-core-primary-hi-res",
+      "flex-grow-class",
+      "align-self-stretch-class",
+      "nav-on-light"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "NavForegroundStyleSetter",
+     "classes": [
+      "base-template-grow",
+      "align-self-centre"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainNavigationBar",
+     "classes": [
+      "row-direction-normal",
+      "padding-right-global-padding-regular",
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "GlobalNavigationTutorialAnchor",
+     "classes": [
+      "tutorial-anchor-offset-default-y",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "MenuBar",
+     "classes": [
+      "flex-grow-class",
+      "justify-content-center",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "MenuBarBindingExpect",
+     "classes": [
+      "base-template-grow",
+      "align-items-start"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "employed-switch",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "base-template-grow",
+      "width-100-percent",
+      "justify-content-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Employed",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ButtonGroup",
+     "name": "ManagingClubButtons",
+     "classes": [
+      "buttongroup",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-horizontal-global-padding-none",
+      "base-template-grow",
+      "None"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "ClubTacticsButton",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "NavigationTabPortalBindingExpect",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "NavigationTabPortalBindingVariables",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIButton",
+     "name": "buttons-button-navigation-default",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "navigation-tab-portal-default-active-false",
+      "margin-horizontal-global-gap-none",
+      "buttongroup__button"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "thematic-md",
+      "justify-content-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainFrame",
+     "classes": [
+      "row-direction-normal",
+      "padding-bottom-global-padding-none",
+      "padding-left-global-padding-none",
+      "padding-top-global-padding-none",
+      "padding-right-global-padding-large",
+      "align-items-center"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIVisible",
+     "name": "TextVisible",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIText",
+     "name": "text",
+     "classes": [
+      "sitext",
+      "portal-text",
+      "margin-right-global-gap-none",
+      "sitext-hover-cursor",
+      "margin-right-global-gap-small",
+      "thematic-md"
+     ],
+     "states": []
+    }
+   ],
+   "property": "color",
+   "state": "#FFFFFF",
+   "rest": "#EBEBEB",
+   "variant_of": "nav-tab-label-hover",
+   "isolates": "V3 plus the recorded run-time sheet layer (an 80-rule CAPTURED SAMPLE of a run-time sheet; U2)",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 28 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "runtime_sheet_capture": "styles-e1-squad-bindings-20261114-115217.ndjson",
+   "layer": "recorded run-time sheet (captured 80-rule sample)"
   }
  ]
 }

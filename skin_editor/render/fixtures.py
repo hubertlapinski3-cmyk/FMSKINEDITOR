@@ -412,7 +412,7 @@ def run_state(ctx, fx, check, res=None):
     if "rest" in check:
         na = (NA_NO_DECL_INITIAL if (prop in INITIAL and same(prop, check["rest"], INITIAL[prop])) else NA_NO_DECL_PARENT_ABSENT) if not rest else None          # a state check holds no live parent: only the initial value is certain
         rows.append(_row(name, check["id"], label, prop + " (rest)", check["rest"], rest["value"] if rest else None, "PASS" if rest and same(prop, check["rest"], rest["value"]) else ("N/A" if not rest else "FAIL"),
-                         note="" if rest else "the render declares no %s here" % prop, **dict({"na_reason": na} if na else {}, **{k: check[k] for k in ("conditional", "variant_of") if k in check})))
+                         note="" if rest else "the render declares no %s here" % prop, **dict({"na_reason": na} if na else {}, **{k: check[k] for k in ("conditional", "variant_of", "chain_truncated", "chain_source", "layer", "isolates") if k in check})))
     if decl:
         pred = decl["value"]
     elif rest:
@@ -423,7 +423,7 @@ def run_state(ctx, fx, check, res=None):
     note = ("state rule %s" % decl["source"]["selector"]) if decl else "no state rule declares %s: the render predicts no change" % prop
     if check.get("noop"):
         note = "explicit no-op: " + note
-    extra = {k: check[k] for k in ("observation", "interpretations", "conditional", "variant_of") if k in check}
+    extra = {k: check[k] for k in ("observation", "interpretations", "conditional", "variant_of", "chain_truncated", "chain_source", "layer", "isolates") if k in check}
     rows.append(_row(name, check["id"], label, "%s (%s)" % (prop, state_txt), check["state"], pred, "PASS" if ok else "FAIL", note=note + ((" | " + check["note"]) if check.get("note") else ""), **extra))
     return rows
 

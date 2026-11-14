@@ -180,6 +180,44 @@ def i3_states():
          "from": ["flex-grow-class", "row-direction-normal", "message-not-last-selected"], "to": ["flex-grow-class", "row-direction-normal", "message-last-selected"],
          "observed": "class swap seen; no property measured on the setter",
          "note": "the class swap was seen (setters idx 1,22 -> 3,24); no colour was read on the setter, so the render's one declared difference (colour #EBEBEB on the selected setter, inherited by its children) has nothing to compare against"}]
+    # U4 (v1.1.0): every published check above gives the cascade a TRUNCATED chain (the element and the ancestors Session G read, at most five). They keep their verdicts and are marked chain_truncated.
+    # Next to each one, a variant on the REAL ancestry of the same element from the captures (tools/make_state_chains.py), one variable changed per variant.
+    for c in checks:
+        if c["kind"] == "state":
+            c["chain_truncated"] = True
+    import json as _json
+    cp = ROOT / "tests" / "fixtures" / "render" / "state-i3-session-g" / "chains.json"
+    chains = _json.loads(cp.read_text(encoding="utf-8"))["targets"] if cp.is_file() else {}
+
+    def real(key, target_states, anc_hover=True):
+        ch = chains[key]["chain"]
+        return [{"type": e["type"], "name": e["name"], "classes": list(e["classes"]), "states": (list(target_states) if i == len(ch) - 1 else (["hover"] if anc_hover else []))} for i, e in enumerate(ch)]
+
+    def src(key):
+        t = chains[key]
+        return "real ancestry from %s: %d elements root first, %d match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)" % (t["capture"], t["depth"], t["matched"])
+    if chains:
+        pairs = [("filter-hover", "filter-button", ["hover"], "#FFFFFF33", "#FFFFFF24", {}),
+                 ("filter-press-held", "filter-button", ["hover", "active", "focus"], "#FFFFFF24", "#FFFFFF24", {}),
+                 ("filter-dragged-off-held", "filter-button", ["focus"], "#FFFFFF24", "#FFFFFF24", {"anc": False}),
+                 ("filter-released", "filter-button", [], "#FFFFFF24", "#FFFFFF24", {"anc": False}),
+                 ("loans-tile-hover", "loans-tile-button", ["hover"], "#2E3138", "#17223F", {}),
+                 ("table-row-hover", "table-row", ["hover"], "#FFFFFF1A", "#FFFFFF00", {}),
+                 ("inbox-row-hover", "inbox-row-button", ["hover"], "#FFFFFF14", "#00000000", {}),
+                 ("inbox-row-clicked-focus", "inbox-row-button", ["focus"], "#00000000", "#00000000", {"anc": False}),
+                 ("pitch-marker-hover", "pitch-marker", ["hover"], "#00000000", "#00000000", {}),
+                 ("instruction-tile-hover", "instruction-tile", ["hover"], "#00000000", "#00000000", {})]
+        for cid, key, st, want, rest, o in pairs:
+            checks.append(chk(cid + "@real-ancestry", real(key, st, o.get("anc", True)), want, rest, variant_of=cid, isolates="ancestry (the chain is the real one; the states are those of the published row)", chain_source=src(key),
+                              note="the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)" if key == "filter-button" else ""))
+        # the navigation label: one variable per variant (ancestry, label state, both, both plus the recorded run-time sheet)
+        nl = "nav-tab-label"
+        chk_ = lambda i, chain, **kw: checks.append(chk(i, chain, "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover", **kw))
+        chk_("nav-tab-label-hover@V1-real-ancestry-only", real(nl, ["hover"]), isolates="ancestry alone: real chain, the label hovered as in the published conditional row", chain_source=src(nl))
+        chk_("nav-tab-label-hover@V2-label-state-only", nav_chain([]), isolates="the label's state alone: the published truncated chain, the label NOT hovered (ancestors hovered, as read)", chain_truncated=True)
+        chk_("nav-tab-label-hover@V3-real-ancestry-and-as-read", real(nl, []), isolates="both, applied sheets only: real chain, the label not hovered (as read), ancestors hovered", chain_source=src(nl))
+        chk_("nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet", real(nl, []), isolates="V3 plus the recorded run-time sheet layer (an 80-rule CAPTURED SAMPLE of a run-time sheet; U2)", chain_source=src(nl),
+             runtime_sheet_capture="styles-e1-squad-bindings-20261114-115217.ndjson", layer="recorded run-time sheet (captured 80-rule sample)")
     write("state-i3-session-g", {"kind": "state", "source": "I3 Session G, manual hover/press/select holds on the baseline plugin 0.2.2 (AllowActions false), 2026-11-14; replies saved as g-*.json in "
                                                               "workspace/notes/ui-dumps/i3g-20261114; log docs/evidence/phase9-i3-session-G-20261114.md. Predictions come from the game's own :pseudo rules "
                                                               "(Cascade.state_declarations); the render itself still applies no state"}, checks)

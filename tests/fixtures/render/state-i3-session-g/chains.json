@@ -1,0 +1,2859 @@
+{
+ "note": "real ancestry from the captures, root first; see tools/make_state_chains.py for how each element was matched",
+ "targets": {
+  "nav-tab-label": {
+   "capture": "styles-e1-squad-bindings-20261114-115217.ndjson",
+   "matched": 1,
+   "how": "SIText with class portal-text; the tab whose text is TACTICS",
+   "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3/0/0/0/1/0/2/0",
+   "depth": 28,
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "path": "P4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "path": "P4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuTitle",
+     "classes": [
+      "main-card-report-height"
+     ],
+     "path": "P4/0/3",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "Panel",
+     "name": "OverviewTitleBar",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "path": "P4/0/3/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRoot",
+     "name": "TitleBarBindingRoot",
+     "classes": [
+      "main-navigation-overview-container"
+     ],
+     "path": "P4/0/3/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P4/0/3/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingSetter",
+     "name": "NavBarBindingSetter",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/3/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "PrimaryNavigationBar",
+     "classes": [
+      "align-self-stretch",
+      "width-100-percent"
+     ],
+     "path": "P4/0/3/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "align-self-stretch"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainNav",
+     "classes": [
+      "row-direction-normal",
+      "tile-mockups-navigation-core-primary-hi-res",
+      "flex-grow-class",
+      "align-self-stretch-class",
+      "nav-on-light"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "NavForegroundStyleSetter",
+     "classes": [
+      "base-template-grow",
+      "align-self-centre"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainNavigationBar",
+     "classes": [
+      "row-direction-normal",
+      "padding-right-global-padding-regular",
+      "base-template-grow"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "GlobalNavigationTutorialAnchor",
+     "classes": [
+      "tutorial-anchor-offset-default-y",
+      "align-self-stretch-class"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "MenuBar",
+     "classes": [
+      "flex-grow-class",
+      "justify-content-center",
+      "align-self-stretch-class"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "MenuBarBindingExpect",
+     "classes": [
+      "base-template-grow",
+      "align-items-start"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "employed-switch",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "base-template-grow",
+      "width-100-percent",
+      "justify-content-center"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "Employed",
+     "classes": [],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ButtonGroup",
+     "name": "ManagingClubButtons",
+     "classes": [
+      "buttongroup",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-horizontal-global-padding-none",
+      "base-template-grow",
+      "None"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "ClubTacticsButton",
+     "classes": [],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "NavigationTabPortalBindingExpect",
+     "classes": [],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "NavigationTabPortalBindingVariables",
+     "classes": [],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIButton",
+     "name": "buttons-button-navigation-default",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "navigation-tab-portal-default-active-false",
+      "margin-horizontal-global-gap-none",
+      "buttongroup__button"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "thematic-md",
+      "justify-content-center"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "MainFrame",
+     "classes": [
+      "row-direction-normal",
+      "padding-bottom-global-padding-none",
+      "padding-left-global-padding-none",
+      "padding-top-global-padding-none",
+      "padding-right-global-padding-large",
+      "align-items-center"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIVisible",
+     "name": "TextVisible",
+     "classes": [],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3/0/0/0/1/0/2",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIText",
+     "name": "text",
+     "classes": [
+      "sitext",
+      "portal-text",
+      "margin-right-global-gap-none",
+      "sitext-hover-cursor",
+      "margin-right-global-gap-small",
+      "thematic-md"
+     ],
+     "path": "P4/0/3/0/0/0/0/0/0/0/2/1/0/0/0/0/0/0/0/0/3/0/0/0/1/0/2/0",
+     "pseudo_in_capture": 0
+    }
+   ]
+  },
+  "filter-button": {
+   "capture": "styles-e1-squad-bindings-20261114-115217.ndjson",
+   "matched": 1,
+   "how": "element (it is an SIFloatingPopupWidget, not the SIButton the 1.0.0 state rows named) with the three button classes whose subtree text contains Filter",
+   "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/1/1/0",
+   "depth": 24,
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "path": "P4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "path": "P4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "path": "P4/0/4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "path": "P4/0/4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "path": "P4/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "FirstTeamOverview",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "frame-1000002298",
+     "classes": [
+      "base-template-grow",
+      "padding-horizontal-global-padding-none",
+      "tool-states-tool-states-all-players"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "framebox",
+     "classes": [
+      "frame-panel-squad",
+      "border-color-layout-modules-block-border-colour"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "row-direction-normal",
+      "align-items-center",
+      "justify-content-space-between",
+      "align-self-stretch",
+      "flex-no-shrink-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/1/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIFloatingPopupWidget",
+     "name": "",
+     "classes": [
+      "HasSIClickable",
+      "row-direction-normal",
+      "buttons-button-base-default",
+      "button-size-medium",
+      "navigatable-no-cursor"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/1/1/0",
+     "pseudo_in_capture": 0
+    }
+   ]
+  },
+  "loans-tile-button": {
+   "capture": "styles-e1-squad-bindings-20261114-115217.ndjson",
+   "matched": 1,
+   "how": "SIButton layout-tile-interaction-button with anchor-loans",
+   "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0/0/0/0",
+   "depth": 26,
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "path": "P4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "path": "P4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "path": "P4/0/4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "path": "P4/0/4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "path": "P4/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Loans",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "grid-element--Tile"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingExpect",
+     "name": "TileBindingExpect",
+     "classes": [
+      "height-100-percent"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "height-100-percent"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "tile-wide-4x2",
+     "classes": [
+      "height-100-percent",
+      "tile-content"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingExpect",
+     "name": "TileTemplateBindingExpect",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "layout-tile-base-container",
+     "classes": [
+      "layout-tile-base-container"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingVariables",
+     "name": "TileVariables",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "BackgroundStyleSetter",
+     "classes": [
+      "width-100-percent",
+      "height-100-px",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIButton",
+     "name": "layout-tile-interaction-button",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "interactable-tile",
+      "layout-tile-interaction-button",
+      "layout-tile-interaction-button-background",
+      "anchor-loans"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    }
+   ]
+  },
+  "table-row": {
+   "capture": "styles-e1-squad-bindings-20261114-115217.ndjson",
+   "matched": 16,
+   "how": "BindingRoot with the interactable table-row classes, an EVEN row (neither --first nor --odd), as the row Session G read",
+   "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4/2/0/0/0/0/0/2",
+   "depth": 29,
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "path": "P4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "path": "P4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "path": "P4/0/4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "Panel",
+     "name": "SquadScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "path": "P4/0/4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "ScalableBindableGridLayoutElement",
+     "classes": [
+      "flex-grow-class",
+      "dashboard-grid-layout"
+     ],
+     "path": "P4/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "FirstTeamOverview",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "frame-1000002298",
+     "classes": [
+      "base-template-grow",
+      "padding-horizontal-global-padding-none",
+      "tool-states-tool-states-all-players"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "framebox",
+     "classes": [
+      "frame-panel-squad",
+      "border-color-layout-modules-block-border-colour"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "StreamedTable",
+     "name": "playertable",
+     "classes": [
+      "streamed-list-view",
+      "streamed-table",
+      "margin-right-global-gap-large",
+      "align-items-start",
+      "navigatable-no-cursor"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VirtualisedList",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4/2",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "virtualised-list__scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical-horizontal",
+      "siscrollview"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4/2/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4/2/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical-horizontal"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4/2/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical-horizontal"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4/2/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "DropTarget",
+     "name": "View",
+     "classes": [
+      "virtualised-list__view"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4/2/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "streamed-table__row",
+      "row-direction-normal",
+      "streamed-list-view__disable-controller-cell",
+      "streamed-list-view-item",
+      "streamed-list-view__row--interactable",
+      "virtualised-list__item"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/4/0/0/0/0/0/4/2/0/0/0/0/0/2",
+     "pseudo_in_capture": 0
+    }
+   ]
+  },
+  "inbox-row-button": {
+   "capture": "styles-e5-inbox-bindings-20261114-120119.ndjson",
+   "matched": 16,
+   "how": "SIButton NewsItemButton",
+   "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1",
+   "depth": 45,
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "path": "P4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "path": "P4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "path": "P4/0/4",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "Panel",
+     "name": "PortalScreen",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "path": "P4/0/4/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "HumanInitialised",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "Overview",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "Content",
+     "classes": [
+      "base-layer-content",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "MultiGridLayoutElement",
+     "name": "",
+     "classes": [
+      "dashboard-grid-layout",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "MultiGridLayoutElementVisible",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Messages",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "messages-tile-background",
+      "midnight-background-colour",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TabGroup",
+     "name": "Content",
+     "classes": [
+      "tabgroup",
+      "padding-horizontal-global-padding-large",
+      "padding-top-global-padding-large",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "Messages",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "portal-messages-small-res",
+      "flex-grow-class",
+      "tabgroup__tabscontent"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "AllTab",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "HasMessagesSwitch",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "MessagesStreamedObjectList",
+     "name": "",
+     "classes": [
+      "streamed-list-view",
+      "messages---processing",
+      "item-remove-background",
+      "flex-grow-class",
+      "navigatable-no-cursor"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VirtualisedList",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "virtualised-list__scroll-view",
+      "siscrollview"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "DropTarget",
+     "name": "View",
+     "classes": [
+      "virtualised-list__view"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "streamed-object-list-item",
+      "streamed-list-view-item",
+      "streamed-list-view__row--interactable",
+      "virtualised-list__item",
+      "virtualised-list__item--first"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "width-100-percent"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "SIStyleSetter_IsLastSelected",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal",
+      "message-last-selected"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIButton",
+     "name": "NewsItemButton",
+     "classes": [
+      "sibutton",
+      "navigatable",
+      "HasSIClickable",
+      "portal-messages-item-default-style-unread-property-1-message-property-2-default",
+      "row-direction-normal",
+      "margin-horizontal-global-gap-none",
+      "padding-left-global-padding-regular",
+      "padding-right-global-padding-large",
+      "border-color-theme-core-base-border-base-default",
+      "padding-vertical-global-padding-extra-large",
+      "margin-vertical-global-gap-none",
+      "message-button"
+     ],
+     "path": "P4/0/4/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1",
+     "pseudo_in_capture": 64
+    }
+   ]
+  },
+  "pitch-marker": {
+   "capture": "styles-d2-team-instructions-20261114-111314.ndjson",
+   "matched": 11,
+   "how": "element with class projected--position--filled",
+   "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/3",
+   "depth": 70,
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "path": "P3",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "path": "P3/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "path": "P3/0/4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "Panel",
+     "name": "TacticalPlannerTool",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "path": "P3/0/4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRoot",
+     "name": "root",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "non-phone-panels",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TacticCreated",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BaseCardTemplateImpl",
+     "name": "CardController",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "543219c0235e5834d9a9a6ac1bae3bc0",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContainer",
+     "classes": [
+      "tool-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContent",
+     "classes": [
+      "tool-content-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingVariables",
+     "name": "SpeakToVariables",
+     "classes": [
+      "height-100-percent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "speakto-panel-left-aligned"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIImage",
+     "name": "Card-frame",
+     "classes": [
+      "unity-image",
+      "siimage",
+      "padding-horizontal-global-padding-none",
+      "justify-content-space-between"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "GridSafeArea",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "GridLayout",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Body",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIVisible",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "EventTrigger",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingSetter",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TemplateContainer",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TabGroup",
+     "name": "",
+     "classes": [
+      "tabgroup",
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "base-template-grow",
+      "tabgroup__tabscontent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "Body",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "UseDarkerHeaderIfFMC",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "TeamInstructionsTabGrid",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "TeamInstructionsPitch",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "team-instructions-pitch"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal",
+      "tactics-collapsable-pitch-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "pitch-remapper",
+     "classes": [
+      "base-template-grow",
+      "phases-pitch-max-height"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "DiggableVisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "padding-right-global-padding-large",
+      "padding-left-global-padding-large",
+      "margin-left-global-gap-large",
+      "padding-vertical-global-padding-extra-large",
+      "border-radius-layout-modules-block-radius",
+      "navigatable-no-cursor"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FMTacticsWithPhases",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "tactics-collapsable-pitch-grass-colour"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FMPitchIndicator",
+     "name": "",
+     "classes": [
+      "projected--position--filled"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/3",
+     "pseudo_in_capture": 0
+    }
+   ]
+  },
+  "instruction-tile": {
+   "capture": "styles-d2-team-instructions-20261114-111314.ndjson",
+   "matched": 18,
+   "how": "TemplateContainer TeamInstructionTile",
+   "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0",
+   "depth": 72,
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "path": "P3",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "path": "P3/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "path": "P3/0/4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "Panel",
+     "name": "TacticalPlannerTool",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "path": "P3/0/4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRoot",
+     "name": "root",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "non-phone-panels",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TacticCreated",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BaseCardTemplateImpl",
+     "name": "CardController",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "543219c0235e5834d9a9a6ac1bae3bc0",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContainer",
+     "classes": [
+      "tool-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContent",
+     "classes": [
+      "tool-content-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingVariables",
+     "name": "SpeakToVariables",
+     "classes": [
+      "height-100-percent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "speakto-panel-left-aligned"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIImage",
+     "name": "Card-frame",
+     "classes": [
+      "unity-image",
+      "siimage",
+      "padding-horizontal-global-padding-none",
+      "justify-content-space-between"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "GridSafeArea",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "GridLayout",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Body",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIVisible",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "EventTrigger",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingSetter",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TemplateContainer",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TabGroup",
+     "name": "",
+     "classes": [
+      "tabgroup",
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "base-template-grow",
+      "tabgroup__tabscontent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "Body",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "UseDarkerHeaderIfFMC",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "TeamInstructionsTabGrid",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "TeamInstructionsBlock",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIScrollView",
+     "name": "Body",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "flex-grow-class",
+      "siscrollview"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "WrappedObjectList",
+     "name": "TeamInstructionTiles",
+     "classes": [
+      "wrapped-object-list"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "team-instruction-tile-list-item"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRoot",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "TileBindingExpect",
+     "classes": [
+      "height-100-percent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "TileParams",
+     "classes": [
+      "height-100-percent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "tile-phase-relevant-state",
+     "classes": [
+      "height-100-percent",
+      "team-instruction-tile--phase-relevant"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TeamInstructionTile",
+     "classes": [
+      "height-100-percent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    }
+   ]
+  }
+ }
+}

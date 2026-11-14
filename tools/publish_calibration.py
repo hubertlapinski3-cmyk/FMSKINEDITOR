@@ -18,32 +18,35 @@ PRED = ROOT / "docs" / "evidence" / "phase9-fix-round-heldout-predictions.json"
 
 
 def state_lines(results):
+    """The hover narrative, written from the ISOLATED-VARIABLE rows (U4): one variable changed per variant from the published conditional row, on the real ancestry from the captures."""
     st = next((r for r in results if r["name"] == "state-i3-session-g"), None)
     if not st:
         return []
-    by = {}
-    for x in st["rows"]:
-        if x["check"].startswith("nav-tab-label"):
-            by.setdefault(x["check"], []).append(x)
-    pick = lambda c: [x for x in by.get(c, []) if "(rest)" not in x["property"]]
-    cond, a, b = (pick("nav-tab-label-hover") or [None])[0], (pick("nav-tab-label-as-read") or [None])[0], (pick("nav-tab-label-as-read-runtime-sheet") or [None])[0]
-    out = ["Measured: label colour #FFFFFF under the pointer, rest #EBEBEB; label mask 0; ancestors 2. Not measured: why. The prediction of the conditional row assumes the label is hovered, "
-           "which the mask did not show. Rows as read, published beside it whatever their verdict: with the game's applied sheets only %s (%s); with the recorded run-time sheet added %s (%s). "
-           "The recorded run-time sheet holds an ancestor-hover rule, .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text, whose ancestor MainNav is in the capture: "
-           "under the masks as read it yields the observed colour, so the label's own hover is not needed to explain it. The mask is not shown to be stale (no repeated reads were taken), "
-           "inheritance was not tested, and the mechanism is unverified: the pattern was seen once (the Loans tile title gave no second point: its colour did not change)." % (
-               a["verdict"] if a else "n/a", (a or {}).get("note", "")[:90], b["verdict"] if b else "n/a", (b or {}).get("note", "")[:90]), ""]
-    return out
+
+    def verdicts(check):
+        rows = [x for x in st["rows"] if x["check"] == check]
+        rest = next((x["verdict"] for x in rows if "(rest)" in x["property"]), "n/a")
+        state = next((x["verdict"] for x in rows if "(rest)" not in x["property"]), "n/a")
+        return rest, state
+    c0, v1, v2, v3, v4 = (verdicts(c) for c in ("nav-tab-label-hover", "nav-tab-label-hover@V1-real-ancestry-only", "nav-tab-label-hover@V2-label-state-only",
+                                                "nav-tab-label-hover@V3-real-ancestry-and-as-read", "nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet"))
+    f = lambda v: "rest %s, hover %s" % v
+    return ["Measured: label colour #FFFFFF under the pointer, rest #EBEBEB; label mask 0; ancestors 2. Not measured: why. Isolated-variable result, one variable changed per variant from the published conditional row "
+            "(truncated chain, label hovered, applied sheets only: %s): the real ancestry alone (V1): %s; the label's own state alone, label NOT hovered (V2): %s; both, i.e. real ancestry and the states as read (V3): %s; V3 plus the recorded "
+            "run-time sheet, a captured 80-rule sample (V4): %s. Read plainly: the label's own hover is not needed to reach #FFFFFF (an ancestor-hover rule in the applied sheets does it on the truncated chain); the real ancestor "
+            "(.nav-on-light) makes the applied sheets predict another colour at rest and on hover; the recorded run-time sheet restores both. The first two published as-read rows changed the ancestor and the state together and could not "
+            "say which mattered. The mechanism is unverified: no repeated reads were taken, inheritance was not tested, the Loans title gave no second point." % (f(c0), f(v1), f(v2), f(v3), f(v4)), ""]
 
 
 def chain_caution():
-    """The state fixture feeds the cascade a chain of ancestors per check; most checks give it ONE element, so no ancestor-dependent rule can match. Said in the report, counted from the fixture."""
+    """Which state checks run on a truncated chain, counted from the fixture, and the real-ancestry variants added beside them."""
     cks = json.loads((ROOT / "tests" / "fixtures" / "render" / "state-i3-session-g" / "expect.json").read_text(encoding="utf-8"))["checks"]
     st = [c for c in cks if c["kind"] == "state"]
-    one = sum(1 for c in st if len(c["chain"]) == 1)
-    return ("Caution on the state rows: %d of the %d state checks give the cascade a chain of ONE element, so no rule that depends on an ancestor can match. For the navigation label this matters: with its real ancestor "
-            "(MainNav, nav-on-light) the applied sheets alone predict a different REST colour (#000000B2, not #EBEBEB), so the conditional row's rest PASS depends on its truncated chain, not on the hover inference its label names, "
-            "and the as-read variants changed two things at once (the ancestor and the label's state). The button, list-row and tile colours were checked on one-element chains." % (one, len(st)))
+    trunc = [c for c in st if c.get("chain_truncated")]
+    real = [c for c in st if "@" in c["id"]]
+    return ("Chains: %d of the %d state checks are the published ones and feed the cascade a TRUNCATED chain (the element and at most five ancestors, one element in most), marked chain_truncated and kept with their verdicts; "
+            "%d variants beside them use the REAL ancestry of the same element from the captures (the first of several matching elements is taken; ancestors of a hovered element get the hover state, observed by Session G on at most "
+            "five levels). Where a real-ancestry variant fails or passes differently, the report says so in its own row." % (len(trunc), len(st), len(real)))
 
 
 def grid_md(results):
