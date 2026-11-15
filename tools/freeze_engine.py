@@ -26,7 +26,9 @@ def command(out, name):
            "--add-data", "%s%sskin_editor/render" % (ROOT / "skin_editor" / "render" / "pitch.json", sep),      # measured cell pitch (M3), read by render.pitch
            # UnityPy loads its typetree and resource files by path, and texture codecs are C extensions imported by name
            "--collect-all", "UnityPy", "--collect-all", "texture2ddecoder", "--collect-all", "etcpak",
-           "--hidden-import", "skin_editor.api.methods", "--hidden-import", "skin_editor.table_usage", "--hidden-import", "skin_editor.userdirs",
+           "--collect-all", "astc_encoder", "--collect-all", "archspec",            # the ASTC codec asks archspec for the CPU type, and archspec reads json data files: without them every ASTC picture (the icons) failed in the installed app
+           "--exclude-module", "fmod_toolkit", "--exclude-module", "pyfmodex",       # no audio: skin_editor/frozen.py stands in for fmod_toolkit, and FMOD is not shipped
+           "--hidden-import", "skin_editor.api.methods", "--hidden-import", "skin_editor.frozen", "--hidden-import", "skin_editor.table_usage", "--hidden-import", "skin_editor.userdirs",
            str(ROOT / "tools" / "engine_entry.py")]
     return cmd
 

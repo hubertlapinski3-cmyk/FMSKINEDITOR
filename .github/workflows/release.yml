@@ -47,6 +47,12 @@ jobs:
           python tools/freeze_engine.py
           if (-not (Test-Path build-sidecar/fm-skin-engine/fm-skin-engine.exe)) { throw "frozen engine missing" }
 
+      - name: Self-test the frozen engine (the picture code must import in the frozen build)
+        shell: pwsh
+        run: |
+          & build-sidecar/fm-skin-engine/fm-skin-engine.exe --selftest
+          if ($LASTEXITCODE -ne 0) { throw "the frozen engine's self-test failed: a library the picture code needs is missing from the build" }
+
       - name: Install the Studio dependencies and run its tests
         working-directory: studio
         shell: pwsh

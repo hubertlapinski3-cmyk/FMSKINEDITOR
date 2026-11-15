@@ -6,6 +6,7 @@ application errors: -32004 not found, -32010 placement refused (data: blocks, wa
 import base64
 import binascii
 import json
+import logging
 
 from .methods import call, methods
 from .schema import SchemaError
@@ -79,6 +80,7 @@ def _one(engine, req):
         except MethodNotFound as ex:
             out = {"error": _error(-32601, "method not found: %s" % ex.args[0])}
         except Exception as ex:
+            logging.getLogger("skin_editor").warning("rpc %s failed: %s: %s", req["method"], type(ex).__name__, ex, exc_info=True)       # the traceback goes to app.log; the caller gets the message
             out = {"error": error_of(ex)}
     return None if notify else dict({"jsonrpc": "2.0", "id": rid}, **out)
 
