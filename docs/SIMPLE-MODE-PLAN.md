@@ -1,5 +1,7 @@
 # Simple mode plan: a first skin for someone who has never skinned (for approval; no code written)
 
+> **CURRENT STATUS (2026-11-15, end of the sitting): S0 to S8 are BUILT (reports below); the plan text further down is the original proposal and is kept as written. What is left, the standing rules and how to run everything: `docs/HANDOFF-SIMPLE-MODE.md`. Session 2 (the gallery gate) is mostly done by eye (`docs/evidence/phase9-simple-session-2-20261115.md`); Session 1, the owner's eyeball pass and the 1.2.0 release candidate are not done. Nothing is tagged without the owner's go.**
+
 Written 2026-11-15 after the 1.1.0 release; AMENDED the same day after a second-party audit (the owner's amendments 8 to 15, each verified in the code before it was written in, section 0). Status: PROPOSAL. Nothing in this document is built. Statements about the current app were read from the code at 25eb4f1; statements about what a beginner does are assumptions and are marked as such.
 
 ## 0. Verification log of the audit amendments (2026-11-15; code read, and the Crimson export run offline into a scratch folder)
