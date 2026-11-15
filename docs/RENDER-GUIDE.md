@@ -43,7 +43,7 @@ Read the notice at the top and the "What this render does not know" list under t
 
 - **Club colours.** Some surfaces are painted from the club's colours at run time; the render shows the game's default there.
 
-- **Not applied in the skin view:** class renames, image and font swaps and raising a rule's specificity.
+- **Not applied in the skin view:** class renames, font swaps, the bundle route's image swaps and raising a rule's specificity. **A native project's picture swaps ARE drawn (since S6, 1.2.0):** the same `images.uss` rules the native export writes, with your own files; every image is stretched to its element (the game crops a wallpaper to fill).
 
 ## How far to trust it
 

@@ -239,6 +239,11 @@ class Engine:
             raise KeyError("no such token: %s" % b["token"])
         return simple.token_screens(ix, b["token"])
 
+    def simple_pictures(self, q, b):
+        """S6: the pictures Simple mode offers (what a native skin can replace), the wallpaper places, and where Look at it can show them."""
+        from . import simple
+        return simple.picture_catalog(images.catalog(self.ws, self.need_info()["aa_dir"]), self._icon_classes())
+
     def simple_literal_info(self, q, b):
         """What a literal colour swap would copy into a native skin, and whether Simple mode offers it (at most simple.LITERAL_LIMIT copied rules)."""
         from . import simple
@@ -518,8 +523,17 @@ class Engine:
         folder = self._render_folder(uxml)
         key = (str(folder), id(self.index))
         if getattr(self, "_rd", (None, None))[0] != key:
-            self._rd = (key, Renderer(folder, self.ws.cache, self.index))
+            rd = Renderer(folder, self.ws.cache, self.index)
+            rd.project_images = lambda p: {"classes": self._icon_classes(), "dir": project_mod.images_dir(self.ws, p["name"])}     # S6: a native project's pictures are drawn
+            self._rd = (key, rd)
         return self._rd[1]
+
+    def _icon_classes(self):
+        """images.icon_classes of the game, once per game folder (it reads two style bundles)."""
+        aa = self.need_info()["aa_dir"]
+        if getattr(self, "_ic", (None, None))[0] != aa:
+            self._ic = (aa, images.icon_classes(aa))
+        return self._ic[1]
 
     def _render_folder(self, uxml):
         """The folder the render reads every layout bundle from. The snapshot is used only when it holds the COMPLETE set of the game's layout bundles (it often holds just

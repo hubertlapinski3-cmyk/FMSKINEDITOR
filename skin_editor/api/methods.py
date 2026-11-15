@@ -151,6 +151,7 @@ _TABLE = [
     ("theme.create", None, {"name": "str", "background": "str", "accent": "str", "text": "str", "mode": ("opt", ("enum", ["dark", "light"])), "keep_club_colours": "bool?"}, "theme_create", "call", "Write a generated theme as a native folder project; refused when it fails the contrast check."),
     ("theme.gallery", None, {}, "theme_gallery", "call", "The gallery themes (inputs only, made by the same generator) with their contrast results."),
     ("simple.token_screens", None, {"token": "str"}, "simple_token_screens", "call", "On how many of the measured screens the shipped models hold an area this token paints: {screens, of, names}. Counts only."),
+    ("simple.pictures", None, {}, "simple_pictures", "call", "S6: the game's pictures a native skin can replace (wallpapers and USS-class icons), the wallpaper places, and where Look at it shows them."),
     ("simple.literal_info", None, {"rgb": "str", "a": "num?"}, "simple_literal_info", "call", "What a literal colour swap copies into a native skin: {uses, selectors, copied_rules, limit, offered}."),
     ("tokens.browse", None, {"used_only": "bool?"}, "browse_colours", "call", "Every colour token the game's rules use (all with used_only false): name, colour, number of rule paths it paints."),
     ("app.explain", None, {"message": "str"}, "explain", "call", "An engine message in plain words: {plain, details}."),

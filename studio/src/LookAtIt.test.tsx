@@ -108,11 +108,11 @@ describe('Look at it', () => {
   })
 })
 
-const sources = import.meta.glob(['./LookAtIt.tsx', './Palette.tsx', './Start.tsx', './Setup.tsx', './PutInGame.tsx', './colourGroups.ts', './myColours.ts', './showcase.ts', './Preview.tsx'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>
+const sources = import.meta.glob(['./LookAtIt.tsx', './Palette.tsx', './Start.tsx', './Setup.tsx', './PutInGame.tsx', './Pictures.tsx', './pickImage.ts', './Recolour.tsx', './MyColoursStrip.tsx', './colourGroups.ts', './myColours.ts', './showcase.ts', './Preview.tsx'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>
 const src = (f: string) => sources['./' + f]
 
 describe('Simple mode shows no screenshot of the game anywhere (source check)', () => {
-  const SIMPLE = ['LookAtIt.tsx', 'Palette.tsx', 'Start.tsx', 'Setup.tsx', 'PutInGame.tsx', 'colourGroups.ts', 'myColours.ts', 'showcase.ts']
+  const SIMPLE = ['LookAtIt.tsx', 'Palette.tsx', 'Start.tsx', 'Setup.tsx', 'PutInGame.tsx', 'Pictures.tsx', 'pickImage.ts', 'Recolour.tsx', 'MyColoursStrip.tsx', 'colourGroups.ts', 'myColours.ts', 'showcase.ts']
   it('none of the Simple mode components names a preview call, which are the only calls that return a picture of the game', () => {
     for (const f of SIMPLE) { expect(src(f), f + ' was read').toBeTruthy(); expect(src(f), f).not.toMatch(/preview\.(image|live_image|evaluate|models|model_names|live|suggest)\b/) }
   })

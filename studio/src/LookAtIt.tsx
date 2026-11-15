@@ -10,7 +10,7 @@ type Mode = 'side' | 'game' | 'mine'
 /** "Look at it" (S5), Simple mode: a layout of the game drawn OFFLINE by the Studio, with a before / after switch: the game as it ships, with your skin, or both side by side.
  *  Both sides are renders (an approximation, never the game); no screenshot of the game is requested or shown anywhere in this view: it never calls `preview.*`
  *  (pinned by a test that spies on every call). The approximation notice is the engine's own, shown once above the pictures. */
-export default function LookAtIt({ project, say }: { project: string | null; say: (s: string) => void }) {
+export default function LookAtIt({ project, say, start }: { project: string | null; say: (s: string) => void; start?: { name: string; label: string } | null }) {
   const [current, setCurrent] = useState<LayoutRow | null>(null)
   const [label, setLabel] = useState(SHOWCASE[0].label)
   const [mode, setMode] = useState<Mode>(project ? 'side' : 'game')
@@ -32,7 +32,8 @@ export default function LookAtIt({ project, say }: { project: string | null; say
       setProblem(''); setLabel(lab); setCurrent(row); setNotice(''); setPicked(null); setResults({})
     } catch (e) { setProblem(sayOf(e).plain); say('ERROR ' + sayOf(e).details) }
   }
-  useEffect(() => { void open(SHOWCASE[0].name, SHOWCASE[0].label) }, [])        // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { void open(start?.name ?? SHOWCASE[0].name, start?.label ?? SHOWCASE[0].label) }, [start])        // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => { setMode(project ? 'side' : 'game') }, [project])
   useEffect(() => {
     if (q.trim().length < 2) { setFound([]); return }

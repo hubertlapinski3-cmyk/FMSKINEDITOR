@@ -16,6 +16,7 @@ import Setup from './Setup'
 import Start from './Start'
 import PutInGame from './PutInGame'
 import LookAtIt from './LookAtIt'
+import Pictures from './Pictures'
 import { resolveMode, readStoredMode, storeMode, type Mode } from './mode'
 import { sayOf, sayOfJobError, type Said } from './plainError'
 import { RenderScreenView, RenderTableView } from './RenderScreens'
@@ -78,6 +79,7 @@ export default function App() {
   const [sheetQ, setSheetQ] = useState('')
   const [rmode, setRmode] = useState<'layout' | 'screen' | 'table'>('layout')          // what the render view shows: one layout, a whole screen on the grid, or a table view
   const [rl, setRl] = useState<LayoutRow | null>(null)                             // the layout picked in the render view
+  const [lookStart, setLookStart] = useState<{ name: string; label: string } | null>(null)   // S6: the layout "See it in Look at it" opens
   const [sideW, setSideW] = useStoredSize('studio.sideW', 250, 160, 640)           // resizable panels, remembered between runs
   const [panelH, setPanelH] = useStoredSize('studio.panelH', 210, 80, 560)
 
@@ -297,7 +299,7 @@ export default function App() {
         {view === 'game' && <div className="gameview"><div className="head">GAME STYLESHEETS ({sheets.length})</div>
           <input className="search" placeholder="Filter ..." value={sheetQ} onChange={(e) => setSheetQ(e.target.value)} />
           <ul>{sheets.filter((s) => s.name.toLowerCase().includes(sheetQ.toLowerCase())).map((s) => <li key={s.bundle + '|' + s.name} onClick={() => openSheet(s.name, s.bundle)} title={s.bundle}>{s.name}<small> {s.rules}</small></li>)}</ul></div>}
-        {project && <div hidden={view !== 'assets'}><Guard name="Images"><Assets key={project} project={project} onChanged={reloadClean} say={say} /></Guard></div>}   {/* stays mounted so unsaved staging survives a view switch */}
+        {project && mode !== 'simple' && <div hidden={view !== 'assets'}><Guard name="Images"><Assets key={project} project={project} onChanged={reloadClean} say={say} /></Guard></div>}   {/* stays mounted so unsaved staging survives a view switch */}
         {view === 'layouts' && <Guard name="Layouts"><Layouts key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
         {view === 'tiles' && <Guard name="Tile layout"><Tiles key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
         {view === 'tables' && <Guard name="Table views"><Tables key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
@@ -323,7 +325,7 @@ export default function App() {
       </aside>
       <main className="editor">
         {notice && !needsSetup && <div className="notice" role="alert"><div>{notice.plain}</div><details><summary>details</summary><div className="mono small">{notice.details}</div></details><button onClick={() => setNotice(null)} aria-label="Dismiss">×</button></div>}
-        {needsSetup && state ? <Guard name="Setup"><Setup state={state} refresh={refreshState} say={say} pickFolder={pickGameFolder} /></Guard> : view === 'render' && mode === 'simple' ? <Guard name="Look at it"><LookAtIt project={project} say={say} /></Guard> : view === 'put' && project ? <Guard name="Put it in the game"><PutInGame key={project} project={project} say={say} /></Guard> : showStart ? <Guard name="Start"><Start projects={projects} say={say} onImport={importNative} onCreated={async (n) => { await refreshState(); await openProject(n); setView('palette') }} /></Guard> : view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
+        {needsSetup && state ? <Guard name="Setup"><Setup state={state} refresh={refreshState} say={say} pickFolder={pickGameFolder} /></Guard> : view === 'render' && mode === 'simple' ? <Guard name="Look at it"><LookAtIt project={project} say={say} start={lookStart} /></Guard> : view === 'assets' && mode === 'simple' && project ? <Guard name="Pictures"><Pictures key={project} project={project} say={say} onChanged={reloadClean} onLook={(s) => { setLookStart(s); setView('render') }} /></Guard> : view === 'put' && project ? <Guard name="Put it in the game"><PutInGame key={project} project={project} say={say} /></Guard> : showStart ? <Guard name="Start"><Start projects={projects} say={say} onImport={importNative} onCreated={async (n) => { await refreshState(); await openProject(n); setView('palette') }} /></Guard> : view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
         <div className="tabs">{tabs.map((t) => <div key={t.path} className={'tab' + (t.path === active ? ' on' : '')} onClick={() => setActive(t.path)}>{t.path.split('/').pop()}{t.readonly ? ' (game)' : ''}{dirty(t.path) ? ' •' : ''}<button onClick={(e) => { e.stopPropagation(); closeTab(t.path) }}>×</button></div>)}</div>
         <div className="surface">
           {tab ? <Editor path={tab.path} language={langOf(tab.path)} theme="vs-dark" value={tab.text}

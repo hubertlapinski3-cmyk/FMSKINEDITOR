@@ -156,6 +156,31 @@ The report above stays as written; this note says what changed. The figures are 
 - The 148 kept colours.
 **Tests:** engine `test_s4_theme` 23 (adds: the added entry and its reason, light refused, the badge blocks and is reported as corrected, the light refusal in plain words); Studio 147 (`S4.test`: no Light choice, the corrected sentence, the untouched-low sentence). Checklist section G and the Session 2 checklist are updated: 83 tokens; the badge as a theme-set colour, with its paint source to be found first.
 
+### S6 built (2026-11-15, milestone report; batch 2)
+**The plan's claim "no new engine work is expected" was checked, as the milestone required, and it was WRONG in one place.** The native export already carried picture swaps (icons and SVGs through the game's own USS classes, wallpapers painted on five places because the game picks its wallpapers in code), but the offline render drew none of them: `overlay.NOT_APPLIED` said "image and font swaps", so "see it in Look at it" was impossible without engine work.
+**What was added (no new render rule, no calibration change):**
+- `overlay.image_rules` produces, for a native project, exactly the rules the export writes into `images.uss`, appended to the project's author sheet like any other appended rule. A test exports a project and pins that its `images.uss` holds the same rules.
+- The asset pass draws the user's own file for those `url()` values. Each such image is noted as "your picture", stretched to the element as the render draws every image (the game crops a wallpaper to fill).
+- `not_applied` for a native project is now "class renames; font swaps". The bundle route's image swaps are still not drawn and still said. `RENDER-GUIDE.md` is updated.
+**Measured offline against the real game** (`tools/check_s6_pictures.py`, scratch workspace and skins folder, the game only read; `docs/evidence/s6-pictures-check-20261115.json`):
+- **The catalogue:** 1,341 icons, of which **1,290** a USS class draws; 285 SVGs, all **285** with a class; **1,369 wallpapers**. The 51 icons with no class are placed in code: only the bundle route reaches them, so Simple mode does not offer them and says how many are left out.
+- **Render:** an icon swap (`tick_small`) is drawn on 1 element of the Preferences card. A wallpaper swap on "Main screens" is drawn on 1 element of the Squad screen (`.base-layer-content`). Both appear only on the skin side, 0 on the game side.
+- **Export:** the native export of the same project writes 2 pictures, no problems, nothing skipped, and its `images.uss` rules equal the render's (2 and 2).
+**In the Studio:** Simple mode's **Pictures** is a new three-step view (`Pictures.tsx`; the Advanced Images view is unchanged and stays Advanced-only):
+1. Choose a picture of the game: Wallpapers or Icons, with a filter and the game's thumbnails. Only what a native skin can replace is listed.
+2. Pick your file: PNG, JPG or WebP, and SVG for icons; your picture is shown beside the game's.
+3. Where it shows: wallpapers only, the five places with the default ones ticked, and at least one required. An icon "shows wherever the game uses it".
+
+Then **Use my picture** (the same `images.commit` the Advanced view uses), **See it in Look at it**, and **Put it back** on every replaced picture.
+- Look at it takes a starting layout. A wallpaper on "Main screens" opens the **Squad screen**, the one place a measured layout is known to show (`simple.LOOK_AT`).
+- For the other four places the screen says "on screens Look at it can't draw yet; you will see it in the game". It does not open a layout nobody has checked.
+- An icon opens Look at it plainly, naming the layouts known to use icons.
+**Tests:** engine `test_s6_pictures` (5: the rules equal the export's images.uss, file types read from bytes, class-less icons skipped and said, only native, `not_applied`, the hash re-renders, the catalogue offer and its count); Studio 154 (`Pictures.test` new, 7; the no-screenshot source check now also scans Pictures, the picker, Recolour and the My colours strip). Engine suite 428 OK.
+**Not done, said plainly:**
+- Four of the five wallpaper places (report pages, start screen, loading, match intro) are not shown in Look at it: no layout covering them has been measured, and I did not guess one.
+- The render stretches a wallpaper where the game crops it.
+- Nothing here was looked at in the game or by a person (checklist section H). Session 1 or 2 can add a wallpaper check if the owner wants one; it is not in the sessions checklist now.
+
 ### S2. One way into the game
 - **One button, "Put it in the game"**, in Simple mode: the native route only (`native.export`), which changes no game file. Bundles are not offered in Simple mode.
 - **After it runs**, the two steps left are shown with the skin's name filled in: pick it once in Preferences, press Reload Skin. On later runs only the second. The Studio cannot tell, offline, whether the user did the first; it says what was written and what is left to do.

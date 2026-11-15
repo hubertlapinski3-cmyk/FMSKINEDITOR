@@ -9,6 +9,26 @@ Simple mode offers it (more than 0 and at most LITERAL_LIMIT copied rules, the l
 from . import preview, project as project_mod
 
 LITERAL_LIMIT = 50
+# S6: the wallpaper place a layout Look at it can draw is known to show (measured by tools/check_s6_pictures.py: the Squad screen's `.base-layer-content` takes the picture).
+# The other places sit on screens no measured layout covers yet; Simple mode says so instead of suggesting a layout it has not checked.
+LOOK_AT = {"main-screens": {"name": "SquadScreen", "label": "Squad screen"}}
+
+
+def picture_catalog(rows, classes):
+    """The game's pictures a NATIVE skin can replace, for Simple mode's Pictures (S6): every wallpaper (painted on the places the person ticks) and every icon or SVG a USS class
+    draws (the others are placed in code and only the bundle route reaches them, so they are left out and counted). Each wallpaper carries its default places."""
+    from . import native
+    out, left = [], 0
+    for r in rows:
+        if r["kind"] == "texture":
+            out.append({"kind": "wallpaper", "game_kind": "texture", "bundle": r["bundle"], "path_id": str(r["path_id"]), "name": r["name"], "w": r.get("w"), "h": r.get("h"),
+                        "group": r.get("group", ""), "where_default": native.default_places(r["name"])})
+        elif classes.get(("icon", r["name"]) if r["kind"] == "icon" else ("svg", str(r["path_id"]))):
+            out.append({"kind": "icon", "game_kind": r["kind"], "bundle": r["bundle"], "path_id": str(r["path_id"]), "name": r["name"], "w": r.get("w"), "h": r.get("h"), "group": r.get("group", "")})
+        else:
+            left += 1
+    return {"rows": out, "counts": {"wallpapers": sum(1 for r in out if r["kind"] == "wallpaper"), "icons": sum(1 for r in out if r["kind"] == "icon"), "left_out": left},
+            "places": {k: v[0] for k, v in native.PLACES.items()}, "look_at": LOOK_AT}
 PROBE = {"rgb": "#FE01FE", "a": 1.0}          # a colour no game token uses, so any region it reaches shows as changed
 _screens_cache = {}
 

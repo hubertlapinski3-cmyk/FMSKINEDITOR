@@ -33,6 +33,7 @@ class Renderer:
         self._metrics = load_text_metrics()
         self._assets = AssetResolver(folder, cache_dir) if cache_dir else None      # M4: asset(F:P) values; none without a cache folder
         self._drawn = Drawn(self._assets) if self._assets else None
+        self.project_images = None           # S6: callable(project) -> {"classes", "dir"} for drawing a native project's picture swaps; set by the engine
 
     def layout_list(self, q="", limit=200):
         """Layouts for the browser: name, bundle, path id and element count, filtered by a case-insensitive substring of the name, shortest names first."""
@@ -59,10 +60,25 @@ class Renderer:
         h = overlay.project_hash(p)
         hit = self._skin.get(p["name"])
         if not hit or hit[0] != h:
-            sheets, notes = overlay.build_sheets(self.bank, p)
+            imgs = self._images_for(p)
+            sheets, notes = overlay.build_sheets(self.bank, p, images=imgs)
             hit = (h, cascade_mod.Cascade(sheets, self._rc), notes)
             self._skin[p["name"]] = hit
         return hit[1], hit[2]
+
+    def _images_for(self, p):
+        if not (p.get("image_swaps") and self.project_images and (p.get("options") or {}).get("output") == "native"):
+            return None
+        return self.project_images(p)
+
+    def project_files(self, p):
+        """{url file: absolute path} of a native project's picture swaps, for the asset pass (S6)."""
+        imgs = self._images_for(p)
+        if not imgs:
+            return {}
+        _r, files, _s = overlay.image_rules(p, imgs["classes"], imgs["dir"])
+        from pathlib import Path
+        return {fn: str(Path(imgs["dir"]) / src) for fn, src in files.items()}
 
     def cascade_with_sheet(self, rules, name="recorded run-time sheet (sample)"):
         """The cascade with one extra sheet appended (layers.py, `recorded-runtime-sheet`); cached by the rules' content."""
@@ -102,7 +118,7 @@ class Renderer:
         if self._assets:
             sheet_bundles = {n: b for b, n, _w in ROOT_SHEETS}
             sheet_bundles.update({s['name']: s['bundle'] for s in (self.bank.ix.sheets if self.bank.ix is not None else [])})
-            asset_counts = apply_assets(top, self._assets, bundle, sheet_bundles, self._drawn)
+            asset_counts = apply_assets(top, self._assets, bundle, sheet_bundles, self._drawn, project_files=self.project_files(project) if project is not None else None)
         switch_branch_rule(top, branches)
         delivered_report = delivered_mod.apply(top, delivered) if delivered else None      # M7: captured text for the nodes it pairs with, by structural path                             # one branch per switch, the rest not drawn and said so
         percent_main_axis_rule(top)                                   # a game rule CSS does not share (html.py); notes each node it changes in `layout_rules`
@@ -125,7 +141,7 @@ class Renderer:
             walk(n)
         return {"layout": tree["layout"], "bundle": bundle, "path_id": str(path_id), "notice": NOTICE, "tree": top, "includes": includes, "truncated": truncated, "layers": layer_info or None, "summary": summary, "assets": asset_counts, "delivered": delivered_report,
                 "overlay": ({"project": project["name"], "hash": overlay.project_hash(project), "output": (project.get("options") or {}).get("output", "bundles"),
-                             "layout_patch_ops_applied": applied, "notes": notes, "not_applied": overlay.NOT_APPLIED} if project is not None else None),
+                             "layout_patch_ops_applied": applied, "notes": notes, "not_applied": overlay.not_applied(project)} if project is not None else None),
                 "sheet_order": [{"position": i, "bundle": b, "sheet": n, "why": why} for i, (b, n, why) in enumerate(ROOT_SHEETS)],
                 "gaps": GAPS + (["%d selectors with runtime states (%s) are not applied" % (c.stats["state_selectors_skipped"],
                                                                                           ", ".join("%s %d" % kv for kv in c.stats["state_pseudo_classes"].items()))]

@@ -68,6 +68,14 @@ On the start screen of a fresh run (section A's launcher):
 5. Put the text colour back. Small grey lines say that the defender badge and the unsuited rating are below 4.5 to 1 in the game's own colours and that this theme corrects them (with both figures), and that 7 pairs can't be checked here. All are said, not hidden.
 6. Make it: the skin opens like any other. Put it in the game works as in section C.
 
+## H. Pictures in three steps (S6)
+With a skin open, click **Pictures**:
+1. Three numbered steps. Step 1 has **Wallpapers** and **Icons** with counts, a filter and the game's own thumbnails. Under Icons a line says how many pictures are left out because the game places them in code.
+2. Choose a wallpaper whose name you like: step 3 shows five places, some ticked already. Untick them all: "Tick at least one place." and **Use my picture** is off.
+3. Tick **Main screens**, **Pick a file** (any PNG or JPG of yours), **Use my picture**. It says the picture is in the skin and shows in the game after Put it in the game; **See it in Look at it (Squad screen)** opens the Squad screen with your picture on the "With my skin" side only (stretched; the game crops it).
+4. Choose an icon (filter "tick"), pick a file, use it, **Open Look at it**, open the **Preferences card**: the tick icons are yours on the skin side.
+5. At the top of Pictures, each replaced picture has **Put it back**; it comes off the list and off the picture.
+
 ## B. An existing install
 Stop the first run (Enter), then:
 

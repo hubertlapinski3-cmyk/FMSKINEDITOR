@@ -1,0 +1,71 @@
+{
+ "catalog": {
+  "icon": 1341,
+  "texture": 1369,
+  "svg": 285
+ },
+ "native_replaceable": {
+  "icon": 1290,
+  "svg": 285
+ },
+ "wallpaper_places": {
+  "report-pages": "Report and tool pages (player, club, competition, squad report ...)",
+  "main-screens": "Main screens (portal, squad, tactics, recruitment, training, club ...)",
+  "start-screen": "Start screen",
+  "loading": "Loading and modal screens",
+  "match-intro": "Match intro, team news, tunnel interview"
+ },
+ "swaps": {
+  "icon": "tick_small",
+  "wallpaper": "fm27_skin_uefa-womens-champions league",
+  "wallpaper_where": [
+   "main-screens"
+  ]
+ },
+ "render": [
+  {
+   "layout": "PreferencesFMMenuCard",
+   "skin": false,
+   "elements_with_your_picture": 0,
+   "project_images_counted": 0,
+   "not_applied": null
+  },
+  {
+   "layout": "PreferencesFMMenuCard",
+   "skin": true,
+   "elements_with_your_picture": 1,
+   "project_images_counted": 1,
+   "not_applied": [
+    "class renames",
+    "font swaps"
+   ]
+  },
+  {
+   "layout": "SquadScreen",
+   "skin": false,
+   "elements_with_your_picture": 0,
+   "project_images_counted": 0,
+   "not_applied": null
+  },
+  {
+   "layout": "SquadScreen",
+   "skin": true,
+   "elements_with_your_picture": 1,
+   "project_images_counted": 1,
+   "not_applied": [
+    "class renames",
+    "font swaps"
+   ]
+  }
+ ],
+ "export": {
+  "state": "done",
+  "images": 2,
+  "problems": [],
+  "skipped": [],
+  "images_uss_rules": 2,
+  "overlay_rules": 2,
+  "same_rules": true,
+  "files_named_exist": true
+ }
+}

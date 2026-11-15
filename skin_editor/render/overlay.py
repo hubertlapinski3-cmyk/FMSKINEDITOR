@@ -7,7 +7,10 @@
   rule and the appended rules; `replace` and `remove` edits do not exist in a native skin and are reported in `notes`, not drawn.
 - Layout patches (class and inline edits, attributes) are applied to the render tree before the cascade, to the node whose element id and layout name match; the guard
   (type and name) must match or the op is reported and skipped, as the build refuses it.
-- Not applied here, said in `not_applied`: tile moves and table edits (they act on the screen assembly and on table views), class renames, image and font swaps.
+- Picture swaps of a NATIVE project (S6, 2026-11-15): the rules the native export writes into images.uss (`image_rules`, pinned equal to the export by a test) are appended to
+  the author sheet, and the asset pass draws the user's own file for their url(). Not a render rule: the cascade decides where they apply, as for any other appended rule.
+- Not applied here, said in `not_applied`: tile moves and table edits (they act on the screen assembly and on table views), class renames, font swaps, and the bundle
+  route's image swaps.
 Everything returned is data about what was applied; nothing is silent."""
 import copy
 import hashlib
@@ -23,7 +26,7 @@ AUTHOR_BUNDLE = "(project)"
 
 def project_hash(p):
     """A short hash of everything in a project that changes a render (not the name, the vanilla manifest or the checks)."""
-    keys = ("token_overrides", "literal_swaps", "reverts", "scoped_rules", "layout_patches", "options", "rename_classes", "native_sheets")
+    keys = ("token_overrides", "literal_swaps", "reverts", "scoped_rules", "layout_patches", "options", "rename_classes", "native_sheets", "image_swaps")
     return hashlib.sha1(json.dumps({k: p.get(k) for k in keys}, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
 
 
@@ -87,8 +90,56 @@ def _edit_rules(entry, edits, notes):
             r["p"] = [p for p in r["p"] if names and p[0] not in names]
 
 
-def build_sheets(bank, p, order=None):
-    """(compiled sheets in application order with the project's edits applied, notes). Entries are copied: the bank's own sheets are never modified."""
+_RAW_RULE = re.compile(r"(?s)\s*([^{}]+?)\s*\{(.*?)\}")
+
+
+def _parse_raw(text):
+    """[(selector, {prop: value})] of a small USS text as native.PLACES writes its extra rules."""
+    out = []
+    for m in _RAW_RULE.finditer(text):
+        props = {}
+        for decl in m.group(2).split(";"):
+            if ":" in decl:
+                k, v = decl.split(":", 1)
+                props[k.strip()] = v.strip()
+        out.append((m.group(1).strip(), props))
+    return out
+
+
+def image_rules(p, classes, src_dir):
+    """The rules a NATIVE export writes into images.uss for the project's picture swaps (native._export), as (selector, props) pairs, plus {url file: project source file}
+    and the swaps it cannot draw (an icon no USS class draws). The same names and selectors as the export (pinned by a test that compares with the exported images.uss), so the
+    render shows the user's picture where the native skin would put it. `classes` is images.icon_classes() of the game; `src_dir` the project's images folder (a wallpaper's
+    file type is read from its bytes, as the export does)."""
+    from pathlib import Path
+    from .. import images, native
+    rules, files, skipped = [], {}, []
+    for e in p.get("image_swaps", []):
+        if e["kind"] == "texture":
+            with open(Path(src_dir) / e["source"], "rb") as fh:
+                ext = images.sniff(fh.read(2048))
+            fn = "images/%s.%s" % (images._safe(e["name"]), "jpg" if ext == "jpg" else "png")
+            files[fn] = e["source"]
+            for w in e.get("where") or native.default_places(e["name"]):
+                _label, sels, extra = native.PLACES[w]
+                for x in extra:
+                    rules.extend(_parse_raw(x))
+                rules.append((", ".join(sels), {"background-image": 'url("%s")' % fn, "-unity-background-scale-mode": "scale-and-crop"}))
+            continue
+        key = ("icon", e["name"]) if e["kind"] == "icon" else ("svg", str(e["path_id"]))
+        cls = classes.get(key)
+        if not cls:
+            skipped.append("%s %s: no USS class draws it, so a native skin cannot replace it" % (e["kind"], e["name"]))
+            continue
+        fn = "images/%s.png" % images._safe(e["name"])
+        files[fn] = e["source"]
+        rules.append((", ".join("." + c for c in cls), {"background-image": 'url("%s")' % fn}))
+    return rules, files, skipped
+
+
+def build_sheets(bank, p, order=None, images=None):
+    """(compiled sheets in application order with the project's edits applied, notes). Entries are copied: the bank's own sheets are never modified.
+    With `images` = {"classes", "dir"} (native output only), the project's picture swaps are appended to the author sheet as the native export writes them (S6)."""
     spec = project_mod.to_spec(p)
     native = (p.get("options") or {}).get("output", "bundles") == "native"
     skip = set(spec["skip_sheets"])
@@ -119,6 +170,11 @@ def build_sheets(bank, p, order=None):
                 _rule(author["rules"], e["selector"], e["props"], {"kind": "project", "sheet": sheet_name, "selector": e["selector"]})
         for sheet_name, edits in spec["edit_rules_by_sheet"].items():
             notes.append("%d replace/remove edit(s) on %s do not exist in a native skin: not drawn" % (len(edits), sheet_name))
+        if p.get("image_swaps") and images is not None:
+            rules, _files, skipped = image_rules(p, images["classes"], images["dir"])
+            for sel, props in rules:
+                _rule(author["rules"], sel, props, {"kind": "project", "sheet": "images", "selector": sel})
+            notes.extend(skipped)
         sheets.append(author)
     elif tokens_left:
         notes.append("token overrides with no definition in the root sheets (not drawn): " + ", ".join(sorted(tokens_left)))
@@ -198,3 +254,9 @@ def table_placeholder(T, path_id, project=None, breakpoint=None):
 
 
 NOT_APPLIED = ["class renames", "image and font swaps"]
+NOT_APPLIED_NATIVE = ["class renames", "font swaps"]          # a native project's picture swaps are drawn (S6): the export's own images.uss rules, the user's files
+
+
+def not_applied(p):
+    native = (p.get("options") or {}).get("output", "bundles") == "native"
+    return NOT_APPLIED_NATIVE if native else NOT_APPLIED

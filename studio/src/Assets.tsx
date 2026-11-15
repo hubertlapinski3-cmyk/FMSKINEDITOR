@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { rpc, RpcError } from './engine'
 import { commit, initial, isDirty, keyOf, reduce, thumbKey, type Slot, type Stage, type Stored } from './staging'
+import { pickImage } from './pickImage'
 
 interface Conflict { severity: 'error' | 'warning' | 'info'; code: string; message: string }
 interface Row extends Slot { w: number; h: number; group: string }
@@ -24,12 +25,6 @@ const Game = ({ bundle, id }: { bundle: string; id: string }) => <img className=
 const Yours = ({ project, file, v }: { project: string; file: string; v: number }) => <img className="thumb" src={useImage('images.source', { project, file }, thumbKey(project, file, v)) || undefined} alt="" />
 const Staged = ({ path }: { path: string }) => <img className="thumb staged" src={useImage('images.preview_file', { path }, 'p|' + path) || undefined} alt="" />
 
-const pickImage = async (): Promise<string | undefined> => {
-  if (!('__TAURI_INTERNALS__' in window)) return prompt('Path of the replacement image (png, jpg, webp or svg):')?.trim() || undefined
-  const { open } = await import('@tauri-apps/plugin-dialog')
-  const r = await open({ multiple: false, directory: false, title: 'Pick the replacement image', filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'svg'] }] })
-  return typeof r === 'string' ? r : undefined
-}
 
 /** Visual mapping of the project's image swaps. Edits are staged (file, fit, places) and written together by "Override"; "Revert" drops them. */
 export default function Assets({ project, onChanged, say }: { project: string; onChanged: () => void; say: (s: string) => void }) {

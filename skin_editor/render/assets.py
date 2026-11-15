@@ -172,8 +172,34 @@ class Drawn:
         self._png[key] = out
         return out
 
+    def file_data_url(self, path):
+        """A project's own picture file (S6) as a PNG data URL; an SVG is rasterised. Cached by path, size and mtime, so a re-picked file is drawn again."""
+        import base64
+        import io
+        import os
+        st = os.stat(path)
+        key = ("file", path, st.st_size, st.st_mtime_ns)
+        if key in self._png:
+            return self._png[key]
+        from .. import images
+        data = Path(path).read_bytes()
+        if images.sniff(data) == "svg":
+            im = images.render_icon(data, 128, 128)
+        else:
+            from PIL import Image
+            im = Image.open(io.BytesIO(data)).convert("RGBA")
+            im.thumbnail((1024, 1024))                       # a wallpaper is drawn at most 1024 px: the render is a preview, the export keeps the full file
+        buf = io.BytesIO()
+        im.save(buf, "PNG")
+        out = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
+        self._png[key] = out
+        return out
 
-def apply_assets(top_nodes, resolver, layout_bundle, sheet_bundles, drawn=None):
+
+URL = re.compile(r'url\(\s*["\']?([^"\')]+)["\']?\s*\)')
+
+
+def apply_assets(top_nodes, resolver, layout_bundle, sheet_bundles, drawn=None, project_files=None):
     """Resolve the asset values of every node: `background-image` (a sprite or texture, drawn) and `-unity-font-definition` (a font: named, not rendered).
     The bundle an `asset(F:P)` indexes is the one its sheet was read from: the shared sheet's bundle (`sheet_bundles[name]`), or the layout's own bundle for an inline value.
     Each node gets `assets: {property: {...}}`; the computed entry's status and note say what was done (a resolved image is `mapped`, an unresolved one stays `partial` with the
@@ -208,10 +234,35 @@ def apply_assets(top_nodes, resolver, layout_bundle, sheet_bundles, drawn=None):
             counts["fonts"] += 1
         return res
 
+    def own_picture(n, d):
+        """A native project's own picture (S6): the value is the url() the export writes, the file is the user's."""
+        m = URL.search(d.get("value") or "")
+        path = (project_files or {}).get(m.group(1)) if m else None
+        if not path:
+            return False
+        try:
+            url = drawn.file_data_url(path)
+        except (OSError, ValueError) as ex:
+            counts["unresolved"] += 1
+            d["note"] = "your picture %s could not be read (%s); shown as a labelled placeholder" % (m.group(1), ex)
+            n.setdefault("assets", {})["background-image"] = {"error": str(ex), "project": True}
+            return True
+        n.setdefault("assets", {})["background-image"] = {"data_url": url, "project": True, "file": m.group(1)}
+        d["status"] = "mapped"
+        d["note"] = "your picture (%s), drawn from the project as the native skin writes it; stretched to the element as the render draws every image (the game crops a wallpaper to fill)" % m.group(1)
+        counts["images"] += 1
+        counts["project_images"] = counts.get("project_images", 0) + 1
+        return True
+
     def walk(n, inherited):
         inh = dict(inherited)
+        bi = n["computed"].get("background-image")
+        if bi and project_files:
+            own_picture(n, bi)
         for prop in ("background-image", "-unity-font-definition"):
             d = n["computed"].get(prop)
+            if prop == "background-image" and (n.get("assets") or {}).get("background-image", {}).get("project"):
+                continue
             ref = parse_ref(d["value"]) if d else None
             if not ref:
                 continue
