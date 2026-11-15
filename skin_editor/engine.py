@@ -711,6 +711,14 @@ class Engine:
         except inspector.Offline as ex:
             return {"online": False, "reason": str(ex)}
 
+    def findings_get(self, q, b):
+        """The Session 2 findings (data/findings/session2.json) with which of their screenshots exist in this workspace's game-screens folder: the pictures are named gallery-<theme>-<screen>.png."""
+        from . import gamescreens
+        d = json.loads((config.resource_root() / "data" / "findings" / "session2.json").read_text(encoding="utf-8"))
+        have = {s["name"] for s in gamescreens.list_screens(self.ws)}
+        d["shots"] = {"%s/%s" % (th["id"], sc["id"]): "gallery-%s-%s.png" % (th["id"], sc["id"]) for th in d["themes"] for sc in d["screens"] if "gallery-%s-%s.png" % (th["id"], sc["id"]) in have}
+        return d
+
     # ---- game screenshots for the tile organiser's backdrop (skin_editor/gamescreens.py; Advanced mode only, kept in the workspace)
     def screens_list(self, q, b):
         from . import gamescreens

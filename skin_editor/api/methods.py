@@ -132,6 +132,7 @@ _TABLE = [
     ("font.remove", None, {"project": "str", "token": "str"}, "font_remove", "call", "Remove a font assignment."),
     ("inspector.status", None, {}, "inspector_status", "call", "Is the FM27 inspector pipe answering? {online, game, scene} or {online: false, reason}."),
     ("preview.live", None, {"project": "str"}, "preview_live", "call", "Live preview: write the project as a native skin skins/<name>-preview, ask the game to reload skins, screenshot it through the inspector. mode static + reason when the pipe is unavailable. Never touches bundles."),
+    ("findings.get", None, {}, "findings_get", "call", "The Session 2 findings (the gallery themes in the game): themes, screens, a verdict per theme and screen, the findings, and which screenshots this workspace holds."),
     ("screens.list", None, {}, "screens_list", "call", "Game screenshots kept in the workspace (game-screens), for the tile organiser's backdrop; the folder is never part of a project or a skin."),
     ("screens.image", None, {"name": "str"}, "screens_image", "binary", "One game screenshot (PNG)."),
     ("screens.add", None, {"path": "str", "name": "str?", "replace": "bool?"}, "screens_add", "call", "Copy a PNG screenshot into the workspace's game-screens folder."),
