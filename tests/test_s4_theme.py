@@ -40,14 +40,17 @@ class RoleMap(unittest.TestCase):
         self.assertEqual(len({e["token"] for e in RM["entries"]} & {k["token"] for k in RM["kept"]}), 0)
 
     def test_the_contrast_pairs_are_crimsons_own_and_the_minimum_is_four_and_a_half(self):
-        self.assertEqual(len(RM["contrast_pairs"]), 43)
+        self.assertEqual(len(RM["contrast_pairs"]) + len(RM["excluded_pairs"]), 43, "Crimson's 43, of which the ones excluded are listed with their reason")
+        self.assertEqual(len(RM["contrast_pairs"]), 42)
         self.assertEqual(RM["contrast_minimum"], 4.5)
 
-    def test_the_defender_badge_label_is_the_one_entry_added_by_decision_and_is_the_themes_text(self):
-        added = [e for e in RM["entries"] if e.get("anchor") == "none"]
-        self.assertEqual([(e["token"], e["ramp"], e["step"]) for e in added], [("--data-player-position-defender-foreground", "text", "t-1")])
-        self.assertEqual(added[0]["rules"], 0, "no rule of this build uses it: the reason says so")
-        self.assertNotIn("--data-player-position-defender-background", {e["token"] for e in RM["entries"]}, "the fill keeps the game's teal")
+    def test_the_defender_badge_is_not_in_the_map_or_the_checks_and_the_record_says_why(self):
+        self.assertEqual([e for e in RM["entries"] if e.get("anchor") == "none"], [], "no entry is added outside the Crimson ramps")
+        self.assertEqual(RM["summary"]["added_by_decision"], 0)
+        self.assertNotIn("--data-player-position-defender-foreground", {e["token"] for e in RM["entries"]})
+        self.assertEqual([(x["fg"], x["bg"]) for x in RM["excluded_pairs"]], [("--data-player-position-defender-foreground", "--data-player-position-defender-background")])
+        self.assertIn(".text-regular", RM["excluded_pairs"][0]["why"]); self.assertIn("one chip, one screen, one theme", RM["excluded_pairs"][0]["why"].lower())
+        self.assertNotIn("--data-player-position-defender-foreground", [p["fg"] for p in RM["contrast_pairs"]])
 
     def test_light_is_out_and_says_why(self):
         self.assertEqual(RM["modes"], ["dark"])
@@ -58,7 +61,7 @@ class Generator(unittest.TestCase):
     def test_crimsons_own_colours_reproduce_crimsons_values(self):
         g = gen(REFS["neutral"], REFS["accent"], REFS["text"])
         crim = {e["token"]: e["crimson"].split()[0] for e in RM["entries"] if e.get("anchor") != "none"}
-        self.assertEqual(len(crim), len(RM["entries"]) - 1, "every entry but the decision-added badge label is anchored in Crimson")
+        self.assertEqual(len(crim), len(RM["entries"]), "every entry is anchored in Crimson")
         for o in g["overrides"]:
             if o["token"] not in crim:
                 continue
@@ -73,7 +76,6 @@ class Generator(unittest.TestCase):
         self.assertEqual(g["--global-background"], "#0F1A24", "the page background is the background input")
         self.assertEqual(g["--brand-theme-primary"], "#2E86DE", "the primary accent is the accent input")
         self.assertEqual(g["--global-text-primary"], "#E6EEF5", "the primary text is the text input")
-        self.assertEqual(g["--data-player-position-defender-foreground"], "#E6EEF5", "the badge label is the theme's primary text")
 
     def test_bad_inputs_and_light_are_refused(self):
         with self.assertRaises(ValueError):
@@ -94,24 +96,21 @@ class Contrast(unittest.TestCase):
         self.assertTrue(all(f["touched"] and f["ratio"] < 4.5 for f in c["failures"]))
         self.assertEqual(json.dumps(g, sort_keys=True), before, "the check does not touch the theme")
         self.assertEqual(json.dumps(gen(*inputs), sort_keys=True), before, "and generating again gives the same colours")
-        self.assertEqual(c["game_failures"], [], "the badge is the theme's job now: no pair is left failing in the game's colours")
+        self.assertEqual(c["game_failures"], [], "no pair is left failing in the game's colours")
 
-    def test_the_badge_pair_blocks_and_the_games_own_low_value_is_still_reported_as_corrected(self):
+    def test_a_text_colour_too_dark_is_refused_and_the_games_own_low_values_are_reported_as_corrected(self):
         c = theme.contrast(gen(REFS["neutral"], REFS["accent"], REFS["text"]), GV)
-        badge = next(r for r in c["rows"] if r["fg"] == "--data-player-position-defender-foreground")
-        self.assertTrue(badge["touched"]); self.assertGreaterEqual(badge["ratio"], 4.5)
-        low = {x["fg"]: x for x in c["game_low"]}
-        self.assertEqual((low["--data-player-position-defender-foreground"]["game_ratio"], low["--data-player-position-defender-foreground"]["corrected"]), (4.41, True))
-        dim = theme.contrast(gen(REFS["neutral"], REFS["accent"], "#A0A0A0"), GV)          # a text colour too dark for the badge's teal
-        self.assertIn("--data-player-position-defender-foreground", [f["fg"] for f in dim["failures"]], "a theme whose text fails on the badge is refused")
+        self.assertEqual([x["fg"] for x in c["game_low"]], ["--status-coaching-adjective-ratings-unsuited-text"])
+        self.assertTrue(c["game_low"][0]["corrected"])
+        dim = theme.contrast(gen(REFS["neutral"], REFS["accent"], "#A0A0A0"), GV)
+        self.assertTrue(dim["failures"], "a theme whose text is too dark for its surfaces is refused")
 
     def test_crimsons_own_colours_pass_every_pair_they_touch(self):
         c = theme.contrast(gen(REFS["neutral"], REFS["accent"], REFS["text"]), GV)
         self.assertEqual(c["failures"], [])
-        self.assertEqual(c["checked"], 36)
+        self.assertEqual(c["checked"], 35)
         self.assertEqual(len(c["unchecked"]), 7, "white on Crimson's hue families, which a generated theme does not write")
-        self.assertEqual(sorted((x["fg"], x["game_ratio"], x["corrected"]) for x in c["game_low"]),
-                         [("--data-player-position-defender-foreground", 4.41, True), ("--status-coaching-adjective-ratings-unsuited-text", 3.93, True)])
+        self.assertEqual([(x["fg"], x["game_ratio"], x["corrected"]) for x in c["game_low"]], [("--status-coaching-adjective-ratings-unsuited-text", 3.93, True)])
 
 
 class Gallery(unittest.TestCase):

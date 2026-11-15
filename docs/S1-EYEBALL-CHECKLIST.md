@@ -63,9 +63,9 @@ In **Look at it**, with a skin open (the empty "game's look" project shows the e
 On the start screen of a fresh run (section A's launcher):
 1. There are four ways to begin; the new one is **Make a theme from three colours**.
 2. **Start from a ready-made theme** now lists Crimson, then Forest, Ocean and Slate and amber, each with three small colour squares and the words "not yet checked in the game". Pick Ocean, Make it: the skin opens; Colours shows the theme's colours changed.
-3. **Make a theme from three colours**: three colour boxes (Background, Accent, Text) start at Crimson's own colours, each with your saved colours beside it. **There is no Dark / Light choice** (themes are dark in this version; S4 amendment). Under them a line says how many of the game's colours the theme sets (83) and leaves (148), and "Readable" when every pair it changes reaches 4.5 to 1.
-4. Make the **Text** colour a mid grey (for example #A0A0A0): within a moment the line turns into a list of pairs that would be hard to read, the defender badge among them, each with its ratio and "needs 4.5 to 1", and **Make it** is off. Nothing changes your colours for you.
-5. Put the text colour back. Small grey lines say that the defender badge and the unsuited rating are below 4.5 to 1 in the game's own colours and that this theme corrects them (with both figures), and that 7 pairs can't be checked here. All are said, not hidden.
+3. **Make a theme from three colours**: three colour boxes (Background, Accent, Text) start at Crimson's own colours, each with your saved colours beside it. **There is no Dark / Light choice** (themes are dark in this version; S4 amendment). Under them a line says how many of the game's colours the theme sets (82) and leaves (148), and "Readable" when every pair it changes reaches 4.5 to 1.
+4. Make the **Text** colour a mid grey (for example #A0A0A0): within a moment the line turns into a list of pairs that would be hard to read, each with its ratio and "needs 4.5 to 1", and **Make it** is off. Nothing changes your colours for you.
+5. Put the text colour back. A small grey line says that the unsuited rating is below 4.5 to 1 in the game's own colours and that this theme corrects them (with both figures), and that 7 pairs can't be checked here. All are said, not hidden.
 6. Make it: the skin opens like any other. Put it in the game works as in section C.
 
 ## H. Pictures in three steps (S6)

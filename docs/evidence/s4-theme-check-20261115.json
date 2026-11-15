@@ -1,12 +1,12 @@
 {
  "role_map": {
-  "entries": 83,
+  "entries": 82,
   "kept": 148,
-  "added_by_decision": 1,
+  "added_by_decision": 0,
   "by_ramp": {
    "neutral": 24,
    "accent": 34,
-   "text": 25
+   "text": 24
   },
   "rule_paths_reached_by_entries": 1778,
   "rule_paths_reached_by_all_used_colour_tokens": 7227
@@ -32,25 +32,13 @@
    "mode": "dark"
   },
   "ok": true,
-  "writes": 83,
+  "writes": 82,
   "keeps": 148,
-  "checked": 36,
+  "checked": 35,
   "unchecked": 7,
   "failures": [],
   "game_failures": [],
-  "badge": {
-   "ratio": 4.77,
-   "set_by_theme": true,
-   "pass": true
-  },
   "game_low": [
-   [
-    "--data-player-position-defender-foreground",
-    "--data-player-position-defender-background",
-    4.41,
-    4.77,
-    "corrected"
-   ],
    [
     "--status-coaching-adjective-ratings-unsuited-text",
     "--status-coaching-adjective-ratings-unsuited-surface",
@@ -72,25 +60,13 @@
     "mode": "dark"
    },
    "ok": true,
-   "writes": 83,
+   "writes": 82,
    "keeps": 148,
-   "checked": 36,
+   "checked": 35,
    "unchecked": 7,
    "failures": [],
    "game_failures": [],
-   "badge": {
-    "ratio": 4.76,
-    "set_by_theme": true,
-    "pass": true
-   },
    "game_low": [
-    [
-     "--data-player-position-defender-foreground",
-     "--data-player-position-defender-background",
-     4.41,
-     4.76,
-     "corrected"
-    ],
     [
      "--status-coaching-adjective-ratings-unsuited-text",
      "--status-coaching-adjective-ratings-unsuited-surface",
@@ -111,25 +87,13 @@
     "mode": "dark"
    },
    "ok": true,
-   "writes": 83,
+   "writes": 82,
    "keeps": 148,
-   "checked": 36,
+   "checked": 35,
    "unchecked": 7,
    "failures": [],
    "game_failures": [],
-   "badge": {
-    "ratio": 4.77,
-    "set_by_theme": true,
-    "pass": true
-   },
    "game_low": [
-    [
-     "--data-player-position-defender-foreground",
-     "--data-player-position-defender-background",
-     4.41,
-     4.77,
-     "corrected"
-    ],
     [
      "--status-coaching-adjective-ratings-unsuited-text",
      "--status-coaching-adjective-ratings-unsuited-surface",
@@ -150,25 +114,13 @@
     "mode": "dark"
    },
    "ok": true,
-   "writes": 83,
+   "writes": 82,
    "keeps": 148,
-   "checked": 36,
+   "checked": 35,
    "unchecked": 7,
    "failures": [],
    "game_failures": [],
-   "badge": {
-    "ratio": 4.81,
-    "set_by_theme": true,
-    "pass": true
-   },
    "game_low": [
-    [
-     "--data-player-position-defender-foreground",
-     "--data-player-position-defender-background",
-     4.41,
-     4.81,
-     "corrected"
-    ],
     [
      "--status-coaching-adjective-ratings-unsuited-text",
      "--status-coaching-adjective-ratings-unsuited-surface",
@@ -191,9 +143,9 @@
     "mode": "dark"
    },
    "ok": false,
-   "writes": 83,
+   "writes": 82,
    "keeps": 148,
-   "checked": 36,
+   "checked": 35,
    "unchecked": 7,
    "failures": [
     [
@@ -208,19 +160,7 @@
     ]
    ],
    "game_failures": [],
-   "badge": {
-    "ratio": 4.7,
-    "set_by_theme": true,
-    "pass": true
-   },
    "game_low": [
-    [
-     "--data-player-position-defender-foreground",
-     "--data-player-position-defender-background",
-     4.41,
-     4.7,
-     "corrected"
-    ],
     [
      "--status-coaching-adjective-ratings-unsuited-text",
      "--status-coaching-adjective-ratings-unsuited-surface",
@@ -263,9 +203,9 @@
     "mode": "dark"
    },
    "ok": false,
-   "writes": 83,
+   "writes": 82,
    "keeps": 148,
-   "checked": 36,
+   "checked": 35,
    "unchecked": 7,
    "failures": [
     [
@@ -275,19 +215,7 @@
     ]
    ],
    "game_failures": [],
-   "badge": {
-    "ratio": 4.76,
-    "set_by_theme": true,
-    "pass": true
-   },
    "game_low": [
-    [
-     "--data-player-position-defender-foreground",
-     "--data-player-position-defender-background",
-     4.41,
-     4.76,
-     "corrected"
-    ],
     [
      "--status-coaching-adjective-ratings-unsuited-text",
      "--status-coaching-adjective-ratings-unsuited-surface",
@@ -308,9 +236,9 @@
     "mode": "dark"
    },
    "ok": false,
-   "writes": 83,
+   "writes": 82,
    "keeps": 148,
-   "checked": 36,
+   "checked": 35,
    "unchecked": 7,
    "failures": [
     [
@@ -320,19 +248,7 @@
     ]
    ],
    "game_failures": [],
-   "badge": {
-    "ratio": 4.81,
-    "set_by_theme": true,
-    "pass": true
-   },
    "game_low": [
-    [
-     "--data-player-position-defender-foreground",
-     "--data-player-position-defender-background",
-     4.41,
-     4.81,
-     "corrected"
-    ],
     [
      "--status-coaching-adjective-ratings-unsuited-text",
      "--status-coaching-adjective-ratings-unsuited-surface",
@@ -348,7 +264,7 @@
  "export": {
   "theme": "Forest",
   "state": "done",
-  "tokens_written": 83,
+  "tokens_written": 82,
   "problems": []
  }
 }

@@ -20,12 +20,13 @@ sys.path.insert(0, str(ROOT))
 OUT = ROOT / "data" / "simple" / "roles.json"
 ANCHORS = {"neutral": "--global-background", "accent": "--brand-theme-primary", "text": "--global-text-primary"}
 # Entries added by an owner decision, outside the Crimson-ramp rule above; each says why and what is not known.
-ADDED = [
-    {"token": "--data-player-position-defender-foreground", "ramp": "text", "step": "t-1", "a": 1.0,
-     "decision": "S4 amendment, owner decision 2 (2026-11-15): the defender badge pair blocks, so the theme sets the badge label",
-     "why": "the game's own label colour reads at 4.41 to 1 on its fill (minimum 4.5); the theme's primary text replaces it, and the fill keeps the game's teal so positions keep their colours. "
-            "NOT ANCHORED in Crimson: Crimson sets this label to its teal Light (#8AD9CD), which is on none of the three ramps, so the reproduction test does not cover this entry. "
-            "VISIBILITY UNKNOWN: no style rule of this build uses this token (reach 0) and no token refers to it; whether it paints the badge (game code may read it while running) is for Session 2 to observe with fm_get_styles; if it does not, the entry comes out."},
+ADDED = []                                   # entries added by an owner decision, outside the Crimson-ramp rule. Empty since Session 2 (2026-11-15): the one entry (the defender badge label) came out, see EXCLUDED_PAIRS.
+# Crimson contrast pairs the check does not use, each with the observation that removed it. Session 2, gallery-forest on the Squad screen: the defender chip's label ("D (C)", Picked
+# column) is painted by `.text-regular` (#FFFFFF) in AlwaysAppliedStyleSheet, not by --data-player-position-defender-foreground, which no style rule of this build uses; the owner decided
+# (2026-11-15) that the entry and the pair come out. The pair describes nothing on screen as a token pair, so it is not checked; the record says so. One chip, one screen, one theme.
+EXCLUDED_PAIRS = [
+    {"fg": "--data-player-position-defender-foreground", "bg": "--data-player-position-defender-background",
+     "why": "Session 2 (2026-11-15, gallery-forest, Squad screen): the defender chip's label is painted by .text-regular (#FFFFFF), not by this token; no style rule of this build uses it. Owner decision: entry and pair removed. Observed on one chip, one screen, one theme."},
 ]
 
 
@@ -106,8 +107,9 @@ def build(ix, crimson_project, cr):
         "entries": entries, "kept": kept,
         "summary": {"entries": len(entries), "kept": len(kept), "added_by_decision": len(ADDED), "by_ramp": {k: sum(1 for r in entries if r["ramp"] == k) for k in ramps},
                     "rule_paths_reached_by_entries": len(reach_mapped), "rule_paths_reached_by_all_used_colour_tokens": len(reach_all)},
-        "contrast_pairs": [{"fg": p["fg"], "bg": p["bg"]} for p in crimson_project["contrast_pairs"]],
-        "game_values": game_values(ix, crimson_project["contrast_pairs"] + [{"fg": "--global-background", "bg": "--global-background"}]),
+        "contrast_pairs": [{"fg": p["fg"], "bg": p["bg"]} for p in crimson_project["contrast_pairs"] if (p["fg"], p["bg"]) not in {(x["fg"], x["bg"]) for x in EXCLUDED_PAIRS}],
+        "excluded_pairs": EXCLUDED_PAIRS,
+        "game_values": game_values(ix, [p for p in crimson_project["contrast_pairs"] if (p["fg"], p["bg"]) not in {(x["fg"], x["bg"]) for x in EXCLUDED_PAIRS}] + [{"fg": "--global-background", "bg": "--global-background"}]),
         "contrast_minimum": 4.5,
         "modes": ["dark"],
         "modes_note": "S4 amendment, owner decision 1 (2026-11-15): light is out of 1.2.0. The role map comes from a dark preset; light themes fail on the surfaces it keeps at the game's own colour; extending the map for light themes is later work, not 1.2.0.",

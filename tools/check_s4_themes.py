@@ -48,13 +48,10 @@ def main():
                 return {"name": name, "inputs": {k: t[k] for k in ("background", "accent", "text", "mode")}, "refused": resp["error"]["data"]["plain"]}
             r = resp["result"]
             c = r["contrast"]
-            badge = next(rw for rw in theme.contrast(theme.generate(t["background"], t["accent"], t["text"], t["mode"]), e._game_colour)["rows"]
-                         if rw["fg"] == "--data-player-position-defender-foreground")
             # the recorded game values (what tests and CI use) must give the same answer as the live index
             rec = theme.contrast(theme.generate(t["background"], t["accent"], t["text"], t["mode"]), theme.recorded_game_value)
             return {"name": name, "inputs": r["inputs"], "ok": r["ok"], "writes": r["writes"], "keeps": r["keeps"], "checked": c["checked"], "unchecked": len(c["unchecked"]),
                     "failures": [(f["fg"], f["bg"], f["ratio"]) for f in c["failures"]], "game_failures": [(f["fg"], f["bg"], f["ratio"]) for f in c["game_failures"]],
-                    "badge": {"ratio": badge["ratio"], "set_by_theme": badge["touched"], "pass": badge["pass"]},
                     "game_low": [(x["fg"], x["bg"], x["game_ratio"], x["ratio"], "corrected" if x["corrected"] else "NOT corrected") for x in c["game_low"]],
                     "lowest_touched": min((rw["ratio"] for rw in rec["rows"] if rw["touched"]), default=None),
                     "recorded_values_agree": [f["fg"] + f["bg"] for f in rec["failures"]] == [f["fg"] + f["bg"] for f in c["failures"]] and rec["checked"] == c["checked"]}

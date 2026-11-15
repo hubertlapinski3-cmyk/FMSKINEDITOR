@@ -14,7 +14,7 @@ const OCEAN = { name: 'Ocean', background: '#0F1A24', accent: '#2E86DE', text: '
 const BROKEN = { name: 'Broken', background: '#16142A', accent: '#8E6CF0', text: '#ECEAF5', mode: 'dark', status: UNCHECKED, ok: false, failures: 2, checked: 36 }
 const pass = (inputs: any) => ({ inputs, writes: 82, keeps: 148, status: UNCHECKED, ok: true, preview: {},
   contrast: { minimum: 4.5, pairs: 43, checked: 36, failures: [], game_failures: [], unchecked: new Array(7).fill({ fg: '--cr-white', bg: '--cr-blue' }),
-    game_low: [{ fg: '--data-player-position-defender-foreground', bg: '--data-player-position-defender-background', game_ratio: 4.41, ratio: 4.77, corrected: true }] } })
+    game_low: [{ fg: '--status-coaching-adjective-ratings-unsuited-text', bg: '--status-coaching-adjective-ratings-unsuited-surface', game_ratio: 3.94, ratio: 4.74, corrected: true }] } })
 const fail = (inputs: any) => ({ ...pass(inputs), ok: false, contrast: { ...pass(inputs).contrast, failures: [{ fg: '--global-text-muted', bg: '--colours-ui-soft', ratio: 3.91 }] } })
 
 let generate: (p: any) => any
@@ -93,9 +93,9 @@ describe('a theme from three colours', () => {
     expect(make().disabled).toBe(true)
   })
 
-  it("the game's own low badge value is still said, now as corrected by the theme; the pairs it can't check are said too", async () => {
+  it("the game's own low value is still said, as corrected by the theme; the pairs it can't check are said too", async () => {
     start(); fireEvent.click(screen.getByText('Make a theme from three colours'))
-    expect((await screen.findByTestId('theme-corrected')).textContent).toBe("data-player-position-defender-foreground on data-player-position-defender-background is at 4.41 to 1 in the game's own colours; this theme corrects it to 4.77 to 1.")
+    expect((await screen.findByTestId('theme-corrected')).textContent).toBe("status-coaching-adjective-ratings-unsuited-text on status-coaching-adjective-ratings-unsuited-surface is at 3.94 to 1 in the game's own colours; this theme corrects it to 4.74 to 1.")
     expect(screen.queryByTestId('theme-game-failures')).toBeNull()
     expect(screen.getByTestId('theme-unchecked').textContent).toMatch(/^7 of the 43 pairs can't be checked here/)
   })

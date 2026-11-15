@@ -683,18 +683,6 @@
    "status": "unverified"
   },
   {
-   "token": "--data-player-position-defender-foreground",
-   "ramp": "text",
-   "step": "t-1",
-   "a": 1.0,
-   "decision": "S4 amendment, owner decision 2 (2026-11-15): the defender badge pair blocks, so the theme sets the badge label",
-   "why": "the game's own label colour reads at 4.41 to 1 on its fill (minimum 4.5); the theme's primary text replaces it, and the fill keeps the game's teal so positions keep their colours. NOT ANCHORED in Crimson: Crimson sets this label to its teal Light (#8AD9CD), which is on none of the three ramps, so the reproduction test does not cover this entry. VISIBILITY UNKNOWN: no style rule of this build uses this token (reach 0) and no token refers to it; whether it paints the badge (game code may read it while running) is for Session 2 to observe with fm_get_styles; if it does not, the entry comes out.",
-   "crimson": "#8AD9CD a=1.0",
-   "anchor": "none",
-   "rules": 0,
-   "status": "unverified"
-  },
-  {
    "token": "--data-tables-background-hover",
    "ramp": "text",
    "step": "white",
@@ -1685,13 +1673,13 @@
   }
  ],
  "summary": {
-  "entries": 83,
+  "entries": 82,
   "kept": 148,
-  "added_by_decision": 1,
+  "added_by_decision": 0,
   "by_ramp": {
    "neutral": 24,
    "accent": 34,
-   "text": 25
+   "text": 24
   },
   "rule_paths_reached_by_entries": 1778,
   "rule_paths_reached_by_all_used_colour_tokens": 7227
@@ -1794,10 +1782,6 @@
    "bg": "--data-player-position-goalkeeper-background"
   },
   {
-   "fg": "--data-player-position-defender-foreground",
-   "bg": "--data-player-position-defender-background"
-  },
-  {
    "fg": "--data-player-position-defensive-midfield-foreground",
    "bg": "--data-player-position-defensive-midfield-background"
   },
@@ -1870,6 +1854,13 @@
    "bg": "--cr-red-deep"
   }
  ],
+ "excluded_pairs": [
+  {
+   "fg": "--data-player-position-defender-foreground",
+   "bg": "--data-player-position-defender-background",
+   "why": "Session 2 (2026-11-15, gallery-forest, Squad screen): the defender chip's label is painted by .text-regular (#FFFFFF), not by this token; no style rule of this build uses it. Owner decision: entry and pair removed. Observed on one chip, one screen, one theme."
+  }
+ ],
  "game_values": {
   "--brand-theme-accent": "#DA71FEFF",
   "--buttons-text-default": "#E6E6FAFF",
@@ -1882,8 +1873,6 @@
   "--data-average-rating-surface-6-7": "#616161FF",
   "--data-player-position-attacking-midfield-background": "#8600C5FF",
   "--data-player-position-attacking-midfield-foreground": "#E9CAF7FF",
-  "--data-player-position-defender-background": "#00756BFF",
-  "--data-player-position-defender-foreground": "#A7F2EDFF",
   "--data-player-position-defensive-midfield-background": "#0B7200FF",
   "--data-player-position-defensive-midfield-foreground": "#B8EAB3FF",
   "--data-player-position-goalkeeper-background": "#616161FF",

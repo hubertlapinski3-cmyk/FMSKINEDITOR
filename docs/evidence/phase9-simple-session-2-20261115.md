@@ -18,4 +18,14 @@ This file is the record the sessions checklist asks for. Right now it holds the 
 4. Then the eight screens (club, competition, portal, recruitment, squad, tactics, tactics-instructions, training): one `fm_screenshot` each, and the observations the checklist lists.
 
 ## Observations
-(none yet)
+
+### gallery-forest, Squad screen (game 27.0.1.2503222, plugin 0.2.2, Borussia Dortmund save, Squad > Overview > First Team; window 2500x1406 as the tool reports it)
+Screenshot: `C:/Users/Admin/FMSKINNING/workspace/notes/ui-dumps/screens/s2-forest-current.png` (the game's `ui-dumps` folder; not copied into the repo).
+- **Looked at, as seen in the screenshot:** the page background and the panels are dark green-black, the text is light and readable, the accent greens show on the badges; the top bar and club header are Dortmund yellow (club colours kept, as chosen). The position chips in the Picked column keep their own colours (teal, green, blue, purple, pink). Only the Squad screen was looked at for Forest so far: the other seven screens and the other two themes are NOT done.
+- **THE DEFENDER BADGE QUESTION (one inspector call at a time):** the chip label is the `SIText#RoleName` "D (C)" in the Picked column.
+  - `fm_get_styles`: resolved `color` **#FFFFFF**.
+  - `fm_colour_source` (`color`): the winning rule is **`AlwaysAppliedStyleSheet` `.text-regular`, value `#FFFFFF`** (a literal), over `.sitext` (`var(--global-text-primary)`). **No `--data-player-position-defender-foreground` and no position token appears among the rules.**
+  - So the label is NOT painted by the token the role-map entry sets, and it did not take the theme's text colour either (the theme's primary text is `#E6EFE9`).
+  - The chip's fill was not located: `fm_colour_source` (`background-color`) on two ancestors (the SIStyleSetter six levels up and a SIVisible two levels above that) said `#00000000`, no rule. The ancestors include an `SIStyleSetter`, which sets colours from code (it has `SetElementBackgroundColor` and `BindColorToForeground`).
+  - Limit: one chip, one screen, one theme. The chip's fill source is unresolved.
+- **Owner decision on that answer (2026-11-15, in this session):** remove the badge entry from the role map AND the defender badge pair from the blocking check, the reason recorded (no rule paints that token in this build). Applied in the commit that follows; see the S4 amendment 2.
