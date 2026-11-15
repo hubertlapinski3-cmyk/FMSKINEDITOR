@@ -14,14 +14,15 @@
 4. Note anything you had to guess, any word that would confuse someone who has never skinned, and any place where you did not know what to click next. Those matter more than bugs.
 5b. **Colour boxes** (Colours, the recolour panel, the three-colour theme) open the browser's own colour picker. If you cannot set an exact colour in it, write **COULD NOT CHECK: native colour picker** for the lines that need it and go on.
 5. **Browser prompt boxes:** in this browser form, "Pick a file", "Save my skin as a file" and "Open a skin file" ask for a typed path in a small browser dialog (`prompt`). If you cannot operate such a dialog, stop at that line, write **COULD NOT CHECK: needs a browser prompt box**, and go on. Computer use can type into it; the Chrome extension usually cannot.
-6. If something blocks you (page not loading, an error you can't get past), stop, write what you saw, and do not try to repair it.
+6. **Never type, rebuild or edit the address, and never reload the page by any other route than the exact address the owner gave you.** The address carries a secret token you cannot see; a reload with a made-up one breaks the session (it said "The Studio can't reach its engine" in the first run). If you see that message, stop and write it down.
+7. If something blocks you (page not loading, an error you can't get past), stop, write what you saw, and do not try to repair it.
 
 ## Start (the owner does this)
 In a terminal in the project folder:
 
     .\.venv\Scripts\python.exe tools\run_studio_scratch.py --keep --open
 
-It prints an address like `http://127.0.0.1:1420/?engine=...&token=...` (it also opens it). Open that exact address. If the setup screen shows, do lines A1 to A3; otherwise skip them.
+It prints an address like `http://127.0.0.1:1420/?engine=...&token=...` (it also opens it). Open that exact address. If the setup screen shows, do lines A1 to A3; otherwise skip them. With `--keep` the test workspace may already hold projects, in which case the Studio opens in **Advanced** (letters on the left): click **S** at the bottom of that bar to get Simple mode before you start. For a fresh install use `--keep --reset` once.
 
 Test files, ready in `C:\Users\Admin\Downloads\fm27-skin-editor\workspace\walkthrough\` (type these paths where a prompt asks):
 - `wallpaper.jpg` : 1280x720, green with pink bars and a white circle in the middle (a stretch or a crop is easy to see)
@@ -45,7 +46,7 @@ Make a skin first: Projects, then **Start from a ready-made theme**, keep the na
 2. It starts side by side: left "The game as it ships", right "With my skin: ...". Do the colours visibly differ? Take **S-look**.
 3. Click the three buttons: **The game as it ships**, **With my skin**, **Side by side**. Does each show what its name says?
 4. How many times does the line saying it is an approximation appear, and where? Copy it.
-5. Click each of the other layouts; then type `Squad` in the search box and open a result.
+5. Click each of the other layouts (the first draw of a big layout can take up to 30 seconds and show blank frames: wait, and write how long you waited); then type `Squad` in the search box and open a result.
 6. In Simple mode the bottom panel must have only PROBLEMS and OUTPUT. Write the tabs you see. Click **Advanced** (bottom of the left bar): which tabs appear? Click **S** at the bottom of that bar to come back. Does any screenshot of the game appear anywhere in Simple mode? (Say what you looked at.)
 7. Close the project (Projects, **close**): open Look at it with none. Copy what it says.
 
@@ -67,7 +68,7 @@ In **Look at it**, with a skin open:
 ## G. A theme from three colours
 From the start screen (close the project first to see it):
 1. Count the ways to begin and copy their titles (expect four).
-2. **Start from a ready-made theme** lists Crimson, Forest, Ocean, Slate and amber, each with three colour squares and "not yet checked in the game". Choose Ocean and **Make it**. Does Colours show changed colours?
+2. **Start from a ready-made theme** lists FOUR themes (Crimson; Forest; Ocean; and one called "Slate and amber"). The last three say "not yet checked in the game"; each has three colour squares. Choose Ocean and **Make it**. Does Colours show changed colours?
 3. Back at the start: **Make a theme from three colours**. Is there a Dark/Light choice? (There should not be.) Copy the line under the pickers (it should mention how many of the game's colours it sets and leaves; note the exact numbers) and whether it says "Readable".
 4. Set the **Text** colour to a mid grey, for example `#A0A0A0` (the colour boxes are the browser's own colour picker, rule 5b; if you cannot operate it, write COULD NOT CHECK for lines 4 and 5). Copy the list of pairs it shows, including the defender badge line if present, and say whether **Make it** is off.
 5. Set the text colour back to `#EDEDED`. Copy any small grey lines (they should talk about the defender badge, an unsuited rating, and pairs that can't be checked) with their numbers.

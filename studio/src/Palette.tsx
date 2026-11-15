@@ -96,6 +96,7 @@ export default function Palette({ project, onChanged, say }: { project: string; 
           {!mine.length && <span className="dim small">Nothing saved yet. Save up to {MAX_MY_COLOURS} colours here; they then appear as one-click choices beside every colour picker.</span>}
         </div>
         <div className="pal-mine-add"><input type="color" aria-label="A colour to add to My colours" value={mineNew.toLowerCase()} onChange={(e) => setMineNew(e.target.value)} /><button disabled={mine.length >= MAX_MY_COLOURS} onClick={() => addMy(mineNew)}>Add to My colours</button>
+          {mine.length >= MAX_MY_COLOURS && !mineMsg && <span className="dim small" role="status">My colours holds {MAX_MY_COLOURS}. Remove one to add another.</span>}
           {mineMsg && <span className="warn small" role="status">{mineMsg}</span>}</div>
       </section>
 
@@ -117,8 +118,8 @@ export default function Palette({ project, onChanged, say }: { project: string; 
                 <input type="color" aria-label={`Colour of ${shortName(r.name)}`} value={cur.rgb.toLowerCase()} onChange={(e) => pick(r, e.target.value)} />
                 <button className="mini" aria-label={`Save the colour of ${shortName(r.name)} to My colours`} title="Save this colour to My colours" onClick={() => addMy(cur.rgb)}>☆</button>
                 <button className="mini" aria-label={`My colours for ${shortName(r.name)}`} aria-expanded={stripRow === r.name} title="Choose from My colours" onClick={() => setStripRow(stripRow === r.name ? null : r.name)}>▾</button>
-                <span className="name" title={`${r.name} · game's colour ${hexOf(r.rgb, r.a)} · used in ${r.reach} place(s)`}>{shortName(r.name)}</span>
-                <small className="dim">used in {r.reach}</small>
+                <span className="name" title={`${r.name} · game's colour ${hexOf(r.rgb, r.a)} · used in ${r.reach} place${r.reach === 1 ? '' : 's'} of the game's styles`}>{shortName(r.name)}</span>
+                <small className="dim" title="The number of places in the game's styles where a rule uses this colour">used in {r.reach} place{r.reach === 1 ? '' : 's'}</small>
                 {o && <button onClick={() => remove(r.name)} title="Back to the game's colour">put back</button>}
                 {stripRow === r.name && <div className="pal-rowstrip"><Strip mine={mine} label={`My colours for ${shortName(r.name)}`} onPick={(c) => { pick(r, c); setStripRow(null) }} /></div>}
               </li>

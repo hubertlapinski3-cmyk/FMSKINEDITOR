@@ -172,6 +172,7 @@ describe('My colours (a personal palette)', () => {
     for (let i = 1; i < 10; i++) add('#00000' + i)
     expect(screen.getByText('MY COLOURS (10/10)')).toBeTruthy()
     expect((screen.getByText('Add to My colours') as HTMLButtonElement).disabled).toBe(true)
+    expect(screen.getByRole('status').textContent).toBe('My colours holds 10. Remove one to add another.')       // a disabled button says why (found by the walkthrough)
     fireEvent.click(screen.getByLabelText('Remove #112233 from My colours'))
     expect(screen.getByText('MY COLOURS (9/10)')).toBeTruthy(); expect(stored().includes('#112233')).toBe(false)
   })
