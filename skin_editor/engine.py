@@ -1200,6 +1200,39 @@ class Engine:
                     "tokens": rep["tokens"], "rules": rep["rules"], "images": rep["images"], "fonts": rep["fonts"], "skipped": rep["skipped"], "problems": list(rep["problems"]) + problems}
         return self.start_job("put it in the game", fn)
 
+    # ---- S7: share and undo (skin_editor/share.py)
+    def _game_build(self):
+        return (self.ws.vanilla_manifest() or {}).get("game_build")
+
+    def share_save(self, q, b):
+        """Save the skin as one file (a zip of its native skin folder, with the versions inside)."""
+        from . import share
+        p = project_mod.load(self.ws, b["project"])
+        return share.save(self.ws, p, self.index, (self.info or {}).get("aa_dir"), b["path"], b.get("studio_version"), self._game_build(), bool(b.get("overwrite")))
+
+    def share_inspect(self, q, b):
+        """What a downloaded skin file holds, before anything is made from it."""
+        from . import share
+        return share.inspect(b["path"], self._game_build())
+
+    def share_open(self, q, b):
+        """A downloaded skin file as a new project (a copy; nothing is put into the game)."""
+        from . import share
+        if b["name"] in project_mod.names(self.ws):
+            raise RuntimeError("a project with that name exists")
+        return share.open_copy(self.ws, b["path"], b["name"], self._game_build())
+
+    def start_over_preview(self, q, b):
+        """What "Start over" would take away, said before it is done."""
+        from . import share
+        p = project_mod.load(self.ws, b["project"])
+        return {"project": p["name"], "lost": share.lost(p), "trash": str(self.ws.projects.parent / "trash")}
+
+    def start_over(self, q, b):
+        """Back to the game's look; the previous state goes to the workspace trash."""
+        from . import share
+        return share.start_over(self.ws, b["project"], b.get("confirm"), self._game_build())
+
     def native_remove(self, q, b):
         """Take a skin this editor put in the skins folder out again (only a folder with the editor's marker). The interface offers it only behind a setting until the in-game check has been run."""
         if b.get("confirm") is not True:

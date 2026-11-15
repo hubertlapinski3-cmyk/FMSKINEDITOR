@@ -144,7 +144,7 @@ export default function Start({ projects, onCreated, onImport, say }: { projects
       <div className="start-choices">
         <button onClick={() => choose('theme')} className={pick === 'theme' ? 'on' : ''}><b>Start from a ready-made theme</b><span>A dark crimson look, complete, or one of a few more. Not yet checked in the game in this form.</span></button>
         <button onClick={() => choose('three')} className={pick === 'three' ? 'on' : ''}><b>Make a theme from three colours</b><span>Pick a background, an accent and a text colour; the Studio checks that the text stays readable.</span></button>
-        <button onClick={onImport}><b>Open a skin I downloaded</b><span>Pick the folder of a skin from the forums. It is only read; you get your own copy.</span></button>
+        <button onClick={onImport}><b>Open a skin I downloaded</b><span>A skin from the forums or a friend. It is only read; you see what is inside, then get your own copy.</span></button>
         <button onClick={() => choose('empty')} className={pick === 'empty' ? 'on' : ''}><b>Start from the game&apos;s look</b><span>Nothing changed yet; you choose the colours.</span></button>
       </div>
       {pick && <div className="start-form">

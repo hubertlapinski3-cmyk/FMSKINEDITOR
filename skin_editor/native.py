@@ -310,7 +310,9 @@ def changes(project):
     p = project_mod.migrate(project)
     reverts = set(p.get("reverts", []))
     c = {"colours": len([e for e in p.get("token_overrides", []) if e["token"] not in reverts]), "colour swaps": len(p.get("literal_swaps", [])), "rules": len(p.get("scoped_rules", [])),
-         "pictures": len(p.get("image_swaps", [])), "fonts": len(p.get("font_swaps", [])), "imported files": len(p.get("native_support", [])),
+         "pictures": len(p.get("image_swaps", [])), "fonts": len(p.get("font_swaps", [])),
+         "imported sheets": len(p.get("native_sheets", [])),          # a downloaded skin that is only style sheets changes the game too (found by S7: it read as "changes nothing")
+         "imported files": len(p.get("native_support", [])),
          "flat look": 1 if p.get("options", {}).get("club_colours", True) is False else 0}
     return {k: v for k, v in c.items() if v}
 

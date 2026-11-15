@@ -181,6 +181,29 @@ Then **Use my picture** (the same `images.commit` the Advanced view uses), **See
 - The render stretches a wallpaper where the game crops it.
 - Nothing here was looked at in the game or by a person (checklist section H). Session 1 or 2 can add a wallpaper check if the owner wants one; it is not in the sessions checklist now.
 
+### S7 built (2026-11-15, milestone report; batch 2)
+**Built** (`skin_editor/share.py`, five engine calls, Simple mode's new **Share and undo** view in `Share.tsx`):
+- **Save my skin as a file:** one `.zip` holding the skin folder exactly as "Put it in the game" writes it (the same `native.export`, into a private temporary folder), plus `fm-skin-studio.json` inside with the share format (`fm-skin-studio-share/1`), **the Studio version** (from the desktop app), the game build, the skin's name and every file with its SHA-256.
+  - The editor's own export marker is **left out**: it belongs to this PC's skins folder, and in a shared copy it would make another Studio treat the unzipped folder as its own export.
+  - Written as `.part`, then renamed. A non-`.zip` name, an existing file (unless the save dialog already asked) and an empty skin are refused in plain words.
+- **Open a skin file:** **inspect first, nothing written:** the skin's name, "Made with FM Skin Studio X for game build Y" (or "not made with FM Skin Studio"), a note when the game build differs, the sheet, picture and font counts, and every file that is **left out**, with why. Only after **Make my copy** (a free name is suggested) is it extracted into a private temporary folder and imported through the existing **read-only** native-skin import as a NEW project. Nothing goes into the game and nothing is applied to another project.
+  - The archive is checked before anything is extracted: a path that leaves its folder refuses the whole file; more than 5,000 files or more than 300 MB unpacked refuse the file; only the file types a skin uses are taken, at most 60 MB each; another Studio's export marker is left out; a skin.json listing sheets the file does not hold refuses it.
+- **Start over:** asks first and lists in words what goes ("82 colour changes", "1 picture", "the flat look for every club", "3 style sheets of a skin you opened" ...). It says the current skin goes to the **trash folder** (named), not erased, and that the copy already in the skins folder stays until the skin is put in the game again. Only **Yes, start over** does it: an empty native project of the same name takes its place.
+- In Simple mode the start screen's **Open a skin I downloaded** now opens this view. Advanced keeps its folder import.
+**Two existing bugs found by the real round trip, fixed and tested:**
+1. **A skin saved by the Studio could not be exported again after opening it:** the read-only import kept sheet names `rules.uss` / `images.uss`, which the native export writes itself, so the export refused ("has the same name as a file this export writes"). Any downloaded native skin with a `rules.uss` had the same problem. The import now reserves all three export names (it reserved only `tokens.uss`), and such a sheet is renamed `-2`.
+2. **A downloaded skin made only of style sheets read as "changes nothing"** (`native.changes` counted its files, not its sheets). So **Put it in the game** (S2) and **Save as a file** refused it, and Start over would have said nothing is lost. The sheets are now counted ("imported sheets").
+**Checked offline against the real game** (`tools/check_s7_share.py`, the scratch workspace of S6, the game only read; `docs/evidence/s7-share-check-20261115.json`):
+- The S6 project (a real icon and a real wallpaper) saved as a 7-file zip (2,879 bytes).
+- The inspection reads it back (3 sheets, 2 pictures, nothing refused), and it opens as a new project.
+- Both native exports have **no problems**; the copy's **pictures are byte-identical** (2) and its **rules are the same** (2, with `url()` paths compared by file name: the import keeps the skin's own folder layout, so the copy's pictures sit under `images/images/`).
+- Start over on the copy listed what it takes (3 sheets, 3 files), left a project with no changes, and the trash folder exists.
+- **The game build in the manifest was empty in this scratch workspace** (its snapshot carries no build number); on an install whose snapshot has one, it is written.
+**Tests:** engine `test_s7_share` (7: the zip, its manifest and hashes, no marker; the refusals; the round trip to an equal export; the archive checks; a sheet-only skin counts; Start over; every refusal has its sentence); Studio 160 (`Share.test` new, 6). Engine suite 434 OK.
+**Not done, said plainly:**
+- A saved file holds the EXPORTED skin, not the project: opening it gives a skin of imported sheets, not the editable colour list it was made from. That is the read-only route the spec names; a project-level share is not built.
+- Nothing here was looked at in the game or by a person (checklist section I).
+
 ### S2. One way into the game
 - **One button, "Put it in the game"**, in Simple mode: the native route only (`native.export`), which changes no game file. Bundles are not offered in Simple mode.
 - **After it runs**, the two steps left are shown with the skin's name filled in: pick it once in Preferences, press Reload Skin. On later runs only the second. The Studio cannot tell, offline, whether the user did the first; it says what was written and what is left to do.

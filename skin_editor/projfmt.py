@@ -480,7 +480,7 @@ def import_native_skin(ws, src, name):
     for s in sheets:
         if not (src / s).is_file():
             raise FileNotFoundError("sheet listed in skin.json is missing: %s" % s)
-    taken = {"tokens.uss"}
+    taken = {"tokens.uss", "rules.uss", "images.uss"}       # the names the native export writes itself: an imported sheet of that name (a skin this Studio saved) is renamed, or its export collides (found by S7's round trip)
     sheet_dest = {}                                          # source sheet (posix, relative) -> styles/<name>.uss
     for s in sheets:
         s = s.replace("\\", "/")

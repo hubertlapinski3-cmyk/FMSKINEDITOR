@@ -76,6 +76,14 @@ With a skin open, click **Pictures**:
 4. Choose an icon (filter "tick"), pick a file, use it, **Open Look at it**, open the **Preferences card**: the tick icons are yours on the skin side.
 5. At the top of Pictures, each replaced picture has **Put it back**; it comes off the list and off the picture.
 
+## I. Share and undo (S7)
+In Simple mode, **Share and undo** (bottom of the left bar):
+1. With a skin open: **Save my skin as a file**, choose a place: a line says where it was saved, how many files and how big. Open the .zip in Windows: one folder with skin.json and the sheets, and a small `fm-skin-studio.json` beside it.
+2. **Open a skin file**, pick that .zip: before anything is made it shows the skin's name, "Made with FM Skin Studio 1.2.0 ...", the counts, and a suggested name for your copy. **Cancel** makes nothing. **Make my copy** opens the new skin in Colours.
+3. Try a .zip that is not a skin (any other zip): it says in words that it is not a skin, and nothing is made.
+4. **Start over ...**: a box lists what would go, in words, and says your skin goes to the trash folder (named) and that the copy in the skins folder stays. **Keep my skin** closes it and nothing changed; **Yes, start over** brings the game's look back (Colours shows no changes).
+5. On the start screen (no skin open), **Open a skin I downloaded** brings you here.
+
 ## B. An existing install
 Stop the first run (Enter), then:
 

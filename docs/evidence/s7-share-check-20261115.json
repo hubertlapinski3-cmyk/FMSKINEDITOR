@@ -1,0 +1,66 @@
+{
+ "saved": {
+  "skin": "s6-check",
+  "files": 7,
+  "bytes": 2879,
+  "manifest": {
+   "format": "fm-skin-studio-share/1",
+   "studio_version": "check-s7",
+   "game_build": null,
+   "skin": "s6-check"
+  }
+ },
+ "inspected": {
+  "skin": "s6-check",
+  "folder": "s6-check",
+  "manifest": {
+   "format": "fm-skin-studio-share/1",
+   "studio_version": "check-s7",
+   "game_build": null,
+   "skin": "s6-check",
+   "made_utc": "2026-11-15T15:24:56Z"
+  },
+  "sheets": 3,
+  "missing_sheets": [],
+  "pictures": 2,
+  "fonts": 0,
+  "files": 7,
+  "refused": [],
+  "build_note": null
+ },
+ "opened": {
+  "sheets": 3,
+  "files": 10,
+  "images": 2,
+  "fonts": 0,
+  "notes": []
+ },
+ "round_trip": {
+  "original_files": 6,
+  "copy_files": 6,
+  "original_problems": [],
+  "copy_problems": [],
+  "original_sheets": [
+   "tokens.uss",
+   "rules.uss",
+   "images.uss"
+  ],
+  "copy_sheets": [
+   "tokens-2.uss",
+   "rules-2.uss",
+   "images-2.uss"
+  ],
+  "same_picture_bytes": true,
+  "pictures": 2,
+  "same_rules": true,
+  "rules": 2
+ },
+ "start_over": {
+  "lost": {
+   "imported sheets": 3,
+   "imported files": 3
+  },
+  "after": {},
+  "trash_exists": true
+ }
+}
