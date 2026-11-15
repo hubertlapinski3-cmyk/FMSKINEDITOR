@@ -80,6 +80,12 @@ class FrozenEngine(unittest.TestCase):
         notes = (ROOT / "docs" / "RELEASE-NOTES-1.1.1.md").read_text(encoding="utf-8")
         self.assertIn("%LOCALAPPDATA%\\FM27SkinEditor\\logs\\app.log", notes)
 
+    def test_the_notes_and_the_readme_say_where_the_calibration_report_of_a_repair_release_lives(self):
+        notes = (ROOT / "docs" / "RELEASE-NOTES-1.1.1.md").read_text(encoding="utf-8")
+        self.assertIn("No calibration report is attached to this release", notes); self.assertIn("v1.1.0 release page", notes)
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("attaches no calibration report", readme); self.assertIn("lives on that release's page", readme)
+
     def test_every_frozen_build_runs_the_selftest_not_only_the_release_workflow(self):
         self.assertIn('"--selftest"', FREEZE)
         self.assertLess(FREEZE.index("--collect-all"), FREEZE.index('"--selftest"'))
