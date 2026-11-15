@@ -13,6 +13,6 @@ if __name__ == "__main__":
     if sys.argv[1:] == ["--selftest"]:
         from skin_editor.frozen import selftest
         bad = selftest()
-        print("\n".join(bad) if bad else "selftest ok: the picture code imports")
+        print("\n".join(bad) if bad else "selftest ok: the picture code imports and a failed call leaves its traceback in app.log")
         sys.exit(1 if bad else 0)
     sys.exit(main())

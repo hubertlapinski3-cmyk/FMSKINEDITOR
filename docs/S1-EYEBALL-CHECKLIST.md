@@ -36,6 +36,7 @@ The launcher sends "Put it in the game" to a folder INSIDE the scratch workspace
 3. With a change: the page says what the skin carries. Click **Put it in the game**: a card appears in the middle of the screen naming each step in words with a bar, then the result with the steps left and the skin's name in them (two steps the first time).
 4. Click it again: only **Press "Reload Skin"** is left.
 5. Is the middle-of-the-screen card what you meant? Does anything read oddly?
+6. **The Images view (I) explicitly:** open it in a project and scroll the game's pictures: **icons, SVGs and textures all draw as thumbnails**, none shows an error. This is the surface the packaging fix touches, and the Pictures path of S6 depends on it. (In the scratch source build this always worked; the check that matters for the installed app is in the 1.1.1 post-run checks.)
 
 ## B. An existing install
 Stop the first run (Enter), then:

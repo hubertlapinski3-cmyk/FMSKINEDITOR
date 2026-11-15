@@ -64,6 +64,40 @@ class FrozenEngine(unittest.TestCase):
             bad = frozen.selftest()
         self.assertEqual(len(bad), 1); self.assertIn("astc_encoder: PyInstallerImportError", bad[0])
 
+    def test_a_failed_call_must_leave_its_traceback_in_the_documented_log_and_the_check_notices_when_it_does_not(self):
+        from unittest import mock
+        import logging
+        from skin_editor import frozen
+        self.assertEqual(frozen.check_failed_call_logs_traceback(), [])
+        with mock.patch.object(logging.Logger, "warning", lambda *a, **k: None):           # a build that swallowed the log line
+            bad = frozen.check_failed_call_logs_traceback()
+        self.assertEqual(len(bad), 1); self.assertIn("left no traceback", bad[0]); self.assertIn("app.log", bad[0])
+
+    def test_the_log_path_is_documented_where_the_other_logs_are_and_named_in_the_release_notes(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("logs/launcher.log", readme); self.assertIn("logs/app.log", readme)
+        self.assertIn("%LOCALAPPDATA%\\FM27SkinEditor\\logs\\app.log", readme)
+        notes = (ROOT / "docs" / "RELEASE-NOTES-1.1.1.md").read_text(encoding="utf-8")
+        self.assertIn("%LOCALAPPDATA%\\FM27SkinEditor\\logs\\app.log", notes)
+
+    def test_every_frozen_build_runs_the_selftest_not_only_the_release_workflow(self):
+        self.assertIn('"--selftest"', FREEZE)
+        self.assertLess(FREEZE.index("--collect-all"), FREEZE.index('"--selftest"'))
+        self.assertIn("return st.returncode", FREEZE)
+
+    def test_a_repair_release_without_its_own_report_attaches_none_instead_of_mislabelling_an_old_one(self):
+        wf = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+        self.assertIn("$v -like '1.0.*'", wf)          # only the 1.0.x line may use the frozen 1.0.0 report
+        self.assertIn("none attached", wf)
+        self.assertNotIn('throw "no published calibration report', wf)
+
+    def test_the_version_is_one_number_everywhere_and_has_its_notes(self):
+        import json, re
+        v = json.loads((ROOT / "studio" / "src-tauri" / "tauri.conf.json").read_text(encoding="utf-8"))["version"]
+        self.assertRegex((ROOT / "studio" / "src-tauri" / "Cargo.toml").read_text(encoding="utf-8"), r'(?m)^version = "%s"' % re.escape(v))
+        self.assertRegex((ROOT / "studio" / "src-tauri" / "Cargo.lock").read_text(encoding="utf-8"), r'name = "fm-skin-studio"\r?\nversion = "%s"' % re.escape(v))
+        self.assertTrue((ROOT / "docs" / ("RELEASE-NOTES-%s.md" % v)).is_file())
+
     def test_the_freeze_collects_what_the_picture_codecs_read_at_run_time_and_the_release_runs_the_selftest(self):
         for needle in ('"--collect-all", "archspec"', '"--collect-all", "astc_encoder"', '"--collect-all", "UnityPy"'):
             self.assertIn(needle, FREEZE)

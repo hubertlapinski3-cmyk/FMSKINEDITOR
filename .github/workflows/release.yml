@@ -112,8 +112,8 @@ jobs:
           $v = (Get-Content studio/src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
           $tag = $v -replace '\.', ''                                    # 1.1.0 -> 110: the report folder of THIS version is phase9-v110-calibration-*
           $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like "phase9-v$tag-calibration-*" } | Sort-Object Name | Select-Object -Last 1
-          if (-not $src) { $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like 'phase9-m7-calibration-*' } | Sort-Object Name | Select-Object -Last 1 }   # 1.0.x: the frozen revised report sorts after the first one
-          if (-not $src) { throw "no published calibration report under docs/evidence" }
+          if ((-not $src) -and ($v -like '1.0.*')) { $src = Get-ChildItem docs/evidence -Directory | Where-Object { $_.Name -like 'phase9-m7-calibration-*' } | Sort-Object Name | Select-Object -Last 1 }   # 1.0.x: the frozen revised report sorts after the first one
+          if (-not $src) { Write-Host "no calibration report of its own for $v (a repair release: the render is unchanged, the report of the release it repairs stands); none attached"; exit 0 }
           Copy-Item "$($src.FullName)/calibration-report.md" "calibration-report-$v.md"
           Copy-Item "$($src.FullName)/calibration-report.json" "calibration-report-$v.json"
           gh release upload "${{ github.ref_name }}" "calibration-report-$v.md" "calibration-report-$v.json" --clobber

@@ -46,7 +46,13 @@ def main():
         return r.returncode
     exe = out / a.name / (a.name + (".exe" if sys.platform == "win32" else ""))
     print("frozen engine:", exe, "(exists)" if exe.is_file() else "(MISSING)")
-    return 0 if exe.is_file() else 1
+    if not exe.is_file():
+        return 1
+    st = subprocess.run([str(exe), "--selftest"], cwd=str(ROOT))      # every frozen build is self-tested, a local one included: the picture code must import and a failed call must leave its traceback
+    if st.returncode:
+        print("THE FROZEN ENGINE'S SELF-TEST FAILED: do not ship this build")
+        return st.returncode
+    return 0
 
 
 if __name__ == "__main__":
