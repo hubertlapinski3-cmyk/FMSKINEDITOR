@@ -22,7 +22,8 @@
    "property": "background-color",
    "state": "#FFFFFF33",
    "rest": "#FFFFFF24",
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "filter-press-held",
@@ -56,7 +57,8 @@
      "note": "single source: a lookup made AFTER the model was changed (:enabled added) on this same reading; not an independent observation of the press state"
     }
    ],
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "filter-dragged-off-held",
@@ -82,7 +84,8 @@
    "rest": "#FFFFFF24",
    "noop": true,
    "note": "mask 64 (focus only) with the mouse still held",
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "filter-released",
@@ -105,7 +108,8 @@
    "state": "#FFFFFF24",
    "rest": "#FFFFFF24",
    "noop": true,
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "loans-tile-hover",
@@ -131,7 +135,8 @@
    "property": "background-color",
    "state": "#2E3138",
    "rest": "#17223F",
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "nav-tab-label-hover",
@@ -211,7 +216,8 @@
      "status": "derived"
     }
    ],
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "nav-tab-label-as-read",
@@ -294,7 +300,8 @@
      "status": "derived"
     }
    ],
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "nav-tab-label-as-read-runtime-sheet",
@@ -370,6 +377,7 @@
    "state": "#FFFFFF",
    "rest": "#EBEBEB",
    "variant_of": "nav-tab-label-hover",
+   "layer": "recorded run-time sheet (captured 80-rule sample)",
    "runtime_sheet_capture": "styles-e1-squad-bindings-20261114-115217.ndjson",
    "observation": "the same reading with the states AS READ (label 0, ancestors hover), plus the RECORDED run-time sheet (empty name, negative instance id) of the squad capture, whose sampled rules include .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text { color: var(--colours-base-neutral-white) }; the label's ancestor MainNav carries nav-on-light in that capture",
    "interpretations": [
@@ -382,7 +390,8 @@
      "status": "inferred"
     }
    ],
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "table-row-hover",
@@ -408,7 +417,8 @@
    "state": "#FFFFFF1A",
    "rest": "#FFFFFF00",
    "note": "even row of the zebra list; odd rows rest at #FFFFFF0F (the zebra rule is not part of this check)",
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "inbox-row-hover",
@@ -439,7 +449,8 @@
    "property": "background-color",
    "state": "#FFFFFF14",
    "rest": "#00000000",
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "inbox-row-clicked-focus",
@@ -472,7 +483,8 @@
    "rest": "#00000000",
    "noop": true,
    "note": "after the selection click the row's button carries mask 64 and no colour change",
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "pitch-marker-hover",
@@ -494,7 +506,8 @@
    "rest": "#00000000",
    "noop": true,
    "note": "mask 2 on the marker and every descendant read; colour and background unchanged",
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "pitch-marker-label-hover",
@@ -525,7 +538,8 @@
    "state": "#EBEBEB",
    "rest": "#EBEBEB",
    "noop": true,
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "instruction-tile-hover",
@@ -547,7 +561,8 @@
    "rest": "#00000000",
    "noop": true,
    "note": "mask 2 five levels down; colour, background and border unchanged at every level read",
-   "chain_truncated": true
+   "chain_truncated": true,
+   "role": "variant"
   },
   {
    "id": "inbox-selection-class-swap",
@@ -827,8 +842,9 @@
    "property": "background-color",
    "state": "#FFFFFF33",
    "rest": "#FFFFFF24",
-   "variant_of": "filter-hover",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "filter-hover",
    "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 24 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": "the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)"
   },
@@ -1092,8 +1108,9 @@
    "property": "background-color",
    "state": "#FFFFFF24",
    "rest": "#FFFFFF24",
-   "variant_of": "filter-press-held",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "filter-press-held",
    "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 24 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": "the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)"
   },
@@ -1309,8 +1326,9 @@
    "property": "background-color",
    "state": "#FFFFFF24",
    "rest": "#FFFFFF24",
-   "variant_of": "filter-dragged-off-held",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "filter-dragged-off-held",
    "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 24 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": "the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)"
   },
@@ -1524,8 +1542,9 @@
    "property": "background-color",
    "state": "#FFFFFF24",
    "rest": "#FFFFFF24",
-   "variant_of": "filter-released",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "filter-released",
    "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 24 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": "the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)"
   },
@@ -1810,8 +1829,9 @@
    "property": "background-color",
    "state": "#2E3138",
    "rest": "#17223F",
-   "variant_of": "loans-tile-hover",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "loans-tile-hover",
    "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 26 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": ""
   },
@@ -2130,8 +2150,9 @@
    "property": "background-color",
    "state": "#FFFFFF1A",
    "rest": "#FFFFFF00",
-   "variant_of": "table-row-hover",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "table-row-hover",
    "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 29 elements root first, 16 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": ""
   },
@@ -2627,8 +2648,9 @@
    "property": "background-color",
    "state": "#FFFFFF14",
    "rest": "#00000000",
-   "variant_of": "inbox-row-hover",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "inbox-row-hover",
    "chain_source": "real ancestry from styles-e5-inbox-bindings-20261114-120119.ndjson: 45 elements root first, 16 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": ""
   },
@@ -3036,8 +3058,9 @@
    "property": "background-color",
    "state": "#00000000",
    "rest": "#00000000",
-   "variant_of": "inbox-row-clicked-focus",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "inbox-row-clicked-focus",
    "chain_source": "real ancestry from styles-e5-inbox-bindings-20261114-120119.ndjson: 45 elements root first, 16 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": ""
   },
@@ -3773,9 +3796,784 @@
    "property": "background-color",
    "state": "#00000000",
    "rest": "#00000000",
-   "variant_of": "pitch-marker-hover",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "pitch-marker-hover",
    "chain_source": "real ancestry from styles-d2-team-instructions-20261114-111314.ndjson: 70 elements root first, 11 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "note": ""
+  },
+  {
+   "id": "pitch-marker-label-hover@real-ancestry",
+   "kind": "state",
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "Panel",
+     "name": "TacticalPlannerTool",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRoot",
+     "name": "root",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "non-phone-panels",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TacticCreated",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BaseCardTemplateImpl",
+     "name": "CardController",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "543219c0235e5834d9a9a6ac1bae3bc0",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContainer",
+     "classes": [
+      "tool-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContent",
+     "classes": [
+      "tool-content-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "SpeakToVariables",
+     "classes": [
+      "height-100-percent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "speakto-panel-left-aligned"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIImage",
+     "name": "Card-frame",
+     "classes": [
+      "unity-image",
+      "siimage",
+      "padding-horizontal-global-padding-none",
+      "justify-content-space-between"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "GridSafeArea",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "GridLayout",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Body",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIVisible",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "EventTrigger",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingSetter",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TemplateContainer",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TabGroup",
+     "name": "",
+     "classes": [
+      "tabgroup",
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "base-template-grow",
+      "tabgroup__tabscontent"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "Body",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "UseDarkerHeaderIfFMC",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "TeamInstructionsTabGrid",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "TeamInstructionsPitch",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "team-instructions-pitch"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal",
+      "tactics-collapsable-pitch-container"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingVariables",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "pitch-remapper",
+     "classes": [
+      "base-template-grow",
+      "phases-pitch-max-height"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "DiggableVisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "padding-right-global-padding-large",
+      "padding-left-global-padding-large",
+      "margin-left-global-gap-large",
+      "padding-vertical-global-padding-extra-large",
+      "border-radius-layout-modules-block-radius",
+      "navigatable-no-cursor"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FMTacticsWithPhases",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "tactics-collapsable-pitch-grass-colour"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FMPitchIndicator",
+     "name": "",
+     "classes": [
+      "projected--position--filled"
+     ],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "FMPitchPosition",
+     "name": "",
+     "classes": [],
+     "states": [
+      "hover"
+     ]
+    },
+    {
+     "type": "VisualElement",
+     "name": "tactics-visualiser-player-indicator-simple",
+     "classes": [
+      "content-tactics-visualiser-player-indicator-simple",
+      "margin-horizontal-global-gap-none",
+      "padding-horizontal-global-padding-none"
+     ],
+     "states": [
+      "hover"
+     ]
+    }
+   ],
+   "property": "color",
+   "state": "#EBEBEB",
+   "rest": "#EBEBEB",
+   "noop": true,
+   "role": "base",
+   "scored_instead_of": "pitch-marker-label-hover",
+   "chain_source": "real ancestry from styles-d2-team-instructions-20261114-111314.ndjson: 74 elements root first, 11 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": ""
   },
   {
@@ -4525,8 +5323,9 @@
    "property": "background-color",
    "state": "#00000000",
    "rest": "#00000000",
-   "variant_of": "instruction-tile-hover",
-   "isolates": "ancestry (the chain is the real one; the states are those of the published row)",
+   "noop": false,
+   "role": "base",
+   "scored_instead_of": "instruction-tile-hover",
    "chain_source": "real ancestry from styles-d2-team-instructions-20261114-111314.ndjson: 72 elements root first, 18 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "note": ""
   },
@@ -5134,6 +5933,7 @@
    "state": "#FFFFFF",
    "rest": "#EBEBEB",
    "variant_of": "nav-tab-label-hover",
+   "role": "variant",
    "isolates": "ancestry alone: real chain, the label hovered as in the published conditional row",
    "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 28 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)"
   },
@@ -5202,11 +6002,12 @@
    "state": "#FFFFFF",
    "rest": "#EBEBEB",
    "variant_of": "nav-tab-label-hover",
+   "role": "variant",
    "isolates": "the label's state alone: the published truncated chain, the label NOT hovered (ancestors hovered, as read)",
    "chain_truncated": true
   },
   {
-   "id": "nav-tab-label-hover@V3-real-ancestry-and-as-read",
+   "id": "nav-tab-label-hover@real-chain",
    "kind": "state",
    "chain": [
     {
@@ -5519,12 +6320,13 @@
    "property": "color",
    "state": "#FFFFFF",
    "rest": "#EBEBEB",
-   "variant_of": "nav-tab-label-hover",
-   "isolates": "both, applied sheets only: real chain, the label not hovered (as read), ancestors hovered",
-   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 28 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)"
+   "role": "base",
+   "scored_instead_of": "nav-tab-label-hover",
+   "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 28 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
+   "observation": "scored on the REAL chain with the states as read (label mask 0, ancestors hover), applied sheets only: this is the base row for the reading; the isolated variables are the variants V1, V2 and the layer row V4"
   },
   {
-   "id": "nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet",
+   "id": "nav-tab-label-hover@V4-base-plus-recorded-runtime-sheet",
    "kind": "state",
    "chain": [
     {
@@ -5838,7 +6640,8 @@
    "state": "#FFFFFF",
    "rest": "#EBEBEB",
    "variant_of": "nav-tab-label-hover",
-   "isolates": "V3 plus the recorded run-time sheet layer (an 80-rule CAPTURED SAMPLE of a run-time sheet; U2)",
+   "role": "variant",
+   "isolates": "the base row plus the recorded run-time sheet layer (an 80-rule CAPTURED SAMPLE of a run-time sheet; U2)",
    "chain_source": "real ancestry from styles-e1-squad-bindings-20261114-115217.ndjson: 28 elements root first, 1 match(es) in the capture, the first taken; ancestors of a hovered element are given the hover state (Unity sets :hover up the parent chain; Session G read it on at most five levels)",
    "runtime_sheet_capture": "styles-e1-squad-bindings-20261114-115217.ndjson",
    "layer": "recorded run-time sheet (captured 80-rule sample)"

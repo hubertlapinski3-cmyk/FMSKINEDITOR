@@ -97,39 +97,72 @@ class FixRound(unittest.TestCase):
                        "Each of the %d failing rows" % ex["fail_rows"], "calibration-report-9.9.9.md"):
             self.assertIn(needle, txt)
 
-    def test_layers_are_separate_inferred_and_never_touch_the_base_rows(self):
+    def test_layers_stand_alone_inferred_and_are_in_no_total_and_no_examination(self):
         lay = self.doc["layers"]
         self.assertEqual(set(lay), {"live-classes", "recorded-runtime-sheet"})
+        base_ids = {b["id"] for _n, b in self.rows()}
         for k, v in lay.items():
             self.assertEqual(v["default"], "off")
             self.assertEqual(v["status"], "inferred")
-            for x in v["rows"]:
+            self.assertGreater(v["rows_compared"], v["base_rows"], "the layer was run over every paired row, not only the rows it is about")
+            for x in v["rows"] + v["broken"]:
                 self.assertEqual(x["layer"], k)
                 self.assertEqual(x["status"], "inferred")
-                base = next(b for n, b in self.rows() if b["id"] == x["base_id"])
+                base = next(b for _n, b in self.rows() if b["id"] == x["base_id"])
                 self.assertEqual(base["verdict"], x["base_verdict"], "the base row is untouched by the layer")
-        self.assertEqual(self.doc["totals"]["PASS"] + self.doc["totals"]["FAIL"] + self.doc["totals"]["N/A"], self.doc["totals"]["coverage"]["total_rows"],
-                         "layer rows are not in the base totals")
+        # no layer row is in the base rows, the totals or the examination
+        for r in self.results:
+            for x in r["layer_rows"]:
+                self.assertTrue(x.get("layer"))
+                self.assertNotIn(x["id"], base_ids)
+            self.assertFalse([x for x in r["rows"] if x.get("layer")], "a layer row leaked into the base rows")
+        t = self.doc["totals"]
+        self.assertEqual(t["PASS"] + t["FAIL"] + t["N/A"], t["coverage"]["total_rows"])
+        self.assertEqual(self.doc["examination"]["fail_rows"], t["FAIL"])
+        self.assertEqual(sum(r["counts"]["PASS"] + r["counts"]["FAIL"] + r["counts"]["N/A"] for r in self.results), t["coverage"]["total_rows"])
 
-    def test_state_variants_isolate_one_variable_and_the_published_rows_are_marked_truncated(self):
+    def test_each_state_reading_is_counted_once_on_its_real_chain_and_the_variants_are_outside_the_totals(self):
         st = next(r for r in self.results if r["name"] == "state-i3-session-g")
-        checks = {x["check"] for x in st["rows"]}
-        for c in ("nav-tab-label-hover@V1-real-ancestry-only", "nav-tab-label-hover@V2-label-state-only", "nav-tab-label-hover@V3-real-ancestry-and-as-read", "nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet"):
-            self.assertIn(c, checks)
-        pub = [x for x in st["rows"] if x["check"] == "nav-tab-label-hover" and "(rest)" not in x["property"]]
-        self.assertEqual(pub[0]["verdict"], "PASS")
+        base = {x["check"] for x in st["rows"]}
+        var = {x["check"] for x in st["variant_rows"]}
+        lay = {x["check"] for x in st["layer_rows"]}
+        self.assertFalse(base & var, "a row is a base row or a variant, never both")
+        for c in ("nav-tab-label-hover@V1-real-ancestry-only", "nav-tab-label-hover@V2-label-state-only", "nav-tab-label-hover", "nav-tab-label-as-read"):
+            self.assertIn(c, var)
+        self.assertIn("nav-tab-label-hover@real-chain", base)
+        self.assertIn("nav-tab-label-hover@V4-base-plus-recorded-runtime-sheet", lay)
+        self.assertIn("loans-tile-hover@runtime-sheet-layer", lay)
+        pub = [x for x in st["variant_rows"] if x["check"] == "nav-tab-label-hover" and "(rest)" not in x["property"]]
+        self.assertEqual(pub[0]["verdict"], "PASS", "the published row keeps its verdict")
         self.assertTrue(pub[0].get("chain_truncated"))
+        # one reading, one scored pair: every base real-chain check replaces exactly one published check
+        replaced = [x["scored_instead_of"] for x in st["rows"] if x.get("scored_instead_of") and "(rest)" in x["property"]]
+        self.assertEqual(len(replaced), len(set(replaced)))
+        # the real chain is the comparison: the Loans rest colour fails, the pitch marker and instruction tile rest rows are N/A
+        by = {(x["check"], x["property"].split(" ")[0] + (" (rest)" if "(rest)" in x["property"] else "")): x["verdict"] for x in st["rows"]}
+        self.assertEqual(by[("loans-tile-hover@real-ancestry", "background-color (rest)")], "FAIL")
+        self.assertEqual(by[("pitch-marker-hover@real-ancestry", "background-color (rest)")], "N/A")
+        self.assertEqual(by[("instruction-tile-hover@real-ancestry", "background-color (rest)")], "N/A")
 
-    def test_the_as_read_variants_sit_beside_the_conditional_row(self):
-        st = next(r for r in self.results if r["name"] == "state-i3-session-g")
-        checks = {x["check"] for x in st["rows"]}
-        self.assertTrue({"nav-tab-label-hover", "nav-tab-label-as-read", "nav-tab-label-as-read-runtime-sheet"} <= checks)
-        cond = [x for x in st["rows"] if x["check"] == "nav-tab-label-hover" and x.get("conditional") and "(rest)" not in x["property"]]
-        self.assertEqual(len(cond), 1)
-        self.assertEqual(cond[0]["verdict"], "PASS", "the existing row and its verdict are untouched")
-        for x in st["rows"]:
-            if x["check"].startswith("nav-tab-label-as-read"):
-                self.assertEqual(x.get("variant_of"), "nav-tab-label-hover")
+    def test_a_hidden_live_element_the_render_draws_is_a_failure_named_visibility(self):
+        vis = [(r["name"], x) for r in self.results for x in r["rows"] if x["property"] == "visibility"]
+        self.assertGreaterEqual(len(vis), 3)
+        for _n, x in vis:
+            self.assertEqual(x["verdict"], "FAIL")
+            self.assertGreater(x["got"][2], 0.5)
+            self.assertGreater(x["got"][3], 0.5)
+        self.assertEqual(self.doc["pairing_effect"]["visibility_fail_rows"], len(vis))
+
+    def test_the_release_notes_pairing_sentence_is_the_json_s_pairing_table(self):
+        spec = importlib.util.spec_from_file_location("make_release_notes", ROOT / "tools" / "make_release_notes.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        txt = mod.notes("9.9.9", self.out)
+        pd = self.doc["pairing"]
+        self.assertIn("matched %d render nodes to live elements the game hides" % sum(x["greedy_invisible_partners"] for x in pd), txt)
+        self.assertIn("%d partners changed" % sum(x["changed_partner"] for x in pd), txt)
+        self.assertNotIn("which element each one is compared with", txt)
+        self.assertNotIn("### New\n- **Optional layers", txt)
 
 
 if __name__ == "__main__":

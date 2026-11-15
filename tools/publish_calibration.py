@@ -22,20 +22,21 @@ def state_lines(results):
     st = next((r for r in results if r["name"] == "state-i3-session-g"), None)
     if not st:
         return []
+    allrows = st["rows"] + st["variant_rows"] + st["layer_rows"]
 
     def verdicts(check):
-        rows = [x for x in st["rows"] if x["check"] == check]
+        rows = [x for x in allrows if x["check"] == check]
         rest = next((x["verdict"] for x in rows if "(rest)" in x["property"]), "n/a")
         state = next((x["verdict"] for x in rows if "(rest)" not in x["property"]), "n/a")
         return rest, state
     c0, v1, v2, v3, v4 = (verdicts(c) for c in ("nav-tab-label-hover", "nav-tab-label-hover@V1-real-ancestry-only", "nav-tab-label-hover@V2-label-state-only",
-                                                "nav-tab-label-hover@V3-real-ancestry-and-as-read", "nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet"))
+                                                "nav-tab-label-hover@real-chain", "nav-tab-label-hover@V4-base-plus-recorded-runtime-sheet"))
     f = lambda v: "rest %s, hover %s" % v
-    return ["Measured: label colour #FFFFFF under the pointer, rest #EBEBEB; label mask 0; ancestors 2. Not measured: why. Isolated-variable result, one variable changed per variant from the published conditional row "
-            "(truncated chain, label hovered, applied sheets only: %s): the real ancestry alone (V1): %s; the label's own state alone, label NOT hovered (V2): %s; both, i.e. real ancestry and the states as read (V3): %s; V3 plus the recorded "
-            "run-time sheet, a captured 80-rule sample (V4): %s. Read plainly: the label's own hover is not needed to reach #FFFFFF (an ancestor-hover rule in the applied sheets does it on the truncated chain); the real ancestor "
-            "(.nav-on-light) makes the applied sheets predict another colour at rest and on hover; the recorded run-time sheet restores both. The first two published as-read rows changed the ancestor and the state together and could not "
-            "say which mattered. The mechanism is unverified: no repeated reads were taken, inheritance was not tested, the Loans title gave no second point." % (f(c0), f(v1), f(v2), f(v3), f(v4)), ""]
+    return ["Measured: label colour #FFFFFF under the pointer, rest #EBEBEB; label mask 0; ancestors 2. Not measured: why. The BASE row for this reading is scored on the REAL chain with the states as read (label unhovered, ancestors hovered, applied sheets only): %s. "
+            "The analyses of the same reading (variant rows, outside the totals), one variable changed from the published conditional row (truncated chain, label hovered: %s): the real ancestry alone (V1): %s; the label's own state alone, label NOT hovered (V2): %s. "
+            "The LAYER row (the base chain plus the recorded run-time sheet, a captured 80-rule sample, in the layers section): %s. Read plainly: the label's own hover is not needed to reach #FFFFFF (an ancestor-hover rule in the applied sheets does it on the truncated chain); the real ancestor "
+            "(.nav-on-light) makes the applied sheets predict another colour at rest and on hover, so the base row FAILS; the recorded run-time sheet restores both. The first published as-read rows changed the ancestor and the state together and could not "
+            "say which mattered. The mechanism is unverified: no repeated reads were taken, inheritance was not tested, the Loans title gave no second point." % (f(v3), f(c0), f(v1), f(v2), f(v4)), ""]
 
 
 def chain_caution():
@@ -43,10 +44,10 @@ def chain_caution():
     cks = json.loads((ROOT / "tests" / "fixtures" / "render" / "state-i3-session-g" / "expect.json").read_text(encoding="utf-8"))["checks"]
     st = [c for c in cks if c["kind"] == "state"]
     trunc = [c for c in st if c.get("chain_truncated")]
-    real = [c for c in st if "@" in c["id"]]
-    return ("Chains: %d of the %d state checks are the published ones and feed the cascade a TRUNCATED chain (the element and at most five ancestors, one element in most), marked chain_truncated and kept with their verdicts; "
-            "%d variants beside them use the REAL ancestry of the same element from the captures (the first of several matching elements is taken; ancestors of a hovered element get the hover state, observed by Session G on at most "
-            "five levels). Where a real-ancestry variant fails or passes differently, the report says so in its own row." % (len(trunc), len(st), len(real)))
+    real = [c for c in st if c.get("role") == "base"]
+    return ("Chains: each Session G reading is counted ONCE, scored on the REAL ancestry of its element from the captures (%d readings; the first of several matching elements is taken; ancestors of a hovered element get the hover state, observed by Session G on at most five levels), because a one-element chain cannot match a rule that depends on an ancestor. "
+            "The %d published checks that gave the cascade a truncated chain (the element and at most five ancestors, one element in most) are kept as VARIANT rows with their verdicts, listed outside the totals, together with the one-variable analyses; "
+            "rows that add the recorded run-time sheet are LAYER rows in the layers section." % (len(real) // 1, len(trunc)))
 
 
 FROZEN = ROOT / "docs" / "evidence" / "phase9-m7-calibration-revised-20261114" / "calibration-report.json"
@@ -66,9 +67,15 @@ def pairing_effect(results):
         return c
     a, b = tally(old["fixtures"]), tally([{"name": r["name"], "rows": r["rows"]} for r in results])
     ca, cb = a["PASS"] + a["FAIL"], b["PASS"] + b["FAIL"]
+    vis = sum(1 for r in results for x in r["rows"] if x["property"] == "visibility")
+    pairing_effect.data = {"compared_before": ca, "compared_after": cb, "pass_before": a["PASS"], "pass_after": b["PASS"], "fail_before": a["FAIL"], "fail_after": b["FAIL"], "na_before": a["N/A"], "na_after": b["N/A"], "visibility_fail_rows": vis}
     return ["Effect on compared coverage (tile fixtures, frozen 1.0.0 report against this one): compared rows %d -> %d (%+d), of which pass %d -> %d and fail %d -> %d; N/A rows %d -> %d. The rows that left are the ones the 1.0.0 pairing built against "
-            "invisible live elements (a box compared with a live box of 0 by 0, and the values of those elements); they are no longer compared, so compared coverage went DOWN, and the pass rate on what is compared is not a gain." % (
-                ca, cb, cb - ca, a["PASS"], b["PASS"], a["FAIL"], b["FAIL"], a["N/A"], b["N/A"]), ""]
+            "invisible live elements (a box compared with a live box of 0 by 0, and the values of those elements); they are no longer paired. Where the render DRAWS such an element with an area while the game hides it, the row is a "
+            "FAIL named visibility (%d rows: the SIVisible of the Atmosphere, Medical Centre and Training tiles), so it stays in the compared coverage as a failure; where the render draws nothing visible it is N/A. Compared coverage still went DOWN, and the pass rate on what is compared is not a gain." % (
+                ca, cb, cb - ca, a["PASS"], b["PASS"], a["FAIL"], b["FAIL"], a["N/A"], b["N/A"], vis), ""]
+
+
+pairing_effect.data = {}
 
 
 def grid_md(results):
@@ -132,10 +139,11 @@ def publish(out, ctx=None, results=None, update_guide=False, version=None):
                  "5. **Grid placement is scoped** to what was measured, with a held-out test: see \"Grid placement: what it was measured on\".", ""]
         return lines + rt.coverage_md(cv) + [""]
 
+    pe_lines = pairing_effect(results)                                  # computed first: its numbers also go into the JSON
     def appendix(results):
-        return rt.examination_md(results, ex) + [""] + rt.pairing_md(pd) + [""] + pairing_effect(results) + layers_mod.layers_md(lay) + grid_md(results)
+        return rt.examination_md(results, ex) + [""] + rt.pairing_md(pd) + [""] + pe_lines + layers_mod.layers_md(lay) + grid_md(results)
     tot = fixtures.report(results, out, title="Render calibration report (published, revised)", preface=preface, appendix=appendix,
-                          extra={"coverage": cv, "examination": ex, "layers": lay, "pairing": pd, "grid": rt.grid_scoping(results, HELDOUT), "duplicates": rt.DUPLICATES})
+                          extra={"coverage": cv, "examination": ex, "layers": lay, "pairing": pd, "pairing_effect": dict(pairing_effect.data), "grid": rt.grid_scoping(results, HELDOUT), "duplicates": rt.DUPLICATES})
     if update_guide:                                                       # the guide's trust section carries the same coverage block, between its markers
         g = ROOT / "docs" / "RENDER-GUIDE.md"
         txt = g.read_text(encoding="utf-8").replace("\r\n", "\n")

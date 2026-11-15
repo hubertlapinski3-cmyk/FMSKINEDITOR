@@ -163,7 +163,7 @@ def i3_states():
         chk("nav-tab-label-as-read", nav_chain([], True), "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover",
             observation="the same reading with the states AS READ: label 0, ancestors hover (2); the game's applied sheets only",
             interpretations=[{"text": "if this FAILS, no rule in the applied sheets colours the label through a hovered ancestor", "status": "derived"}]),
-        chk("nav-tab-label-as-read-runtime-sheet", nav_chain([], True), "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover", runtime_sheet_capture="styles-e1-squad-bindings-20261114-115217.ndjson",
+        chk("nav-tab-label-as-read-runtime-sheet", nav_chain([], True), "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover", layer="recorded run-time sheet (captured 80-rule sample)", runtime_sheet_capture="styles-e1-squad-bindings-20261114-115217.ndjson",
             observation="the same reading with the states AS READ (label 0, ancestors hover), plus the RECORDED run-time sheet (empty name, negative instance id) of the squad capture, whose sampled rules include "
                         ".nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text { color: var(--colours-base-neutral-white) }; the label's ancestor MainNav carries nav-on-light in that capture",
             interpretations=[{"text": "an ancestor-hover rule yields #FFFFFF under the masks as read, so the label's own hover is not needed to explain the colour", "status": "derived"},
@@ -185,6 +185,7 @@ def i3_states():
     for c in checks:
         if c["kind"] == "state":
             c["chain_truncated"] = True
+            c["role"] = "variant"          # a one-element or truncated chain cannot match a rule that depends on an ancestor: these rows are analyses of the same readings, listed outside the totals
     import json as _json
     cp = ROOT / "tests" / "fixtures" / "render" / "state-i3-session-g" / "chains.json"
     chains = _json.loads(cp.read_text(encoding="utf-8"))["targets"] if cp.is_file() else {}
@@ -206,20 +207,22 @@ def i3_states():
                  ("inbox-row-hover", "inbox-row-button", ["hover"], "#FFFFFF14", "#00000000", {}),
                  ("inbox-row-clicked-focus", "inbox-row-button", ["focus"], "#00000000", "#00000000", {"anc": False}),
                  ("pitch-marker-hover", "pitch-marker", ["hover"], "#00000000", "#00000000", {}),
+                 ("pitch-marker-label-hover", "pitch-marker-label", ["hover"], "#EBEBEB", "#EBEBEB", {"prop": "color", "noop": True}),
                  ("instruction-tile-hover", "instruction-tile", ["hover"], "#00000000", "#00000000", {})]
         for cid, key, st, want, rest, o in pairs:
-            checks.append(chk(cid + "@real-ancestry", real(key, st, o.get("anc", True)), want, rest, variant_of=cid, isolates="ancestry (the chain is the real one; the states are those of the published row)", chain_source=src(key),
+            checks.append(chk(cid + "@real-ancestry", real(key, st, o.get("anc", True)), want, rest, prop=o.get("prop", bg), noop=o.get("noop", False), role="base", scored_instead_of=cid, chain_source=src(key),
                               note="the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter)" if key == "filter-button" else ""))
         checks.append(chk("loans-tile-hover@runtime-sheet-layer", real("loans-tile-button", ["hover"]), "#2E3138", "#17223F", variant_of="loans-tile-hover", chain_source=src("loans-tile-button"),
                           isolates="the recorded run-time sheet layer (a captured 80-rule sample) added to the real-ancestry chain", runtime_sheet_capture="styles-e1-squad-bindings-20261114-115217.ndjson",
                           layer="recorded run-time sheet (captured 80-rule sample)"))
         # the navigation label: one variable per variant (ancestry, label state, both, both plus the recorded run-time sheet)
         nl = "nav-tab-label"
-        chk_ = lambda i, chain, **kw: checks.append(chk(i, chain, "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover", **kw))
+        chk_ = lambda i, chain, **kw: checks.append(chk(i, chain, "#FFFFFF", "#EBEBEB", prop="color", variant_of="nav-tab-label-hover", role="variant", **kw))
         chk_("nav-tab-label-hover@V1-real-ancestry-only", real(nl, ["hover"]), isolates="ancestry alone: real chain, the label hovered as in the published conditional row", chain_source=src(nl))
         chk_("nav-tab-label-hover@V2-label-state-only", nav_chain([]), isolates="the label's state alone: the published truncated chain, the label NOT hovered (ancestors hovered, as read)", chain_truncated=True)
-        chk_("nav-tab-label-hover@V3-real-ancestry-and-as-read", real(nl, []), isolates="both, applied sheets only: real chain, the label not hovered (as read), ancestors hovered", chain_source=src(nl))
-        chk_("nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet", real(nl, []), isolates="V3 plus the recorded run-time sheet layer (an 80-rule CAPTURED SAMPLE of a run-time sheet; U2)", chain_source=src(nl),
+        checks.append(chk("nav-tab-label-hover@real-chain", real(nl, []), "#FFFFFF", "#EBEBEB", prop="color", role="base", scored_instead_of="nav-tab-label-hover", chain_source=src(nl),
+                          observation="scored on the REAL chain with the states as read (label mask 0, ancestors hover), applied sheets only: this is the base row for the reading; the isolated variables are the variants V1, V2 and the layer row V4"))
+        chk_("nav-tab-label-hover@V4-base-plus-recorded-runtime-sheet", real(nl, []), isolates="the base row plus the recorded run-time sheet layer (an 80-rule CAPTURED SAMPLE of a run-time sheet; U2)", chain_source=src(nl),
              runtime_sheet_capture="styles-e1-squad-bindings-20261114-115217.ndjson", layer="recorded run-time sheet (captured 80-rule sample)")
     write("state-i3-session-g", {"kind": "state", "source": "I3 Session G, manual hover/press/select holds on the baseline plugin 0.2.2 (AllowActions false), 2026-11-14; replies saved as g-*.json in "
                                                               "workspace/notes/ui-dumps/i3g-20261114; log docs/evidence/phase9-i3-session-G-20261114.md. Predictions come from the game's own :pseudo rules "

@@ -68,37 +68,30 @@ def sheet_rules_from_capture(cap):
 
 
 def run_layers(ctx, results, ui_dir=None):
-    """For each layout fixture with a capture: re-render with each layer and publish a LAYER ROW for every base FAIL row the layer is about (cause runtime-class for the class layer,
-    runtime-sheet-colour for the sheet layer). Returns {layer: {"label", "rows": [...], "base_rows": n, "now_pass": k}}."""
-    from . import captures, causes, fixtures
+    """Run each layer over EVERY paired row of every layout fixture (passing rows included), not only the rows it is about, and publish what it fixes (FAIL -> PASS), what it BREAKS (PASS -> FAIL)
+    and, as the layer's table, the failing rows it is about (cause runtime-class for the class layer, runtime-sheet-colour for the sheet layer). Layer rows from the state fixture (the recorded
+    sheet on the real chains) are collected from each result's `layer_rows`. Nothing here touches the base rows or the base totals."""
+    from . import causes, fixtures
     ui_dir = Path(ui_dir) if ui_dir else fixtures.ui_dumps_dir(ctx)
-    out = {k: {"label": LABELS[k], "rows": [], "base_rows": 0, "now_pass": 0, "applied_nodes": 0, "default": "off", "status": "inferred"} for k in (LIVE_CLASSES, RUNTIME_SHEET)}
+    out = {k: {"label": LABELS[k], "rows": [], "base_rows": 0, "now_pass": 0, "applied_nodes": 0, "default": "off", "status": "inferred", "rows_compared": 0, "fixed": 0, "broken": [], "unchanged": 0,
+               "state_rows": [], "state_counts": {"PASS": 0, "FAIL": 0, "N/A": 0}} for k in (LIVE_CLASSES, RUNTIME_SHEET)}
     wanted = {LIVE_CLASSES: "runtime-class", RUNTIME_SHEET: "runtime-sheet-colour"}
     for r in results:
-        base_by_id = {x["id"]: x for x in r["rows"] if x["verdict"] == "FAIL" and x.get("kind") in ("boxes", "values")}
-        if not base_by_id:
-            continue
+        base_by_id = {x["id"]: x for x in r["rows"] if x.get("kind") in ("boxes", "values")}
         fx0 = fixtures.load(fixtures.FIXTURES / r["name"])
-        if fx0["fixture"].get("kind") != "layout" or not fx0["dump"]:
+        if not base_by_id or fx0["fixture"].get("kind") != "layout" or not fx0["dump"]:
             continue
         cap = causes.capture_for(fx0, ui_dir)
         if cap is None:
             continue
         for layer, cause_key in wanted.items():
-            ids = {i for i, x in base_by_id.items() if x.get("cause_key") == cause_key}
-            if not ids:
-                continue
+            ids = {i for i, x in base_by_id.items() if x["verdict"] == "FAIL" and x.get("cause_key") == cause_key}
             fx = fixtures.load(fixtures.FIXTURES / r["name"])
-            layers = {}
             if layer == LIVE_CLASSES:
                 base = fixtures._render(ctx, fx)
                 pairs, _root = fixtures.pair(base["tree"], fx["dump"])
                 pos = paths_of(base["tree"])
-                mapping = {}
-                for nid, (live_path, _n) in pairs.items():
-                    e = cap.elements.get(live_path)
-                    if e and e.get("classes"):
-                        mapping[pos[nid]] = list(e["classes"])
+                mapping = {pos[nid]: list(cap.elements[lp]["classes"]) for nid, (lp, _n) in pairs.items() if lp in cap.elements and cap.elements[lp].get("classes")}
                 layers = {"class_layer": mapping}
             else:
                 layers = {"runtime_sheet": sheet_rules_from_capture(cap)}
@@ -110,12 +103,27 @@ def run_layers(ctx, results, ui_dir=None):
                 if check["kind"] in ("boxes", "values"):
                     rows2 += fixtures.RUNNERS[check["kind"]](ctx, fx, check, res2)
             for x in rows2:
-                x.setdefault("kind", "boxes" if x["property"] == "box" else "values")
+                x.setdefault("kind", "boxes" if x["property"] in ("box", "visibility") else "values")
                 rid = causes.row_id(r["name"], x)
+                b = base_by_id.get(rid)
+                if b is None:
+                    continue
+                out[layer]["rows_compared"] += 1
+                rec = {"fixture": r["name"], "base_id": rid, "element": x["element"], "property": x["property"], "base_verdict": b["verdict"], "layer_verdict": x["verdict"], "expected": x["expected"],
+                       "base_got": b["got"], "layer_got": x["got"], "layer_delta": x["delta"], "layer": layer, "status": "inferred"}
                 if rid in ids:
-                    b = base_by_id[rid]
-                    out[layer]["rows"].append({"fixture": r["name"], "base_id": rid, "element": x["element"], "property": x["property"], "base_verdict": b["verdict"], "layer_verdict": x["verdict"],
-                                               "expected": x["expected"], "base_got": b["got"], "layer_got": x["got"], "layer_delta": x["delta"], "layer": layer, "status": "inferred"})
+                    out[layer]["rows"].append(rec)
+                if b["verdict"] == "FAIL" and x["verdict"] == "PASS":
+                    out[layer]["fixed"] += 1
+                elif b["verdict"] == "PASS" and x["verdict"] == "FAIL":
+                    out[layer]["broken"].append(rec)
+                else:
+                    out[layer]["unchanged"] += 1
+    for r in results:                                                       # the state fixture's layer rows (the recorded sheet on the real chains): their own counts
+        for x in r.get("layer_rows", []):
+            if "run-time sheet" in (x.get("layer") or ""):
+                out[RUNTIME_SHEET]["state_rows"].append({"fixture": r["name"], "check": x["check"], "property": x["property"], "verdict": x["verdict"], "expected": x["expected"], "got": x["got"], "layer": x["layer"]})
+                out[RUNTIME_SHEET]["state_counts"][x["verdict"]] += 1
     for k, v in out.items():
         v["base_rows"] = len(v["rows"])
         v["now_pass"] = sum(1 for x in v["rows"] if x["layer_verdict"] == "PASS")
@@ -123,16 +131,28 @@ def run_layers(ctx, results, ui_dir=None):
 
 
 def layers_md(lay):
-    out = ["## Optional layers (off by default, inferred; layer rows are separate from the base rows and never added to the base totals)", ""]
+    out = ["## Optional layers (off by default, inferred; layer rows stand alone: they are not in the totals above and not in the examination)", ""]
     for k in (LIVE_CLASSES, RUNTIME_SHEET):
         v = lay[k]
-        out += ["**%s.** %d base FAIL rows are about this layer; %d of them PASS when the layer is applied, %d still FAIL. %s" % (
-            v["label"], v["base_rows"], v["now_pass"], v["base_rows"] - v["now_pass"],
-            ("Where the classes come from: the live elements of each fixture's own capture (the base render already applies the per-type learned classes of data/render/runtime-classes.json, which hold no sprite class). Classes were added to %d nodes; this is an inference from one capture."
-             % v["applied_nodes"]) if k == LIVE_CLASSES else
-            "Where the rules come from: the 80 rules the squad capture sampled from its run-time sheet (of 190); a rule absent from the sample proves nothing."), ""]
+        out += ["### " + v["label"], ""]
+        if k == LIVE_CLASSES:
+            out += ["**Circularity, stated plainly:** the layer reads each element's classes from the SAME capture the row is scored against. That the failing rows it is about pass when it is applied confirms the diagnosis (those classes set in code explain those boxes); it does not show that the layer could PREDICT them for a screen no capture was taken of. "
+                    "The base render already applies the per-type classes learned from many dumps (`data/render/runtime-classes.json`); that file holds no sprite class and is not this layer.", ""]
+        else:
+            out += ["The rules come from the 80 rules the squad capture sampled from its run-time sheet (of 190): a CAPTURED SAMPLE; a rule absent from it proves nothing.", ""]
+        out += ["Run over every paired row of the layout fixtures, passing rows included: %d rows compared; %d FAIL -> PASS; **%d PASS -> FAIL (rows the layer breaks)**; %d unchanged. Of the %d failing base rows the layer is about, %d pass with it, %d still fail." % (
+            v["rows_compared"], v["fixed"], len(v["broken"]), v["unchanged"], v["base_rows"], v["now_pass"], v["base_rows"] - v["now_pass"]), ""]
+        if v["broken"]:
+            out += ["Rows the layer breaks:", "", "| Fixture | Element | Property | Base | With the layer | Expected | Got with the layer |", "|---|---|---|---|---|---|---|"]
+            out += ["| %s | %s | %s | %s | %s | %s | %s |" % (x["fixture"], x["element"], x["property"], x["base_verdict"], x["layer_verdict"], x["expected"], x["layer_got"]) for x in v["broken"]] + [""]
+        else:
+            out += ["The layer breaks no row.", ""]
         out += ["| Fixture | Element | Property | Base | With the layer | Expected | Got with the layer |", "|---|---|---|---|---|---|---|"]
         for x in v["rows"]:
             out.append("| %s | %s | %s | %s | %s | %s | %s |" % (x["fixture"], x["element"], x["property"], x["base_verdict"], x["layer_verdict"], x["expected"], x["layer_got"]))
         out.append("")
+        if v["state_rows"]:
+            c = v["state_counts"]
+            out += ["State rows with this layer on the real ancestry chains (layer rows, their own counts: %d pass, %d fail, %d N/A):" % (c["PASS"], c["FAIL"], c["N/A"]), "", "| Check | Property | Verdict | Expected | Got |", "|---|---|---|---|---|"]
+            out += ["| %s | %s | %s | %s | %s |" % (x["check"], x["property"], x["verdict"], x["expected"], x["got"]) for x in v["state_rows"]] + [""]
     return out

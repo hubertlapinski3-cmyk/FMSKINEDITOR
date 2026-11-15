@@ -1516,6 +1516,701 @@
     }
    ]
   },
+  "pitch-marker-label": {
+   "capture": "styles-d2-team-instructions-20261114-111314.ndjson",
+   "matched": 11,
+   "how": "the marker's label element (class content-tactics-visualiser-player-indicator-simple), the first in capture order",
+   "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/3/0/0/0/0",
+   "depth": 74,
+   "chain": [
+    {
+     "type": "PanelRootElement",
+     "name": "DefaultLayerSettings",
+     "classes": [],
+     "path": "P3",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "UIDocumentRootElement",
+     "name": "MainUIDocument-container",
+     "classes": [
+      "unity-ui-document__root"
+     ],
+     "path": "P3/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "MenuBody",
+     "classes": [
+      "main-menu-layer-body"
+     ],
+     "path": "P3/0/4",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "Panel",
+     "name": "TacticalPlannerTool",
+     "classes": [
+      "panel",
+      "panel--visible"
+     ],
+     "path": "P3/0/4/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRoot",
+     "name": "root",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindableSwitchElement",
+     "name": "",
+     "classes": [
+      "switch-element",
+      "bindable-switch-element",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "non-phone-panels",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TacticCreated",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BaseCardTemplateImpl",
+     "name": "CardController",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "543219c0235e5834d9a9a6ac1bae3bc0",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContainer",
+     "classes": [
+      "tool-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "CardContent",
+     "classes": [
+      "tool-content-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingVariables",
+     "name": "SpeakToVariables",
+     "classes": [
+      "height-100-percent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "speakto-panel-left-aligned"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIImage",
+     "name": "Card-frame",
+     "classes": [
+      "unity-image",
+      "siimage",
+      "padding-horizontal-global-padding-none",
+      "justify-content-space-between"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SISafeAreaElement",
+     "name": "GridSafeArea",
+     "classes": [
+      "flex-grow-class",
+      "align-self-stretch-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "GridLayout",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0",
+     "pseudo_in_capture": 2
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "Body",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIVisible",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "EventTrigger",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "BindingVariables",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingSetter",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "TemplateContainer",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TabGroup",
+     "name": "",
+     "classes": [
+      "tabgroup",
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SwitchElement",
+     "name": "TabsContent",
+     "classes": [
+      "switch-element",
+      "base-template-grow",
+      "tabgroup__tabscontent"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "base-template-grow"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [
+      "base-template-grow",
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "Body",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "UseDarkerHeaderIfFMC",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ScalableBindableGridLayoutElement",
+     "name": "TeamInstructionsTabGrid",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [
+      "grid-content-wrapper"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FixedAspectGridLayoutElement",
+     "name": "",
+     "classes": [
+      "si-tile-layout"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIScrollView",
+     "name": "",
+     "classes": [
+      "unity-scroll-view",
+      "unity-scroll-view--scroll",
+      "unity-scroll-view--vertical",
+      "siscrollview"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-and-vertical-scroll-container",
+     "classes": [
+      "unity-scroll-view__content-and-vertical-scroll-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-viewport",
+     "classes": [
+      "unity-scroll-view__content-viewport",
+      "unity-scroll-view__content-viewport--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "unity-content-container",
+     "classes": [
+      "unity-scroll-view__content-container",
+      "unity-scroll-view__content-container--vertical"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "GridLayoutElementContent",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindableVariableSizedGridElement",
+     "name": "TeamInstructionsPitch",
+     "classes": [
+      "si-tile",
+      "grid-element-scope"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BlockElement",
+     "name": "",
+     "classes": [
+      "grid-element--Block"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TutorialAnchorElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingExpect",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "team-instructions-pitch"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "SIStyleSetter",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "row-direction-normal",
+      "tactics-collapsable-pitch-container"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingVariables",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "BindingRemapper",
+     "name": "pitch-remapper",
+     "classes": [
+      "base-template-grow",
+      "phases-pitch-max-height"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "DiggableVisualElement",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "padding-right-global-padding-large",
+      "padding-left-global-padding-large",
+      "margin-left-global-gap-large",
+      "padding-vertical-global-padding-extra-large",
+      "border-radius-layout-modules-block-radius",
+      "navigatable-no-cursor"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FMTacticsWithPhases",
+     "name": "",
+     "classes": [
+      "flex-grow-class",
+      "tactics-collapsable-pitch-grass-colour"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FMPitchIndicator",
+     "name": "",
+     "classes": [
+      "projected--position--filled"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/3",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "TemplateContainer",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/3/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "ComponentElement",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/3/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "FMPitchPosition",
+     "name": "",
+     "classes": [],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/3/0/0/0",
+     "pseudo_in_capture": 0
+    },
+    {
+     "type": "VisualElement",
+     "name": "tactics-visualiser-player-indicator-simple",
+     "classes": [
+      "content-tactics-visualiser-player-indicator-simple",
+      "margin-horizontal-global-gap-none",
+      "padding-horizontal-global-padding-none"
+     ],
+     "path": "P3/0/4/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/2/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/1/0/0/0/0/1/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/3/0/0/0/0",
+     "pseudo_in_capture": 0
+    }
+   ]
+  },
   "pitch-marker": {
    "capture": "styles-d2-team-instructions-20261114-111314.ndjson",
    "matched": 11,

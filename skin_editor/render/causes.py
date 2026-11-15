@@ -267,7 +267,7 @@ def rule_empty_code_list(rec, comp=None):
 def rule_inline_display_none(rec, comp=None):
     lv = _live(rec)
     inline = lv.get("inline") or {}
-    if rec["property"] != "box" or str(inline.get("display")) != "None":
+    if rec["property"] not in ("box", "visibility") or str(inline.get("display")) != "None":
         return None
     exp, got = rec.get("expected_box"), rec.get("got_box")
     if not exp or exp[2] > 0.5 or exp[3] > 0.5 or not got or (got[2] <= 0.5 and got[3] <= 0.5):
@@ -474,7 +474,7 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
         rec = {"id": row_id(name, r), "row": r, "property": r["property"], "expected": r["expected"], "got": r["got"], "delta": r["delta"], "live": None, "render": None, "pair": None}
         node = None
         if tab is not None:
-            if r["property"] == "box" and r.get("node") is not None:
+            if r["property"] in ("box", "visibility") and r.get("node") is not None:
                 node = r["node"]
             elif r.get("live"):
                 node = next((t["i"] for t in tab if t["live"] == r["live"]), None)
@@ -484,6 +484,13 @@ def examine_fixture(ctx, fx, rows, casc, ui_dir, runtime_fallback=None):
             rec["render"] = {"type": n["type"], "name": n.get("name") or "", "classes": n.get("classes"), "all_classes": list(n.get("_classes") or []), "has_children": bool(n.get("children")),
                              "text": n.get("text"), "layout": n.get("layout")}
             t = tab[node]
+            if r["property"] == "visibility":                    # the live element is invisible: its box is its (empty) live box, the render's is what it drew
+                lb = fx["dump"]["nodes"][r["live"]]["bounds"] if r.get("live") in fx["dump"]["nodes"] else [0, 0, 0, 0]
+                rec["expected_box"], rec["got_box"] = [round(v, 1) for v in lb], r["got"]
+                if cap is not None and r.get("live") in cap.elements:
+                    e = cap.elements[r["live"]]
+                    rec["live"] = {"classes": e.get("classes"), "inline": e.get("inline"), "pseudo": e.get("pseudo"), "visible": e.get("visible"), "text": e.get("text"), "source": e.get("source"),
+                                   "children_in_capture": cap.children_count(r["live"]), "font_size": (e.get("resolved") or {}).get("fontSize"), "display": (e.get("resolved") or {}).get("display")}
             if r["property"] == "box":
                 rec["d"], rec["expected_box"], rec["got_box"] = t["d"], t["expected"], t["got"]
                 if t["parent"] is not None and tab[t["parent"]]["expected"]:

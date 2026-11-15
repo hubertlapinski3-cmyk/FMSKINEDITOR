@@ -238,6 +238,11 @@ def run_boxes(ctx, fx, check, res):
                 continue
             hid = id(n) in hidden
             inv = id(n) in legacy and not legacy[id(n)][1]["visible"]
+            if inv and not hid and rects[i][2] > 0.5 and rects[i][3] > 0.5:               # the game HIDES this element, the render DRAWS it with an area (a 0-wide box draws nothing): a mismatch, not a non-comparison
+                lb = legacy[id(n)][1]["bounds"]
+                rows.append(_row(name, check["id"], label, "visibility", "hidden in the game (live element invisible, live box %s x %s)" % (round(lb[2], 1), round(lb[3], 1)), [round(v, 1) for v in rects[i]], "FAIL", node=i,
+                                 live=legacy[id(n)][0], note="the game hides this element (display none, 0 by 0) and the render draws it with a box of %s by %s" % (round(rects[i][2], 1), round(rects[i][3], 1))))
+                continue
             rows.append(_row(name, check["id"], label, "box", None, [round(v, 1) for v in rects[i]], "N/A", node=i, live=None, na_reason=NA_HIDDEN_BRANCH if hid else (NA_LIVE_INVISIBLE if inv else NA_LIVE_ABSENT),
                              note=("descendant of a switch branch the render chose not to show (one branch per switch): no live partner by design" if hid else
                                    ("the live element of this name is invisible (display none): not paired, nothing to compare" if inv else "no live element paired: the drawn node has no partner in the capture (absent or not captured)"))))
@@ -454,7 +459,7 @@ def run_state(ctx, fx, check, res=None):
     if "rest" in check:
         na = (NA_NO_DECL_INITIAL if (prop in INITIAL and same(prop, check["rest"], INITIAL[prop])) else NA_NO_DECL_PARENT_ABSENT) if not rest else None          # a state check holds no live parent: only the initial value is certain
         rows.append(_row(name, check["id"], label, prop + " (rest)", check["rest"], rest["value"] if rest else None, "PASS" if rest and same(prop, check["rest"], rest["value"]) else ("N/A" if not rest else "FAIL"),
-                         note="" if rest else "the render declares no %s here" % prop, **dict({"na_reason": na} if na else {}, **{k: check[k] for k in ("conditional", "variant_of", "chain_truncated", "chain_source", "layer", "isolates") if k in check})))
+                         note="" if rest else "the render declares no %s here" % prop, **dict({"na_reason": na} if na else {}, **{k: check[k] for k in ("conditional", "variant_of", "chain_truncated", "chain_source", "layer", "isolates", "role", "scored_instead_of") if k in check})))
     if decl:
         pred = decl["value"]
     elif rest:
@@ -465,7 +470,7 @@ def run_state(ctx, fx, check, res=None):
     note = ("state rule %s" % decl["source"]["selector"]) if decl else "no state rule declares %s: the render predicts no change" % prop
     if check.get("noop"):
         note = "explicit no-op: " + note
-    extra = {k: check[k] for k in ("observation", "interpretations", "conditional", "variant_of", "chain_truncated", "chain_source", "layer", "isolates") if k in check}
+    extra = {k: check[k] for k in ("observation", "interpretations", "conditional", "variant_of", "chain_truncated", "chain_source", "layer", "isolates", "role", "scored_instead_of") if k in check}
     rows.append(_row(name, check["id"], label, "%s (%s)" % (prop, state_txt), check["state"], pred, "PASS" if ok else "FAIL", note=note + ((" | " + check["note"]) if check.get("note") else ""), **extra))
     return rows
 
@@ -497,9 +502,14 @@ def run(folder, ctx):
         for r_ in new:
             r_.setdefault("kind", check["kind"])                 # the kind of check that made the row: the coverage tables group by it
         rows.extend(new)
+    # base rows are the comparison (each reading counted once, on the real chain); VARIANT rows are analyses of the same readings and LAYER rows apply an optional inferred layer: both are kept, published
+    # in their own sections and counted outside the totals
+    variant_rows = [x for x in rows if x.get("role") == "variant" and not x.get("layer")]
+    layer_rows = [x for x in rows if x.get("layer")]
+    rows = [x for x in rows if x.get("role") != "variant" and not x.get("layer")]
     from . import causes
     seen = {}
-    for r_ in rows:                                           # every row gets a unique id (the old fixture|check|element|property key collided on same-named rows)
+    for r_ in rows + variant_rows + layer_rows:                                           # every row gets a unique id (the old fixture|check|element|property key collided on same-named rows)
         rid = causes.row_id(fx["fixture"]["name"], r_)
         seen[rid] = seen.get(rid, 0) + 1
         r_["id"] = rid if seen[rid] == 1 else "%s#%d" % (rid, seen[rid])
@@ -507,7 +517,9 @@ def run(folder, ctx):
     dump = fx["dump"]
     coverage = {"render_nodes": len(_flat(res["tree"])) if res else 0, "box_nodes": fx.get("box_nodes", 0), "skipped": fx.get("skips", {}),
                 "dump_nodes": len(dump["nodes"]) if dump else 0, "dump_paired": len(fx.get("paired", ())), "dump_unpaired": (len(dump["nodes"]) - len(fx.get("paired", ()))) if dump else 0}
-    return {"name": fx["fixture"]["name"], "source": fx["fixture"].get("source", ""), "build": fx["fixture"].get("build", ""), "rows": rows, "coverage": coverage,
+    cnt = lambda rs: {v: sum(1 for r in rs if r["verdict"] == v) for v in ("PASS", "FAIL", "N/A")}
+    return {"name": fx["fixture"]["name"], "source": fx["fixture"].get("source", ""), "build": fx["fixture"].get("build", ""), "rows": rows, "variant_rows": variant_rows, "layer_rows": layer_rows,
+            "variant_counts": cnt(variant_rows), "layer_counts": cnt(layer_rows), "coverage": coverage,
             "delivered": delivered, "counts": {v: sum(1 for r in rows if r["verdict"] == v) for v in ("PASS", "FAIL", "N/A")}}
 
 
@@ -582,6 +594,12 @@ def report(results, out_dir, title="Render calibration report", preface=None, ap
             if x.get("observation"):
                 note = "observation: " + x["observation"] + " | " + note
             md.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (x["verdict"], x["check"], x["element"], x["property"], json.dumps(x["expected"]), json.dumps(x["got"]), json.dumps(x["delta"]) if x["delta"] else "", note))
+        if r.get("variant_rows"):
+            vc = r["variant_counts"]
+            md += ["", "### Variant rows of %s: analyses of the SAME readings (a truncated chain, or one variable changed), listed here and counted OUTSIDE the totals (%d pass, %d fail, %d N/A)" % (r["name"], vc["PASS"], vc["FAIL"], vc["N/A"]), "",
+                   "| Verdict | Check | Element | Property | Expected | Got | What it isolates |", "|---|---|---|---|---|---|---|"]
+            for x in r["variant_rows"]:
+                md.append("| %s | %s | %s | %s | %s | %s | %s |" % (x["verdict"], x["check"], x["element"], x["property"], json.dumps(x["expected"]), json.dumps(x["got"]), (x.get("isolates") or ("published chain, truncated" if x.get("chain_truncated") else ""))))
     (out_dir / "calibration-report.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     return tot
 

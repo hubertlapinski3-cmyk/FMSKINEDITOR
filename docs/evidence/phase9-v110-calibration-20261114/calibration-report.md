@@ -2,27 +2,27 @@
 
 **Status: published, build 27.0.1.2503222, the calibration report of FM Skin Studio 1.1.0.** The two 1.0.0 reports (the first, and the revised one the 1.0.0 release assets carried) are frozen history in `docs/evidence/phase9-m7-calibration-20261114/` and `docs/evidence/phase9-m7-calibration-revised-20261114/`; this report re-runs the whole calibration with structural pairing (the v1.1 default, no invisible live elements), the real-ancestry state chains, the optional layers as separate rows, and the row-by-row examination on whatever changed. Read these first:
 
-1. **Failure causes: each failing row was examined individually, and the examination is published row by row** (section "The failures, examined row by row"). Each of the 83 failing rows: 44 origin failures, 39 displaced by an origin listed beside them. The causes are the ORIGIN rows: 19 rest on a measured capture fact, 12 on magnitude only, 13 are UNEXPLAINED; the displaced rows repeat their origin's cause (37 with a measured-fact origin, 2 unexplained), so the row counts 56 / 12 / 15 over all failing rows count rows, not independent causes. The 1.0.0 labels came from fixture-wide rules (one label per row type, list order deciding when two fitted, 78 rows labelled, none unexplained); they disagree with the examination on 31 rows and both labels are kept. The examiner wrote the rules; no second person checked. Of the 44 origin rows, one names a class of cause without predicting the size of the gap.
+1. **Failure causes: each failing row was examined individually, and the examination is published row by row** (section "The failures, examined row by row"). Each of the 80 failing rows: 41 origin failures, 39 displaced by an origin listed beside them. The causes are the ORIGIN rows: 20 rest on a measured capture fact, 10 on magnitude only, 11 are UNEXPLAINED; the displaced rows repeat their origin's cause (37 with a measured-fact origin, 2 unexplained), so the row counts 57 / 10 / 13 over all failing rows count rows, not independent causes. The 1.0.0 labels came from fixture-wide rules (one label per row type, list order deciding when two fitted, 78 rows labelled, none unexplained); they disagree with the examination on 34 rows and both labels are kept. The examiner wrote the rules; no second person checked. Of the 41 origin rows, one names a class of cause without predicting the size of the gap.
 2. **Coverage is published by row class, and the pass count is not a headline** (table below). Many passes are flex rows at Yoga's initial value, which the render supplies when it declares nothing; the same condition is N/A for colour and font-size. tile-loans and tile-loans-c2-dump are one tile counted twice.
 3. **Delivered text pairing.** Captured text is paired with the drawn text nodes by the structural template path (`render/delivered.py`): 16 of 24 text nodes paired on the five tiles, 38 captured texts with no render node. Measured against the layout's sample text on the same fixtures it changed ONE row (a Tactics `CellText` box now passes, 66.9 against 67.4 wide). The wiring is correct and cheap but not the improvement hoped for.
-4. **State findings come from the I3 session (Session G)**, hover, press, focus and selection read by hand on the baseline inspector with the owner at the PC; observation and interpretation are separate fields on each row, each interpretation marked observed, derived or inferred. The render applies NO runtime state. Measured: label colour #FFFFFF under the pointer, rest #EBEBEB; label mask 0; ancestors 2. Not measured: why. Isolated-variable result, one variable changed per variant from the published conditional row (truncated chain, label hovered, applied sheets only: rest PASS, hover PASS): the real ancestry alone (V1): rest FAIL, hover FAIL; the label's own state alone, label NOT hovered (V2): rest PASS, hover PASS; both, i.e. real ancestry and the states as read (V3): rest FAIL, hover FAIL; V3 plus the recorded run-time sheet, a captured 80-rule sample (V4): rest PASS, hover PASS. Read plainly: the label's own hover is not needed to reach #FFFFFF (an ancestor-hover rule in the applied sheets does it on the truncated chain); the real ancestor (.nav-on-light) makes the applied sheets predict another colour at rest and on hover; the recorded run-time sheet restores both. The first two published as-read rows changed the ancestor and the state together and could not say which mattered. The mechanism is unverified: no repeated reads were taken, inheritance was not tested, the Loans title gave no second point.  Chains: 15 of the 29 state checks are the published ones and feed the cascade a TRUNCATED chain (the element and at most five ancestors, one element in most), marked chain_truncated and kept with their verdicts; 15 variants beside them use the REAL ancestry of the same element from the captures (the first of several matching elements is taken; ancestors of a hovered element get the hover state, observed by Session G on at most five levels). Where a real-ancestry variant fails or passes differently, the report says so in its own row.
+4. **State findings come from the I3 session (Session G)**, hover, press, focus and selection read by hand on the baseline inspector with the owner at the PC; observation and interpretation are separate fields on each row, each interpretation marked observed, derived or inferred. The render applies NO runtime state. Measured: label colour #FFFFFF under the pointer, rest #EBEBEB; label mask 0; ancestors 2. Not measured: why. The BASE row for this reading is scored on the REAL chain with the states as read (label unhovered, ancestors hovered, applied sheets only): rest FAIL, hover FAIL. The analyses of the same reading (variant rows, outside the totals), one variable changed from the published conditional row (truncated chain, label hovered: rest PASS, hover PASS): the real ancestry alone (V1): rest FAIL, hover FAIL; the label's own state alone, label NOT hovered (V2): rest PASS, hover PASS. The LAYER row (the base chain plus the recorded run-time sheet, a captured 80-rule sample, in the layers section): rest PASS, hover PASS. Read plainly: the label's own hover is not needed to reach #FFFFFF (an ancestor-hover rule in the applied sheets does it on the truncated chain); the real ancestor (.nav-on-light) makes the applied sheets predict another colour at rest and on hover, so the base row FAILS; the recorded run-time sheet restores both. The first published as-read rows changed the ancestor and the state together and could not say which mattered. The mechanism is unverified: no repeated reads were taken, inheritance was not tested, the Loans title gave no second point.  Chains: each Session G reading is counted ONCE, scored on the REAL ancestry of its element from the captures (12 readings; the first of several matching elements is taken; ancestors of a hovered element get the hover state, observed by Session G on at most five levels), because a one-element chain cannot match a rule that depends on an ancestor. The 15 published checks that gave the cascade a truncated chain (the element and at most five ancestors, one element in most) are kept as VARIANT rows with their verdicts, listed outside the totals, together with the one-variable analyses; rows that add the recorded run-time sheet are LAYER rows in the layers section.
 5. **Grid placement is scoped** to what was measured, with a held-out test: see "Grid placement: what it was measured on".
 
-**Coverage: what the pass count is made of.** Of 1162 slots, 747 were compared (pass or fail) and 415 were not (N/A), reasons below. There is no single headline rate: read the classes.
+**Coverage: what the pass count is made of.** Of 1128 slots, 718 were compared (pass or fail) and 410 were not (N/A), reasons below. There is no single headline rate: read the classes.
 
 | Row class | Pass | Fail | N/A |
 |---|---|---|---|
-| geometry | 98 | 64 | 29 |
+| geometry | 98 | 67 | 26 |
 | colour | 29 | 5 | 256 |
 | font-size | 21 | 0 | 124 |
 | flex | 430 | 5 | 0 |
 | rule winner | 4 | 0 | 0 |
-| state | 45 | 9 | 6 |
+| state | 19 | 3 | 4 |
 | screen hosts | 28 | 0 | 0 |
 | tile order | 6 | 0 | 0 |
 | table header | 3 | 0 | 0 |
 
-Geometry: 98 of 162 compared rows pass, of which 54 are the stage box (the first node of the capture, taken from it) and 44 are other boxes. Colour and font-size: 50 of 55 compared rows pass. Flex: 430 of 435 rows pass; 291 of them have the value supplied by default because the render declared nothing (the same condition is N/A for colour and font-size), and 324 pass with a value equal to Yoga's initial value whether declared or supplied. Passes by value source: 189 declared, 291 default.
+Geometry: 98 of 165 compared rows pass, of which 54 are the stage box (the first node of the capture, taken from it) and 44 are other boxes. Colour and font-size: 50 of 55 compared rows pass. Flex: 430 of 435 rows pass; 291 of them have the value supplied by default because the render declared nothing (the same condition is N/A for colour and font-size), and 324 pass with a value equal to Yoga's initial value whether declared or supplied. Passes by value source: 189 declared, 291 default.
 
 | Fixture | geometry | colour | font-size | flex | rule winner | state | screen hosts | tile order | table header |
 |---|---|---|---|---|---|---|---|---|---|
@@ -35,30 +35,30 @@ Geometry: 98 of 162 compared rows pass, of which 54 are the stage box (the first
 | screen-squad-small | - | - | - | - | - | - | 5 / 0 / 0 | - | - |
 | screen-squad-standard | - | - | - | - | - | - | 5 / 0 / 0 | - | - |
 | screen-team-instructions-large | - | - | - | - | - | - | 3 / 0 / 0 | - | - |
-| state-i3-session-g | - | - | - | - | - | 44 / 9 / 6 | - | - | - |
-| tile-atmosphere | 14 / 2 / 4 | 2 / 2 / 28 | 3 / 0 / 13 | 48 / 0 / 0 | - | - | - | - | - |
+| state-i3-session-g | - | - | - | - | - | 18 / 3 / 4 | - | - | - |
+| tile-atmosphere | 14 / 3 / 3 | 2 / 2 / 28 | 3 / 0 / 13 | 48 / 0 / 0 | - | - | - | - | - |
 | tile-loans | 15 / 3 / 1 | 2 / 1 / 33 | 2 / 0 / 16 | 54 / 0 / 0 | - | 1 / 0 / 0 | - | - | - |
 | tile-loans-c2-dump | 16 / 1 / 2 | - | - | - | - | - | - | - | - |
-| tile-medical-centre | 24 / 6 / 16 | 4 / 1 / 55 | 3 / 0 / 27 | 90 / 0 / 0 | - | - | - | - | - |
+| tile-medical-centre | 24 / 7 / 15 | 4 / 1 / 55 | 3 / 0 / 27 | 90 / 0 / 0 | - | - | - | - | - |
 | tile-tactics | 17 / 33 / 2 | 12 / 0 / 88 | 6 / 0 / 44 | 147 / 3 / 0 | - | - | - | - | - |
-| tile-training | 12 / 19 / 4 | 9 / 1 / 52 | 7 / 0 / 24 | 91 / 2 / 0 | - | - | - | - | - |
+| tile-training | 12 / 20 / 3 | 9 / 1 / 52 | 7 / 0 / 24 | 91 / 2 / 0 | - | - | - | - | - |
 | tiles-large | - | - | - | - | - | - | - | 3 / 0 / 0 | - |
 | tiles-standard | - | - | - | - | - | - | - | 3 / 0 / 0 | - |
 
 (cells are pass / fail / N/A)
 
-**N/A by reason:** no-declaration-live-initial-or-inherited: 384; descendant-of-hidden-switch-branch: 13; live-element-present-but-invisible: 11; live-element-absent-or-not-captured: 5; no-declaration-parent-not-in-dump: 1; not-measured-live: 1. No-declaration rows whose live value is not the initial or inherited one: 0.
+**N/A by reason:** no-declaration-live-initial-or-inherited: 382; descendant-of-hidden-switch-branch: 13; live-element-present-but-invisible: 8; live-element-absent-or-not-captured: 5; not-measured-live: 1; no-declaration-parent-not-in-dump: 1. No-declaration rows whose live value is not the initial or inherited one: 0.
 
 **Rows never emitted** (the runners skip them, they are in no verdict): boxes: root of a hidden switch branch (never emitted): 3; values: drawn node with no live partner (every property skipped): 180. Emitted plus skipped equals render nodes times properties in every fixture: yes.
 
 **Live-side coverage** (dump elements paired with a render node): tile-atmosphere 16 of 48; tile-loans 18 of 343; tile-loans-c2-dump 17 of 32; tile-medical-centre 30 of 159; tile-tactics 50 of 242; tile-training 31 of 762. Captured delivered texts with no render node: 38.
 
-**Duplicates, counted twice:** tile-loans and tile-loans-c2-dump are one tile (one tile measured twice (the c2 inspector dump and the squad capture); both are kept and both are counted in every total; deduplicating would change the headline totals and needs the owner's decision). The club colour #17223F is counted in 6 FAIL rows (three tiles and the state fixture's rest row). Nothing was deduplicated.
+**Duplicates, counted twice:** tile-loans and tile-loans-c2-dump are one tile (one tile measured twice (the c2 inspector dump and the squad capture); both are kept and both are counted in every total; deduplicating would change the headline totals and needs the owner's decision). The club colour #17223F is counted in 4 FAIL rows (three tiles and the state fixture's rest row). Nothing was deduplicated.
 
 
 Tolerance: box x, y, width, height within 8 px or 5 percent of the measured size, whichever is tighter; colours, font sizes and flex values exactly equal. Every row is published: PASS, FAIL, or N/A (nothing to compare). Nothing is filtered, averaged or re-toleranced.
 
-**Totals: 664 pass, 83 fail, 415 n/a.**
+**Totals: 638 pass, 80 fail, 410 n/a.**
 
 | Fixture | Pass | Fail | N/A | Source |
 |---|---|---|---|---|
@@ -71,60 +71,56 @@ Tolerance: box x, y, width, height within 8 px or 5 percent of the measured size
 | screen-squad-small | 5 | 0 | 0 | capture styles-e3-squad-1152x864-20261114-115626.ndjson (plugin 0.4.0-capture); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions |
 | screen-squad-standard | 5 | 0 | 0 | capture styles-e4-squad-1600x900-20261114-115839.ndjson (plugin 0.4.0-capture); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions |
 | screen-team-instructions-large | 3 | 0 | 0 | capture styles-d2-team-instructions-20261114-111314.ndjson (plugin 0.3.1-capture); hosts of the grid container; the run-time slots are GIVEN (cells from the capture) and are not predictions |
-| state-i3-session-g | 44 | 9 | 6 | I3 Session G, manual hover/press/select holds on the baseline plugin 0.2.2 (AllowActions false), 2026-11-14; replies saved as g-*.json in workspace/notes/ui-dumps/i3g-20261114; log docs/evidence/phase9-i3-session-G-20261114.md. Predictions come from the game's own :pseudo rules (Cascade.state_declarations); the render itself still applies no state |
-| tile-atmosphere | 67 | 4 | 45 | capture styles-e1-squad-bindings-20261114-115217.ndjson, host Atmosphere |
+| state-i3-session-g | 18 | 3 | 4 | I3 Session G, manual hover/press/select holds on the baseline plugin 0.2.2 (AllowActions false), 2026-11-14; replies saved as g-*.json in workspace/notes/ui-dumps/i3g-20261114; log docs/evidence/phase9-i3-session-G-20261114.md. Predictions come from the game's own :pseudo rules (Cascade.state_declarations); the render itself still applies no state |
+| tile-atmosphere | 67 | 5 | 44 | capture styles-e1-squad-bindings-20261114-115217.ndjson, host Atmosphere |
 | tile-loans | 74 | 4 | 50 | capture styles-e1-squad-bindings-20261114-115217.ndjson, host Loans |
 | tile-loans-c2-dump | 16 | 1 | 2 | inspector fm_dump_tree of the Loans tile, c2 session 2026-11-13 (Small + Larger text): the M0 spike's reference |
-| tile-medical-centre | 121 | 7 | 98 | capture styles-e1-squad-bindings-20261114-115217.ndjson, host MedicalCentre |
+| tile-medical-centre | 121 | 8 | 97 | capture styles-e1-squad-bindings-20261114-115217.ndjson, host MedicalCentre |
 | tile-tactics | 182 | 36 | 134 | capture styles-e1-squad-bindings-20261114-115217.ndjson, host Tactics |
-| tile-training | 119 | 22 | 80 | capture styles-e1-squad-bindings-20261114-115217.ndjson, host Training |
+| tile-training | 119 | 23 | 79 | capture styles-e1-squad-bindings-20261114-115217.ndjson, host Training |
 | tiles-large | 3 | 0 | 0 | p7-tile-test (the owner's project, stored placement edits) and the tile-1/tile-2 screenshots: instructions left, pitch right at Small and Large in game. Only the left/right relation is checked: the absolute x of those screenshots (40 and 1274 / 865) was taken on another panel size. |
 | tiles-standard | 3 | 0 | 0 | p7-tile-test (the owner's project, stored placement edits) and the tile-1/tile-2 screenshots: instructions left, pitch right at Small and Large in game. Only the left/right relation is checked: the absolute x of those screenshots (40 and 1274 / 865) was taken on another panel size. |
 
 ## The failures, examined row by row
 
-Each of the 83 failing rows was examined individually (pairing, the x, y, w, h split against each tolerance, the parent's and the preceding sibling's displacement, and for origins a mechanism with one independent capture fact). 44 are origin failures; 39 are displaced by an origin listed beside them. The causes are the origin rows: 19 rest on a measured capture fact, 12 on magnitude only, 13 are unexplained; the displaced rows repeat their origin's cause (37 with a measured-fact origin, 2 unexplained). The earlier rule label disagreed on 31 rows; both are kept. The examiner wrote the rules; no second person checked.
+Each of the 80 failing rows was examined individually (pairing, the x, y, w, h split against each tolerance, the parent's and the preceding sibling's displacement, and for origins a mechanism with one independent capture fact). 41 are origin failures; 39 are displaced by an origin listed beside them. The causes are the origin rows: 20 rest on a measured capture fact, 10 on magnitude only, 11 are unexplained; the displaced rows repeat their origin's cause (37 with a measured-fact origin, 2 unexplained). The earlier rule label disagreed on 34 rows; both are kept. The examiner wrote the rules; no second person checked.
 
-Of the origin rows graded measured fact, one names a class of cause without predicting the size of the gap (the pitch is code-built; the height deficit of 41 px is not derived). 5 rows have a primary cause and at least one further origin component with no mechanism (listed in the JSON as unexplained_components); 5 rows were flagged at the pairing step (a live partner that is invisible, or text that differs). The 1.0.0 labels came from fixture-wide rules: 32 rows satisfied two of them, so list order decided the label.
+Of the origin rows graded measured fact, one names a class of cause without predicting the size of the gap (the pitch is code-built; the height deficit of 41 px is not derived). 3 rows have a primary cause and at least one further origin component with no mechanism (listed in the JSON as unexplained_components); 5 rows were flagged at the pairing step (a live partner that is invisible, or text that differs). The 1.0.0 labels came from fixture-wide rules: 32 rows satisfied two of them, so list order decided the label.
 
 | Root cause | Rows | Origin rows | Displaced rows |
 |---|---|---|---|
 | a widget the game fills in code: the live element has children in the capture and no template source, the layout holds none (its size is set by that content; the size itself is not predicted) | 18 | 1 | 17 |
 | a class the game sets in code (absent from the layout) carries the value: applying the live class set through the game's own sheets reproduces it | 18 | 10 | 8 |
-| UNEXPLAINED (no supporting capture fact) | 15 | 13 | 2 |
+| UNEXPLAINED (no supporting capture fact) | 13 | 11 | 2 |
 | a list filled at run time is drawn empty: the game builds its rows in code, the render has none, so it collapses to 0 by 0 | 12 | 1 | 11 |
-| a colour painted by a run-time sheet (empty name, negative instance id) that the render does not apply | 6 | 6 | 0 |
 | same text string and font size, the stand-in font gives another width | 6 | 6 | 0 |
+| a colour painted by a run-time sheet (empty name, negative instance id) that the render does not apply | 4 | 4 | 0 |
 | elements the game builds in code sit between this node and its layout parent (Unity ScrollView internals), changing how the node is laid out | 3 | 3 | 0 |
-| a recorded run-time sheet declares the value (assigned by a listed per-row override: the twin variant that includes that sheet passes) | 2 | 2 | 0 |
+| display:none set in code (inline in the capture, in no layout or sheet): the live element is 0 by 0, the render draws it | 3 | 3 | 0 |
 | a sub-pixel offset on an element whose tolerance (5 percent of its size) is under half a pixel: the same offset the passing rows of the fixture carry | 2 | 1 | 1 |
 | the capture was taken while the element was in a pseudo-state (mask bit set): the game's own :pseudo rule declares exactly the live value | 1 | 1 | 0 |
 
 Confusion table, 1.0.0 label (rows) by the examined cause (columns): both labels are kept on every row.
 
-| 1.0.0 label | UNEXPLAINED | code-built-children | code-built-wrapper | empty-code-list | runtime-class | runtime-sheet-colour | stand-in-font | state-captured | sub-pixel-tolerance |
-|---|---|---|---|---|---|---|---|---|---|
-| bound text, scroller or list width | 5 | 0 | 2 | 0 | 0 | 0 | 3 | 0 | 0 |
-| code-built content: the Training tile | 2 | 0 | 1 | 12 | 3 | 0 | 1 | 0 | 0 |
-| code-built content: the tactics pitch | 3 | 18 | 0 | 0 | 10 | 0 | 2 | 0 | 0 |
-| code-built or binding-driven colour | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
-| component-drawn image | 0 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
-| run-time club-colour sheet | 0 | 0 | 0 | 0 | 0 | 4 | 0 | 0 | 0 |
-| sub-pixel offset | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
+| 1.0.0 label | UNEXPLAINED | code-built-children | code-built-wrapper | empty-code-list | inline-display-none | runtime-class | runtime-sheet-colour | stand-in-font | state-captured | sub-pixel-tolerance |
+|---|---|---|---|---|---|---|---|---|---|---|
+| bound text, scroller or list width | 5 | 0 | 2 | 0 | 0 | 0 | 0 | 3 | 0 | 0 |
+| code-built content: the Training tile | 2 | 0 | 1 | 12 | 0 | 3 | 0 | 1 | 0 | 0 |
+| code-built content: the tactics pitch | 3 | 18 | 0 | 0 | 0 | 10 | 0 | 2 | 0 | 0 |
+| code-built or binding-driven colour | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
+| component-drawn image | 0 | 0 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
+| none | 2 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 0 | 0 |
+| run-time club-colour sheet | 0 | 0 | 0 | 0 | 0 | 0 | 4 | 0 | 0 | 0 |
+| sub-pixel offset | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
 
 | Row id | Status | Origin id | Examined cause | Grade | Evidence | 1.0.0 label |
 |---|---|---|---|---|---|---|
-| state-i3-session-g|loans-tile-hover|SIButton#layout-tile-interaction-button|background-color (rest)|- | origin | itself | runtime-sheet-colour | magnitude only | {"live_value_in_runtime_sheet_samples": true, "note": "the sheet's sampled rules paint this value elsewhere; this element's own rule is not in the 80-rule sampl | run-time club-colour sheet |
-| state-i3-session-g|nav-tab-label-as-read|SIText#text|color (rest)|- | origin | itself | runtime-sheet-declares-value | measured fact | variant row nav-tab-label-as-read-runtime-sheet, color (rest): PASS; the capture's run-time sheet sample holds .nav-on-light .navigation-tab-portal-default-active-false .portal-text {color: var(--global-text-primary)} | - |
-| state-i3-session-g|nav-tab-label-as-read|SIText#text|color (enabled)|- | origin | itself | runtime-sheet-declares-value | measured fact | variant row nav-tab-label-as-read-runtime-sheet, color (enabled): PASS; rule .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text in the capture's run-time sheet sample | - |
 | state-i3-session-g|loans-tile-hover@real-ancestry|SIButton#layout-tile-interaction-button|background-color (rest)|- | origin | itself | runtime-sheet-colour | magnitude only | {"live_value_in_runtime_sheet_samples": true, "note": "the sheet's sampled rules paint this value elsewhere; this element's own rule is not in the 80-rule sampl | run-time club-colour sheet |
-| state-i3-session-g|loans-tile-hover@runtime-sheet-layer|SIButton#layout-tile-interaction-button|background-color (rest)|- | origin | itself | runtime-sheet-colour | magnitude only | {"live_value_in_runtime_sheet_samples": true, "note": "the sheet's sampled rules paint this value elsewhere; this element's own rule is not in the 80-rule sampl | run-time club-colour sheet |
-| state-i3-session-g|nav-tab-label-hover@V1-real-ancestry-only|SIText#text|color (rest)|- | origin | itself | UNEXPLAINED | - |  | - |
-| state-i3-session-g|nav-tab-label-hover@V1-real-ancestry-only|SIText#text|color (enabled+hover)|- | origin | itself | UNEXPLAINED | - |  | - |
-| state-i3-session-g|nav-tab-label-hover@V3-real-ancestry-and-as-read|SIText#text|color (rest)|- | origin | itself | UNEXPLAINED | - |  | - |
-| state-i3-session-g|nav-tab-label-hover@V3-real-ancestry-and-as-read|SIText#text|color (enabled)|- | origin | itself | UNEXPLAINED | - |  | - |
+| state-i3-session-g|nav-tab-label-hover@real-chain|SIText#text|color (rest)|- | origin | itself | UNEXPLAINED | - |  | - |
+| state-i3-session-g|nav-tab-label-hover@real-chain|SIText#text|color (enabled)|- | origin | itself | UNEXPLAINED | - |  | - |
 | tile-atmosphere|geometry|AutoScroller#|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0 | origin | itself | UNEXPLAINED | - |  | bound text, scroller or list width |
 | tile-atmosphere|geometry|SIText#title-text|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0 | origin | itself | code-built-wrapper | measured fact | {"wrappers_in_capture_not_in_layout": [{"name": "unity-content-and-vertical-scroll-container", "classes": ["unity-scroll-view__content-and-vertical-scroll-conta | bound text, scroller or list width |
+| tile-atmosphere|geometry|SIVisible#|visibility|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/1 | origin | itself | inline-display-none | measured fact | {"inline": {"display": "None"}, "live_size": [0, 0], "render_size": [287.5, 16], "magnitude_predicted": true} | - |
 | tile-atmosphere|values|SIButton#layout-tile-interaction-button|background-color|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0 | origin | itself | runtime-sheet-colour | magnitude only | {"live_value_in_runtime_sheet_samples": true, "note": "the sheet's sampled rules paint this value elsewhere; this element's own rule is not in the 80-rule sampl | run-time club-colour sheet |
 | tile-atmosphere|values|SIText#state_text|color|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/0/0/2/0/0 | origin | itself | UNEXPLAINED | - |  | code-built or binding-driven colour |
 | tile-loans|geometry|AutoScroller#auto-scroller|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0/0/0/0/1/1 | inherited | tile-loans|geometry|SIText#title-text|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0 | UNEXPLAINED | - | displaced by tile-loans|geometry|SIText#title-text|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0 | bound text, scroller or list width |
@@ -134,6 +130,7 @@ Confusion table, 1.0.0 label (rows) by the examined cause (columns): both labels
 | tile-loans-c2-dump|geometry|AutoScroller#auto-scroller|box|P3/0/4/0/0/0/0/0/0/0/1/0/0/0/0/7/0/0/0/0/0/0/0/0/0/0/1/1 | origin | itself | UNEXPLAINED | - |  | bound text, scroller or list width |
 | tile-medical-centre|geometry|AutoScroller#|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/6/0/0/0/0/0/0/0/0/0/0/1/1/0 | origin | itself | UNEXPLAINED | - |  | bound text, scroller or list width |
 | tile-medical-centre|geometry|SIText#title-text|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/6/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0 | origin | itself | code-built-wrapper | measured fact | {"wrappers_in_capture_not_in_layout": [{"name": "unity-content-and-vertical-scroll-container", "classes": ["unity-scroll-view__content-and-vertical-scroll-conta | bound text, scroller or list width |
+| tile-medical-centre|geometry|SIVisible#|visibility|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/6/0/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/1 | origin | itself | inline-display-none | measured fact | {"inline": {"display": "None"}, "live_size": [0, 0], "render_size": [287.5, 16], "magnitude_predicted": true} | - |
 | tile-medical-centre|geometry|SIText#text|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/6/0/0/0/0/0/0/0/0/0/0/2/0/0/0/0/0/1/0/0 | origin | itself | stand-in-font | magnitude only | {"same_text": "4 players injured", "live_font_size": 16, "residual": -20.3, "live": 147.5, "magnitude_predicted": false} | bound text, scroller or list width |
 | tile-medical-centre|geometry|TemplateContainer#layout-divider-solid-horizontal|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/6/0/0/0/0/0/0/0/0/0/0/2/0/0/0/1/0 | inherited | tile-medical-centre|geometry|VisualElement#layout-divider-solid-horizontal|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/6/0/0/0/0/0/0/0/0/0/0/2/0/0/0/1/0/0 | sub-pixel-tolerance | measured fact | displaced by tile-medical-centre|geometry|VisualElement#layout-divider-solid-horizontal|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/6/0/0/0/0/0/0/0/0/0/0/2/0/0/0/1/0/0 | sub-pixel offset |
 | tile-medical-centre|geometry|VisualElement#layout-divider-solid-horizontal|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/6/0/0/0/0/0/0/0/0/0/0/2/0/0/0/1/0/0 | origin | itself | sub-pixel-tolerance | measured fact | {"tolerance": 0.05, "delta": -0.4, "median_delta_of_passing_rows": 0, "magnitude_predicted": true} | sub-pixel offset |
@@ -177,6 +174,7 @@ Confusion table, 1.0.0 label (rows) by the examined cause (columns): both labels
 | tile-tactics|values|SIStyleSetter#IconStyleSetter|flex-shrink|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/1/0/0/0/0/0/0/0/0/0/0/0/0/2/1/0/0/0/0/0/2/0/0 | origin | itself | runtime-class | measured fact | {"extra_live_classes": ["game-concepts-opposition-instructions_small"], "cascade_with_them": {"width": "16px", "height": "16px", "flex-shrink": "0"}, "magnitude | component-drawn image |
 | tile-training|geometry|AutoScroller#|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/2/0/0/0/0/0/0/0/0/0/1/1/0 | origin | itself | UNEXPLAINED | - |  | code-built content: the Training tile |
 | tile-training|geometry|SIText#title-text|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/2/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/0 | origin | itself | code-built-wrapper | measured fact | {"wrappers_in_capture_not_in_layout": [{"name": "unity-content-and-vertical-scroll-container", "classes": ["unity-scroll-view__content-and-vertical-scroll-conta | code-built content: the Training tile |
+| tile-training|geometry|SIVisible#|visibility|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/2/0/0/0/0/0/0/0/0/0/1/1/0/0/0/0/1 | origin | itself | inline-display-none | measured fact | {"inline": {"display": "None"}, "live_size": [0, 0], "render_size": [287.5, 16], "magnitude_predicted": true} | - |
 | tile-training|geometry|ComponentElement#|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/2/0/0/0/0/0/0/0/0/0/2/0 | inherited | tile-training|geometry|StreamedObjectList#Week|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/2/0/0/0/0/0/0/0/0/0/2/0/0/1 | empty-code-list | measured fact | displaced by tile-training|geometry|StreamedObjectList#Week|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/2/0/0/0/0/0/0/0/0/0/2/0/0/1 | code-built content: the Training tile |
 | tile-training|geometry|VisualElement#TrainingTile|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/2/0/0/0/0/0/0/0/0/0/2/0/0 | origin | itself | UNEXPLAINED | - |  | code-built content: the Training tile |
 | tile-training|geometry|StreamedObjectList#Week|box|P4/0/4/0/0/0/0/0/0/0/1/0/0/0/0/2/0/0/0/0/0/0/0/0/0/2/0/0/1 | origin | itself | empty-code-list | measured fact | {"live_children_in_capture": 699, "render_children": 0, "deficit": -293.9, "live_size": 293.9, "magnitude_predicted": true} | code-built content: the Training tile |
@@ -213,11 +211,21 @@ The 1.0.0 report paired render nodes with live elements greedily by type and nam
 
 The baseline to beat (the audit): Loans 19 of 343 and Training 34 of 762 live elements paired. It is NOT beaten: see the table; the count fell where the 1.0.0 pairing had taken invisible live elements.
 
-Effect on compared coverage (tile fixtures, frozen 1.0.0 report against this one): compared rows 697 -> 653 (-44), of which pass 620 -> 579 and fail 77 -> 74; N/A rows 431 -> 409. The rows that left are the ones the 1.0.0 pairing built against invisible live elements (a box compared with a live box of 0 by 0, and the values of those elements); they are no longer compared, so compared coverage went DOWN, and the pass rate on what is compared is not a gain.
+Effect on compared coverage (tile fixtures, frozen 1.0.0 report against this one): compared rows 697 -> 656 (-41), of which pass 620 -> 579 and fail 77 -> 77; N/A rows 431 -> 406. The rows that left are the ones the 1.0.0 pairing built against invisible live elements (a box compared with a live box of 0 by 0, and the values of those elements); they are no longer paired. Where the render DRAWS such an element with an area while the game hides it, the row is a FAIL named visibility (3 rows: the SIVisible of the Atmosphere, Medical Centre and Training tiles), so it stays in the compared coverage as a failure; where the render draws nothing visible it is N/A. Compared coverage still went DOWN, and the pass rate on what is compared is not a gain.
 
-## Optional layers (off by default, inferred; layer rows are separate from the base rows and never added to the base totals)
+## Optional layers (off by default, inferred; layer rows stand alone: they are not in the totals above and not in the examination)
 
-**live-class layer (instance classes taken from a capture; inferred).** 18 base FAIL rows are about this layer; 14 of them PASS when the layer is applied, 4 still FAIL. Where the classes come from: the live elements of each fixture's own capture (the base render already applies the per-type learned classes of data/render/runtime-classes.json, which hold no sprite class). Classes were added to 29 nodes; this is an inference from one capture.
+### live-class layer (instance classes taken from a capture; inferred)
+
+**Circularity, stated plainly:** the layer reads each element's classes from the SAME capture the row is scored against. That the failing rows it is about pass when it is applied confirms the diagnosis (those classes set in code explain those boxes); it does not show that the layer could PREDICT them for a screen no capture was taken of. The base render already applies the per-type classes learned from many dumps (`data/render/runtime-classes.json`); that file holds no sprite class and is not this layer.
+
+Run over every paired row of the layout fixtures, passing rows included: 1042 rows compared; 15 FAIL -> PASS; **1 PASS -> FAIL (rows the layer breaks)**; 1026 unchanged. Of the 18 failing base rows the layer is about, 14 pass with it, 4 still fail.
+
+Rows the layer breaks:
+
+| Fixture | Element | Property | Base | With the layer | Expected | Got with the layer |
+|---|---|---|---|---|---|---|
+| tile-tactics | SIText#CellText | box | PASS | FAIL | [223.6, 35.1, 67.4, 21.5] | [226.7, 35.2, 63.8, 21.5] |
 
 | Fixture | Element | Property | Base | With the layer | Expected | Got with the layer |
 |---|---|---|---|---|---|---|
@@ -240,13 +248,30 @@ Effect on compared coverage (tile fixtures, frozen 1.0.0 report against this one
 | tile-training | SIImage#Arrow | flex-shrink | FAIL | PASS | 0 | 0 |
 | tile-training | SIImage#Arrow | flex-shrink | FAIL | PASS | 0 | 0 |
 
-**recorded run-time sheet layer (an 80-rule captured sample of the run-time sheet; inferred).** 3 base FAIL rows are about this layer; 0 of them PASS when the layer is applied, 3 still FAIL. Where the rules come from: the 80 rules the squad capture sampled from its run-time sheet (of 190); a rule absent from the sample proves nothing.
+### recorded run-time sheet layer (an 80-rule captured sample of the run-time sheet; inferred)
+
+The rules come from the 80 rules the squad capture sampled from its run-time sheet (of 190): a CAPTURED SAMPLE; a rule absent from it proves nothing.
+
+Run over every paired row of the layout fixtures, passing rows included: 1042 rows compared; 0 FAIL -> PASS; **0 PASS -> FAIL (rows the layer breaks)**; 1042 unchanged. Of the 3 failing base rows the layer is about, 0 pass with it, 3 still fail.
+
+The layer breaks no row.
 
 | Fixture | Element | Property | Base | With the layer | Expected | Got with the layer |
 |---|---|---|---|---|---|---|
 | tile-atmosphere | SIButton#layout-tile-interaction-button | background-color | FAIL | FAIL | #17223F | #1E2129 |
 | tile-medical-centre | SIButton#layout-tile-interaction-button | background-color | FAIL | FAIL | #17223F | #1E2129 |
 | tile-training | SIButton#layout-tile-interaction-button | background-color | FAIL | FAIL | #17223F | #1E2129 |
+
+State rows with this layer on the real ancestry chains (layer rows, their own counts: 5 pass, 1 fail, 0 N/A):
+
+| Check | Property | Verdict | Expected | Got |
+|---|---|---|---|---|
+| nav-tab-label-as-read-runtime-sheet | color (rest) | PASS | #EBEBEB | #EBEBEB |
+| nav-tab-label-as-read-runtime-sheet | color (enabled) | PASS | #FFFFFF | #FFFFFF |
+| loans-tile-hover@runtime-sheet-layer | background-color (rest) | FAIL | #17223F | #1E2129 |
+| loans-tile-hover@runtime-sheet-layer | background-color (enabled+hover) | PASS | #2E3138 | #2E3138 |
+| nav-tab-label-hover@V4-base-plus-recorded-runtime-sheet | color (rest) | PASS | #EBEBEB | #EBEBEB |
+| nav-tab-label-hover@V4-base-plus-recorded-runtime-sheet | color (enabled) | PASS | #FFFFFF | #FFFFFF |
 
 ## Grid placement: what it was measured on
 
@@ -366,65 +391,66 @@ Grid placement reproduces the captures it was derived from to 0.8 px on 4 compos
 
 | Verdict | Check | Element | Property | Expected | Got | Delta | Note / cause |
 |---|---|---|---|---|---|---|---|
-| PASS | filter-hover | SIButton#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  |
-| PASS | filter-hover | SIButton#.HasSIClickable.row-direction-normal | background-color (enabled+hover) | "#FFFFFF33" | "#FFFFFF33" |  | state rule .buttons-button-base-default:hover |
-| PASS | filter-press-held | SIButton#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  |
-| PASS | filter-press-held | SIButton#.HasSIClickable.row-direction-normal | background-color (active+enabled+focus+hover) | "#FFFFFF24" | "#FFFFFF24" |  | observation: read with mask 67 (active+hover+focus); background #FFFFFF24 while pressed (one reading) | state rule .buttons-button-base-default:active:enabled | interpretation (derived): the static rule .buttons-button-base-default:active:enabled (specificity 31) declares var(--core-controls-surface-pc-pressed) = #FFFFFF24, equal to rest, and outranks :hover (21) [single source: a lookup made AFTER the model was changed (:enabled added) on this same reading; not an independent observation of the press state] |
-| PASS | filter-dragged-off-held | SIButton#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  |
-| PASS | filter-dragged-off-held | SIButton#.HasSIClickable.row-direction-normal | background-color (enabled+focus) | "#FFFFFF24" | "#FFFFFF24" |  | explicit no-op: no state rule declares background-color: the render predicts no change | mask 64 (focus only) with the mouse still held |
-| PASS | filter-released | SIButton#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  |
-| PASS | filter-released | SIButton#.HasSIClickable.row-direction-normal | background-color (enabled) | "#FFFFFF24" | "#FFFFFF24" |  | explicit no-op: no state rule declares background-color: the render predicts no change |
-| FAIL | loans-tile-hover | SIButton#layout-tile-interaction-button | background-color (rest) | "#17223F" | "#1E2129" |  | cause (examined, magnitude only): runtime-sheet-colour |
-| PASS | loans-tile-hover | SIButton#layout-tile-interaction-button | background-color (enabled+hover) | "#2E3138" | "#2E3138" |  | state rule .layout-tile-interaction-button:hover |
-| PASS | nav-tab-label-hover | SIText#text | color (rest) | "#EBEBEB" | "#EBEBEB" |  |  | CONDITIONAL on the inference that the label is hovered (the mask read 0) |
-| PASS | nav-tab-label-hover | SIText#text | color (enabled+hover) | "#FFFFFF" | "#FFFFFF" |  | observation: Measured: label colour #FFFFFF under the pointer, rest #EBEBEB; label mask 0; ancestors 2 (SIButton, the two wrappers). Not measured: why. | state rule .navigation-tab-portal-default-active-false .portal-text:hover | CONDITIONAL on the inference that the label is hovered (the mask read 0) | interpretation (inferred): this row sets hover on the label itself, which the mask did not show: it is CONDITIONAL on that inference | interpretation (derived): a rule in the game's applied sheets, .navigation-tab-portal-default-active-false .portal-text:hover, declares #FFFFFF for a hovered label |
-| FAIL | nav-tab-label-as-read | SIText#text | color (rest) | "#EBEBEB" | "#000000B2" |  | cause (examined, measured fact): runtime-sheet-declares-value | variant of nav-tab-label-hover |
-| FAIL | nav-tab-label-as-read | SIText#text | color (enabled) | "#FFFFFF" | "#000000B2" |  | observation: the same reading with the states AS READ: label 0, ancestors hover (2); the game's applied sheets only | state rule .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text | cause (examined, measured fact): runtime-sheet-declares-value | variant of nav-tab-label-hover | interpretation (derived): if this FAILS, no rule in the applied sheets colours the label through a hovered ancestor |
-| PASS | nav-tab-label-as-read-runtime-sheet | SIText#text | color (rest) | "#EBEBEB" | "#EBEBEB" |  |  | variant of nav-tab-label-hover |
-| PASS | nav-tab-label-as-read-runtime-sheet | SIText#text | color (enabled) | "#FFFFFF" | "#FFFFFF" |  | observation: the same reading with the states AS READ (label 0, ancestors hover), plus the RECORDED run-time sheet (empty name, negative instance id) of the squad capture, whose sampled rules include .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text { color: var(--colours-base-neutral-white) }; the label's ancestor MainNav carries nav-on-light in that capture | state rule .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text | variant of nav-tab-label-hover | interpretation (derived): an ancestor-hover rule yields #FFFFFF under the masks as read, so the label's own hover is not needed to explain the colour | interpretation (inferred): whether the game applies that recorded rule to this label at this moment is not observed; a stale mask read is NOT excluded (no repeated reads were taken), and inheritance was not tested |
-| PASS | table-row-hover | BindingRoot#.streamed-table__row.row-direction-normal | background-color (rest) | "#FFFFFF00" | "#FFFFFF00" |  |  |
-| PASS | table-row-hover | BindingRoot#.streamed-table__row.row-direction-normal | background-color (enabled+hover) | "#FFFFFF1A" | "#FFFFFF1A" |  | state rule .streamed-table__row.virtualised-list__item:hover | even row of the zebra list; odd rows rest at #FFFFFF0F (the zebra rule is not part of this check) |
-| PASS | inbox-row-hover | SIButton#NewsItemButton | background-color (rest) | "#00000000" | "#00000000" |  |  |
-| PASS | inbox-row-hover | SIButton#NewsItemButton | background-color (enabled+hover) | "#FFFFFF14" | "#FFFFFF14" |  | state rule .message-button:hover |
-| PASS | inbox-row-clicked-focus | SIButton#NewsItemButton | background-color (rest) | "#00000000" | "#00000000" |  |  |
-| PASS | inbox-row-clicked-focus | SIButton#NewsItemButton | background-color (enabled+focus) | "#00000000" | "#00000000" |  | explicit no-op: no state rule declares background-color: the render predicts no change | after the selection click the row's button carries mask 64 and no colour change |
-| N/A | pitch-marker-hover | VisualElement#.projected--position--filled | background-color (rest) | "#00000000" | null |  | the render declares no background-color here |
-| PASS | pitch-marker-hover | VisualElement#.projected--position--filled | background-color (enabled+hover) | "#00000000" | "unchanged (no declaration, no state rule)" |  | explicit no-op: no state rule declares background-color: the render predicts no change | mask 2 on the marker and every descendant read; colour and background unchanged |
-| N/A | pitch-marker-label-hover | VisualElement#.content-tactics-visualiser-player-indicator-simple | color (rest) | "#EBEBEB" | null |  | the render declares no color here |
-| PASS | pitch-marker-label-hover | VisualElement#.content-tactics-visualiser-player-indicator-simple | color (enabled+hover) | "#EBEBEB" | "unchanged (no declaration, no state rule)" |  | explicit no-op: no state rule declares color: the render predicts no change |
-| N/A | instruction-tile-hover | TemplateContainer#TeamInstructionTile | background-color (rest) | "#00000000" | null |  | the render declares no background-color here |
-| PASS | instruction-tile-hover | TemplateContainer#TeamInstructionTile | background-color (enabled+hover) | "#00000000" | "unchanged (no declaration, no state rule)" |  | explicit no-op: no state rule declares background-color: the render predicts no change | mask 2 five levels down; colour, background and border unchanged at every level read |
 | N/A | inbox-selection-class-swap | SIStyleSetter#SIStyleSetter_IsLastSelected | class swap message-not-last-selected -> message-last-selected | "class swap seen; no property measured on the setter" | {"color": [null, "#EBEBEB"]} |  | the class swap was seen (setters idx 1,22 -> 3,24); no colour was read on the setter, so the render's one declared difference (colour #EBEBEB on the selected setter, inherited by its children) has nothing to compare against |
-| PASS | filter-hover@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  | variant of filter-hover |
-| PASS | filter-hover@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (enabled+hover) | "#FFFFFF33" | "#FFFFFF33" |  | state rule .buttons-button-base-default:hover | the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter) | variant of filter-hover |
-| PASS | filter-press-held@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  | variant of filter-press-held |
-| PASS | filter-press-held@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (active+enabled+focus+hover) | "#FFFFFF24" | "#FFFFFF24" |  | state rule .buttons-button-base-default:active:enabled | the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter) | variant of filter-press-held |
-| PASS | filter-dragged-off-held@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  | variant of filter-dragged-off-held |
-| PASS | filter-dragged-off-held@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (enabled+focus) | "#FFFFFF24" | "#FFFFFF24" |  | no state rule declares background-color: the render predicts no change | the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter) | variant of filter-dragged-off-held |
-| PASS | filter-released@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  | variant of filter-released |
-| PASS | filter-released@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (enabled) | "#FFFFFF24" | "#FFFFFF24" |  | no state rule declares background-color: the render predicts no change | the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter) | variant of filter-released |
-| FAIL | loans-tile-hover@real-ancestry | SIButton#layout-tile-interaction-button | background-color (rest) | "#17223F" | "#1E2129" |  | cause (examined, magnitude only): runtime-sheet-colour | variant of loans-tile-hover |
-| PASS | loans-tile-hover@real-ancestry | SIButton#layout-tile-interaction-button | background-color (enabled+hover) | "#2E3138" | "#2E3138" |  | state rule .layout-tile-interaction-button:hover | variant of loans-tile-hover |
-| PASS | table-row-hover@real-ancestry | BindingRoot#.streamed-table__row.row-direction-normal | background-color (rest) | "#FFFFFF00" | "#FFFFFF00" |  |  | variant of table-row-hover |
-| PASS | table-row-hover@real-ancestry | BindingRoot#.streamed-table__row.row-direction-normal | background-color (enabled+hover) | "#FFFFFF1A" | "#FFFFFF1A" |  | state rule .streamed-table__row.virtualised-list__item:hover | variant of table-row-hover |
-| PASS | inbox-row-hover@real-ancestry | SIButton#NewsItemButton | background-color (rest) | "#00000000" | "#00000000" |  |  | variant of inbox-row-hover |
-| PASS | inbox-row-hover@real-ancestry | SIButton#NewsItemButton | background-color (enabled+hover) | "#FFFFFF14" | "#FFFFFF14" |  | state rule .message-button:hover | variant of inbox-row-hover |
-| PASS | inbox-row-clicked-focus@real-ancestry | SIButton#NewsItemButton | background-color (rest) | "#00000000" | "#00000000" |  |  | variant of inbox-row-clicked-focus |
-| PASS | inbox-row-clicked-focus@real-ancestry | SIButton#NewsItemButton | background-color (enabled+focus) | "#00000000" | "#00000000" |  | no state rule declares background-color: the render predicts no change | variant of inbox-row-clicked-focus |
-| N/A | pitch-marker-hover@real-ancestry | FMPitchIndicator#.projected--position--filled | background-color (rest) | "#00000000" | null |  | the render declares no background-color here | variant of pitch-marker-hover |
-| PASS | pitch-marker-hover@real-ancestry | FMPitchIndicator#.projected--position--filled | background-color (enabled+hover) | "#00000000" | "unchanged (no declaration, no state rule)" |  | no state rule declares background-color: the render predicts no change | variant of pitch-marker-hover |
-| N/A | instruction-tile-hover@real-ancestry | TemplateContainer#TeamInstructionTile | background-color (rest) | "#00000000" | null |  | the render declares no background-color here | variant of instruction-tile-hover |
-| PASS | instruction-tile-hover@real-ancestry | TemplateContainer#TeamInstructionTile | background-color (enabled+hover) | "#00000000" | "unchanged (no declaration, no state rule)" |  | no state rule declares background-color: the render predicts no change | variant of instruction-tile-hover |
-| FAIL | loans-tile-hover@runtime-sheet-layer | SIButton#layout-tile-interaction-button | background-color (rest) | "#17223F" | "#1E2129" |  | cause (examined, magnitude only): runtime-sheet-colour | variant of loans-tile-hover |
-| PASS | loans-tile-hover@runtime-sheet-layer | SIButton#layout-tile-interaction-button | background-color (enabled+hover) | "#2E3138" | "#2E3138" |  | state rule .layout-tile-interaction-button:hover | variant of loans-tile-hover |
-| FAIL | nav-tab-label-hover@V1-real-ancestry-only | SIText#text | color (rest) | "#EBEBEB" | "#000000B2" |  | cause (examined, no supporting fact): UNEXPLAINED | variant of nav-tab-label-hover |
-| FAIL | nav-tab-label-hover@V1-real-ancestry-only | SIText#text | color (enabled+hover) | "#FFFFFF" | "#000000B2" |  | state rule .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text | cause (examined, no supporting fact): UNEXPLAINED | variant of nav-tab-label-hover |
-| PASS | nav-tab-label-hover@V2-label-state-only | SIText#text | color (rest) | "#EBEBEB" | "#EBEBEB" |  |  | variant of nav-tab-label-hover |
-| PASS | nav-tab-label-hover@V2-label-state-only | SIText#text | color (enabled) | "#FFFFFF" | "#FFFFFF" |  | state rule .navigation-tab-portal-default-active-false:hover .portal-text | variant of nav-tab-label-hover |
-| FAIL | nav-tab-label-hover@V3-real-ancestry-and-as-read | SIText#text | color (rest) | "#EBEBEB" | "#000000B2" |  | cause (examined, no supporting fact): UNEXPLAINED | variant of nav-tab-label-hover |
-| FAIL | nav-tab-label-hover@V3-real-ancestry-and-as-read | SIText#text | color (enabled) | "#FFFFFF" | "#000000B2" |  | state rule .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text | cause (examined, no supporting fact): UNEXPLAINED | variant of nav-tab-label-hover |
-| PASS | nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet | SIText#text | color (rest) | "#EBEBEB" | "#EBEBEB" |  |  | variant of nav-tab-label-hover |
-| PASS | nav-tab-label-hover@V4-V3-plus-recorded-runtime-sheet | SIText#text | color (enabled) | "#FFFFFF" | "#FFFFFF" |  | state rule .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text | variant of nav-tab-label-hover |
+| PASS | filter-hover@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  |
+| PASS | filter-hover@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (enabled+hover) | "#FFFFFF33" | "#FFFFFF33" |  | state rule .buttons-button-base-default:hover | the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter) |
+| PASS | filter-press-held@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  |
+| PASS | filter-press-held@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (active+enabled+focus+hover) | "#FFFFFF24" | "#FFFFFF24" |  | state rule .buttons-button-base-default:active:enabled | the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter) |
+| PASS | filter-dragged-off-held@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  |
+| PASS | filter-dragged-off-held@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (enabled+focus) | "#FFFFFF24" | "#FFFFFF24" |  | no state rule declares background-color: the render predicts no change | the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter) |
+| PASS | filter-released@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" |  |  |
+| PASS | filter-released@real-ancestry | SIFloatingPopupWidget#.HasSIClickable.row-direction-normal | background-color (enabled) | "#FFFFFF24" | "#FFFFFF24" |  | no state rule declares background-color: the render predicts no change | the Filter button is an SIFloatingPopupWidget in the capture, the published row named it SIButton (a class rule, so the type did not matter) |
+| FAIL | loans-tile-hover@real-ancestry | SIButton#layout-tile-interaction-button | background-color (rest) | "#17223F" | "#1E2129" |  | cause (examined, magnitude only): runtime-sheet-colour |
+| PASS | loans-tile-hover@real-ancestry | SIButton#layout-tile-interaction-button | background-color (enabled+hover) | "#2E3138" | "#2E3138" |  | state rule .layout-tile-interaction-button:hover |
+| PASS | table-row-hover@real-ancestry | BindingRoot#.streamed-table__row.row-direction-normal | background-color (rest) | "#FFFFFF00" | "#FFFFFF00" |  |  |
+| PASS | table-row-hover@real-ancestry | BindingRoot#.streamed-table__row.row-direction-normal | background-color (enabled+hover) | "#FFFFFF1A" | "#FFFFFF1A" |  | state rule .streamed-table__row.virtualised-list__item:hover |
+| PASS | inbox-row-hover@real-ancestry | SIButton#NewsItemButton | background-color (rest) | "#00000000" | "#00000000" |  |  |
+| PASS | inbox-row-hover@real-ancestry | SIButton#NewsItemButton | background-color (enabled+hover) | "#FFFFFF14" | "#FFFFFF14" |  | state rule .message-button:hover |
+| PASS | inbox-row-clicked-focus@real-ancestry | SIButton#NewsItemButton | background-color (rest) | "#00000000" | "#00000000" |  |  |
+| PASS | inbox-row-clicked-focus@real-ancestry | SIButton#NewsItemButton | background-color (enabled+focus) | "#00000000" | "#00000000" |  | no state rule declares background-color: the render predicts no change |
+| N/A | pitch-marker-hover@real-ancestry | FMPitchIndicator#.projected--position--filled | background-color (rest) | "#00000000" | null |  | the render declares no background-color here |
+| PASS | pitch-marker-hover@real-ancestry | FMPitchIndicator#.projected--position--filled | background-color (enabled+hover) | "#00000000" | "unchanged (no declaration, no state rule)" |  | no state rule declares background-color: the render predicts no change |
+| N/A | pitch-marker-label-hover@real-ancestry | VisualElement#tactics-visualiser-player-indicator-simple | color (rest) | "#EBEBEB" | null |  | the render declares no color here |
+| PASS | pitch-marker-label-hover@real-ancestry | VisualElement#tactics-visualiser-player-indicator-simple | color (enabled+hover) | "#EBEBEB" | "unchanged (no declaration, no state rule)" |  | explicit no-op: no state rule declares color: the render predicts no change |
+| N/A | instruction-tile-hover@real-ancestry | TemplateContainer#TeamInstructionTile | background-color (rest) | "#00000000" | null |  | the render declares no background-color here |
+| PASS | instruction-tile-hover@real-ancestry | TemplateContainer#TeamInstructionTile | background-color (enabled+hover) | "#00000000" | "unchanged (no declaration, no state rule)" |  | no state rule declares background-color: the render predicts no change |
+| FAIL | nav-tab-label-hover@real-chain | SIText#text | color (rest) | "#EBEBEB" | "#000000B2" |  | cause (examined, no supporting fact): UNEXPLAINED |
+| FAIL | nav-tab-label-hover@real-chain | SIText#text | color (enabled) | "#FFFFFF" | "#000000B2" |  | observation: scored on the REAL chain with the states as read (label mask 0, ancestors hover), applied sheets only: this is the base row for the reading; the isolated variables are the variants V1, V2 and the layer row V4 | state rule .nav-on-light .navigation-tab-portal-default-active-false:hover .portal-text | cause (examined, no supporting fact): UNEXPLAINED |
+
+### Variant rows of state-i3-session-g: analyses of the SAME readings (a truncated chain, or one variable changed), listed here and counted OUTSIDE the totals (22 pass, 5 fail, 3 N/A)
+
+| Verdict | Check | Element | Property | Expected | Got | What it isolates |
+|---|---|---|---|---|---|---|
+| PASS | filter-hover | SIButton#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" | published chain, truncated |
+| PASS | filter-hover | SIButton#.HasSIClickable.row-direction-normal | background-color (enabled+hover) | "#FFFFFF33" | "#FFFFFF33" | published chain, truncated |
+| PASS | filter-press-held | SIButton#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" | published chain, truncated |
+| PASS | filter-press-held | SIButton#.HasSIClickable.row-direction-normal | background-color (active+enabled+focus+hover) | "#FFFFFF24" | "#FFFFFF24" | published chain, truncated |
+| PASS | filter-dragged-off-held | SIButton#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" | published chain, truncated |
+| PASS | filter-dragged-off-held | SIButton#.HasSIClickable.row-direction-normal | background-color (enabled+focus) | "#FFFFFF24" | "#FFFFFF24" | published chain, truncated |
+| PASS | filter-released | SIButton#.HasSIClickable.row-direction-normal | background-color (rest) | "#FFFFFF24" | "#FFFFFF24" | published chain, truncated |
+| PASS | filter-released | SIButton#.HasSIClickable.row-direction-normal | background-color (enabled) | "#FFFFFF24" | "#FFFFFF24" | published chain, truncated |
+| FAIL | loans-tile-hover | SIButton#layout-tile-interaction-button | background-color (rest) | "#17223F" | "#1E2129" | published chain, truncated |
+| PASS | loans-tile-hover | SIButton#layout-tile-interaction-button | background-color (enabled+hover) | "#2E3138" | "#2E3138" | published chain, truncated |
+| PASS | nav-tab-label-hover | SIText#text | color (rest) | "#EBEBEB" | "#EBEBEB" | published chain, truncated |
+| PASS | nav-tab-label-hover | SIText#text | color (enabled+hover) | "#FFFFFF" | "#FFFFFF" | published chain, truncated |
+| FAIL | nav-tab-label-as-read | SIText#text | color (rest) | "#EBEBEB" | "#000000B2" | published chain, truncated |
+| FAIL | nav-tab-label-as-read | SIText#text | color (enabled) | "#FFFFFF" | "#000000B2" | published chain, truncated |
+| PASS | table-row-hover | BindingRoot#.streamed-table__row.row-direction-normal | background-color (rest) | "#FFFFFF00" | "#FFFFFF00" | published chain, truncated |
+| PASS | table-row-hover | BindingRoot#.streamed-table__row.row-direction-normal | background-color (enabled+hover) | "#FFFFFF1A" | "#FFFFFF1A" | published chain, truncated |
+| PASS | inbox-row-hover | SIButton#NewsItemButton | background-color (rest) | "#00000000" | "#00000000" | published chain, truncated |
+| PASS | inbox-row-hover | SIButton#NewsItemButton | background-color (enabled+hover) | "#FFFFFF14" | "#FFFFFF14" | published chain, truncated |
+| PASS | inbox-row-clicked-focus | SIButton#NewsItemButton | background-color (rest) | "#00000000" | "#00000000" | published chain, truncated |
+| PASS | inbox-row-clicked-focus | SIButton#NewsItemButton | background-color (enabled+focus) | "#00000000" | "#00000000" | published chain, truncated |
+| N/A | pitch-marker-hover | VisualElement#.projected--position--filled | background-color (rest) | "#00000000" | null | published chain, truncated |
+| PASS | pitch-marker-hover | VisualElement#.projected--position--filled | background-color (enabled+hover) | "#00000000" | "unchanged (no declaration, no state rule)" | published chain, truncated |
+| N/A | pitch-marker-label-hover | VisualElement#.content-tactics-visualiser-player-indicator-simple | color (rest) | "#EBEBEB" | null | published chain, truncated |
+| PASS | pitch-marker-label-hover | VisualElement#.content-tactics-visualiser-player-indicator-simple | color (enabled+hover) | "#EBEBEB" | "unchanged (no declaration, no state rule)" | published chain, truncated |
+| N/A | instruction-tile-hover | TemplateContainer#TeamInstructionTile | background-color (rest) | "#00000000" | null | published chain, truncated |
+| PASS | instruction-tile-hover | TemplateContainer#TeamInstructionTile | background-color (enabled+hover) | "#00000000" | "unchanged (no declaration, no state rule)" | published chain, truncated |
+| FAIL | nav-tab-label-hover@V1-real-ancestry-only | SIText#text | color (rest) | "#EBEBEB" | "#000000B2" | ancestry alone: real chain, the label hovered as in the published conditional row |
+| FAIL | nav-tab-label-hover@V1-real-ancestry-only | SIText#text | color (enabled+hover) | "#FFFFFF" | "#000000B2" | ancestry alone: real chain, the label hovered as in the published conditional row |
+| PASS | nav-tab-label-hover@V2-label-state-only | SIText#text | color (rest) | "#EBEBEB" | "#EBEBEB" | the label's state alone: the published truncated chain, the label NOT hovered (ancestors hovered, as read) |
+| PASS | nav-tab-label-hover@V2-label-state-only | SIText#text | color (enabled) | "#FFFFFF" | "#FFFFFF" | the label's state alone: the published truncated chain, the label NOT hovered (ancestors hovered, as read) |
 
 ## tile-atmosphere
 
@@ -445,7 +471,7 @@ Delivered text wired: 2 of 4 text nodes paired by structural path, 1 captured te
 | PASS | geometry | VisualElement#TitleContainer | box | [11.7, 2.0, 288.1, 32.2] | [12, 2, 287.5, 32] | [0.3, 0.0, -0.6, -0.2] |  |
 | FAIL | geometry | AutoScroller# | box | [11.7, 8.8, 288.1, 17.6] | [12, 2, 287.5, 32] | [0.3, -6.8, -0.6, 14.4] | cause (examined, no supporting fact): UNEXPLAINED |
 | FAIL | geometry | SIText#title-text | box | [11.7, 8.8, 52.7, 17.6] | [12, 2, 283.5, 16] | [0.3, -6.8, 230.8, -1.6] | cause (examined, measured fact): code-built-wrapper |
-| N/A | geometry | SIVisible# | box | null | [12, 18, 287.5, 16] |  | the live element of this name is invisible (display none): not paired, nothing to compare |
+| FAIL | geometry | SIVisible# | visibility | "hidden in the game (live element invisible, live box 0 x 0)" | [12, 18, 287.5, 16] |  | the game hides this element (display none, 0 by 0) and the render draws it with a box of 287.5 by 16 | cause (examined, measured fact): inline-display-none |
 | N/A | geometry | SIText#title-text-alt | box | null | [12, 18, 287.5, 16] |  | no live element paired: the drawn node has no partner in the capture (absent or not captured) |
 | N/A | geometry | VisualElement#CarouselMask | box | null | [303.5, 2, 0, 32] |  | the live element of this name is invisible (display none): not paired, nothing to compare |
 | PASS | geometry | TemplateContainer#states-templates-tile-content | box | [0.0, 34.2, 311.5, 113.3] | [0, 34, 311.5, 113.5] | [0.0, -0.2, 0.0, 0.2] |  |
@@ -728,7 +754,7 @@ Delivered text wired: 2 of 4 text nodes paired by structural path, 5 captured te
 | PASS | geometry | VisualElement#TitleContainer | box | [11.7, 2, 288.1, 31.2] | [12, 2, 287.5, 32] | [0.3, 0, -0.6, 0.8] |  |
 | FAIL | geometry | AutoScroller# | box | [11.7, 8.8, 288.1, 17.6] | [12, 2, 287.5, 32] | [0.3, -6.8, -0.6, 14.4] | cause (examined, no supporting fact): UNEXPLAINED |
 | FAIL | geometry | SIText#title-text | box | [11.7, 8.8, 85, 17.6] | [12, 2, 283.5, 16] | [0.3, -6.8, 198.5, -1.6] | cause (examined, measured fact): code-built-wrapper |
-| N/A | geometry | SIVisible# | box | null | [12, 18, 287.5, 16] |  | the live element of this name is invisible (display none): not paired, nothing to compare |
+| FAIL | geometry | SIVisible# | visibility | "hidden in the game (live element invisible, live box 0 x 0)" | [12, 18, 287.5, 16] |  | the game hides this element (display none, 0 by 0) and the render draws it with a box of 287.5 by 16 | cause (examined, measured fact): inline-display-none |
 | N/A | geometry | SIText#title-text-alt | box | null | [12, 18, 287.5, 16] |  | no live element paired: the drawn node has no partner in the capture (absent or not captured) |
 | N/A | geometry | VisualElement#CarouselMask | box | null | [303.5, 2, 0, 32] |  | the live element of this name is invisible (display none): not paired, nothing to compare |
 | PASS | geometry | TemplateContainer#states-templates-tile-content | box | [0.0, 33.2, 311.5, 114.3] | [0, 34, 311.5, 113.5] | [0.0, 0.8, 0.0, -0.8] |  |
@@ -1319,7 +1345,7 @@ Delivered text wired: 6 of 8 text nodes paired by structural path, 8 captured te
 | PASS | geometry | VisualElement#TitleContainer | box | [11.7, 1.9, 288.1, 32.2] | [12, 2, 287.5, 32] | [0.3, 0.1, -0.6, -0.2] |  |
 | FAIL | geometry | AutoScroller# | box | [11.7, 8.8, 288.1, 17.6] | [12, 2, 287.5, 32] | [0.3, -6.8, -0.6, 14.4] | cause (examined, no supporting fact): UNEXPLAINED |
 | FAIL | geometry | SIText#title-text | box | [11.7, 8.8, 46.9, 17.6] | [12, 2, 283.5, 16] | [0.3, -6.8, 236.6, -1.6] | cause (examined, measured fact): code-built-wrapper |
-| N/A | geometry | SIVisible# | box | null | [12, 18, 287.5, 16] |  | the live element of this name is invisible (display none): not paired, nothing to compare |
+| FAIL | geometry | SIVisible# | visibility | "hidden in the game (live element invisible, live box 0 x 0)" | [12, 18, 287.5, 16] |  | the game hides this element (display none, 0 by 0) and the render draws it with a box of 287.5 by 16 | cause (examined, measured fact): inline-display-none |
 | N/A | geometry | SIText#title-text-alt | box | null | [12, 18, 287.5, 16] |  | no live element paired: the drawn node has no partner in the capture (absent or not captured) |
 | N/A | geometry | VisualElement#CarouselMask | box | null | [303.5, 2, 0, 32] |  | the live element of this name is invisible (display none): not paired, nothing to compare |
 | PASS | geometry | TemplateContainer#states-templates-tile-content | box | [0.0, 34.2, 311.5, 277.3] | [0, 34, 311.5, 277.5] | [0.0, -0.2, 0.0, 0.2] |  |

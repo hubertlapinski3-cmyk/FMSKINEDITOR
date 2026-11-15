@@ -35,6 +35,7 @@ TARGETS = {
     "loans-tile-button": (SQUAD, lambda e: e["type"] == "SIButton" and e["name"] == "layout-tile-interaction-button" and "anchor-loans" in e["classes"], "SIButton layout-tile-interaction-button with anchor-loans", None),
     "table-row": (SQUAD, lambda e: e["type"] == "BindingRoot" and {"streamed-table__row", "streamed-list-view__row--interactable", "virtualised-list__item"} <= set(e["classes"]) and "virtualised-list__item--first" not in e["classes"] and "virtualised-list__item--odd" not in e["classes"], "BindingRoot with the interactable table-row classes, an EVEN row (neither --first nor --odd), as the row Session G read", None),
     "inbox-row-button": (INBOX, lambda e: e["type"] == "SIButton" and e["name"] == "NewsItemButton", "SIButton NewsItemButton", None),
+    "pitch-marker-label": (TI, lambda e: "content-tactics-visualiser-player-indicator-simple" in e["classes"], "the marker's label element (class content-tactics-visualiser-player-indicator-simple), the first in capture order", None),
     "pitch-marker": (TI, lambda e: "projected--position--filled" in e["classes"], "element with class projected--position--filled", None),
     "instruction-tile": (TI, lambda e: e["name"] == "TeamInstructionTile", "TemplateContainer TeamInstructionTile", None),
 }
