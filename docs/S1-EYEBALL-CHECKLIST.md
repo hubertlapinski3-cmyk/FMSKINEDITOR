@@ -59,6 +59,15 @@ In **Look at it**, with a skin open (the empty "game's look" project shows the e
 4. On the **Preferences card**, click a grey text: if its colour is written directly into the game's rules, the panel first says how many game rules a change copies; pick a colour and it changes. A very common colour (white, transparent) says it is an Advanced job instead.
 5. Something you cannot change says why in words (written into the layout itself, taken from the part around it, or painted while the game runs).
 
+## G. A theme from three colours, and the gallery (S4)
+On the start screen of a fresh run (section A's launcher):
+1. There are four ways to begin; the new one is **Make a theme from three colours**.
+2. **Start from a ready-made theme** now lists Crimson, then Forest, Ocean and Slate and amber, each with three small colour squares and the words "not yet checked in the game". Pick Ocean, Make it: the skin opens; Colours shows the theme's colours changed.
+3. **Make a theme from three colours**: three colour boxes (Background, Accent, Text) start at Crimson's own colours, each with your saved colours beside it, and a Dark / Light choice. Under them a line says how many of the game's colours the theme sets (82) and leaves (148), and "Readable" when every pair it changes reaches 4.5 to 1.
+4. Choose **Light** (with Crimson's colours, 4 pairs fail; with this version's role map every light theme tried has failed, see the S4 report): within a moment the line turns into a list of pairs that would be hard to read, each with its ratio and "needs 4.5 to 1", and **Make it** is off. Nothing changes your colours for you.
+5. A small grey line names the defender badge as already under 4.5 in the game itself, and says that 7 pairs can't be checked here. Both are said, not hidden.
+6. Choose Dark again, Make it: the skin opens like any other. Put it in the game works as in section C.
+
 ## B. An existing install
 Stop the first run (Enter), then:
 

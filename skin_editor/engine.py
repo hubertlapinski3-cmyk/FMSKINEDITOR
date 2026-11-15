@@ -178,6 +178,59 @@ class Engine:
     def token(self, q, b):
         return self.need_index().token(q["name"])
 
+    # ---- S4: a theme from three colours (skin_editor/theme.py, data/simple/roles.json and gallery.json)
+    def _game_colour(self, token):
+        ix = self.need_index()
+        if token not in ix.defs:
+            return None
+        r = ix.token_row(token)["resolved"]
+        return colour.from_obj(r) if r else None
+
+    def _theme_missing(self, gen):
+        """The role map's tokens the style index of THIS build does not define (a game update can drop one): a theme is not written while any is missing."""
+        ix = self.need_index()
+        return sorted(o["token"] for o in gen["overrides"] if o["token"] not in ix.defs)
+
+    def theme_generate(self, q, b):
+        """Make a theme from three colours WITHOUT writing it: how many tokens it writes, how many it keeps at the game's colour, and the contrast check (failures block create)."""
+        from . import theme
+        gen = theme.generate(b["background"], b["accent"], b["text"], b.get("mode", "dark"))
+        c = theme.contrast(gen, self._game_colour)
+        missing = self._theme_missing(gen)
+        return {"inputs": gen["inputs"], "writes": len(gen["overrides"]), "keeps": gen["kept"], "status": "not yet checked in the game", "missing": missing,
+                "contrast": {k: c[k] for k in ("minimum", "pairs", "checked", "failures", "game_failures", "unchecked")}, "ok": not c["failures"] and not missing,
+                "preview": {o["token"]: o["value"] for o in gen["overrides"] if o["token"] in ("--global-background", "--colours-ui-soft", "--colours-ui-strong", "--brand-theme-primary", "--brand-theme-accent", "--global-text-primary", "--global-text-secondary")}}
+
+    def theme_create(self, q, b):
+        """Write a generated theme as a native folder project, ONLY when it passes the contrast check: a failing pair is refused, never adjusted."""
+        from . import projfmt, theme
+        name = b["name"]
+        if name in project_mod.names(self.ws):
+            raise RuntimeError("a project with that name exists")
+        gen = theme.generate(b["background"], b["accent"], b["text"], b.get("mode", "dark"))
+        missing = self._theme_missing(gen)
+        if missing:
+            raise ValueError("the role map names %d token(s) this game build does not have (%s); nothing was written" % (len(missing), ", ".join(missing[:5])))
+        c = theme.contrast(gen, self._game_colour)
+        if c["failures"]:
+            raise ValueError("the theme fails the contrast check on %d pair(s), the lowest %.2f (minimum %.1f); nothing was written" % (len(c["failures"]), min(f["ratio"] for f in c["failures"]), c["minimum"]))
+        p = theme.project_for(name, gen, b.get("keep_club_colours", True), (self.ws.vanilla_manifest() or {}).get("game_build"))
+        projfmt.write(self.ws, p)
+        changes.record(name, "options", ["project created from a theme"])
+        return {"project": project_mod.load(self.ws, name), "writes": len(gen["overrides"]), "contrast": {k: c[k] for k in ("checked", "failures", "game_failures")}, "status": "not yet checked in the game"}
+
+    def theme_gallery(self, q, b):
+        """The gallery: each theme's inputs, made by the same generator, with its contrast result computed now."""
+        from . import theme
+        out = []
+        for t in theme.gallery():
+            gen = theme.generate(t["background"], t["accent"], t["text"], t["mode"])
+            c = theme.contrast(gen, self._game_colour)
+            out.append({**t, "ok": not c["failures"], "failures": len(c["failures"]), "checked": c["checked"]})
+        rm = theme.roles()
+        ref = {k: rm["ramps"][r][rm["references"][r]] for k, r in (("background", "neutral"), ("accent", "accent"), ("text", "text"))}
+        return {"themes": out, "crimson": {**ref, "mode": "dark", "source": "the Crimson preset's own page background, accent and text (data/simple/roles.json)"}}
+
     def simple_token_screens(self, q, b):
         """On how many of the measured screens the shipped models hold an area this token paints (Simple mode's 'used on N of the 8 measured screens'). Counts only, no picture."""
         from . import simple

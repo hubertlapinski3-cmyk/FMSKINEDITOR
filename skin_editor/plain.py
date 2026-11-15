@@ -36,6 +36,10 @@ RULES = [
     # -- projects and skins
     (r"a project with that name exists", "A project with that name already exists. Choose another name."),
     (r"no project named", "There is no project with that name."),
+    (r"fails the contrast check", "This theme would make some text hard to read, so it was not made. Change one of the three colours and try again."),
+    (r"this game build does not have", "This version of the game has changed some of the colours a theme sets, so the theme was not made. Read the game again; if it repeats, update FM Skin Studio."),
+    (r"a theme colour must be", "Each of the three colours must be a plain colour like #1A2B3C."),
+    (r"mode must be dark or light", "Choose dark or light."),
     (r"no such token", "That colour name is not in the game's styles of this build."),
     (r"no such preset", "That ready-made theme isn't available."),
     (r"no build for this project", "Nothing has been built for this project yet."),
