@@ -4,7 +4,7 @@ name: ci
 # green run cannot hide that most of the calibration did not run.
 on:
   push:
-    branches: [main]
+    branches: [main, "release/**"]
   pull_request:
 
 permissions:
