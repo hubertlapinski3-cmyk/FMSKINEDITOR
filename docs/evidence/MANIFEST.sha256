@@ -1,4 +1,5 @@
 # sha256 of the LF-normalised bytes of each file (so any checkout agrees). Lines starting with # are comments.
+# Lines starting with 'raw ' carry the sha256 of the RAW bytes of the same file (added 2026-11-15): they catch a line-ending change the normalised hash cannot see.
 # Logs, verified 2026-11-14 (committed LogOutput.log, hashed in the LF form and the CRLF form, against the value recorded in the session doc):
 #   Session B: recorded 5DB697AC3446F2F9 (6428 bytes) = the CRLF form of the committed file, so it IS listed below (the manifest hashes its LF form).
 #   Session D: recorded 65026D7EA79CF637 (10420 bytes); committed LF form D6808D14A7620392 (10332 bytes), CRLF form FF47B09159183B77 (10421 bytes): NOT reproduced, not listed.
@@ -14,4 +15,18 @@
 18c02323134708d559b6d5e3d8fbc73aabf5220e2bd7051583362b1baa491c36 *docs/evidence/phase9-m0-session-B-logs-20261114/LogOutput.log
 a730b35fc1d4247158c2366cffee1db63043edd4070c1b2cc117972fe53fcfb7 *docs/evidence/phase9-v110-calibration-20261114/calibration-report.md
 8693989fcb1cc99463b19b95e8b43873971969de8a9ff2388f2587c156c62a51 *docs/evidence/phase9-v110-calibration-20261114/calibration-report.json
+11da1ab8b247f95bb0f3e851ac2765ac38e01230daabcc6e9e9d1ddebd6d4c9c *docs/evidence/phase9-v110-calibration-20261114/diff-vs-frozen-1.0.0.md
+bede9ce348b6c18cc11379f76f86b171414d3bd836a789d9ce28f3886b6d882d *docs/evidence/phase9-v110-calibration-20261114/ADDENDUM.md
 7be47281d8a81bd3503f0c4d79dcddc90189c32ff1889f4ead6ef5f42959c7e8 *docs/evidence/phase9-v110-grid-vertical-flow-design.json
+raw 9e9f2af265bf0baa9e50b23820300ba7d0cb9cb9649c69d96a08ebde93f908fd *docs/evidence/phase9-m7-calibration-20261114/calibration-report.md
+raw 8c75a8ad65908d619075dcd90d5ed0323a8a4a5c2093044b77c85f2013b3c7d4 *docs/evidence/phase9-m7-calibration-20261114/calibration-report.json
+raw ed06d8819eed9c752e1a18b82699dafd130b975cbaf5a24c6c9f1bda31393b4a *docs/evidence/phase9-m7-calibration-revised-20261114/calibration-report.md
+raw fef773423b3e67cf7937e8e62d1df4a04486b9d4ff35dbb95a4db5367f87a649 *docs/evidence/phase9-m7-calibration-revised-20261114/calibration-report.json
+raw 4837a8641505bbfbbb13bd326443be288f6b55ab834c55e35d1ff45dd98d3fbb *docs/evidence/phase9-fix-round-heldout-predictions.json
+raw 5846aa8ede57b26d456f6dde3da9122bece5e1bef5e1aea08d966388402bf067 *docs/evidence/phase9-fix-round-heldout-results.json
+raw 5db697ac3446f2f9de0c5d0cee404a0d05feee8e5441cc90888a45a625f238b8 *docs/evidence/phase9-m0-session-B-logs-20261114/LogOutput.log
+raw d543250a638d3991a0796fb0c71e2db65c6432c6e5b5f0968582e818adfe682c *docs/evidence/phase9-v110-calibration-20261114/calibration-report.md
+raw 788d70c16c065f7ff075a764e30bd0baccae0cc68588a140b268022852bc5c24 *docs/evidence/phase9-v110-calibration-20261114/calibration-report.json
+raw d47cd402467b1747368daa487c60aac92782e182ce10d0d4bd5a3938909f2e94 *docs/evidence/phase9-v110-calibration-20261114/diff-vs-frozen-1.0.0.md
+raw bede9ce348b6c18cc11379f76f86b171414d3bd836a789d9ce28f3886b6d882d *docs/evidence/phase9-v110-calibration-20261114/ADDENDUM.md
+raw 2f390c72ca801ddb5c40088aea4716d497b8def2f0fbbaf33f989c0d941f13d1 *docs/evidence/phase9-v110-grid-vertical-flow-design.json
