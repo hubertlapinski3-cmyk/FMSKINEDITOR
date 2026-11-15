@@ -33,11 +33,28 @@ def command(out, name):
     return cmd
 
 
+def pinned_pyinstaller():
+    """The PyInstaller version requirements-build.txt pins (the 1.2.0 gate item)."""
+    import re
+    for line in (ROOT / "requirements-build.txt").read_text(encoding="utf-8").splitlines():
+        m = re.fullmatch(r"\s*pyinstaller==([\w.]+)\s*", line, re.I)
+        if m:
+            return m.group(1)
+    return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=str(ROOT / "build-sidecar"))
     ap.add_argument("--name", default="fm-skin-engine")
+    ap.add_argument("--any-pyinstaller", action="store_true", help="build with whatever PyInstaller is installed (a local experiment; never for a release)")
     a = ap.parse_args()
+    import PyInstaller
+    resolved, pinned = PyInstaller.__version__, pinned_pyinstaller()
+    print("PyInstaller resolved: %s (pinned: %s), Python %s" % (resolved, pinned, sys.version.split()[0]), flush=True)       # into the build log, every build
+    if resolved != pinned and not a.any_pyinstaller:
+        print("PyInstaller %s is not the pinned %s: install requirements-build.txt (or pass --any-pyinstaller for a local experiment)" % (resolved, pinned))
+        return 2
     out = Path(a.out).resolve()
     if (out / a.name).exists():
         shutil.rmtree(out / a.name)

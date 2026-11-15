@@ -43,11 +43,13 @@ jobs:
       - name: Freeze the engine (PyInstaller one-dir sidecar)
         shell: pwsh
         run: |
-          python -m pip install -r requirements.txt pyinstaller
+          python -m pip install -r requirements.txt -r requirements-build.txt
+          $pi = python -c "import PyInstaller; print(PyInstaller.__version__)"
+          Write-Host "PyInstaller resolved for this release: $pi"
           python tools/freeze_engine.py
           if (-not (Test-Path build-sidecar/fm-skin-engine/fm-skin-engine.exe)) { throw "frozen engine missing" }
 
-      - name: Self-test the frozen engine (the picture code must import in the frozen build)
+      - name: Self-test the frozen engine (the picture code must import, a bundle must write and read back, a failed call must log)
         shell: pwsh
         run: |
           & build-sidecar/fm-skin-engine/fm-skin-engine.exe --selftest

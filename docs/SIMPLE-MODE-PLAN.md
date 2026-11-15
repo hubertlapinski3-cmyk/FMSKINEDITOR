@@ -204,6 +204,41 @@ Then **Use my picture** (the same `images.commit` the Advanced view uses), **See
 - A saved file holds the EXPORTED skin, not the project: opening it gives a skin of imported sheets, not the editable colour list it was made from. That is the read-only route the spec names; a project-level share is not built.
 - Nothing here was looked at in the game or by a person (checklist section I).
 
+### S8 built (2026-11-15, milestone report; batch 2). The release candidate is NOT prepared: it waits for Sessions 1 and 2
+**The guide:** `docs/FIRST-SKIN.md`, one page from installing to seeing the skin in the game, written from the real flow:
+- Setup, the four start choices, Colours, Look at it, Pictures, Put it in the game, Share and undo, what goes wrong and where the log is, and what is not checked in the game.
+- **Every bold label in it is a button the Studio has:** `tests/test_first_skin_guide.py` reads the guide and the Studio's source and fails on a renamed button.
+- **Not done:** the plan's "screenshots of the Studio" are not in it. I took none: a screenshot of the running desktop app needs it open on screen, and I did not want to show a picture I had not looked at. They can be added from the owner's eyeball pass (sections A to I).
+**The README, rewritten around Simple mode, every kept claim re-read against this build:**
+- **Kept, re-checked:**
+  - the workspace path (`config.default_workspace`);
+  - both log paths (`launcher.py` writes `logs/launcher.log`; `app.log` and the self-test);
+  - the skins folder;
+  - `verify-stock` and `methods` (`python -m skin_editor --help`);
+  - **Check for updates** (the Studio's label);
+  - the two routes and their consequences;
+  - the calibration report's place and the repair-release sentence (pinned by `test_frozen`);
+  - the render guide's path.
+- **Corrected:** Python 3.14 (what CI and the release use; it said 3.12 / macOS brew).
+- **Found wrong, and left out rather than kept:** "Four models ship" (8 ship in `data/models`); "1,728 images" (the S6 measurement: 1,341 icons, 1,369 wallpapers, 285 SVGs). The front page no longer quotes either count.
+- **Dropped (no longer true or no longer the product):**
+  - the macOS launcher section (the release is Windows-only);
+  - "Not built: PyInstaller packaging" (the engine is frozen since 1.0);
+  - "Tested here (21 unit tests)" (443 engine tests now);
+  - the old single-page frontend's tab-by-tab text and the original-tool table (the history stays in git and in the plan files).
+- `docs/API.md` was stale: it lacked every method since S1, `native.put` included. Its table is regenerated from `python -m skin_editor methods --markdown` (127 methods), and a test now fails when a method is missing from it.
+**The 1.2.0 release gate's two leftovers, done** (recorded as an addendum in `docs/PHASE9-PLAN.md`):
+1. **PyInstaller pinned** (`requirements-build.txt`, 6.22.3: the version inferred for 1.1.1, never read from its log). The release workflow installs from the pin and prints `PyInstaller resolved for this release: ...` before the freeze. `tools/freeze_engine.py` prints the resolved and pinned versions on every build and refuses another version unless run with `--any-pyinstaller`.
+2. **The release self-test does a bundle round-trip on a committed fixture:** `data/selftest/roundtrip.unity3d` is **synthetic** (483 bytes, written by `tools/make_selftest_bundle.py`; no game content, and a test pins the committed bytes to the generator). The self-test loads it, changes the TextAsset through its type tree, packs it with `env.save(pack="original")` as the bundle build does, reloads, compares, and checks it is still LZ4. Tests show it reports a broken codec, a missing fixture and a wrong object.
+   - **A local freeze with the pinned PyInstaller printed `PyInstaller resolved: 6.22.3 (pinned: 6.22.3), Python 3.14.10`** and its frozen self-test passed with the round trip.
+   - It covers ONE write path (a TextAsset); writing a Texture2D or a MonoBehaviour of the game's bundles is still not exercised in a frozen build.
+**Tests:** engine suite 443 OK (`test_first_skin_guide` 4 new, `test_frozen` 20); Studio 160.
+**What stays the owner's, unchanged by "finish all":**
+1. Batch 1 and 2 looks: checklist sections D to I.
+2. **Session 2** (the gallery gate: one record per theme on the eight screens, the `fm_get_styles` answer on the defender badge, the 7 unchecked pairs, the 148 kept colours).
+3. **Session 1** before the release candidate, (e) LAST; `REMOVAL_RELEASED` flips only in the commit that records (e).
+4. Then the release candidate, the friend's first-run test on it with the clock written down first, the read-only audit, and **the owner's explicit go** before any tag. The version is still 1.1.0 in `tauri.conf.json`: the bump to 1.2.0 belongs to the candidate, not to this milestone.
+
 ### S2. One way into the game
 - **One button, "Put it in the game"**, in Simple mode: the native route only (`native.export`), which changes no game file. Bundles are not offered in Simple mode.
 - **After it runs**, the two steps left are shown with the skin's name filled in: pick it once in Preferences, press Reload Skin. On later runs only the second. The Studio cannot tell, offline, whether the user did the first; it says what was written and what is left to do.

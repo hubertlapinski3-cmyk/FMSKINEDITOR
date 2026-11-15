@@ -64,6 +64,34 @@ class FrozenEngine(unittest.TestCase):
             bad = frozen.selftest()
         self.assertEqual(len(bad), 1); self.assertIn("astc_encoder: PyInstallerImportError", bad[0])
 
+    def test_the_bundle_round_trip_passes_on_the_committed_synthetic_fixture(self):
+        from skin_editor import frozen
+        self.assertEqual(frozen.bundle_roundtrip(), [])
+
+    def test_the_committed_fixture_is_exactly_what_the_generator_writes_so_it_holds_no_game_content(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("make_selftest_bundle", ROOT / "tools" / "make_selftest_bundle.py")
+        m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+        self.assertEqual((ROOT / "data" / "selftest" / "roundtrip.unity3d").read_bytes(), m.bundle())
+
+    def test_the_round_trip_reports_a_broken_write_path_a_missing_fixture_and_a_wrong_object(self):
+        from unittest import mock
+        from skin_editor import frozen
+        import UnityPy.helpers.CompressionHelper as ch
+
+        def broken(*a, **k):
+            raise RuntimeError("Failed to load dynlib/dll 'lz4'")
+        patched = {k: broken for k in ch.COMPRESSION_MAP}
+        with mock.patch.dict(ch.COMPRESSION_MAP, patched):
+            bad = frozen.bundle_roundtrip()
+        self.assertEqual(len(bad), 1); self.assertIn("bundle round-trip: RuntimeError", bad[0])
+        self.assertIn("is missing", frozen.bundle_roundtrip(ROOT / "data" / "selftest" / "nope.unity3d")[0])
+        with mock.patch.object(frozen, "ROUNDTRIP_NAME", "something else"):
+            self.assertIn("the fixture's object is", frozen.bundle_roundtrip()[0])
+
+    def test_the_freeze_ships_the_fixture(self):
+        self.assertIn('(ROOT / "data", sep)', FREEZE, "data/ (and so data/selftest/roundtrip.unity3d) is added to the frozen build")
+
     def test_a_failed_call_must_leave_its_traceback_in_the_documented_log_and_the_check_notices_when_it_does_not(self):
         from unittest import mock
         import logging
@@ -90,6 +118,22 @@ class FrozenEngine(unittest.TestCase):
         self.assertIn('"--selftest"', FREEZE)
         self.assertLess(FREEZE.index("--collect-all"), FREEZE.index('"--selftest"'))
         self.assertIn("return st.returncode", FREEZE)
+
+    def test_pyinstaller_is_pinned_and_its_resolved_version_is_printed_at_build_time(self):
+        import re
+        pin = re.findall(r"(?mi)^pyinstaller==([\w.]+)\s*$", (ROOT / "requirements-build.txt").read_text(encoding="utf-8"))
+        self.assertEqual(len(pin), 1, "exactly one pinned PyInstaller")
+        wf = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+        self.assertIn("-r requirements-build.txt", wf)
+        self.assertNotRegex(wf, r"(?m)pip install[^\n]*\bpyinstaller\b(?!\S)", "no unpinned install left in the release")
+        self.assertIn("PyInstaller resolved for this release", wf)
+        self.assertLess(wf.index("PyInstaller resolved for this release"), wf.index("freeze_engine.py"))
+        self.assertIn('print("PyInstaller resolved: %s (pinned: %s)', FREEZE, "every build, a local one included, prints it")
+        self.assertIn("return 2", FREEZE, "and a build with another version is refused unless asked for as an experiment")
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("freeze_engine", ROOT / "tools" / "freeze_engine.py")
+        m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+        self.assertEqual(m.pinned_pyinstaller(), pin[0])
 
     def test_a_repair_release_without_its_own_report_attaches_none_instead_of_mislabelling_an_old_one(self):
         wf = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")

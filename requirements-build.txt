@@ -1,0 +1,4 @@
+# What FREEZES the engine (tools/freeze_engine.py), not what it runs on (requirements.txt).
+# Pinned for 1.2.0 (docs/PHASE9-PLAN.md, the 1.2.0 gate item): the version the 1.1.1 build was made with (INFERRED from the local build of the same day, 6.22.3; the CI
+# log of 1.1.1 did not print it). A change of this line is a workflow change, tested like one: freeze, self-test, and the version is printed into the release log.
+pyinstaller==6.22.3

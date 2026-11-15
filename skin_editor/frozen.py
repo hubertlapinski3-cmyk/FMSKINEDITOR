@@ -67,10 +67,61 @@ def check_failed_call_logs_traceback():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def selftest(modules=SELFTEST_MODULES, log=True):
-    """Import what the picture code needs, and check that a failed call writes its traceback to the documented log; returns the problems as text (empty list = fine). The frozen engine runs it
-    with `--selftest`; tools/freeze_engine.py runs it after EVERY frozen build (a local build included), and the release workflow runs it again before the installer is built.
-    It samples the READ paths and the log, and claims nothing else: the bundle WRITE path (UnityPy load and save) is not covered (docs/PHASE9-PLAN.md, roadmap)."""
+ROUNDTRIP_NAME = "fm-skin-studio-selftest"
+ROUNDTRIP_SUFFIX = " / written back by the self-test"
+
+
+def bundle_roundtrip(fixture=None):
+    """The bundle WRITE path on the committed, synthetic fixture data/selftest/roundtrip.unity3d (tools/make_selftest_bundle.py; no game content): load it, change the
+    TextAsset through its type tree (`save_typetree`), pack it with `env.save(pack="original")` as skin_editor/bundles.py does, load the written bundle again and compare.
+    It also checks that the written bundle is still LZ4-compressed (the codec path, not only the container). Returns the problems as text."""
+    import shutil
+    import tempfile
+    from pathlib import Path
+    try:
+        import UnityPy
+        from . import config
+        src = Path(fixture) if fixture else config.resource_root() / "data" / "selftest" / "roundtrip.unity3d"
+        if not src.is_file():
+            return ["bundle round-trip: the fixture %s is missing from this build" % src]
+        tmp = tempfile.mkdtemp(prefix="fm-roundtrip-")
+        try:
+            env = UnityPy.load(str(src))
+            objs = list(env.objects)
+            if len(objs) != 1 or objs[0].type.name != "TextAsset":
+                return ["bundle round-trip: the fixture does not hold one TextAsset (%s)" % [o.type.name for o in objs]]
+            tt = objs[0].read_typetree()
+            if tt.get("m_Name") != ROUNDTRIP_NAME:
+                return ["bundle round-trip: the fixture's object is %r" % tt.get("m_Name")]
+            want = tt["m_Script"] + ROUNDTRIP_SUFFIX
+            tt["m_Script"] = want
+            objs[0].save_typetree(tt)
+            env.save(pack="original", out_path=tmp)
+            written = [p for p in Path(tmp).rglob("*") if p.is_file()]
+            if len(written) != 1:
+                return ["bundle round-trip: env.save wrote %d files" % len(written)]
+            env2 = UnityPy.load(str(written[0]))
+            o2 = list(env2.objects)
+            got = o2[0].read_typetree() if len(o2) == 1 else {}
+            problems = []
+            if got.get("m_Script") != want or got.get("m_Name") != ROUNDTRIP_NAME:
+                problems.append("bundle round-trip: the written bundle reads back %r" % got)
+            bf = next(iter(env2.files.values()))
+            flags = getattr(bf, "_block_info_flags", None)
+            if flags is None or (flags & 0x3F) not in (2, 3):
+                problems.append("bundle round-trip: the written bundle is not LZ4-compressed (block flags %r)" % flags)
+            return problems
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+    except BaseException as e:                           # a missing native library surfaces here as an import or load error
+        return ["bundle round-trip: %s: %s" % (type(e).__name__, str(e)[:200])]
+
+
+def selftest(modules=SELFTEST_MODULES, log=True, roundtrip=True):
+    """Import what the picture code needs, write a bundle and read it back (the WRITE path, on a committed synthetic fixture), and check that a failed call writes its traceback to the
+    documented log; returns the problems as text (empty list = fine). The frozen engine runs it with `--selftest`; tools/freeze_engine.py runs it after EVERY frozen build (a local
+    build included), and the release workflow runs it again before the installer is built. It samples the READ paths, ONE write path (a TextAsset through its type tree, LZ4 packing)
+    and the log, and claims nothing else: a Texture2D or MonoBehaviour write of the real game's bundles is not exercised here."""
     import importlib
     problems = []
     for name in modules:
@@ -78,6 +129,8 @@ def selftest(modules=SELFTEST_MODULES, log=True):
             importlib.import_module(name)
         except BaseException as e:                       # PyInstallerImportError is not an ImportError
             problems.append("%s: %s: %s" % (name, type(e).__name__, str(e)[:200]))
+    if roundtrip:
+        problems += bundle_roundtrip()
     if log:
         problems += check_failed_call_logs_traceback()
     return problems
