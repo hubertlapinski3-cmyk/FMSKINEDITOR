@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 vi.mock('@monaco-editor/react', () => ({ default: () => null }))
 vi.mock('./monaco', () => ({ lint: vi.fn(), registerQuickFixes: vi.fn(), registerTokenCompletion: vi.fn() }))
@@ -20,17 +20,25 @@ describe('the mode a run starts in', () => {
     engine(ready, [])
     render(<App />)
     expect(await screen.findByTestId('start')).toBeTruthy()
-    for (const w of ['Projects', 'Colours', 'Pictures', 'Look at it', 'Advanced']) expect(screen.getByText(w)).toBeTruthy()
+    for (const w of ['Projects', 'Colours', 'Pictures', 'Look at it', 'Advanced']) expect(await screen.findByText(w)).toBeTruthy()
     expect(localStorage.getItem('studio.mode')).toBe('simple')
   })
 
-  it('an install that already has projects (nothing stored) becomes Advanced: the letters, no start screen', async () => {
+  it('an install that already has projects (nothing stored) becomes Advanced: the letters, and the start choices are the landing page there too while no project is open', async () => {
     engine(ready, ['old-skin'])
     render(<App />)
     await waitFor(() => expect(localStorage.getItem('studio.mode')).toBe('advanced'))
     expect(screen.getByTitle('Explorer')).toBeTruthy()
-    expect(screen.queryByTestId('start')).toBeNull()
+    expect(await screen.findByTestId('start')).toBeTruthy()
     expect(screen.queryByText('Colours')).toBeNull()
+  })
+
+  it('the other views work without a project in both modes: the start choices only take the landing page', async () => {
+    engine(ready, [])
+    render(<App />)
+    await screen.findByTestId('start')
+    fireEvent.click(screen.getByText('Look at it'))
+    await waitFor(() => expect(screen.queryByTestId('start')).toBeNull())
   })
 
   it('a stored "expert" is migrated to "advanced"', async () => {

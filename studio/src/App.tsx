@@ -256,7 +256,7 @@ export default function App() {
 
   const actW = mode === 'simple' ? 132 : 44                                            // Simple mode's navigation carries words, so it is wider
   const needsSetup = !!state && (!state.install || !state.vanilla || !state.indexed)   // a fresh install: the game has not been found and read yet (S1a)
-  const showStart = mode === 'simple' && !project && !needsSetup
+  const showStart = !project && !needsSetup && view === 'explorer'                      // the choices are the landing page in both modes while no project is open; the other views (render, layouts, ...) still work without a project
   const pickGameFolder = async () => {
     if ('__TAURI_INTERNALS__' in window) {
       const { open } = await import('@tauri-apps/plugin-dialog'); const r = await open({ directory: true, multiple: false, title: "Pick the folder that contains the game's fm.exe" }); return typeof r === 'string' ? r : undefined

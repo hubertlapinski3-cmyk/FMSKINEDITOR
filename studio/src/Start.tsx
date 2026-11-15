@@ -28,7 +28,7 @@ export default function Start({ projects, onCreated, onImport, say }: { projects
     if (!pick || !nameOk) return
     setBusy(true); setProblem(null)
     try {
-      await rpc('project.create_folder', { name, target: 'native', ...(pick === 'theme' ? { preset: 'crimson', keep_club_colours: keep } : {}) })
+      await rpc('project.create_folder', { name, target: 'native', ...(pick === 'theme' ? { preset: 'crimson' } : {}), keep_club_colours: keep })
       say(`created ${name}`)
       await onCreated(name)
     } catch (e) { setProblem(sayOf(e)); say('ERROR ' + sayOf(e).details) } finally { setBusy(false) }
@@ -47,12 +47,12 @@ export default function Start({ projects, onCreated, onImport, say }: { projects
         <label>Name of your skin <input value={name} onChange={(e) => setName(e.target.value.trim())} aria-label="Name of your skin" /></label>
         {!NAME_OK.test(name) && <div className="warn">Use only letters, digits, dots, dashes and underscores.</div>}
         {NAME_OK.test(name) && projects.includes(name) && <div className="warn">A skin with that name already exists. Choose another name.</div>}
-        {pick === 'theme' && <fieldset className="start-club">
+        <fieldset className="start-club">
           <legend>The club&apos;s own colours</legend>
           <label><input type="radio" name="club" checked={keep} onChange={() => setKeep(true)} /> Keep each club&apos;s own colours, as the game paints them</label>
           <label><input type="radio" name="club" checked={!keep} onChange={() => setKeep(false)} /> Use one flat look for every club</label>
           {!keep && <div className="dim small" data-testid="club-removal-text">{CLUB_REMOVAL_TEXT}</div>}
-        </fieldset>}
+        </fieldset>
         {problem && <div className="notice" role="alert"><div>{problem.plain}</div><details><summary>details</summary><div className="mono small">{problem.details}</div></details></div>}
         <button className="primary" disabled={busy || !nameOk} onClick={make}>{busy ? 'Making it ...' : 'Make it'}</button>
       </div>}

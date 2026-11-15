@@ -133,7 +133,17 @@ describe('start screen', () => {
     render(<Start projects={[]} onCreated={async () => {}} onImport={() => {}} say={() => {}} />)
     fireEvent.click(screen.getByText("Start from the game's look"))
     fireEvent.click(screen.getByText('Make it'))
-    await waitFor(() => expect(rpc).toHaveBeenCalledWith('project.create_folder', { name: 'my-first-skin', target: 'native' }))
+    await waitFor(() => expect(rpc).toHaveBeenCalledWith('project.create_folder', { name: 'my-first-skin', target: 'native', keep_club_colours: true }))
+  })
+
+  it("the game's look asks the club-colour question too, and the answer goes with it", async () => {
+    render(<Start projects={[]} onCreated={async () => {}} onImport={() => {}} say={() => {}} />)
+    fireEvent.click(screen.getByText("Start from the game's look"))
+    expect(screen.getByText('The club\'s own colours')).toBeTruthy()
+    fireEvent.click(screen.getByLabelText(/one flat look for every club/))
+    expect(screen.getByTestId('club-removal-text')).toBeTruthy()
+    fireEvent.click(screen.getByText('Make it'))
+    await waitFor(() => expect(rpc).toHaveBeenCalledWith('project.create_folder', { name: 'my-first-skin', target: 'native', keep_club_colours: false }))
   })
 
   it('opening a downloaded skin goes to the import, and a taken or bad name cannot be made', () => {
