@@ -3,6 +3,7 @@ import { rpc } from './engine'
 import { sayOf } from './plainError'
 import { grouped, hexOf, shortName, type BrowseRow } from './colourGroups'
 import { addMine, loadMine, MAX_MY_COLOURS, removeMine, saveMine } from './myColours'
+import Strip from './MyColoursStrip'
 
 interface Col { rgb: string; a: number }
 interface Override { token: string; value: Col | string; vanilla?: string }
@@ -15,12 +16,6 @@ export function lightTextContrast(rgb: string): number {
   const lin = (v: number) => { const c = v / 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4 }
   const l = 0.2126 * lin(parseInt(rgb.slice(1, 3), 16)) + 0.7152 * lin(parseInt(rgb.slice(3, 5), 16)) + 0.0722 * lin(parseInt(rgb.slice(5, 7), 16))
   return 1.05 / (l + 0.05)
-}
-
-/** My colours as one-click choices: each swatch applies its colour where the picker it sits beside is used. Nothing here adds or removes an entry (that is explicit, in the My colours section). */
-function Strip({ mine, onPick, label }: { mine: string[]; onPick: (rgb: string) => void; label: string }) {
-  if (!mine.length) return <span className="dim small pal-strip-empty">My colours is empty: save a colour with ☆.</span>
-  return <span className="pal-strip" role="group" aria-label={label}>{mine.map((c) => <button key={c} className="sw" style={{ background: c }} aria-label={`Use ${c}`} title={`Use ${c}`} onClick={() => onPick(c)} />)}</span>
 }
 
 /** The project's colours (Simple mode's Colours view). Three parts: the top bar and headers (one flat colour instead of each club's, an option of the project), what the game uses

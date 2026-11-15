@@ -147,6 +147,8 @@ _TABLE = [
     ("native.preflight", None, {"project": "str"}, "native_preflight", "call", "What 'Put it in the game' would do, without doing it: the skin's name, what it carries (empty = nothing changed yet), the skins folder, first time or not."),
     ("native.put", None, {"project": "str"}, "native_put", "job", "Put the project in the game as a native skin (job; progress messages are plain words). Refuses a project that changes nothing."),
     ("native.remove", None, {"project": "str", "confirm": "bool?"}, "native_remove", "call", "Take a skin this editor wrote out of the skins folder (only a folder with the editor's marker; confirm must be true)."),
+    ("simple.token_screens", None, {"token": "str"}, "simple_token_screens", "call", "On how many of the measured screens the shipped models hold an area this token paints: {screens, of, names}. Counts only."),
+    ("simple.literal_info", None, {"rgb": "str", "a": "num?"}, "simple_literal_info", "call", "What a literal colour swap copies into a native skin: {uses, selectors, copied_rules, limit, offered}."),
     ("tokens.browse", None, {"used_only": "bool?"}, "browse_colours", "call", "Every colour token the game's rules use (all with used_only false): name, colour, number of rule paths it paints."),
     ("app.explain", None, {"message": "str"}, "explain", "call", "An engine message in plain words: {plain, details}."),
     ("project.migrate", None, {"project": "str"}, "pf_migrate", "call", "Convert a legacy <name>.skin.json into a project folder (verified round trip; the old file is kept as .migrated)."),

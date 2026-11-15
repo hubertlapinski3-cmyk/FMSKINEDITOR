@@ -77,6 +77,30 @@ describe('Look at it', () => {
     expect(calls().map(([m]) => m).filter((m) => /^preview\./.test(m))).toEqual([])
   })
 
+  it('with a skin, clicking a part of a picture opens the recolour panel for that part; without a skin nothing opens', async () => {
+    ;(rpc as any).mockImplementation(async (m: string, p: any) => {
+      if (m === 'render.layouts') return { total: rows.length, layouts: rows.filter((r) => r.name.toLowerCase().includes(String(p.q || '').toLowerCase())) }
+      if (m === 'render.layout') return result
+      if (m === 'project.get') return { name: 'mine', options: {}, token_overrides: [], literal_swaps: [] }
+      if (m === 'simple.literal_info') return { uses: 3, selectors: 1, copied_rules: 3, limit: 50, offered: true }
+      throw new Error('unexpected ' + m)
+    })
+    render(<LookAtIt project="mine" say={() => {}} />)
+    await screen.findByText('With my skin: mine', { selector: 'figcaption' })
+    expect(screen.getByText(/Click any part of a picture to change its colours/)).toBeTruthy()
+    const nodes = await screen.findAllByTitle(/VisualElement#card/)
+    fireEvent.click(nodes[nodes.length - 1])
+    expect(await screen.findByTestId('recolour')).toBeTruthy()
+    expect(screen.getByText('Background')).toBeTruthy()
+    fireEvent.click(screen.getByLabelText('Close'))
+    expect(screen.queryByTestId('recolour')).toBeNull()
+    cleanup()
+    render(<LookAtIt project={null} say={() => {}} />)
+    const n2 = await screen.findAllByTitle(/VisualElement#card/)
+    fireEvent.click(n2[0])
+    expect(screen.queryByTestId('recolour')).toBeNull()
+  })
+
   it('a layout the build does not have is said in words, not left blank', async () => {
     ;(rpc as any).mockImplementation(async (m: string) => (m === 'render.layouts' ? { total: 0, layouts: [] } : result))
     render(<LookAtIt project="mine" say={() => {}} />)

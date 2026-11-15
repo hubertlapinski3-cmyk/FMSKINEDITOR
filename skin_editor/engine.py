@@ -178,6 +178,19 @@ class Engine:
     def token(self, q, b):
         return self.need_index().token(q["name"])
 
+    def simple_token_screens(self, q, b):
+        """On how many of the measured screens the shipped models hold an area this token paints (Simple mode's 'used on N of the 8 measured screens'). Counts only, no picture."""
+        from . import simple
+        ix = self.need_index()
+        if b["token"] not in ix.defs:
+            raise KeyError("no such token: %s" % b["token"])
+        return simple.token_screens(ix, b["token"])
+
+    def simple_literal_info(self, q, b):
+        """What a literal colour swap would copy into a native skin, and whether Simple mode offers it (at most simple.LITERAL_LIMIT copied rules)."""
+        from . import simple
+        return simple.literal_info(self.need_index(), b["rgb"], b.get("a", 1.0))
+
     def browse_colours(self, q, b):
         """Every colour token the game's rules use (or, with used_only false, every colour token), compact: name, resolved colour, and the number of rule paths it paints.
         The Simple palette shows these so a person can see everything and click what to change (docs/SIMPLE-MODE-PLAN.md S1)."""

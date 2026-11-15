@@ -47,7 +47,7 @@ def _swap_literals(entry, rgb_map, rgba_swaps):
     """Replace colour literals in value texts: rgb-keep-alpha swaps by #RRGGBB (the alpha byte stays), exact RGBA swaps by the whole #RRGGBBAA."""
     exact = {}
     for _i, f, t in rgba_swaps:
-        exact[colour.text(tuple(f)).upper()] = colour.text(tuple(t))
+        exact[colour.hex8(tuple(f)).upper()] = colour.text(tuple(t))       # keyed by #RRGGBBAA: the lookup below pads an opaque #RRGGBB with ff, so an opaque swap keyed by its 6-digit text never matched (fixed 2026-11-15, S3)
     if not rgb_map and not exact:
         return 0
     n = 0

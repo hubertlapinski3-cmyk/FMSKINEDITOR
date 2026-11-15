@@ -51,6 +51,14 @@ Open the launcher with `--keep` (the setup is already done) and a project that h
 ## E. My colours
 In **Colours**: 1. A **My colours (0/10)** section with a colour box and **Add to My colours**. Add a colour; it appears with its code and a cross. Add the same again: it refuses in words. Add ten: the eleventh is refused and the button is off. 2. Open a group in the list: every row now has a star (saves that row's current colour) and a small arrow (opens your saved colours as one-click choices beside the picker). Click the arrow, pick a saved colour: the row takes it, keeping its transparency; **put back** returns the GAME's colour, not your previous pick. 3. With **Top bar and headers** ticked, the same two controls sit beside the bar's colour. 4. Close and reopen the Studio (same launcher, `--keep`): your saved colours are still there.
 
+## F. Click it, recolour it (S3)
+In **Look at it**, with a skin open (the empty "game's look" project shows the effect best):
+1. A line says "Click any part of a picture to change its colours". Click a part: a panel opens on the right, naming what you clicked and listing its Background / Text / Border colours.
+2. A colour from a game colour name: the panel names it, says how many other parts of the picture use it, and "used on N of the 8 measured screens we have models for" (or, for 0, that it may still change screens we have not measured). Pick a new colour: the "With my skin" picture changes, "The game as it ships" does not. **Put it back** returns it.
+3. Your saved colours (My colours) sit beside the picker; one click applies one.
+4. On the **Preferences card**, click a grey text: if its colour is written directly into the game's rules, the panel first says how many game rules a change copies; pick a colour and it changes. A very common colour (white, transparent) says it is an Advanced job instead.
+5. Something you cannot change says why in words (written into the layout itself, taken from the part around it, or painted while the game runs).
+
 ## B. An existing install
 Stop the first run (Enter), then:
 

@@ -36,6 +36,7 @@ RULES = [
     # -- projects and skins
     (r"a project with that name exists", "A project with that name already exists. Choose another name."),
     (r"no project named", "There is no project with that name."),
+    (r"no such token", "That colour name is not in the game's styles of this build."),
     (r"no such preset", "That ready-made theme isn't available."),
     (r"no build for this project", "Nothing has been built for this project yet."),
     (r"target must be one of", "That way of putting the skin into the game isn't available."),

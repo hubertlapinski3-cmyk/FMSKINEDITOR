@@ -76,6 +76,7 @@ function Node({ n, path, sel, onSel, markers, hl, onOpen }: { n: RNode; path: st
   )
 }
 
+export function nodeAt(tree: RNode[], path: string | null): RNode | null { return at(tree, path) }
 function at(tree: RNode[], path: string | null): RNode | null {
   if (!path) return null
   const idx = path.split('/').map(Number)
@@ -182,7 +183,7 @@ export const FIRST_RENDER_TEXT = "Reading the game's styles for the first time. 
 let renderedOnce = false
 
 /** One layout drawn from its render tree, with the explain panel beside it. */
-export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult, highlight = [], skinOverride, bare = false, zoom0 }: { skinOverride?: boolean; bare?: boolean; zoom0?: number; layout: LayoutRow | null; say: (s: string) => void; project?: string | null; onOpenFile?: (file: string, line?: number) => void; onResult?: (r: RResult | null, layout: LayoutRow | null) => void; highlight?: string[] }) {
+export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult, highlight = [], skinOverride, bare = false, zoom0, picked = null, onPick }: { skinOverride?: boolean; bare?: boolean; zoom0?: number; picked?: string | null; onPick?: (path: string) => void; layout: LayoutRow | null; say: (s: string) => void; project?: string | null; onOpenFile?: (file: string, line?: number) => void; onResult?: (r: RResult | null, layout: LayoutRow | null) => void; highlight?: string[] }) {
   const [res, setRes] = useState<RResult | null>(null)
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
@@ -223,7 +224,7 @@ export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult
         {err && <div className="warn small" role="alert">{err}</div>}
         <div className="rscroll rbare-scroll" style={{ width: w * zoom, height: h * zoom }}>
           <div className="rstage" data-testid="stage" style={{ width: w, height: h, transform: `scale(${zoom})`, transformOrigin: '0 0' }}>
-            {res?.tree.map((n, i) => <Node key={i} n={n} path={String(i)} sel={null} onSel={() => {}} markers={false} hl={hl} onOpen={openNode} />)}
+            {res?.tree.map((n, i) => <Node key={i} n={n} path={String(i)} sel={picked} onSel={(p) => onPick?.(p)} markers={false} hl={hl} onOpen={openNode} />)}
           </div>
         </div>
       </div>
