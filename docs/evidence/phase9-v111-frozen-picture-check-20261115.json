@@ -1,0 +1,293 @@
+{
+ "note": "Runs of tools/frozen_picture_check.py: a frozen engine against the real game files in a scratch workspace. One record per run, none replaced.",
+ "runs": [
+  {
+   "label": "installed 1.1.0 engine (before the fix)",
+   "exe": "C:\\Users\\Admin\\AppData\\Local\\FM Skin Studio\\fm-skin-engine\\fm-skin-engine.exe",
+   "exe_bytes": 9008081,
+   "exe_sha256": "DAB6571C16A7AB8BB48E73E1F197AB2D4DC1E00C180FB7F848AF94B12471D221",
+   "sample_per_kind": 40,
+   "all": true,
+   "index": "done",
+   "catalogue": {
+    "total": 2995,
+    "by_kind": {
+     "icon": 1341,
+     "texture": 1369,
+     "svg": 285
+    }
+   },
+   "sample": {
+    "icon": {
+     "asked": 40,
+     "ok": 0,
+     "failed": 40,
+     "first_failure": {
+      "name": "+ button",
+      "message": "PyInstallerImportError: Failed to load dynlib/dll 'C:\\\\Users\\\\Admin\\\\AppData\\\\Local\\\\FM Skin Studio\\\\fm-skin-engine\\\\_internal\\\\fmod_toolkit\\\\libfmod/Windows/x64/fmod.dll'. Most likely this dynlib/dll was not found when the application was frozen."
+     },
+     "failures_by_message": {
+      "PyInstallerImportError: Failed to load dynlib/dll '<path>'. Most likely this dynlib/dll was not found when the": 40
+     }
+    },
+    "svg": {
+     "asked": 40,
+     "ok": 40,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "texture": {
+     "asked": 40,
+     "ok": 0,
+     "failed": 40,
+     "first_failure": {
+      "name": "fm27_skin_uefa-womens-champions league",
+      "message": "not found: no image with path id -8742488337804782581 in ui-backgrounds_assets_.bundle"
+     },
+     "failures_by_message": {
+      "not found: no image with path id <id> in ui-backgrounds_assets_.bundle": 40
+     }
+    }
+   },
+   "everything": {
+    "icon": {
+     "asked": 1341,
+     "ok": 0,
+     "failed": 1341,
+     "first_failure": {
+      "name": "+ button",
+      "message": "PyInstallerImportError: Failed to load dynlib/dll 'C:\\\\Users\\\\Admin\\\\AppData\\\\Local\\\\FM Skin Studio\\\\fm-skin-engine\\\\_internal\\\\fmod_toolkit\\\\libfmod/Windows/x64/fmod.dll'. Most likely this dynlib/dll was not found when the application was frozen."
+     },
+     "failures_by_message": {
+      "PyInstallerImportError: Failed to load dynlib/dll '<path>'. Most likely this dynlib/dll was not found when the": 1341
+     }
+    },
+    "svg": {
+     "asked": 285,
+     "ok": 285,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "texture": {
+     "asked": 1369,
+     "ok": 0,
+     "failed": 1369,
+     "first_failure": {
+      "name": "fm27_skin_uefa-womens-champions league",
+      "message": "not found: no image with path id -8742488337804782581 in ui-backgrounds_assets_.bundle"
+     },
+     "failures_by_message": {
+      "not found: no image with path id <id> in ui-backgrounds_assets_.bundle": 45,
+      "not found: no image with path id <id> in ui-backgrounds_assets_1x.bundle": 10,
+      "not found: no image with path id <id> in ui-backgrounds_assets_2x.bundle": 9,
+      "not found: no image with path id <id> in ui-backgrounds_assets_3x.bundle": 9,
+      "not found: no image with path id <id> in ui-backgrounds_assets_4x.bundle": 9,
+      "not found: no image with path id <id> in ui-backgrounds_assets_common.bundle": 65,
+      "not found: no image with path id <id> in ui-fonts_assets_assets_uiassets_fonts_licenced_fifa_worldcup.bundle": 10,
+      "not found: no image with path id <id> in ui-fonts_assets_bundesliga.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_efl.bundle": 4,
+      "not found: no image with path id <id> in ui-fonts_assets_fmuniverse.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_premierleague.bundle": 2,
+      "not found: no image with path id <id> in ui-fonts_assets_production.bundle": 12,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_championsleague.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_europa.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_supercup.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_uwcl.bundle": 2,
+      "not found: no image with path id <id> in ui-icons_assets_common.bundle": 27,
+      "not found: no image with path id <id> in ui-mainmenu-assets_assets_all.bundle": 19,
+      "not found: no image with path id <id> in ui-managercreation_assets_all.bundle": 1,
+      "not found: no image with path id <id> in ui-managercreationimages_assets_all.bundle": 628,
+      "not found: no image with path id <id> in ui-prematch-backgrounds_assets_common.bundle": 26,
+      "not found: no image with path id <id> in ui-styles_assets_1x.bundle": 3,
+      "not found: no image with path id <id> in ui-styles_assets_2x.bundle": 3,
+      "not found: no image with path id <id> in ui-styles_assets_3x.bundle": 3,
+      "not found: no image with path id <id> in ui-styles_assets_4x.bundle": 3,
+      "not found: no image with path id <id> in ui-styles_assets_common.bundle": 24,
+      "not found: no image with path id <id> in ui-styles_assets_default.bundle": 24,
+      "not found: no image with path id <id> in ui-tacticalanimations_assets_all.bundle": 7,
+      "not found: no image with path id <id> in ui-textures_assets_all.bundle": 418,
+      "not found: no image with path id <id> in ui-tifo-icons-controller-keyboard_assets_all.bundle": 1
+     }
+    }
+   },
+   "log": {
+    "exists": true,
+    "bytes": 0,
+    "has_traceback_for_the_deliberate_failure": false
+   },
+   "run": 1
+  },
+  {
+   "label": "frozen build of release/1.1.1 at 1e395e1 (the fix; engine files unchanged by any later commit on the branch)",
+   "exe": "C:\\Users\\Admin\\AppData\\Local\\Temp\\freeze-after\\fm-skin-engine\\fm-skin-engine.exe",
+   "exe_bytes": 8861675,
+   "exe_sha256": "30C8127E70909932289D233C48A1B2DD613F70372EE3852F2141987C0F37E425",
+   "sample_per_kind": 40,
+   "all": true,
+   "index": "done",
+   "catalogue": {
+    "total": 2995,
+    "by_kind": {
+     "icon": 1341,
+     "texture": 1369,
+     "svg": 285
+    }
+   },
+   "sample": {
+    "icon": {
+     "asked": 40,
+     "ok": 40,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "svg": {
+     "asked": 40,
+     "ok": 40,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "texture": {
+     "asked": 40,
+     "ok": 40,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    }
+   },
+   "everything": {
+    "icon": {
+     "asked": 1341,
+     "ok": 1341,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "svg": {
+     "asked": 285,
+     "ok": 285,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "texture": {
+     "asked": 1369,
+     "ok": 1332,
+     "failed": 37,
+     "first_failure": {
+      "name": "Font Texture",
+      "message": "not found: no image with path id -8130231621207321205 in ui-fonts_assets_assets_uiassets_fonts_licenced_fifa_worldcup.bundle"
+     },
+     "failures_by_message": {
+      "not found: no image with path id <id> in ui-fonts_assets_assets_uiassets_fonts_licenced_fifa_worldcup.bundle": 10,
+      "not found: no image with path id <id> in ui-fonts_assets_bundesliga.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_efl.bundle": 4,
+      "not found: no image with path id <id> in ui-fonts_assets_fmuniverse.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_premierleague.bundle": 2,
+      "not found: no image with path id <id> in ui-fonts_assets_production.bundle": 12,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_championsleague.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_europa.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_supercup.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_uwcl.bundle": 2,
+      "not found: no image with path id <id> in ui-styles_assets_common.bundle": 1,
+      "not found: no image with path id <id> in ui-styles_assets_default.bundle": 1
+     }
+    }
+   },
+   "log": {
+    "exists": true,
+    "bytes": 29741,
+    "has_traceback_for_the_deliberate_failure": true
+   },
+   "run": 2
+  },
+  {
+   "label": "the engine run from the source tree (the reference: what the frozen builds are compared with)",
+   "exe": "python -m skin_editor (source tree, Python 3.14.10)",
+   "exe_bytes": 0,
+   "exe_sha256": "n/a (source)",
+   "sample_per_kind": 40,
+   "all": true,
+   "index": "done",
+   "catalogue": {
+    "total": 2995,
+    "by_kind": {
+     "icon": 1341,
+     "texture": 1369,
+     "svg": 285
+    }
+   },
+   "sample": {
+    "icon": {
+     "asked": 40,
+     "ok": 40,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "svg": {
+     "asked": 40,
+     "ok": 40,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "texture": {
+     "asked": 40,
+     "ok": 40,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    }
+   },
+   "everything": {
+    "icon": {
+     "asked": 1341,
+     "ok": 1341,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "svg": {
+     "asked": 285,
+     "ok": 285,
+     "failed": 0,
+     "first_failure": null,
+     "failures_by_message": {}
+    },
+    "texture": {
+     "asked": 1369,
+     "ok": 1332,
+     "failed": 37,
+     "first_failure": {
+      "name": "Font Texture",
+      "message": "not found: no image with path id -8130231621207321205 in ui-fonts_assets_assets_uiassets_fonts_licenced_fifa_worldcup.bundle"
+     },
+     "failures_by_message": {
+      "not found: no image with path id <id> in ui-fonts_assets_assets_uiassets_fonts_licenced_fifa_worldcup.bundle": 10,
+      "not found: no image with path id <id> in ui-fonts_assets_bundesliga.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_efl.bundle": 4,
+      "not found: no image with path id <id> in ui-fonts_assets_fmuniverse.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_premierleague.bundle": 2,
+      "not found: no image with path id <id> in ui-fonts_assets_production.bundle": 12,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_championsleague.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_europa.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_supercup.bundle": 1,
+      "not found: no image with path id <id> in ui-fonts_assets_uefa_uwcl.bundle": 2,
+      "not found: no image with path id <id> in ui-styles_assets_common.bundle": 1,
+      "not found: no image with path id <id> in ui-styles_assets_default.bundle": 1
+     }
+    }
+   },
+   "log": {
+    "exists": true,
+    "bytes": 40770,
+    "has_traceback_for_the_deliberate_failure": true
+   },
+   "run": 3
+  }
+ ]
+}

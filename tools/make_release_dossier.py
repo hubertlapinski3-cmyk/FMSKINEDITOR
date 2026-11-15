@@ -156,8 +156,29 @@ def main():
     w("")
     w("## 5. `RELEASE-NOTES-1.1.1.md` in full, and where its numbers come from\n")
     w("```markdown\n%s\n```\n" % notes.rstrip("\n"))
-    toks = sorted(set(re.findall(r"\d+(?:\.\d+)+|\b\d+\b", notes)))
-    w("Every digit sequence in the notes: %s. These are **version numbers only** (`1.1.1`: `tauri.conf.json`, section 3; `1.1.0` and `1.0.0`: the releases it repairs and the older affected one, tags `v1.1.0` and `v1.0.0`; the installer's file name `FM.Skin.Studio_1.1.1_x64-setup.exe`, which the Tauri build produces, also contains the platform name `x64`, which is not a number the notes compute). **No measured value, count or rate appears in the notes, so no run produced a number in them.**\n" % ", ".join("`%s`" % t for t in toks))
+    ev_path = "docs/evidence/phase9-v111-frozen-picture-check-20261115.json"
+    ev_bytes = blob(a.main, ev_path); ev = json.loads(ev_bytes.decode("utf-8"))
+    flat = {}
+    def walk(o, path):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                walk(v, path + [str(k)])
+        elif isinstance(o, list):
+            for n, v in enumerate(o):
+                walk(v, path + ["runs[%d]" % n if path == [] or path[-1] == "runs" else str(n)])
+        elif isinstance(o, int) and not isinstance(o, bool):
+            flat.setdefault(o, []).append(".".join(path))
+    walk(ev, [])
+    body = re.sub(r"\d+(?:\.\d+)+", " ", notes).replace("x64", " ")                       # versions and the platform name in the installer's file name are not figures
+    figs = sorted({int(x.replace(",", "")) for x in re.findall(r"\d{1,3}(?:,\d{3})+|\d+", body)})
+    w("**Provenance of the notes' figures.** The notes carry versions and the figures below, and nothing else numeric. Each figure is matched, by this script, to a value in the committed evidence file `%s` (blob `%s` on `%s`, sha256 `%s`), produced by `tools/frozen_picture_check.py` (which starts a frozen engine in a scratch workspace against the real game files, reads the game, asks for the picture catalogue and then for thumbnails). The script FAILS if a figure has no source.\n" % (ev_path, git("rev-parse", "%s:%s" % (a.main, ev_path)).strip()[:10], a.main.split("/")[-1], sha(ev_bytes).upper()))
+    w("| figure in the notes | where it comes from in the evidence |\n|---|---|")
+    for f_ in figs:
+        src = flat.get(f_)
+        assert src, "the figure %d in the notes has no source in %s" % (f_, ev_path)
+        w("| `%s` | %s |" % (format(f_, ","), "; ".join("`%s`" % s for s in src[:4]) + (" (and %d more)" % (len(src) - 4) if len(src) > 4 else "")))
+    w("\nRun labels in the evidence: " + "; ".join("run %d: %s (`%s`, %s bytes, sha256 `%s`)" % (r["run"], r["label"], Path(r["exe"]).name, r["exe_bytes"], r["exe_sha256"][:16]) for r in ev["runs"]) + ".\n")
+    w("Version numbers in the notes: `1.1.1` (`tauri.conf.json`, section 3), `1.1.0` and `1.0.0` (the releases it repairs; tags `v1.1.0` and `v1.0.0`).\n")
     w("## 6. Suites and CI\n")
     w("| | result |\n|---|---|\n| engine suite on the branch head | %s |\n| Studio suite | not run on the branch: the Studio is byte-identical to `%s` (no file under `studio/src` is in the diff); the release workflow runs it before the build |" % (facts["suite"], a.base))
     runs = json.loads(urllib.request.urlopen(urllib.request.Request("https://api.github.com/repos/hubertlapinski3-cmyk/FMSKINEDITOR/actions/runs?per_page=40&branch=release%2F1.1.1", headers={"User-Agent": "dossier"})).read().decode("utf-8"))["workflow_runs"]
@@ -166,12 +187,31 @@ def main():
         w("| %s `%s` | `%s` | %s |" % (r["name"], r["id"], r["head_sha"][:7], r["conclusion"] or r["status"]))
     last = [r for r in runs if r["head_sha"] == head]
     w("\nCI at the head `%s`: **%s**.\n" % (head[:7], (last[0]["conclusion"] or last[0]["status"]) if last else "NO RUN FOUND"))
-    w("## 7. The frozen build was made the way the installer makes it\n")
-    w("The release workflow's step is `python -m pip install -r requirements.txt pyinstaller`, then `python tools/freeze_engine.py` (section 4); the build tested here was made with the same script (`%s`), on the head above, followed by the script's own self-test (it runs after every freeze):\n" % facts["command"])
-    w("| | |\n|---|---|\n| self-test line | `%s` |\n| frozen `fm-skin-engine.exe` | %s bytes, sha256 `%s` |\n| the whole one-dir build | %s bytes |\n| files with `fmod` in their name in the build | %s |\n| interpreter, PyInstaller | %s, PyInstaller %s |\n| thumbnails served by the frozen engine | %s |" % (
-        facts["selftest"], facts["exe_size"], facts["exe_sha"], facts["folder_bytes"], facts["fmod_files"], facts["python"], facts["pyinstaller"], facts["thumbnails"]))
-    same = all(git("rev-parse", "fc1b8e8:" + f).strip() == git("rev-parse", head + ":" + f).strip() for f in ENGINE_FILES)
-    w("\nThe four engine files are blob-identical between `fc1b8e8` (the commit the thumbnail run was made on) and the head: **%s**, so that run describes this head's engine.\n" % ("yes" if same else "NO"))
+    w("## 7. The frozen build was made the way the installer makes it, and what it serves\n")
+    assert len(ev["runs"]) == 3, "the evidence must hold the three runs: installed 1.1.0, the branch build, the source engine"
+    r_before, r_after, r_src = ev["runs"]
+    w("The release workflow's step is `python -m pip install -r requirements.txt pyinstaller`, then `python tools/freeze_engine.py` (section 4). The build tested here was made with the same script (`%s`) in the branch worktree, and the script ran its own self-test after the freeze:\n" % facts["command"])
+    w("| | |\n|---|---|\n| self-test line | `%s` |\n| frozen `fm-skin-engine.exe` used by the after-run | %s bytes, sha256 `%s` |\n| the whole one-dir build | %s bytes |\n| files with `fmod` in their name in the build | %s |\n| interpreter, PyInstaller (of this local build) | %s, PyInstaller %s |" % (
+        facts["selftest"], r_after["exe_bytes"], r_after["exe_sha256"], facts["folder_bytes"], facts["fmod_files"], facts["python"], facts["pyinstaller"]))
+    bc = re.search(r"at ([0-9a-f]{7,40})", r_after["label"]).group(1)
+    build_commit = git("rev-parse", bc).strip()
+    delta = git("diff", "--name-status", build_commit, head).strip().splitlines()
+    same = all(git("rev-parse", "%s:%s" % (build_commit, f)).strip() == git("rev-parse", "%s:%s" % (head, f)).strip() for f in ENGINE_FILES)
+    w("\n**Which commit the after-run build came from, and how the tagged tip differs from it.** The after-run build was made from `%s` (`%s`). The tip to be tagged is `%s`. The difference between the two, from `git diff --name-status %s %s`:\n\n```text\n%s\n```\n" % (build_commit[:7], r_after["label"].split(" (")[0], head[:7], build_commit[:7], head[:7], "\n".join(delta) or "(none)"))
+    assert [d.split("\t")[1] for d in delta] == ["docs/RELEASE-NOTES-1.1.1.md"] or not delta, "the tip differs from the build commit by more than the notes: %s" % delta
+    w("So the tip differs from the built commit by the notes file and nothing else, and the four engine files are blob-identical between them: **%s**; the release workflow builds the installer from the tip itself, and its own self-test runs on that build.\n" % ("yes" if same else "NO"))
+    w("**What the three runs of `tools/frozen_picture_check.py` found** (same tool, same scope: a thumbnail asked for every picture of the catalogue of %s pictures, against the real game files; evidence file above):\n" % format(r_after["catalogue"]["total"], ","))
+    w("| kind | catalogue | installed 1.1.0 (before) | branch build (after) | engine run from source |\n|---|---|---|---|---|")
+    for k in ("icon", "svg", "texture"):
+        cell = lambda r: "%s of %s" % (format(r["everything"][k]["ok"], ","), format(r["everything"][k]["asked"], ","))
+        w("| %s | %s | %s | %s | %s |" % (k, format(r_after["catalogue"]["by_kind"][k], ","), cell(r_before), cell(r_after), cell(r_src)))
+    tex_a, tex_s = r_after["everything"]["texture"], r_src["everything"]["texture"]
+    same37 = tex_a["failed"] == tex_s["failed"] and tex_a["failures_by_message"] == tex_s["failures_by_message"]
+    assert same37, "the after build and the source engine do not fail the same textures"
+    w("\n**The %d textures that still fail after the fix fail the same way from the source engine: same messages, same bundles, same counts: %s.** They are an older, separate limit that this release neither causes nor changes (the failing bundles are font and style files; see the plan). All %s icons and all %s SVG pictures draw after the fix, and none of the icons did before.\n" % (tex_a["failed"], "confirmed by comparing `failures_by_message` of the two runs", format(r_after["everything"]["icon"]["ok"], ","), format(r_after["everything"]["svg"]["ok"], ",")))
+    w("**The logging fix's evidence:** for one deliberately failing call, the old engine's `app.log` is **%d bytes** (empty, no traceback); the fixed build's is **%s bytes** and holds the traceback (`has_traceback_for_the_deliberate_failure`: %s); the source engine's: %s bytes, %s.\n" % (
+        r_before["log"]["bytes"], format(r_after["log"]["bytes"], ","), r_after["log"]["has_traceback_for_the_deliberate_failure"], format(r_src["log"]["bytes"], ","), r_src["log"]["has_traceback_for_the_deliberate_failure"]))
+    assert r_before["log"]["bytes"] == 0 and not r_before["log"]["has_traceback_for_the_deliberate_failure"] and r_after["log"]["has_traceback_for_the_deliberate_failure"]
     ciw = show(a.branch, ".github/workflows/release.yml")
     pyv = re.search(r'python-version:\s*"?([\d.]+)"?', ciw)
     w("How the CI build differs from the one tested here: the workflow installs `pyinstaller` **unpinned** (`pip install -r requirements.txt pyinstaller`), so the CI build uses the PyInstaller current on the day (here %s), and its Python is %s. The self-test in the workflow is what guards that drift.\n" % (facts["pyinstaller"], ("`%s`" % pyv.group(1)) if pyv else "as set in the workflow"))
@@ -225,6 +265,14 @@ def main():
     w("```text\n%s\n```\n" % "\n".join(only_main))
     assert not unclassified, unclassified
     w("Actual runs at these heads: branch `%s`; main `%s`.\n" % (facts["suite"], facts.get("main_suite", "not recorded")))
+    w("## 8c. What the three new raw-hash manifest tests exercise, and whether that code is in the diff\n")
+    mm_branch, mm_main = show(a.branch, "tools/make_manifest.py"), show(a.main, "tools/make_manifest.py")
+    rawn = len(re.findall(r"(?m)^raw ", show(a.branch, "docs/evidence/MANIFEST.sha256"))); rawm = len(re.findall(r"(?m)^raw ", show(a.main, "docs/evidence/MANIFEST.sha256")))
+    first = git("log", "--format=%H", a.main, "-S", "def raw(", "--", "tools/make_manifest.py").split()[-1]
+    anc = subprocess.run([GIT, "merge-base", "--is-ancestor", first, a.base], cwd=str(ROOT)).returncode == 0
+    w("**Answer, read from the tests and checked in git:** the three tests (`test_every_listed_file_hashes_to_its_recorded_raw_value`, `test_every_normalised_entry_has_a_raw_entry_and_the_tool_lists_the_same_files`, `test_the_raw_hash_sees_a_line_ending_change_the_normalised_one_cannot`) call `mm.raw()`, `mm.parse()` and `mm.FILES` of `tools/make_manifest.py` and read the `raw ` lines of `docs/evidence/MANIFEST.sha256`. **That code is not in the 12-file diff and not on the branch:** `tools/make_manifest.py` on the branch defines `raw()`: %s, `parse()`: %s; the branch's manifest has %d `raw ` lines (main's has %d); raw support arrived on main in `%s`, which is an ancestor of `%s`: %s. **It is evidence tooling that exists only on main: neither repair code nor Simple mode work. Nothing is backported;** the branch keeps the 1.1.0 manifest test and manifest, which pass.\n" % (
+        "yes" if "def raw" in mm_branch else "**no**", "yes" if "def parse" in mm_branch else "**no**", rawn, rawm, first[:7], a.base, "yes" if anc else "**no**"))
+    assert "def raw" not in mm_branch and rawn == 0 and not anc
     w("## 9. After the owner's approval (the order, unchanged)\n")
     w("1. Push the tag `v1.1.1` on the head above (`git tag v1.1.1 %s`; `git push origin v1.1.1`). 2. Post-run checks: the installer's size and sha256; `latest.json` version 1.1.1, notes equal to `RELEASE-NOTES-1.1.1.md`, both signatures equal to the `.sig` asset; the v1.0.0 and v1.1.0 releases untouched (their assets byte-identical to the hashes in the plan, still downloadable); **no calibration asset on 1.1.1**; the self-test ran in the workflow on the shipped artifact and passed (the run's log). 3. The owner, in order: Check for updates (with the fallback in the plan), the Images view icon thumbnails, the click-to-explain step of the smoke test, the S2 section C look including Images. 4. Only after ALL of the above has passed: remove the release worktree and record that CI runs on `release/**` as a standing rule. **The branch `release/1.1.1` is KEPT after the tag: it is the provenance of the tag.**\n" % head[:7])
     w("## 10. Two things for the owner to decide or know\n")
