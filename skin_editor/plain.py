@@ -65,6 +65,10 @@ RULES = [
     (r"no FM27 user folder", "I couldn't find your Football Manager 27 documents folder. Start the game once so it creates it, or choose where to save the skin."),
     (r"only export folders can be opened|only a live-preview screenshot", "That file can't be opened from here."),
     # -- pictures and fonts
+    (r"pick a PNG screenshot|a screenshot is at most 30 MB", "Pick a PNG screenshot (a picture of the game, up to 30 MB)."),
+    (r"a screenshot with that name is already there", "A screenshot with that name is already there. Choose another name."),
+    (r"bad screenshot name", "Use only letters, digits, spaces, dots, dashes, underscores and brackets in the name, ending in .png."),
+    (r"no screenshot named", "That screenshot isn't in the list any more."),
     (r"pick an image file|send the image file|not an image|an image slot takes|an icon takes|an SVG slot takes", "Pick a picture file (PNG, JPG or WebP; an SVG only for an SVG slot), up to 40 MB."),
     (r"bad file name|bad bundle or path_id", "That file name isn't usable. Use only letters, digits, dots, dashes and underscores."),
     (r"no stored replacement", "Choose a picture for this slot first."),

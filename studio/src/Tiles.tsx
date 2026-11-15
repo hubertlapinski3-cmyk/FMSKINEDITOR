@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { pickScreenshot } from './pickImage'
 import { rpc, RpcError } from './engine'
 import { collisions, commitEdits, dirty, extent, movable, pos, snap, stage, type Cell, type Staged } from './tileStage'
 
@@ -24,6 +25,26 @@ export default function Tiles({ project, target, onChanged, say }: { project: st
   const [checks, setChecks] = useState<Record<number, Check>>({})
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
+  // a screenshot of the real game behind the grid, to line the tiles up by eye (Advanced only; the pictures live in the workspace, never in a project or a skin)
+  const [shots, setShots] = useState<{ name: string; width: number; height: number }[]>([])
+  const [shot, setShot] = useState('')
+  const [shotUrl, setShotUrl] = useState('')
+  const [shotOpacity, setShotOpacity] = useState(0.45)
+  const [shotFit, setShotFit] = useState<'stretch' | 'contain'>('stretch')
+  useEffect(() => { rpc<{ screens: { name: string; width: number; height: number }[] }>('screens.list').then((r) => setShots(r.screens)).catch(() => {}) }, [])
+  useEffect(() => {
+    if (!shot) { setShotUrl(''); return }
+    let live = true
+    rpc<{ content_type: string; base64: string }>('screens.image', { name: shot }).then((r) => { if (live) setShotUrl(`data:${r.content_type};base64,${r.base64}`) }).catch(() => { if (live) { setShotUrl(''); setShot('') } })
+    return () => { live = false }
+  }, [shot])
+  const addShot = async () => {
+    try {
+      const path = await pickScreenshot(); if (!path) return
+      const r = await rpc<{ name: string; width: number; height: number }>('screens.add', { path })
+      setShots((l) => [...l.filter((x) => x.name !== r.name), r].sort((a, b) => a.name.localeCompare(b.name))); setShot(r.name); setErr('')
+    } catch (e) { fail(e) }
+  }
   const drag = useRef<{ i: number; sx: number; sy: number; from: { x: number; y: number } } | null>(null)
   const fail = useCallback((e: unknown) => { const m = e instanceof RpcError ? e.message : String(e); setErr(m); say('ERROR ' + m) }, [say])
 
@@ -108,8 +129,18 @@ export default function Tiles({ project, target, onChanged, say }: { project: st
           </select></div>
           {variant && <>
             <div className="pad dim small">{variant.composition} · grid {ext.cols} × {ext.rows}{preset ? '' : ' (no preset size: taken from the cells)'} · 1 unit = {UNIT}px</div>
+            <div className="pad shotbar" data-testid="shotbar">
+              <label>Game screenshot behind the grid <select aria-label="Game screenshot behind the grid" value={shot} onChange={(e) => setShot(e.target.value)}><option value="">none</option>{shots.map((x) => <option key={x.name} value={x.name}>{x.name} ({x.width}x{x.height})</option>)}</select></label>
+              {shot && <>
+                <label>Opacity <input type="range" min={0.1} max={1} step={0.05} value={shotOpacity} aria-label="Screenshot opacity" onChange={(e) => setShotOpacity(Number(e.target.value))} /></label>
+                <label>Fit <select aria-label="Screenshot fit" value={shotFit} onChange={(e) => setShotFit(e.target.value as 'stretch' | 'contain')}><option value="stretch">stretch to the grid</option><option value="contain">keep its shape</option></select></label>
+              </>}
+              <button onClick={addShot}>Add a screenshot ...</button>
+              <div className="dim small">Screenshots stay on this PC (your workspace's game-screens folder); they are never put in a project or a skin. Lining up is by eye: the grid is the screen's tile area, not the whole window.</div>
+            </div>
             <div className="canvas">
               <svg width={ext.cols * UNIT + 2} height={ext.rows * UNIT + 2} role="img" aria-label="grid composition">
+                {shotUrl && <image data-testid="shot-image" href={shotUrl} x={1} y={1} width={ext.cols * UNIT} height={ext.rows * UNIT} opacity={shotOpacity} preserveAspectRatio={shotFit === 'stretch' ? 'none' : 'xMidYMid meet'} style={{ pointerEvents: 'none' }} />}
                 {Array.from({ length: ext.cols + 1 }, (_, i) => <line key={'v' + i} x1={i * UNIT + 1} y1={1} x2={i * UNIT + 1} y2={ext.rows * UNIT + 1} className="gl" />)}
                 {Array.from({ length: ext.rows + 1 }, (_, i) => <line key={'h' + i} x1={1} y1={i * UNIT + 1} x2={ext.cols * UNIT + 1} y2={i * UNIT + 1} className="gl" />)}
                 {cells.map((c) => {

@@ -711,6 +711,23 @@ class Engine:
         except inspector.Offline as ex:
             return {"online": False, "reason": str(ex)}
 
+    # ---- game screenshots for the tile organiser's backdrop (skin_editor/gamescreens.py; Advanced mode only, kept in the workspace)
+    def screens_list(self, q, b):
+        from . import gamescreens
+        return {"folder": str(gamescreens.folder(self.ws)), "screens": gamescreens.list_screens(self.ws)}
+
+    def screens_image(self, q, b):
+        from . import gamescreens
+        return gamescreens.read(self.ws, b["name"]), "image/png"
+
+    def screens_add(self, q, b):
+        from . import gamescreens
+        return gamescreens.add(self.ws, b["path"], b.get("name"), bool(b.get("replace")))
+
+    def screens_remove(self, q, b):
+        from . import gamescreens
+        return gamescreens.remove(self.ws, b["name"])
+
     def preview_live(self, q, b):
         from . import live
         p = project_mod.load(self.ws, b["project"])

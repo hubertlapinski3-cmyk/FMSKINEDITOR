@@ -39,6 +39,30 @@ describe('Tiles view', () => {
     expect(calls.find(([m]) => m === 'placement.add')![1]).toEqual({ project: 'p', confirm: true, edit: { composition: 'TabComposition-Standard', cell_index: 0, geometry: { x: 6, y: 0, w: 6, h: 7 }, note: 'moved in the tile canvas' } })
   })
 
+  it('a game screenshot can be drawn behind the grid (opacity, fit), and a new one is added through the engine', async () => {
+    const shots = [{ name: 'forest-squad.png', width: 2500, height: 1406 }]
+    answer({ 'screens.list': { folder: 'C:/ws/game-screens', screens: shots }, 'screens.image': { content_type: 'image/png', base64: 'AAAA' }, 'screens.add': (p: any) => ({ name: 'club.png', width: 10, height: 10, _p: p }) })
+    vi.spyOn(window, 'prompt').mockReturnValue('C:/caps/club.png')
+    render(<Guard name="Tile layout"><Tiles project="p" target="bundles" onChanged={() => {}} say={() => {}} /></Guard>)
+    fireEvent.click(await screen.findByText(/TacticalPlannerTool/))
+    await screen.findByTestId('cell-0')
+    expect(screen.queryByTestId('shot-image')).toBeNull()
+    fireEvent.change(screen.getByLabelText('Game screenshot behind the grid'), { target: { value: 'forest-squad.png' } })
+    const img = await screen.findByTestId('shot-image')
+    expect(img.getAttribute('href')).toBe('data:image/png;base64,AAAA'); expect(img.getAttribute('preserveAspectRatio')).toBe('none')
+    expect(calls.some(([m, p]) => m === 'screens.image' && p.name === 'forest-squad.png')).toBe(true)
+    fireEvent.change(screen.getByLabelText('Screenshot opacity'), { target: { value: '0.8' } })
+    expect(screen.getByTestId('shot-image').getAttribute('opacity')).toBe('0.8')
+    fireEvent.change(screen.getByLabelText('Screenshot fit'), { target: { value: 'contain' } })
+    expect(screen.getByTestId('shot-image').getAttribute('preserveAspectRatio')).toBe('xMidYMid meet')
+    expect(screen.getByTestId('shotbar').textContent).toMatch(/stay on this PC/)
+    fireEvent.click(screen.getByText('Add a screenshot ...'))
+    await waitFor(() => expect(calls.some(([m, p]) => m === 'screens.add' && p.path === 'C:/caps/club.png')).toBe(true))
+    await waitFor(() => expect((screen.getByLabelText('Game screenshot behind the grid') as HTMLSelectElement).value).toBe('club.png'))
+    fireEvent.change(screen.getByLabelText('Game screenshot behind the grid'), { target: { value: '' } })
+    await waitFor(() => expect(screen.queryByTestId('shot-image')).toBeNull())
+  })
+
   it('a refused move (blocks) disables the store button and says why; Revert drops the staging', async () => {
     answer({ 'placement.check': { blocks: ['locked: this cell has the \'locked\' flag'], warnings: [], collisions: [] } })
     render(<Tiles project="p" target="bundles" onChanged={() => {}} say={() => {}} />)

@@ -24,7 +24,7 @@ Said here plainly because the Studio says it on screen too:
 - **Themes are dark** in this version: the theme generator's role map comes from a dark preset, and light themes failed its readability check.
 
 ## Advanced mode
-Click **S** (or the mode name at the bottom right) to switch. Advanced mode keeps everything Simple mode hides: project folders of USS files in a code editor with live problems and quick fixes, every game stylesheet read-only, the render browser with the explanation of every element, the full Images view, layouts, tile layout and table views, game-update profiles, and the **bundle route** (build patched copies of the game's bundles and install them with a backup). The bundle route changes game files; Steam's "Verify integrity of game files" undoes it. Use one route at a time.
+Click **S** (or the mode name at the bottom right) to switch. Advanced mode keeps everything Simple mode hides: project folders of USS files in a code editor with live problems and quick fixes, every game stylesheet read-only, the render browser with the explanation of every element, the full Images view, layouts, tile layout (with an optional screenshot of the real game drawn behind the grid, to line the tiles up by eye; the pictures stay in `game-screens` in your workspace and are never put in a project or a skin) and table views, game-update profiles, and the **bundle route** (build patched copies of the game's bundles and install them with a backup). The bundle route changes game files; Steam's "Verify integrity of game files" undoes it. Use one route at a time.
 
 ## Where things are
 - **Workspace** (projects, the game's snapshot and index, caches): `%LOCALAPPDATA%\FM27SkinEditor` (override with `FM27SE_WORKSPACE`).
