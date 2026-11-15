@@ -4,6 +4,8 @@ A skin maker for Football Manager 27, for Windows. It reads the game's own style
 
 **New here? Read [`docs/FIRST-SKIN.md`](docs/FIRST-SKIN.md):** one page from installing to seeing your skin in the game.
 
+**Continuing the work? Read [`docs/HANDOFF-SIMPLE-MODE.md`](docs/HANDOFF-SIMPLE-MODE.md):** what is built, what is left (Session 1, the owner's eyeball pass, the 1.2.0 candidate) and how to run everything.
+
 ## Install and update
 - Download the installer from the repository's **Releases** page and run it. The Studio checks for updates itself (**Check for updates**) and installs a new version when you ask.
 - The first start reads the game once (**Find my game and read it**). The game must be closed while it does.
