@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { RenderBrowser, RenderCanvas, Explain, styleOf, rulePaths, tokenPaths, ruleAtLine, tokenAt, type LayoutRow, type RNode, type Origins } from './Render'
+import { FIRST_RENDER_TEXT, RenderBrowser, RenderCanvas, Explain, styleOf, rulePaths, tokenPaths, ruleAtLine, tokenAt, type LayoutRow, type RNode, type Origins } from './Render'
 
 vi.mock('./engine', () => ({ rpc: vi.fn(), RpcError: class extends Error {}, connect: vi.fn(), subscribe: vi.fn(() => () => {}) }))
 import { rpc, subscribe } from './engine'
@@ -24,6 +24,22 @@ beforeEach(() => {
   ;(rpc as any).mockImplementation(async (m: string) => (m === 'render.layouts' ? { total: 13, layouts: rows } : m === 'render.layout' ? result : null))
 })
 afterEach(() => { cleanup(); vi.clearAllMocks() })
+
+describe('first render progress (S1)', () => {      // first in the file on purpose: the "first render" flag is module state
+  it('says in words that the first render reads the game styles, and goes back to the short text afterwards', async () => {
+    let release: (v: unknown) => void = () => {}
+    ;(rpc as any).mockImplementation((m: string) => (m === 'render.layout' ? new Promise((res) => { release = res }) : Promise.resolve(null)))
+    const { rerender } = render(<RenderCanvas layout={rows[1]} say={() => {}} />)
+    expect((await screen.findByTestId('render-progress')).textContent).toBe(FIRST_RENDER_TEXT)
+    expect(FIRST_RENDER_TEXT).toMatch(/about ten seconds/)
+    release(result)
+    await screen.findByRole('note')
+    rerender(<RenderCanvas layout={rows[0]} say={() => {}} />)
+    expect((await screen.findByTestId('render-progress')).textContent).toBe('rendering ...')
+    release(result)
+    await waitFor(() => expect(screen.queryByTestId('render-progress')).toBeNull())
+  })
+})
 
 describe('style mapping', () => {
   it('draws with the UI Toolkit defaults, the node style on top, kebab to camel case', () => {

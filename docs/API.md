@@ -87,7 +87,8 @@ Transport note: the specification proposed a WebSocket. Phase 0 uses HTTP POST p
 | `project.new_sheet` | call | project: str, sheet: str | - | Add an empty rule sheet styles/<sheet>.uss for a game stylesheet to a folder project. |
 | `project.delete` | call | project: str | - | Remove a project from the list: the folder is moved to <workspace>/trash, not erased. |
 | `project.search` | call | project: str, q: str, regex?: bool, case?: bool | - | Find text in a folder project's text files. |
-| `project.create_folder` | call | name: str, target?: enum: native | bundles | - | New empty folder project. |
+| `project.create_folder` | call | name: str, target?: enum: native | bundles, preset?: str, keep_club_colours?: bool | - | New folder project: empty, or from a preset (written as a folder project with the chosen output from the start). keep_club_colours false turns the club-colour removal on. |
+| `app.explain` | call | message: str | - | An engine message in plain words: {plain, details}. |
 | `project.migrate` | call | project: str | - | Convert a legacy <name>.skin.json into a project folder (verified round trip; the old file is kept as .migrated). |
 | `project.create` | call | name: str, preset?: str | `POST /api/preset` | New project, blank or from a preset. |
 | `build.bundles` | job | name: str | `POST /api/build` | Patch fresh copies of the snapshot; gate; write packages. |

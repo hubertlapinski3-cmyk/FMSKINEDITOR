@@ -177,6 +177,10 @@ export function Explain({ n, project = null, skin = true, origins = null, onOpen
   )
 }
 
+/** The first render after the Studio starts reads and cascades the game's stylesheets (about 9 to 13 seconds on the S0 machine, then instant): say so in words. */
+export const FIRST_RENDER_TEXT = "Reading the game's styles for the first time. This takes about ten seconds and happens once."
+let renderedOnce = false
+
 /** One layout drawn from its render tree, with the explain panel beside it. */
 export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult, highlight = [] }: { layout: LayoutRow | null; say: (s: string) => void; project?: string | null; onOpenFile?: (file: string, line?: number) => void; onResult?: (r: RResult | null, layout: LayoutRow | null) => void; highlight?: string[] }) {
   const [res, setRes] = useState<RResult | null>(null)
@@ -202,7 +206,7 @@ export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult
     let live = true
     setBusy(true); setErr('')
     if (lastKey.current !== key) { setSel(null); lastKey.current = key }            // expanding a branch keeps the selection; another layout clears it
-    rpc<RResult>('render.layout', { bundle: layout.bundle, path_id: layout.path_id, ...(project ? { project, skin } : {}), ...(open.length ? { open } : {}), ...(all ? { max_nodes: 0 } : {}) }).then((r) => { if (live) { setRes(r); setBusy(false); onResult?.(r, layout) } })
+    rpc<RResult>('render.layout', { bundle: layout.bundle, path_id: layout.path_id, ...(project ? { project, skin } : {}), ...(open.length ? { open } : {}), ...(all ? { max_nodes: 0 } : {}) }).then((r) => { renderedOnce = true; if (live) { setRes(r); setBusy(false); onResult?.(r, layout) } })
       .catch((e) => { if (live) { const m = e instanceof RpcError ? e.message : String(e); setErr(m); setBusy(false); say('ERROR ' + m) } })
     return () => { live = false }
   }, [layout, say, project, skin, tick, openKey, all])      // eslint-disable-line react-hooks/exhaustive-deps
@@ -222,7 +226,7 @@ export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult
           <label>height <input type="number" value={h} min={10} max={4000} onChange={(e) => setH(Number(e.target.value) || 10)} /></label>
           <label>zoom <select value={zoom} onChange={(e) => setZoom(Number(e.target.value))}>{[0.25, 0.5, 0.75, 1, 1.5, 2].map((z) => <option key={z} value={z}>{z * 100}%</option>)}</select></label>
           <label><input type="checkbox" checked={markers} onChange={(e) => setMarkers(e.target.checked)} /> markers</label>
-          {busy && <span className="dim">rendering ...</span>}
+          {busy && <span className="dim" data-testid="render-progress">{renderedOnce ? 'rendering ...' : FIRST_RENDER_TEXT}</span>}
           {res && <span className="dim small">{res.summary.elements} elements · {res.timing_ms.total} ms</span>}
         </div>
         {res && <div className="rnotice" role="note">{res.notice}</div>}

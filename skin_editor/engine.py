@@ -33,6 +33,8 @@ class Engine:
         self.cfg = config.load()
         self.ws = config.workspace(self.cfg)
         config.setup_logging(self.ws)
+        from . import projfmt
+        projfmt.migrate_modes(self.ws)                 # "expert" is "advanced" now (docs/SIMPLE-MODE-PLAN.md S1)
         self.index = index_styles.load(self.ws)
         self.info = None
         self._ld = (None, None)           # (current.json mtime, LayoutData)
@@ -703,11 +705,24 @@ class Engine:
         name = b["name"]
         if name in project_mod.names(self.ws):
             raise RuntimeError("a project with that name exists")
-        p = project_mod.new(name, (self.ws.vanilla_manifest() or {}).get("game_build"))
+        if b.get("preset"):
+            # a preset as a FOLDER project with the chosen output from the start (never the single-file form `project.create` writes); the preset's own settings are kept
+            if b["preset"] not in PRESETS:
+                raise KeyError("no such preset: %s" % b["preset"])
+            p = PRESETS[b["preset"]](self.need_index(), name)
+        else:
+            p = project_mod.new(name, (self.ws.vanilla_manifest() or {}).get("game_build"))
         p["options"]["output"] = b.get("target", "native")
+        if b.get("keep_club_colours") is False:          # the native option: the dark-bar rules, wallpaper and card frames hidden (docs/SIMPLE-MODE-PLAN.md S1); absent or true keeps the club's colours
+            p["options"]["club_colours"] = False
         projfmt.write(self.ws, p)
         changes.record(name, "options", ["project created"])
         return {"project": project_mod.load(self.ws, name), "files": [t["path"] for t in projfmt.tree(self.ws, name)]}
+
+    def explain(self, q, b):
+        """An engine message in plain words (skin_editor/plain.py): {plain, details}."""
+        from . import plain
+        return plain.plain(b["message"])
 
     def pf_migrate(self, q, b):
         from . import projfmt

@@ -12,12 +12,15 @@ import Tables from './Tables'
 import Checklist from './Checklist'
 import Search from './Search'
 import Gutter, { useStoredSize } from './Gutter'
+import Setup from './Setup'
+import Start from './Start'
+import { resolveMode, readStoredMode, storeMode, type Mode } from './mode'
+import { sayOf, sayOfJobError, type Said } from './plainError'
 import { RenderScreenView, RenderTableView } from './RenderScreens'
 import { RenderBrowser, RenderCanvas, ruleAtLine, rulePaths, tokenAt, tokenPaths, type LayoutRow, type RResult } from './Render'
 
 interface Tab { path: string; text: string; saved: string; readonly?: boolean }
 interface Plan { target: string; operations: { op: string; count: number; summary: string; detail: any[] }[]; dropped: { item: string; reason: string }[]; warnings: string[] }
-type Mode = 'simple' | 'expert'
 type PanelTab = 'problems' | 'output' | 'build' | 'preview'
 type View = 'explorer' | 'search' | 'palette' | 'assets' | 'layouts' | 'tiles' | 'tables' | 'updates' | 'checklist' | 'game' | 'render'
 const SESSION = 'studio.session'
@@ -33,6 +36,13 @@ export class Guard extends Component<{ name: string; children: ReactNode }, { er
   }
 }
 
+const SIMPLE_VIEWS: View[] = ['explorer', 'palette', 'assets', 'render']
+const SIMPLE_NAV: { view: View; label: string; title: string; needsProject?: boolean }[] = [
+  { view: 'explorer', label: 'Projects', title: 'Your skins' },
+  { view: 'palette', label: 'Colours', title: 'Change the colours', needsProject: true },
+  { view: 'assets', label: 'Pictures', title: "Replace the game's pictures and icons", needsProject: true },
+  { view: 'render', label: 'Look at it', title: 'See a game screen drawn with your skin (an approximation, not the game)' },
+]
 const langOf = (p: string) => (p.endsWith('.json') ? 'json' : p.endsWith('.uss') ? 'css' : 'plaintext')
 const SIMPLE_FILES = (f: FileItem) => f.path === 'styles/tokens.uss' || f.path.startsWith('images/')
 
@@ -50,7 +60,9 @@ export default function App() {
   const [panel, setPanel] = useState<PanelTab>('problems')
   const [log, setLog] = useState<string[]>([])
   const [jobs, setJobs] = useState<Record<string, Job>>({})
-  const [mode, setMode] = useState<Mode>((localStorage.getItem('studio.mode') as Mode) || 'expert')
+  const [mode, setMode] = useState<Mode>('advanced')          // resolved once the engine has answered (resolveMode): a fresh install, told by an empty workspace, starts in Simple
+  const modeResolved = useRef(false)
+  const [notice, setNotice] = useState<Said | null>(null)       // the last problem, in plain words (the raw text goes to the OUTPUT log)
   const [view, setView] = useState<View>('explorer')
   const editorRef = useRef<any>(null)
   const [lastRender, setLastRender] = useState<{ res: RResult | null; layout: LayoutRow | null }>({ res: null, layout: null })   // the render the editor's caret is matched against
@@ -67,7 +79,7 @@ export default function App() {
   const [panelH, setPanelH] = useStoredSize('studio.panelH', 210, 80, 560)
 
   const say = useCallback((s: string) => setLog((l) => [...l.slice(-300), new Date().toLocaleTimeString() + '  ' + s]), [])
-  const fail = useCallback((e: unknown) => { say('ERROR ' + (e instanceof RpcError ? `${e.message} (code ${e.code})` : String(e))); setPanel('output') }, [say])
+  const fail = useCallback((e: unknown) => { const s = sayOf(e); say('ERROR ' + s.details); setNotice(s); setPanel('output') }, [say])
 
   const refreshState = useCallback(async () => {
     try { const s = await rpc<EngineState>('app.state'); const list = await rpc<string[]>('project.list'); setProjects(list); setState(s) } catch (e) { fail(e) }   // both set together: the session restore waits for both
@@ -79,6 +91,7 @@ export default function App() {
       const id = d.id as string
       setJobs((j) => ({ ...j, [id]: { ...(j[id] || {}), ...d } as Job }))
       if (t === 'job.done' || t === 'job.failed') say(`${t}: ${d.title || id}${d.error ? ' - ' + d.error : ''}`)
+      if (t === 'job.failed' && d.error) sayOfJobError(String(d.error)).then(setNotice)
     }) }).catch((e) => setBoot(String(e.message || e)))
     const iv = setInterval(() => { rpc<EngineState>('app.state').then(setState).catch(() => {}) }, 15000)
     return () => { off(); clearInterval(iv) }
@@ -207,7 +220,14 @@ export default function App() {
     if (!confirm('Put the stock game files back for every bundle this editor changed?\n\nThe game must be closed. Hashes are verified afterwards.')) return
     try { const r = await rpc<any>('backup.restore', { backup: 'vanilla' }); say('restored: ' + JSON.stringify(r).slice(0, 400)); setPanel('output') } catch (e) { fail(e) }
   }
-  const setModeP = (m: Mode) => { setMode(m); localStorage.setItem('studio.mode', m) }
+  const setModeP = (m: Mode) => { setMode(m); storeMode(m); if (m === 'simple' && !SIMPLE_VIEWS.includes(view)) setView('explorer') }
+
+  useEffect(() => {              // the mode, once the engine has said how many projects exist: a fresh install (no projects, nothing stored) is Simple, an existing one Advanced
+    if (boot !== 'ready' || modeResolved.current || !state) return
+    modeResolved.current = true
+    const m = resolveMode(readStoredMode(), projects.length)
+    setMode(m); storeMode(m)
+  }, [boot, state, projects])
 
   useEffect(() => {
     if (boot !== 'ready' || restored.current || !state) return
@@ -234,11 +254,25 @@ export default function App() {
 
   if (boot !== 'ready') return <div className="boot"><h1>FM Skin Studio</h1><p>{boot === 'connecting' ? 'Starting the engine ...' : boot}</p></div>
 
+  const actW = mode === 'simple' ? 132 : 44                                            // Simple mode's navigation carries words, so it is wider
+  const needsSetup = !!state && (!state.install || !state.vanilla || !state.indexed)   // a fresh install: the game has not been found and read yet (S1a)
+  const showStart = mode === 'simple' && !project && !needsSetup
+  const pickGameFolder = async () => {
+    if ('__TAURI_INTERNALS__' in window) {
+      const { open } = await import('@tauri-apps/plugin-dialog'); const r = await open({ directory: true, multiple: false, title: "Pick the folder that contains the game's fm.exe" }); return typeof r === 'string' ? r : undefined
+    }
+    return prompt("Folder of your Football Manager 27 install (the one that contains fm.exe):")?.trim() || undefined
+  }
+
   return (
-    <div className="app" style={{ gridTemplateColumns: `44px ${sideW}px 1fr`, gridTemplateRows: `1fr ${panelH}px 24px` }}>
-      <Gutter axis="x" value={sideW} min={160} max={640} def={250} onChange={setSideW} label="Side panel width" style={{ left: 44 + sideW - 3, top: 0, bottom: 24 }} />
-      <Gutter axis="y" invert value={panelH} min={80} max={560} def={210} onChange={setPanelH} label="Bottom panel height" style={{ left: 44 + sideW, right: 0, bottom: 24 + panelH - 3 }} />
-      <nav className="activity">
+    <div className="app" style={{ gridTemplateColumns: `${actW}px ${sideW}px 1fr`, gridTemplateRows: `1fr ${panelH}px 24px` }}>
+      <Gutter axis="x" value={sideW} min={160} max={640} def={250} onChange={setSideW} label="Side panel width" style={{ left: actW + sideW - 3, top: 0, bottom: 24 }} />
+      <Gutter axis="y" invert value={panelH} min={80} max={560} def={210} onChange={setPanelH} label="Bottom panel height" style={{ left: actW + sideW, right: 0, bottom: 24 + panelH - 3 }} />
+      {mode === 'simple' ? <nav className="activity simple" aria-label="Main navigation">
+        {SIMPLE_NAV.map((n) => <button key={n.view} className={view === n.view ? 'on' : ''} title={n.title} disabled={(n.needsProject && !project) || needsSetup} onClick={() => setView(n.view)}>{n.label}</button>)}
+        <span className="grow" />
+        <button title="Show every tool (the full editor)" onClick={() => setModeP('advanced')}>Advanced</button>
+      </nav> : <nav className="activity">
         <button className={view === 'explorer' ? 'on' : ''} title="Explorer" onClick={() => setView('explorer')}>E</button>
         <button className={view === 'search' ? 'on' : ''} title="Search in project" onClick={() => setView('search')}>S</button>
         <button className={view === 'palette' ? 'on' : ''} title="Palette (token colours)" onClick={() => setView('palette')} disabled={!project}>P</button>
@@ -251,8 +285,8 @@ export default function App() {
         <button className={view === 'updates' ? 'on' : ''} title="Game updates: version profiles and the diff between two builds" onClick={() => setView('updates')}>U</button>
         <button className={view === 'game' ? 'on' : ''} title="Game: vanilla stylesheets (read-only)" onClick={() => setView('game')}>G</button>
         <span className="grow" />
-        <button title={mode === 'expert' ? 'Expert mode (click for Simple)' : 'Simple mode (click for Expert)'} onClick={() => setModeP(mode === 'expert' ? 'simple' : 'expert')}>{mode === 'expert' ? 'X' : 'S'}</button>
-      </nav>
+        <button title="Advanced mode (click for Simple)" onClick={() => setModeP('simple')}>S</button>
+      </nav>}
       <aside className="explorer">
         {view === 'search' && <Search project={project} onOpen={openFile} />}
         {view === 'game' && <div className="gameview"><div className="head">GAME STYLESHEETS ({sheets.length})</div>
@@ -283,7 +317,8 @@ export default function App() {
         </>}
       </aside>
       <main className="editor">
-        {view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
+        {notice && !needsSetup && <div className="notice" role="alert"><div>{notice.plain}</div><details><summary>details</summary><div className="mono small">{notice.details}</div></details><button onClick={() => setNotice(null)} aria-label="Dismiss">×</button></div>}
+        {needsSetup && state ? <Guard name="Setup"><Setup state={state} refresh={refreshState} say={say} pickFolder={pickGameFolder} /></Guard> : showStart ? <Guard name="Start"><Start projects={projects} say={say} onImport={importNative} onCreated={async (n) => { await refreshState(); await openProject(n); setView('palette') }} /></Guard> : view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
         <div className="tabs">{tabs.map((t) => <div key={t.path} className={'tab' + (t.path === active ? ' on' : '')} onClick={() => setActive(t.path)}>{t.path.split('/').pop()}{t.readonly ? ' (game)' : ''}{dirty(t.path) ? ' •' : ''}<button onClick={(e) => { e.stopPropagation(); closeTab(t.path) }}>×</button></div>)}</div>
         <div className="surface">
           {tab ? <Editor path={tab.path} language={langOf(tab.path)} theme="vs-dark" value={tab.text}
@@ -351,7 +386,7 @@ export default function App() {
         <span className="grow" />
         {running.length > 0 && <span>{running[0].label} {Math.round(running[0].progress * 100)}%</span>}
         <span>target: {target || '-'}</span>
-        <span className="click" onClick={() => setModeP(mode === 'expert' ? 'simple' : 'expert')}>{mode}</span>
+        <span className="click" onClick={() => setModeP(mode === 'advanced' ? 'simple' : 'advanced')}>{mode}</span>
       </footer>
     </div>
   )

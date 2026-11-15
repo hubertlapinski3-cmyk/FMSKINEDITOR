@@ -23,6 +23,22 @@ from . import project as project_mod
 
 FORMAT = "fm-skin-project/1"
 MARK = "skin.project.json"
+MODE_NAMES = {"expert": "advanced"}          # the mode called "expert" until 1.2.0 is "advanced" now; the field is inert metadata (never read for behaviour), renamed with the interface
+
+
+def migrate_modes(ws):
+    """Rewrite `"mode": "expert"` as `"advanced"` in every project folder's skin.project.json (nothing else in the file changes). Returns the names changed."""
+    changed = []
+    for name in names(ws):
+        f = folder(ws, name) / MARK
+        if not f.is_file():
+            continue
+        head = _json(f, {})
+        if head.get("mode") in MODE_NAMES:
+            head["mode"] = MODE_NAMES[head["mode"]]
+            f.write_text(json.dumps(head, indent=2) + "\n", encoding="utf-8")
+            changed.append(name)
+    return changed
 TOKENS = "styles/tokens.uss"
 DEFAULT_SHEET = "AlwaysAppliedStyleSheet"
 SHEET_FILE = re.compile(r"styles/([A-Za-z0-9_.-]+)\.uss")
@@ -200,12 +216,12 @@ def write(ws, p, images_from=None):
                 shutil.copyfile(f, d / "images" / f.name)
     opts = dict(p.get("options", {}))
     target = opts.pop("output", "bundles")
-    head = {"format": FORMAT, "name": p["name"], "target": target, "mode": "expert", "game_build": p.get("game_build"),
+    head = {"format": FORMAT, "name": p["name"], "target": target, "mode": "advanced", "game_build": p.get("game_build"),
             "vanilla_manifest": p.get("vanilla_manifest")}
     if p.get("native_name"):
         head["native_name"] = p["native_name"]
     old = _json(d / MARK, {})
-    head["mode"] = old.get("mode", "expert")
+    head["mode"] = MODE_NAMES.get(old.get("mode", "advanced"), old.get("mode", "advanced"))
     _put(d / MARK, json.dumps(head, indent=2) + "\n")
     _put(d / TOKENS, tokens_text(p))
     by_sheet = {}

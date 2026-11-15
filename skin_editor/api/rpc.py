@@ -23,7 +23,19 @@ def _error(code, message, data=None):
 
 
 def error_of(ex):
-    """An exception from the engine as a JSON-RPC error object."""
+    """An exception from the engine as a JSON-RPC error object; `data.plain` is the sentence for a person (skin_editor/plain.py), the message stays the details."""
+    from .. import plain
+    err = _error_of(ex)
+    data = dict(err.get("data") or {})
+    if err["code"] in (-32600, -32601, -32602):
+        data["plain"] = "The Studio and its engine disagree about a request (a bug in the Studio). The details are in Advanced mode."
+    else:
+        data["plain"] = plain.match(err["message"]) or plain.match(str(ex)) or plain.GENERIC
+    err["data"] = data
+    return err
+
+
+def _error_of(ex):
     from .. import install, layout_dump
     from ..engine import PlacementRefused
     if isinstance(ex, SchemaError):
