@@ -44,8 +44,16 @@ def main():
     ap.add_argument("--existing", action="store_true", help="seed one project, so the install looks like an existing one")
     ap.add_argument("--open", action="store_true")
     ap.add_argument("--check", action="store_true", help="start, probe both servers, stop (for tests)")
+    ap.add_argument("--keep", action="store_true", help="use a PERSISTENT scratch workspace (%%LOCALAPPDATA%%\\FM27SkinEditor-scratch) that survives between runs, like a real install: the setup is done once, your test skin is still there next time")
+    ap.add_argument("--reset", action="store_true", help="with --keep: delete that persistent scratch workspace first (a fresh install again)")
     a = ap.parse_args()
-    scratch = Path(tempfile.mkdtemp(prefix="studio-scratch-"))
+    if a.keep:
+        scratch = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "FM27SkinEditor-scratch"
+        if a.reset:
+            shutil.rmtree(scratch, ignore_errors=True)
+        scratch.mkdir(parents=True, exist_ok=True)
+    else:
+        scratch = Path(tempfile.mkdtemp(prefix="studio-scratch-"))
     env = dict(os.environ, FM27SE_WORKSPACE=str(scratch))
     engine = vite = None
     try:
@@ -70,15 +78,18 @@ def main():
             print("check: the engine printed its address and the Studio page answered on port 1420"); return 0
         if a.open:
             import webbrowser; webbrowser.open(page)
-        input("Press Enter here when you are done (this stops everything and deletes the temporary workspace) ... ")
+        input("Press Enter here when you are done (this stops everything%s) ... " % ("; the scratch workspace is kept" if a.keep else " and deletes the temporary workspace"))
         return 0
     except KeyboardInterrupt:
         return 0
     finally:
         kill_tree(vite); kill_tree(engine)
         time.sleep(1)
-        shutil.rmtree(scratch, ignore_errors=True)
-        print("stopped; temporary workspace removed")
+        if a.keep:
+            print("stopped; the scratch workspace was KEPT (%s). Run with --keep --reset for a fresh install again." % scratch)
+        else:
+            shutil.rmtree(scratch, ignore_errors=True)
+            print("stopped; temporary workspace removed")
 
 
 if __name__ == "__main__":

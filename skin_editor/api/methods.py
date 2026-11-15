@@ -144,6 +144,7 @@ _TABLE = [
     ("project.search", None, {"project": "str", "q": "str", "regex": "bool?", "case": "bool?"}, "pf_search", "call", "Find text in a folder project's text files."),
     ("project.create_folder", None, {"name": "str", "target": ("opt", ("enum", ["native", "bundles"])), "preset": "str?", "keep_club_colours": "bool?"}, "pf_create", "call",
      "New folder project: empty, or from a preset (written as a folder project with the chosen output from the start). keep_club_colours false turns the club-colour removal on."),
+    ("tokens.browse", None, {"used_only": "bool?"}, "browse_colours", "call", "Every colour token the game's rules use (all with used_only false): name, colour, number of rule paths it paints."),
     ("app.explain", None, {"message": "str"}, "explain", "call", "An engine message in plain words: {plain, details}."),
     ("project.migrate", None, {"project": "str"}, "pf_migrate", "call", "Convert a legacy <name>.skin.json into a project folder (verified round trip; the old file is kept as .migrated)."),
     ("project.create", (P, "/api/preset"), {"name": "str", "preset": "str?"}, "preset", "call", "New project, blank or from a preset."),

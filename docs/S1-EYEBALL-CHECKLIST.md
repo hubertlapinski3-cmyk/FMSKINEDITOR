@@ -7,7 +7,7 @@ In a terminal in the project folder:
 
     .\.venv\Scripts\python.exe tools/run_studio_scratch.py --open
 
-It prints an address (also opened in your browser). If it says port 1420 is in use, close any other Studio or `npm run dev` window first. When you are done, press Enter in the terminal: it stops everything and deletes the temporary workspace.
+It prints an address (also opened in your browser). **Add `--keep` to keep the test workspace between runs** (so the setup is done once, like a real install, and your test skin is still there next time); `--keep --reset` starts from a fresh install again. Without `--keep` every run is a brand-new empty workspace, so the setup screen comes back each time by design. If it says port 1420 is in use, close any other Studio or `npm run dev` window first. When you are done, press Enter in the terminal: it stops everything and deletes the temporary workspace.
 (This is the browser form of the Studio. Only the "pick a folder" step differs from the installed app: here it asks you to type a path, there it opens the Windows folder picker.)
 
 ## A. A fresh install (the default run)
@@ -22,7 +22,7 @@ Tick each line; write down anything that reads wrong, looks odd, or that you wou
    - Start from the game's look
 5. Click **Start from a ready-made theme**: a name box (suggestion `my-first-skin`) and a question **The club's own colours** with two choices. Pick *one flat look for every club*: a paragraph appears saying what that does. Read it: is it clear? Does it say anything that sounds like a promise it can't keep?
 6. Type a name that has a space or a `!`: it must say to use only letters, digits, dots, dashes and underscores, and **Make it** must be greyed out. Fix the name and click **Make it**.
-7. You land on **Colours** with a list of colour swatches (about 400). Change one colour with its picker; nothing should break.
+7. You land on **Colours**. At the top, **Top bar and headers**: one checkbox ("One flat colour instead of each club's colours"); ticking it shows a colour box for the bar. Below, **What the game uses**: closed groups with counts (Page background, Text, Panels, cards and tiles, Buttons, Tables, ...). Open one: every colour in it with its swatch; click a swatch and pick a colour; a **put back** button appears. **Your changes** at the bottom lists what you changed. Type a word (e.g. `cards`) or a code (`#16181D`) in the search box: matching groups open. Does it read as "here is everything, click what to change"?
 8. Click **Look at it**, pick any layout from the list. **The first time** a line says it is reading the game's styles for the first time and takes about ten seconds; the picture then appears. Pick a second layout: the line now just says "rendering ...", briefly.
 9. Click **Advanced** (bottom of the left bar): the bar turns into single letters and more tools appear. Click **S** at the bottom of that bar: back to words. Reload the page (F5): it stays in the mode you left it in.
 10. **A plain-words error:** in Advanced, open the bottom tab **BUILD** and click **Install build**. (The scratch workspace has no build, so nothing is installed; it must only refuse.) A red box at the top should say, in a sentence, that nothing has been built for this project yet, with a **details** line you can open that shows the technical text. Dismiss it with the ×.

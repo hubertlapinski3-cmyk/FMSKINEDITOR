@@ -159,3 +159,11 @@ button.primary:disabled { opacity: .5 }
 .start-choices button span { color: var(--dim); font-size: 12px } .start-choices button.on { border-color: var(--acc) }
 .start-form { display: grid; gap: 10px; margin-top: 10px } .start-form input[type=text], .start-form input:not([type]) { margin-left: 8px }
 .start-club { border: 1px solid #2c2f35; border-radius: 6px; display: grid; gap: 6px; padding: 8px 12px }
+
+/* the Simple Colours view: top bar section, groups of every colour the game uses */
+.pal-bar { margin: 8px 10px; padding: 8px 10px; border: 1px solid #2c2f35; border-radius: 6px; display: grid; gap: 6px }
+.pal-barcol { display: flex; align-items: center; gap: 8px }
+.pal-groups { max-height: 46vh; overflow: auto; margin: 4px 0 }
+.pal-ghead { width: 100%; text-align: left; border: 0; background: none; color: var(--fg); padding: 4px 10px; font-weight: 600 } .pal-ghead small { color: var(--dim); font-weight: 400; margin-left: 6px }
+.palette li.changed { box-shadow: inset 2px 0 var(--acc) }
+.palette li small.dim { margin-left: auto; padding-right: 6px }

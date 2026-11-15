@@ -178,6 +178,20 @@ class Engine:
     def token(self, q, b):
         return self.need_index().token(q["name"])
 
+    def browse_colours(self, q, b):
+        """Every colour token the game's rules use (or, with used_only false, every colour token), compact: name, resolved colour, and the number of rule paths it paints.
+        The Simple palette shows these so a person can see everything and click what to change (docs/SIMPLE-MODE-PLAN.md S1)."""
+        ix = self.need_index()
+        used_only = b.get("used_only", True) is not False
+        rows = []
+        for name in sorted(ix.defs):
+            r = ix.token_row(name)
+            c = r["resolved"]
+            if not c or (used_only and r["reach"] == 0):
+                continue
+            rows.append({"name": name, "rgb": c["rgb"], "a": c["a"], "reach": r["reach"]})
+        return {"total": len(rows), "rows": rows}
+
     def literals(self, q, b):
         return self.need_index().literal_list()
 

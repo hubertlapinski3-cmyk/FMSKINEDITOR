@@ -83,6 +83,17 @@ class S1Engine(unittest.TestCase):
         self.assertEqual(json.loads(mark.read_text(encoding="utf-8"))["mode"], "advanced")
         del e2
 
+    def test_browse_returns_the_used_colour_tokens_and_all_of_them_on_request(self):
+        used = self.rpc("tokens.browse")["result"]
+        everything = self.rpc("tokens.browse", {"used_only": False})["result"]
+        self.assertEqual(used["total"], len(used["rows"]))
+        self.assertGreaterEqual(everything["total"], used["total"])
+        for r in everything["rows"]:
+            self.assertRegex(r["rgb"], r"^#[0-9A-Fa-f]{6}$"); self.assertTrue(0 <= r["a"] <= 1)
+        self.assertTrue(all(r["reach"] > 0 for r in used["rows"]))
+        self.assertEqual([r["name"] for r in everything["rows"]], sorted(r["name"] for r in everything["rows"]))
+        self.assertTrue({"--global-background", "--colours-tactics-base-20", "--colours-base-red-strong"} <= {r["name"] for r in everything["rows"]}, "the fixture's colour tokens are listed")
+
     def test_explain_returns_the_sentence_and_the_details(self):
         r = self.rpc("app.explain", {"message": "close the game before taking the vanilla snapshot"})["result"]
         self.assertIn("Close Football Manager", r["plain"])
