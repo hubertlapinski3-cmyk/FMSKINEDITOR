@@ -20,12 +20,14 @@ export const CLUB_REMOVAL_TEXT = "The top bar's text and icons use the dark-bar 
 /** Every generated theme says this until Session 2 has looked at it in the game (docs/SIMPLE-MODE-PLAN.md S4). */
 export const UNCHECKED = 'not yet checked in the game'
 
-export type Three = { background: string; accent: string; text: string; mode: 'dark' | 'light' }
+/** Dark only in 1.2.0 (S4 amendment, owner decision 1): the role map comes from a dark preset and light themes fail on the surfaces it keeps. */
+export type Three = { background: string; accent: string; text: string; mode: 'dark' }
 export type GalleryTheme = Three & { name: string; status: string; ok: boolean; failures: number; checked: number }
 export type Pair = { fg: string; bg: string; ratio: number }
+export type GameLow = Pair & { game_ratio: number; corrected: boolean }
 export type Check = {
   inputs: Three; writes: number; keeps: number; status: string; ok: boolean; missing?: string[]
-  contrast: { minimum: number; pairs: number; checked: number; failures: Pair[]; game_failures: Pair[]; unchecked: { fg: string; bg: string }[] }
+  contrast: { minimum: number; pairs: number; checked: number; failures: Pair[]; game_failures: Pair[]; game_low?: GameLow[]; unchecked: { fg: string; bg: string }[] }
   preview: Record<string, { rgb: string; a: number }>
 }
 
@@ -55,11 +57,6 @@ function ThreeColours({ value, onChange }: { value: Three; onChange: (v: Three) 
       {row('background', 'Background')}
       {row('accent', 'Accent')}
       {row('text', 'Text')}
-      <fieldset className="start-mode">
-        <legend>Dark or light</legend>
-        <label><input type="radio" name="mode" checked={value.mode === 'dark'} onChange={() => onChange({ ...value, mode: 'dark' })} /> Dark</label>
-        <label><input type="radio" name="mode" checked={value.mode === 'light'} onChange={() => onChange({ ...value, mode: 'light' })} /> Light</label>
-      </fieldset>
     </div>
   )
 }
@@ -75,6 +72,7 @@ function CheckView({ c }: { c: Check }) {
         ? <div className="ok">Readable: all {k.checked - k.game_failures.length} text and background pairs it changes reach {k.minimum} to 1.</div>
         : <div className="notice" role="alert"><div>Some text would be hard to read, so this theme can&apos;t be made. Change one of the three colours. Nothing is adjusted for you.</div>
           <ul data-testid="theme-failures">{k.failures.map((p) => <li key={p.fg + p.bg}>{pairText(p, k.minimum)}</li>)}</ul></div>}
+      {(k.game_low ?? []).filter((p) => p.corrected).map((p) => <div key={'low' + p.fg} className="dim small" data-testid="theme-corrected">{shortToken(p.fg)} on {shortToken(p.bg)} is at {p.game_ratio.toFixed(2)} to 1 in the game&apos;s own colours; this theme corrects it to {p.ratio.toFixed(2)} to 1.</div>)}
       {k.game_failures.length > 0 && <div className="dim small" data-testid="theme-game-failures">Already under {k.minimum} to 1 in the game itself, and not changed by this theme: {k.game_failures.map((p) => pairText(p, k.minimum)).join('; ')}.</div>}
       {k.unchecked.length > 0 && <div className="dim small" data-testid="theme-unchecked">{k.unchecked.length} of the {k.pairs} pairs can&apos;t be checked here, because one of their colours is a colour family the theme does not set.</div>}
     </div>
@@ -155,7 +153,7 @@ export default function Start({ projects, onCreated, onImport, say }: { projects
           <label><input type="radio" name="theme" checked={chosen === 'crimson'} onChange={() => setChosen('crimson')} /> {gallery?.crimson && <Swatches t={gallery.crimson} />} Crimson <span className="dim small">the dark crimson look</span></label>
           {gallery?.themes.map((t) => (
             <label key={t.name}><input type="radio" name="theme" checked={chosen === t.name} onChange={() => setChosen(t.name)} disabled={!t.ok} /> <Swatches t={t} /> {t.name}{' '}
-              <span className="dim small">{t.mode}, {UNCHECKED}{t.ok ? '' : `; fails the readability check on ${t.failures} pair(s) on this game build`}</span></label>
+              <span className="dim small">{UNCHECKED}{t.ok ? '' : `; fails the readability check on ${t.failures} pair(s) on this game build`}</span></label>
           ))}
           {galleryProblem && <div className="dim small" data-testid="gallery-problem">Only Crimson is listed: the other themes could not be checked just now.</div>}
         </fieldset>}

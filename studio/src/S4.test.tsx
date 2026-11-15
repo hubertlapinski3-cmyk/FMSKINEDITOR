@@ -13,7 +13,8 @@ const CRIMSON = { background: '#171717', accent: '#DA0037', text: '#EDEDED', mod
 const OCEAN = { name: 'Ocean', background: '#0F1A24', accent: '#2E86DE', text: '#E6EEF5', mode: 'dark', status: UNCHECKED, ok: true, failures: 0, checked: 36 }
 const BROKEN = { name: 'Broken', background: '#16142A', accent: '#8E6CF0', text: '#ECEAF5', mode: 'dark', status: UNCHECKED, ok: false, failures: 2, checked: 36 }
 const pass = (inputs: any) => ({ inputs, writes: 82, keeps: 148, status: UNCHECKED, ok: true, preview: {},
-  contrast: { minimum: 4.5, pairs: 43, checked: 36, failures: [], game_failures: [{ fg: '--data-player-position-defender-foreground', bg: '--data-player-position-defender-background', ratio: 4.41 }], unchecked: new Array(7).fill({ fg: '--cr-white', bg: '--cr-blue' }) } })
+  contrast: { minimum: 4.5, pairs: 43, checked: 36, failures: [], game_failures: [], unchecked: new Array(7).fill({ fg: '--cr-white', bg: '--cr-blue' }),
+    game_low: [{ fg: '--data-player-position-defender-foreground', bg: '--data-player-position-defender-background', game_ratio: 4.41, ratio: 4.77, corrected: true }] } })
 const fail = (inputs: any) => ({ ...pass(inputs), ok: false, contrast: { ...pass(inputs).contrast, failures: [{ fg: '--global-text-muted', bg: '--colours-ui-soft', ratio: 3.91 }] } })
 
 let generate: (p: any) => any
@@ -92,23 +93,36 @@ describe('a theme from three colours', () => {
     expect(make().disabled).toBe(true)
   })
 
-  it("the game's own low pair and the pairs it can't check are said, not hidden", async () => {
+  it("the game's own low badge value is still said, now as corrected by the theme; the pairs it can't check are said too", async () => {
     start(); fireEvent.click(screen.getByText('Make a theme from three colours'))
-    expect((await screen.findByTestId('theme-game-failures')).textContent).toMatch(/in the game itself, and not changed by this theme: data-player-position-defender-foreground/)
+    expect((await screen.findByTestId('theme-corrected')).textContent).toBe("data-player-position-defender-foreground on data-player-position-defender-background is at 4.41 to 1 in the game's own colours; this theme corrects it to 4.77 to 1.")
+    expect(screen.queryByTestId('theme-game-failures')).toBeNull()
     expect(screen.getByTestId('theme-unchecked').textContent).toMatch(/^7 of the 43 pairs can't be checked here/)
   })
 
-  it('changing a colour or the mode checks again with the new values; My colours sits beside each picker', async () => {
+  it('a pair the game leaves low and the theme does not touch is still reported apart', async () => {
+    generate = (p: any) => ({ ...pass(p), contrast: { ...pass(p).contrast, game_failures: [{ fg: '--x-fg', bg: '--x-bg', ratio: 4.2 }] } })
+    start(); fireEvent.click(screen.getByText('Make a theme from three colours'))
+    expect((await screen.findByTestId('theme-game-failures')).textContent).toMatch(/in the game itself, and not changed by this theme: x-fg on x-bg/)
+  })
+
+  it('there is no Light choice: themes from three colours are dark in 1.2.0', async () => {
+    start(); fireEvent.click(screen.getByText('Make a theme from three colours'))
+    await screen.findByText(/Readable/)
+    expect(screen.queryByLabelText('Light')).toBeNull(); expect(screen.queryByLabelText('Dark')).toBeNull()
+    expect(screen.queryByText(/Dark or light/)).toBeNull()
+  })
+
+  it('changing a colour checks again with the new values; My colours sits beside each picker', async () => {
     localStorage.setItem(MY_COLOURS_KEY, JSON.stringify(['#224466']))
     start(); fireEvent.click(screen.getByText('Make a theme from three colours'))
     await screen.findByText(/Readable/)
     fireEvent.change(screen.getByLabelText('Accent'), { target: { value: '#2e86de' } })
     await waitFor(() => expect(rpc).toHaveBeenCalledWith('theme.generate', { ...CRIMSON, accent: '#2E86DE' }))
-    fireEvent.click(screen.getByLabelText('Light'))
-    await waitFor(() => expect(rpc).toHaveBeenCalledWith('theme.generate', { ...CRIMSON, accent: '#2E86DE', mode: 'light' }))
     expect(screen.getByRole('group', { name: 'My colours for the background' })).toBeTruthy()
     fireEvent.click(screen.getAllByLabelText('Use #224466')[0])
-    await waitFor(() => expect(rpc).toHaveBeenCalledWith('theme.generate', { ...CRIMSON, background: '#224466', accent: '#2E86DE', mode: 'light' }))
+    await waitFor(() => expect(rpc).toHaveBeenCalledWith('theme.generate', { ...CRIMSON, background: '#224466', accent: '#2E86DE' }))
+    expect((rpc as any).mock.calls.filter((c: any[]) => c[0] === 'theme.generate').every((c: any[]) => c[1].mode === 'dark')).toBe(true)
   })
 
   it('without the engine giving the starting colours there are no pickers: no invented default', async () => {

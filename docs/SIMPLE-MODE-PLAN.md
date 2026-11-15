@@ -104,6 +104,7 @@ Scope as approved: the colour-token inventory, the literal inventory (amendment 
 **Two engine bugs found by checking the real thing, fixed, and tested:** (1) **the render's project overlay never applied an exact-colour swap of an OPAQUE colour** (`overlay._swap_literals` keyed the swap by `colour.text`, which writes an opaque colour as 6 digits, while the lookup pads it to `#RRGGBBFF`): a literal swap was saved and the picture did not change. Keyed by `colour.hex8` now; the calibration is unaffected (it renders without a project). (2) **a literal shown as `#RRGGBBAA` has lost its alpha's last decimals,** so an exact match found 0 rules for `#FFFFFF59` (alpha 0.35 in the rules); `simple.literal_info` now matches by the alpha byte and returns the exact alpha the rules carry (`a_exact`), which the panel writes as the swap's `from`, because the native export copies only rules whose alpha equals it exactly.
 **Checked against the real engine** (scratch workspace and skins folder, the game only read): a token change on the Medical Centre tile repaints the skin side (`#1E2129` to the new colour) and leaves the game side as it ships; a literal on the Preferences card (`#8F8F8F`, 4 uses) costs 4 copied rules, the skin side shows the new colour, the game side does not, `native.preflight` lists the swap, and the native export writes exactly 4 rules carrying the new colour. The heavy literals refuse as specified (`#FFFFFF` at alpha 0.35: 54 rules; `#000000` at 0: 253). Token counts as before: `--colours-ui-deep` 8 of 8, `--layout-surfaces-cards-surface` 5 of 8, `--global-background` 0 of 8.
 **Tests:** Studio 134 (`Recolour.test` new: sources, grouping, wording including the 0 case, token change with alpha, My colours, Put it back, literal cost first and dedupe, the Advanced refusal, the swapped-in case, the honest refusals; `LookAtIt.test`: click opens the panel only with a skin); engine suite OK with `test_s3_engine` (5, including the overlay fix).
+**Owner note (2026-11-15): S3 stands as built.** The two overlay bugs above were found by the real-engine checks and fixed with tests, which is the process working.
 **Not done, said plainly:** the panel writes token overrides and exact literal swaps only (no scoped rule, as specified); the picture tint (`-unity-background-image-tint-color`) is not offered; nothing here was looked at by a person yet (checklist section F).
 
 ### S4 built (2026-11-15, milestone report; read with S5 and S3 in batch 1)
@@ -128,6 +129,32 @@ Every figure below is in `docs/evidence/s4-theme-check-20261115.json`, written b
 3. **7 of the 43 pairs cannot be checked:** white on Crimson's hue families, which a generated theme does not set. They are counted on screen; Session 2 looks at them.
 4. **A generated theme reaches about half of what Crimson reaches.** Crimson's 230 used colour tokens are the 82 a theme writes plus the 148 it keeps. Measured one way for all three (the index's rule-path reach, `reach` in the evidence), the 740 used colour tokens reach **7,227** rule paths: Crimson's 230 reach **3,498** (48%), and a generated theme's 82 reach **1,778** (25%). The rest stays at the game's own colour. S0's "4,340 of 10,687 (41%)" was measured another way and is not comparable with these. The plan's target ("Crimson-like coverage") is met by count of tokens considered, **not by reach.** Raising it means moving kept tokens into the map (each needs a ramp the three colours can derive), which is later work, not done here.
 **Not done, said plainly:** nothing here was looked at in the game (Session 2, the gallery gate) or by a person (checklist section G). The theme preview swatches are the three inputs, not a render (Look at it shows the render once the project exists).
+
+### S4 amendment (2026-11-15, the owner's two decisions; lands before batch 1 and Session 2)
+The report above stays as written; this note says what changed. The figures are from the re-run `tools/check_s4_themes.py` (evidence file regenerated).
+**Decision 1: light is out of 1.2.0.** The reason, as recorded in the role map (`modes_note`): "the role map comes from a dark preset; light themes fail on the surfaces it keeps at the game's own colour; extending the map for light themes is later work, not 1.2.0."
+- The Dark / Light choice is gone from "Make a theme from three colours"; a switch that always fails is a dead end for a beginner.
+- `theme.generate` refuses light in plain words, and so does `theme.create`.
+- Paper and Sky stay recorded as removed; the check now records them as refused.
+**Decision 2: the defender badge blocks, so it is the theme's job.**
+- **Before building it, I stopped on one question, and the owner answered it:** no style rule of this build uses either badge token (reach 0, and no token refers to them), so offline nobody can tell whether they paint the badge. The owner chose to add the entry anyway, with that recorded. Session 2 finds out with `fm_get_styles`, and the entry comes out if the token does not paint the badge.
+- **The derivation:** the badge label `--data-player-position-defender-foreground` is a role-map entry on the text ramp, step `t-1` (the theme's primary text). The badge fill keeps the game's teal, so positions keep their colours; the pair needs only the label.
+- **What the entry records:** the owner decision, and that it is **not anchored** (Crimson sets the label to its teal Light `#8AD9CD`, which is on no ramp, so the reproduction test does not cover it; a test pins that it is the only such entry). Its reason also says the token's **visibility is unknown**.
+- **Figures:** the map now has **83 entries** (text 25) and 148 kept. The badge pair is checked and blocks: a text colour too dark for the teal is refused (a test uses `#A0A0A0`).
+- **Gallery, with the badge included,** each passes and **none needed a change:**
+  - Forest: badge 4.76
+  - Ocean: badge 4.77
+  - Slate and amber: badge 4.81
+  - Crimson's own colours: badge 4.77
+  - Royal stays removed: its muted text still fails; its badge would be 4.70.
+- **The game's own 4.41 is still reported on every check,** now as corrected: "...is at 4.41 to 1 in the game's own colours; this theme corrects it to 4.77 to 1." The check now computes every pair in the game's own colours too (`game_low`). That surfaced **one more pair below 4.5 in the game itself:** the unsuited coaching rating on its transparent surface, **3.94** against the live index (3.93 from the recorded values, whose alpha is rounded to a byte). Every gallery theme corrects it (4.72 to 4.75). It was already a checked and blocking pair; it is now also said on screen.
+- **No pair is left failing in the game's colours** for any gallery theme.
+- **The native export of Forest writes 83 tokens,** no problems. No mapped token is missing in this build.
+**Unchanged, exactly as recorded:**
+- The 7 unchecked pairs.
+- The reach limit: 1,778 of 7,227 rule paths. The badge token adds none, since no rule uses it.
+- The 148 kept colours.
+**Tests:** engine `test_s4_theme` 23 (adds: the added entry and its reason, light refused, the badge blocks and is reported as corrected, the light refusal in plain words); Studio 147 (`S4.test`: no Light choice, the corrected sentence, the untouched-low sentence). Checklist section G and the Session 2 checklist are updated: 83 tokens; the badge as a theme-set colour, with its paint source to be found first.
 
 ### S2. One way into the game
 - **One button, "Put it in the game"**, in Simple mode: the native route only (`native.export`), which changes no game file. Bundles are not offered in Simple mode.

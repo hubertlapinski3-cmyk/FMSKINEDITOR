@@ -198,7 +198,7 @@ class Engine:
         c = theme.contrast(gen, self._game_colour)
         missing = self._theme_missing(gen)
         return {"inputs": gen["inputs"], "writes": len(gen["overrides"]), "keeps": gen["kept"], "status": "not yet checked in the game", "missing": missing,
-                "contrast": {k: c[k] for k in ("minimum", "pairs", "checked", "failures", "game_failures", "unchecked")}, "ok": not c["failures"] and not missing,
+                "contrast": {k: c[k] for k in ("minimum", "pairs", "checked", "failures", "game_failures", "game_low", "unchecked")}, "ok": not c["failures"] and not missing,
                 "preview": {o["token"]: o["value"] for o in gen["overrides"] if o["token"] in ("--global-background", "--colours-ui-soft", "--colours-ui-strong", "--brand-theme-primary", "--brand-theme-accent", "--global-text-primary", "--global-text-secondary")}}
 
     def theme_create(self, q, b):
@@ -217,7 +217,7 @@ class Engine:
         p = theme.project_for(name, gen, b.get("keep_club_colours", True), (self.ws.vanilla_manifest() or {}).get("game_build"))
         projfmt.write(self.ws, p)
         changes.record(name, "options", ["project created from a theme"])
-        return {"project": project_mod.load(self.ws, name), "writes": len(gen["overrides"]), "contrast": {k: c[k] for k in ("checked", "failures", "game_failures")}, "status": "not yet checked in the game"}
+        return {"project": project_mod.load(self.ws, name), "writes": len(gen["overrides"]), "contrast": {k: c[k] for k in ("checked", "failures", "game_failures", "game_low")}, "status": "not yet checked in the game"}
 
     def theme_gallery(self, q, b):
         """The gallery: each theme's inputs, made by the same generator, with its contrast result computed now."""

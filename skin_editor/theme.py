@@ -1,12 +1,14 @@
-"""A theme from three colours (docs/SIMPLE-MODE-PLAN.md, S4): a background, an accent and a text colour, dark or light, turned into token overrides through the role map
+"""A theme from three colours (docs/SIMPLE-MODE-PLAN.md, S4): a background, an accent and a text colour, turned into DARK-theme token overrides through the role map
 (data/simple/roles.json, made by tools/make_role_map.py from the Crimson preset's ramps and the game's usage).
+Light themes are out of 1.2.0 (S4 amendment, owner decision 1): the map comes from a dark preset and light themes fail on the surfaces it keeps; `generate` refuses them.
 
 How a value is made, for an entry on ramp R at step k (R's reference step is ref, the input for R is X):
-    lightness  L = L(X) + s * (L(k) - L(ref))         s = +1 for dark, -1 for light (a light theme mirrors the steps around its background)
+    lightness  L = L(X) + (L(k) - L(ref))
     hue        H = H(X) + (H(k) - H(ref))
     saturation S = S(X) * S(k) / S(ref)                (S(X) when the reference has none)
     alpha      the alpha Crimson gives that token
-so the inputs equal to Crimson's own reference colours reproduce Crimson's values (pinned by a test). Tokens the map KEEPS are not written: they stay the game's own colour.
+so the inputs equal to Crimson's own reference colours reproduce Crimson's values (pinned by a test; an entry marked `anchor: none`, added by an owner decision, is not on
+Crimson's ramps and is not covered by that test). Tokens the map KEEPS are not written: they stay the game's own colour.
 
 The contrast check runs on every generated theme at the moment it is made: Crimson's own 43 foreground / background pairs, the minimum ratio 4.5, colours with transparency
 composited over the page background first. A failing pair is reported as a finding; no colour is adjusted to make it pass, and `create` refuses to write a failing theme.
@@ -59,10 +61,12 @@ def _norm(x):
 def generate(background, accent, text, mode="dark", rm=None):
     """-> {"overrides": [{token, value: {rgb, a}, ramp, step, status}], "kept": n, "inputs": {...}}. Pure: no index, no files beyond the role map."""
     rm = rm or roles()
-    if mode not in ("dark", "light"):
-        raise ValueError("mode must be dark or light")
+    if mode == "light":
+        raise ValueError("light themes are not in this version: the role map comes from a dark preset")
+    if mode != "dark":
+        raise ValueError("mode must be dark")
     inputs = {"neutral": _norm(background), "accent": _norm(accent), "text": _norm(text)}
-    s = 1.0 if mode == "dark" else -1.0
+    s = 1.0
     out = []
     for e in rm["entries"]:
         ramp = e["ramp"]
@@ -100,7 +104,8 @@ def contrast(gen, game_value, rm=None):
     """Crimson's 43 pairs on the generated theme. game_value(token) -> (r, g, b, a) or None, for the tokens the theme does not write.
     A pair is TOUCHED when the theme writes one of its colours (a token it overrides, or a `--cr-<step>` of a ramp): a touched pair under the minimum is a FAILURE and blocks the theme.
     A pair whose colours the theme does not write, and that is not seen through transparency over the generated page, measures the game's own colours: under the minimum it is reported in `game_failures`, a finding about the game, and does not block.
-    -> {minimum, pairs, checked, failures, game_failures, unchecked, rows}"""
+    `game_low`: every pair that is under the minimum in the game's OWN colours (both colours plain game values), with the theme's ratio and whether the theme corrects it.
+    -> {minimum, pairs, checked, failures, game_failures, game_low, unchecked, rows}"""
     rm = rm or roles()
     mine = {o["token"]: colour.from_obj(o["value"]) for o in gen["overrides"]}
 
@@ -127,7 +132,19 @@ def contrast(gen, game_value, rm=None):
         rows.append(row)
         if not row["pass"]:
             (failures if row["touched"] else game_failures).append(row)
-    return {"minimum": rm["contrast_minimum"], "pairs": len(rm["contrast_pairs"]), "checked": len(rows), "failures": failures, "game_failures": game_failures, "unchecked": unchecked, "rows": rows}
+    game_low = []
+    gpage = game_value("--global-background")
+    for row in rows:
+        gf, gb = game_value(row["fg"]), game_value(row["bg"])
+        if gf is None or gb is None or gpage is None:
+            continue
+        under = colour.composite(gb, gpage[:3]) if gb[3] < 1 else gb[:3]
+        top = colour.composite(gf, under) if gf[3] < 1 else gf[:3]
+        g = round(ratio(top, under), 2)
+        if g < rm["contrast_minimum"]:
+            game_low.append({"fg": row["fg"], "bg": row["bg"], "game_ratio": g, "ratio": row["ratio"], "corrected": row["touched"] and row["pass"]})
+    return {"minimum": rm["contrast_minimum"], "pairs": len(rm["contrast_pairs"]), "checked": len(rows), "failures": failures, "game_failures": game_failures,
+            "game_low": game_low, "unchecked": unchecked, "rows": rows}
 
 
 def project_for(name, gen, keep_club_colours=True, game_build=None):

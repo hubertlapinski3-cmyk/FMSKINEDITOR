@@ -27,9 +27,12 @@ class RoleMap(unittest.TestCase):
         self.assertEqual(RM["references"], {"neutral": "n-1", "accent": "c-400", "text": "t-1"})
         for e in RM["entries"]:
             self.assertEqual(e["status"], "unverified")
-            self.assertGreater(e["rules"], 0, "only colour tokens some rule uses are mapped")
             self.assertIn(e["ramp"], ("neutral", "accent", "text"))
             self.assertIn(e["step"], RM["ramps"][e["ramp"]])
+            if e.get("anchor") == "none":                                 # added by an owner decision: says so, and says what is not known
+                self.assertIn("owner decision", e["decision"]); self.assertIn("NOT ANCHORED", e["why"]); self.assertIn("VISIBILITY UNKNOWN", e["why"])
+                continue
+            self.assertGreater(e["rules"], 0, "only colour tokens some rule uses are mapped by the Crimson-ramp rule")
             self.assertEqual(e["crimson"].split()[0], RM["ramps"][e["ramp"]][e["step"]], "the entry's step has Crimson's RGB")
         self.assertEqual(RM["summary"]["entries"], len(RM["entries"])); self.assertEqual(RM["summary"]["kept"], len(RM["kept"]))
         for k in RM["kept"]:
@@ -40,34 +43,45 @@ class RoleMap(unittest.TestCase):
         self.assertEqual(len(RM["contrast_pairs"]), 43)
         self.assertEqual(RM["contrast_minimum"], 4.5)
 
+    def test_the_defender_badge_label_is_the_one_entry_added_by_decision_and_is_the_themes_text(self):
+        added = [e for e in RM["entries"] if e.get("anchor") == "none"]
+        self.assertEqual([(e["token"], e["ramp"], e["step"]) for e in added], [("--data-player-position-defender-foreground", "text", "t-1")])
+        self.assertEqual(added[0]["rules"], 0, "no rule of this build uses it: the reason says so")
+        self.assertNotIn("--data-player-position-defender-background", {e["token"] for e in RM["entries"]}, "the fill keeps the game's teal")
+
+    def test_light_is_out_and_says_why(self):
+        self.assertEqual(RM["modes"], ["dark"])
+        self.assertIn("light themes fail on the surfaces it keeps", RM["modes_note"])
+
 
 class Generator(unittest.TestCase):
     def test_crimsons_own_colours_reproduce_crimsons_values(self):
         g = gen(REFS["neutral"], REFS["accent"], REFS["text"])
-        crim = {e["token"]: e["crimson"].split()[0] for e in RM["entries"]}
+        crim = {e["token"]: e["crimson"].split()[0] for e in RM["entries"] if e.get("anchor") != "none"}
+        self.assertEqual(len(crim), len(RM["entries"]) - 1, "every entry but the decision-added badge label is anchored in Crimson")
         for o in g["overrides"]:
+            if o["token"] not in crim:
+                continue
             want = crim[o["token"]]
             self.assertLessEqual(max(abs(int(o["value"]["rgb"][i:i + 2], 16) - int(want[i:i + 2], 16)) for i in (1, 3, 5)), 1, o["token"])
             self.assertEqual(o["status"], "unverified")
         self.assertEqual(len(g["overrides"]), len(RM["entries"]))
         self.assertEqual(g["kept"], len(RM["kept"]))
 
-    def test_the_three_inputs_drive_their_ramps_and_light_mirrors_the_steps(self):
+    def test_the_three_inputs_drive_their_ramps(self):
         g = {o["token"]: o["value"]["rgb"] for o in gen("#0F1A24", "#2E86DE", "#E6EEF5")["overrides"]}
         self.assertEqual(g["--global-background"], "#0F1A24", "the page background is the background input")
         self.assertEqual(g["--brand-theme-primary"], "#2E86DE", "the primary accent is the accent input")
         self.assertEqual(g["--global-text-primary"], "#E6EEF5", "the primary text is the text input")
-        i = next(n for n, e in enumerate(RM["entries"]) if e["ramp"] == "neutral" and e["step"] != RM["references"]["neutral"])
-        dark, light = (theme._hls(gen("#808080", "#2E86DE", "#E6EEF5", m)["overrides"][i]["value"]["rgb"])[1] for m in ("dark", "light"))
-        ref = theme._hls("#808080")[1]
-        self.assertNotAlmostEqual(dark, ref, places=2)
-        self.assertAlmostEqual(dark - ref, -(light - ref), delta=0.005)
+        self.assertEqual(g["--data-player-position-defender-foreground"], "#E6EEF5", "the badge label is the theme's primary text")
 
-    def test_bad_inputs_are_refused(self):
+    def test_bad_inputs_and_light_are_refused(self):
         with self.assertRaises(ValueError):
             gen("red", "#2E86DE", "#E6EEF5")
         with self.assertRaises(ValueError):
             gen("#000000", "#2E86DE", "#E6EEF5", "grey")
+        with self.assertRaisesRegex(ValueError, "light themes are not in this version"):
+            gen("#F4F4F2", "#C2410C", "#1F1F1F", "light")
 
 
 class Contrast(unittest.TestCase):
@@ -80,14 +94,24 @@ class Contrast(unittest.TestCase):
         self.assertTrue(all(f["touched"] and f["ratio"] < 4.5 for f in c["failures"]))
         self.assertEqual(json.dumps(g, sort_keys=True), before, "the check does not touch the theme")
         self.assertEqual(json.dumps(gen(*inputs), sort_keys=True), before, "and generating again gives the same colours")
-        self.assertEqual([(f["fg"], f["ratio"]) for f in c["game_failures"]], [("--data-player-position-defender-foreground", 4.41)])
-        self.assertTrue(all(not f["touched"] for f in c["game_failures"]))
+        self.assertEqual(c["game_failures"], [], "the badge is the theme's job now: no pair is left failing in the game's colours")
+
+    def test_the_badge_pair_blocks_and_the_games_own_low_value_is_still_reported_as_corrected(self):
+        c = theme.contrast(gen(REFS["neutral"], REFS["accent"], REFS["text"]), GV)
+        badge = next(r for r in c["rows"] if r["fg"] == "--data-player-position-defender-foreground")
+        self.assertTrue(badge["touched"]); self.assertGreaterEqual(badge["ratio"], 4.5)
+        low = {x["fg"]: x for x in c["game_low"]}
+        self.assertEqual((low["--data-player-position-defender-foreground"]["game_ratio"], low["--data-player-position-defender-foreground"]["corrected"]), (4.41, True))
+        dim = theme.contrast(gen(REFS["neutral"], REFS["accent"], "#A0A0A0"), GV)          # a text colour too dark for the badge's teal
+        self.assertIn("--data-player-position-defender-foreground", [f["fg"] for f in dim["failures"]], "a theme whose text fails on the badge is refused")
 
     def test_crimsons_own_colours_pass_every_pair_they_touch(self):
         c = theme.contrast(gen(REFS["neutral"], REFS["accent"], REFS["text"]), GV)
         self.assertEqual(c["failures"], [])
         self.assertEqual(c["checked"], 36)
         self.assertEqual(len(c["unchecked"]), 7, "white on Crimson's hue families, which a generated theme does not write")
+        self.assertEqual(sorted((x["fg"], x["game_ratio"], x["corrected"]) for x in c["game_low"]),
+                         [("--data-player-position-defender-foreground", 4.41, True), ("--status-coaching-adjective-ratings-unsuited-text", 3.93, True)])
 
 
 class Gallery(unittest.TestCase):
@@ -104,6 +128,10 @@ class Gallery(unittest.TestCase):
     def test_every_removal_and_every_fix_reproduces(self):
         for r in self.g["removed"]:
             i = r["inputs"]
+            if i["mode"] == "light":                                     # light is out of 1.2.0 (decision 1): it cannot even be generated now
+                with self.assertRaises(ValueError):
+                    gen(i["background"], i["accent"], i["text"], i["mode"])
+                continue
             self.assertTrue(theme.contrast(gen(i["background"], i["accent"], i["text"], i["mode"]), GV)["failures"], r["name"] + " fails, as recorded")
         names = {t["name"]: t for t in self.g["themes"]}
         for f in self.g["fixed"]:
@@ -155,10 +183,16 @@ class Engine(unittest.TestCase):
         self.assertEqual(self.call("project.list")["result"], [])
 
     def test_create_refuses_a_failing_theme_in_plain_words_and_writes_nothing(self):
-        r = self.call("theme.create", {"name": "paper", "background": "#F4F4F2", "accent": "#C2410C", "text": "#1F1F1F", "mode": "light"})
+        r = self.call("theme.create", {"name": "royal", "background": "#16142A", "accent": "#8E6CF0", "text": "#ECEAF5", "mode": "dark"})
         self.assertIn("error", r)
         self.assertIn("hard to read", r["error"]["data"]["plain"])
-        self.assertFalse(projfmt.is_folder(self.e.ws, "paper"))
+        self.assertFalse(projfmt.is_folder(self.e.ws, "royal"))
+
+    def test_a_light_theme_is_refused_in_plain_words(self):
+        r = self.call("theme.generate", {"background": "#F4F4F2", "accent": "#C2410C", "text": "#1F1F1F", "mode": "light"})
+        self.assertIn("Light themes aren't available", r["error"]["data"]["plain"])
+        r = self.call("theme.create", {"name": "paper", "background": "#F4F4F2", "accent": "#C2410C", "text": "#1F1F1F", "mode": "light"})
+        self.assertIn("error", r); self.assertFalse(projfmt.is_folder(self.e.ws, "paper"))
 
     def test_create_writes_a_passing_theme_as_a_native_folder_project_marked_unverified(self):
         r = self.call("theme.create", {"name": "ocean", "background": "#0F1A24", "accent": "#2E86DE", "text": "#E6EEF5", "mode": "dark", "keep_club_colours": False})

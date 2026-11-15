@@ -1,5 +1,5 @@
 {
- "note": "The gallery's INPUTS only. Every theme is produced by skin_editor/theme.generate, the same code that makes a theme from a person's three colours; no colour here is hand-made. Each theme passes the contrast check at its inputs (pinned by tests/test_s4_theme.py). Every theme is 'not yet checked in the game' until Session 2 records it; a theme that fails there is fixed or removed, never relabelled.",
+ "note": "The gallery's INPUTS only. Every theme is produced by skin_editor/theme.generate, the same code that makes a theme from a person's three colours; no colour here is hand-made. Each theme passes the contrast check at its inputs (pinned by tests/test_s4_theme.py), including the defender badge pair since the S4 amendment (owner decision 2, 2026-11-15); no theme needed a change for it. Every theme is 'not yet checked in the game' until Session 2 records it; a theme that fails there is fixed or removed, never relabelled.",
  "themes": [
   {"name": "Forest", "background": "#101A15", "accent": "#2FA36B", "text": "#E6EFE9", "mode": "dark", "status": "not yet checked in the game"},
   {"name": "Ocean", "background": "#0F1A24", "accent": "#2E86DE", "text": "#E6EEF5", "mode": "dark", "status": "not yet checked in the game"},
@@ -11,7 +11,7 @@
  ],
  "removed": [
   {"name": "Royal", "inputs": {"background": "#16142A", "accent": "#8E6CF0", "text": "#ECEAF5", "mode": "dark"}, "why": "the muted text fails on two surfaces (4.35 and 4.01); three input fixes were tried (darker background, lighter text) and none passed"},
-  {"name": "Paper", "inputs": {"background": "#F4F4F2", "accent": "#C2410C", "text": "#1F1F1F", "mode": "light"}, "why": "18 pairs the theme touches fail (dark text on the modal surface at 1.27, for one): the role map comes from a dark preset, and the surfaces it keeps at the game's own colour stay dark, so a light theme made with this map cannot pass"},
-  {"name": "Sky", "inputs": {"background": "#F2F6FA", "accent": "#1D5FBF", "text": "#16202B", "mode": "light"}, "why": "17 pairs fail, for the same reason as Paper"}
+  {"name": "Paper", "inputs": {"background": "#F4F4F2", "accent": "#C2410C", "text": "#1F1F1F", "mode": "light"}, "why": "18 pairs the theme touches fail (dark text on the modal surface at 1.27, for one): the role map comes from a dark preset, and the surfaces it keeps at the game's own colour stay dark, so a light theme made with this map cannot pass. Since the S4 amendment (owner decision 1, 2026-11-15) light themes are out of 1.2.0 and are not generated at all"},
+  {"name": "Sky", "inputs": {"background": "#F2F6FA", "accent": "#1D5FBF", "text": "#16202B", "mode": "light"}, "why": "17 pairs fail, for the same reason as Paper; light themes are out of 1.2.0 (owner decision 1)"}
  ]
 }

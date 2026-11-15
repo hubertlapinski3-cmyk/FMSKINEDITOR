@@ -19,6 +19,14 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 OUT = ROOT / "data" / "simple" / "roles.json"
 ANCHORS = {"neutral": "--global-background", "accent": "--brand-theme-primary", "text": "--global-text-primary"}
+# Entries added by an owner decision, outside the Crimson-ramp rule above; each says why and what is not known.
+ADDED = [
+    {"token": "--data-player-position-defender-foreground", "ramp": "text", "step": "t-1", "a": 1.0,
+     "decision": "S4 amendment, owner decision 2 (2026-11-15): the defender badge pair blocks, so the theme sets the badge label",
+     "why": "the game's own label colour reads at 4.41 to 1 on its fill (minimum 4.5); the theme's primary text replaces it, and the fill keeps the game's teal so positions keep their colours. "
+            "NOT ANCHORED in Crimson: Crimson sets this label to its teal Light (#8AD9CD), which is on none of the three ramps, so the reproduction test does not cover this entry. "
+            "VISIBILITY UNKNOWN: no style rule of this build uses this token (reach 0) and no token refers to it; whether it paints the badge (game code may read it while running) is for Session 2 to observe with fm_get_styles; if it does not, the entry comes out."},
+]
 
 
 def crimson_palette():
@@ -68,6 +76,14 @@ def build(ix, crimson_project, cr):
             entries.append({"token": o["token"], "ramp": hit[0], "step": hit[1], "a": v["a"], "crimson": "%s a=%s" % (rgb, round(v["a"], 3)), "rules": used[o["token"]], "status": "unverified"})
         else:
             kept.append({"token": o["token"], "crimson": "%s a=%s" % (rgb, round(v["a"], 3)), "rules": used[o["token"]], "why": "not on the neutral, accent or text ramp (a hue family, a data scale, a rating or a mix): three input colours cannot derive it, so the game's own colour stays"})
+    crim = {o["token"]: o["value"] for o in crimson_project["token_overrides"] if isinstance(o["value"], dict)}
+    for add in ADDED:
+        assert add["token"] in ix.defs, "an added entry must exist in this build: " + add["token"]
+        assert add["step"] in ramps[add["ramp"]]
+        kept = [k for k in kept if k["token"] != add["token"]]
+        c = crim.get(add["token"])
+        entries.append({**add, "crimson": "%s a=%s" % (c["rgb"].upper(), round(c["a"], 3)) if c else None, "anchor": "none",
+                        "rules": used.get(add["token"], 0), "status": "unverified"})
     roles = {r["token"]: r for r in entries}
     refs = {}
     for ramp, tok in ANCHORS.items():
@@ -88,11 +104,13 @@ def build(ix, crimson_project, cr):
         "anchors": ANCHORS, "references": refs,
         "ramps": ramps,
         "entries": entries, "kept": kept,
-        "summary": {"entries": len(entries), "kept": len(kept), "by_ramp": {k: sum(1 for r in entries if r["ramp"] == k) for k in ramps},
+        "summary": {"entries": len(entries), "kept": len(kept), "added_by_decision": len(ADDED), "by_ramp": {k: sum(1 for r in entries if r["ramp"] == k) for k in ramps},
                     "rule_paths_reached_by_entries": len(reach_mapped), "rule_paths_reached_by_all_used_colour_tokens": len(reach_all)},
         "contrast_pairs": [{"fg": p["fg"], "bg": p["bg"]} for p in crimson_project["contrast_pairs"]],
         "game_values": game_values(ix, crimson_project["contrast_pairs"] + [{"fg": "--global-background", "bg": "--global-background"}]),
         "contrast_minimum": 4.5,
+        "modes": ["dark"],
+        "modes_note": "S4 amendment, owner decision 1 (2026-11-15): light is out of 1.2.0. The role map comes from a dark preset; light themes fail on the surfaces it keeps at the game's own colour; extending the map for light themes is later work, not 1.2.0.",
     }
 
 

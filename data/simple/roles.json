@@ -683,6 +683,18 @@
    "status": "unverified"
   },
   {
+   "token": "--data-player-position-defender-foreground",
+   "ramp": "text",
+   "step": "t-1",
+   "a": 1.0,
+   "decision": "S4 amendment, owner decision 2 (2026-11-15): the defender badge pair blocks, so the theme sets the badge label",
+   "why": "the game's own label colour reads at 4.41 to 1 on its fill (minimum 4.5); the theme's primary text replaces it, and the fill keeps the game's teal so positions keep their colours. NOT ANCHORED in Crimson: Crimson sets this label to its teal Light (#8AD9CD), which is on none of the three ramps, so the reproduction test does not cover this entry. VISIBILITY UNKNOWN: no style rule of this build uses this token (reach 0) and no token refers to it; whether it paints the badge (game code may read it while running) is for Session 2 to observe with fm_get_styles; if it does not, the entry comes out.",
+   "crimson": "#8AD9CD a=1.0",
+   "anchor": "none",
+   "rules": 0,
+   "status": "unverified"
+  },
+  {
    "token": "--data-tables-background-hover",
    "ramp": "text",
    "step": "white",
@@ -1673,12 +1685,13 @@
   }
  ],
  "summary": {
-  "entries": 82,
+  "entries": 83,
   "kept": 148,
+  "added_by_decision": 1,
   "by_ramp": {
    "neutral": 24,
    "accent": 34,
-   "text": 24
+   "text": 25
   },
   "rule_paths_reached_by_entries": 1778,
   "rule_paths_reached_by_all_used_colour_tokens": 7227
@@ -1895,5 +1908,9 @@
   "--status-coaching-adjective-ratings-very-good-text": "#AED431FF",
   "--status-player-status-manager-club": "#FF5A28FF"
  },
- "contrast_minimum": 4.5
+ "contrast_minimum": 4.5,
+ "modes": [
+  "dark"
+ ],
+ "modes_note": "S4 amendment, owner decision 1 (2026-11-15): light is out of 1.2.0. The role map comes from a dark preset; light themes fail on the surfaces it keeps at the game's own colour; extending the map for light themes is later work, not 1.2.0."
 }
