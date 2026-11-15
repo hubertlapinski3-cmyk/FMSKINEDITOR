@@ -15,5 +15,5 @@ Installed copies update through **Check for updates**, then **Install and restar
 
 ### What this release does not cover
 - The self-check covers reading pictures and the error log. **Writing changed game bundles** (the Advanced "Build bundles" route) is not covered by it yet; that is planned before the next feature release.
-- No new calibration report is attached: the render is unchanged, and the report of 1.1.0 stands.
+- **No calibration report is attached to this release, on purpose:** the render is unchanged, so the calibration report of 1.1.0 stands unchanged and lives on the **v1.1.0 release page** (`calibration-report-1.1.0.md` and `.json`).
 - Everything in the notes of 1.1.0 about the approximation still applies: it is an approximation, never the game. Use the PREVIEW tab to see your skin in the running game.
