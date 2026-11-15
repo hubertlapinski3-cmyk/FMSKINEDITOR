@@ -443,5 +443,6 @@ For every release, in this order; each item is checked and recorded, not assumed
 2. The tag is pushed only with the owner's approval after that audit.
 3. After the run: installer size and full sha256; `latest.json` (version, notes, signatures against the `.sig`, URLs); the report assets byte for byte against the repo folder; the previous release still downloads; the feed serves the new `latest.json` byte for byte; no stray assets, wrongly named files answer 404.
 4. **Freeze line written for the new report folder, and the raw and the normalised hashes of its files in `docs/evidence/MANIFEST.sha256`** (`python tools/make_manifest.py`; `tests/test_evidence_manifest.py` fails on either mismatch). An addendum, if any, is a file in the folder, never an edit of a report.
+**General rule (owner, 2026-11-15):** the raw-hash test exists to catch line-ending changes, so anything that records a raw hash records it from the COMMITTED bytes at commit time, never from a working copy. A safety copy of evidence files (such as the one made before restoring the five LF files) lives outside the evidence tree, in `%TEMP%`, and is never a source of a hash.
 5. The owner's update-path run (previous version to this one) and smoke test, recorded with dates.
 6. CI is read after every push (not only before a tag); a red run is fixed before any other work.
