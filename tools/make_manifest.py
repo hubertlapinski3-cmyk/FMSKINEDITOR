@@ -25,6 +25,7 @@ FILES = ["docs/evidence/phase9-m7-calibration-20261114/calibration-report.md", "
 HEADER = [
     "# sha256 of the LF-normalised bytes of each file (so any checkout agrees). Lines starting with # are comments.",
     "# Lines starting with 'raw ' carry the sha256 of the RAW bytes of the same file (added 2026-11-15): they catch a line-ending change the normalised hash cannot see.",
+    "# The raw hashes are of the COMMITTED bytes (docs/evidence/** is -text, so any checkout has exactly these bytes). Five older files (the first m7 report, the held-out predictions and results, the Session B log) are stored with LF endings; a Windows checkout made before the attribute existed may hold CRLF copies of them, which fail the raw check: restore them from git (delete, then git checkout). Found 2026-11-15 when CI failed on exactly that.",
     "# Logs, verified 2026-11-14 (committed LogOutput.log, hashed in the LF form and the CRLF form, against the value recorded in the session doc):",
     "#   Session B: recorded 5DB697AC3446F2F9 (6428 bytes) = the CRLF form of the committed file, so it IS listed below (the manifest hashes its LF form).",
     "#   Session D: recorded 65026D7EA79CF637 (10420 bytes); committed LF form D6808D14A7620392 (10332 bytes), CRLF form FF47B09159183B77 (10421 bytes): NOT reproduced, not listed.",
