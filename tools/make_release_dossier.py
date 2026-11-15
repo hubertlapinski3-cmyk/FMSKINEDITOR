@@ -165,12 +165,13 @@ def main():
                 walk(v, path + [str(k)])
         elif isinstance(o, list):
             for n, v in enumerate(o):
-                walk(v, path + ["runs[%d]" % n if path == [] or path[-1] == "runs" else str(n)])
+                walk(v, path[:-1] + ["%s[%d]" % (path[-1] if path else "", n)])
         elif isinstance(o, int) and not isinstance(o, bool):
             flat.setdefault(o, []).append(".".join(path))
     walk(ev, [])
     body = re.sub(r"\d+(?:\.\d+)+", " ", notes).replace("x64", " ")                       # versions and the platform name in the installer's file name are not figures
-    figs = sorted({int(x.replace(",", "")) for x in re.findall(r"\d{1,3}(?:,\d{3})+|\d+", body)})
+    # a figure is a number standing on its own: digits that are part of a name (FM27SkinEditor, x64) are not figures
+    figs = sorted({int(x.replace(",", "")) for x in re.findall(r"(?<![A-Za-z0-9_.,])(?:\d{1,3}(?:,\d{3})+|\d+)(?![A-Za-z0-9_])", body)})
     w("**Provenance of the notes' figures.** The notes carry versions and the figures below, and nothing else numeric. Each figure is matched, by this script, to a value in the committed evidence file `%s` (blob `%s` on `%s`, sha256 `%s`), produced by `tools/frozen_picture_check.py` (which starts a frozen engine in a scratch workspace against the real game files, reads the game, asks for the picture catalogue and then for thumbnails). The script FAILS if a figure has no source.\n" % (ev_path, git("rev-parse", "%s:%s" % (a.main, ev_path)).strip()[:10], a.main.split("/")[-1], sha(ev_bytes).upper()))
     w("| figure in the notes | where it comes from in the evidence |\n|---|---|")
     for f_ in figs:

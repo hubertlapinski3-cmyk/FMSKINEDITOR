@@ -19,7 +19,8 @@ FILES = ["docs/evidence/phase9-m7-calibration-20261114/calibration-report.md", "
          "docs/evidence/phase9-m0-session-B-logs-20261114/LogOutput.log",
          "docs/evidence/phase9-v110-calibration-20261114/calibration-report.md", "docs/evidence/phase9-v110-calibration-20261114/calibration-report.json",
          "docs/evidence/phase9-v110-calibration-20261114/diff-vs-frozen-1.0.0.md", "docs/evidence/phase9-v110-calibration-20261114/ADDENDUM.md",
-         "docs/evidence/phase9-v110-grid-vertical-flow-design.json"]
+         "docs/evidence/phase9-v110-grid-vertical-flow-design.json",
+         "docs/evidence/phase9-v111-frozen-picture-check-20261115.json"]
 
 
 HEADER = [

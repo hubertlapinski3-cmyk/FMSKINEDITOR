@@ -7,13 +7,13 @@ Run by the operator (the standing gate: the operator audits, the owner reads thi
 | | |
 |---|---|
 | branch | `origin/release/1.1.1` |
-| head | `1e395e1e01ad51d47d28f63cd03b8855bdafbbb6` |
+| head | `cf9cfcf5b24f171c616af6db905e1f192ffd93bd` |
 | base (tag `v1.1.0`) | `32aef80c072b1d22c342f6c4fb5eb17017517e67` |
-| commits on the branch since the base | 3 |
+| commits on the branch since the base | 4 |
 | tag `v1.1.1` on origin | **none** |
-| main, for comparison (NOT the target) | `94b11572dbec8f0e606409bd8650132a964fdc29` |
+| main, for comparison (NOT the target) | `1054bd237fbc27885602938ddca9f65d85999e80` |
 
-**The head is `1e395e1`, not `b1ddf93`.** The tag approval as last worded names `b1ddf93`; that commit predates the audit condition that the notes and the README say where the unchanged calibration report lives (the notes, the README and one test changed), so a tag on `b1ddf93` would ship notes without that statement. The commit to tag is the head above; the approval needs to name it.
+**The head is `cf9cfcf`, not `b1ddf93`.** The tag approval as last worded names `b1ddf93`; that commit predates the audit condition that the notes and the README say where the unchanged calibration report lives (the notes, the README and one test changed), so a tag on `b1ddf93` would ship notes without that statement. The commit to tag is the head above; the approval needs to name it.
 
 ## 2. The diff `v1.1.0..release/1.1.1`: 12 files, each with its reason
 
@@ -22,7 +22,7 @@ Run by the operator (the standing gate: the operator audits, the owner reads thi
 | `.github/workflows/ci.yml` | changed | 1 / 1 | CI also runs on pushes to `release/**`, so a release branch has a real run before its tag (it ran only on main and pull requests). |
 | `.github/workflows/release.yml` | changed | 8 / 2 | Adds the frozen engine's self-test after the sidecar build and before the installer is built; the calibration report is attached only for the 1.0.x line (see section 4), so a repair release attaches none instead of a mislabelled old one. |
 | `README.md` | changed | 1 / 1 | One sentence beside `logs/launcher.log` and `logs/server.log`: `logs/app.log` holds the traceback of every failed call (path given), the self-test checks it; and where the calibration report of a repair release lives. |
-| `docs/RELEASE-NOTES-1.1.1.md` | new | 19 / 0 | NEW. The release body (the workflow reads `docs/RELEASE-NOTES-<version>.md`). |
+| `docs/RELEASE-NOTES-1.1.1.md` | new | 20 / 0 | NEW. The release body (the workflow reads `docs/RELEASE-NOTES-<version>.md`). |
 | `skin_editor/api/rpc.py` | changed | 2 / 0 | `import logging` and one `warning(..., exc_info=True)` line: every failed call writes its traceback to `app.log` (it logged nothing before). Nothing else in the file changes on this branch. |
 | `skin_editor/frozen.py` | new | 83 / 0 | NEW. The stand-in for `fmod_toolkit` (the engine never decodes audio; FMOD is not shipped) and the self-test: the picture code must import, and a deliberately failing call must leave its traceback in `app.log`. |
 | `studio/src-tauri/Cargo.lock` | changed | 1 / 1 | Version 1.1.0 -> 1.1.1 of the `fm-skin-studio` package (one line). |
@@ -124,10 +124,10 @@ Run on the folders that exist on the branch (`phase9-m7-calibration-20261114`, `
 A repair release. Nothing about what the render draws, or how it is measured, has changed.
 
 ### What was wrong
-In the installed app (1.0.0 and 1.1.0) the **Images view could not draw the game's icons**, and any other screen that needed one of them showed an error mentioning `fmod.dll`. SVG pictures and most textures were not affected. The problem was in how the app's engine was packaged, not in your projects or your game, and nothing was written to your game files.
+In the installed app (1.0.0 and 1.1.0) the **Images view could not draw the game's icons or its textures**: an icon showed an error mentioning `fmod.dll`, a texture showed a "not found" error. Only the SVG pictures worked. Checked against the game's own files, asking the installed 1.1.0 engine for a thumbnail of every picture in its catalogue: **0 of 1,341 icons, 0 of 1,369 textures and 285 of 285 SVG pictures could be drawn.** The problem was in how the app's engine was packaged, not in your projects or your game, and nothing was written to your game files.
 
 ### What changed
-- The engine now includes what its picture decoders need at run time, and no longer tries to load an audio library it never uses (so no audio library is shipped either).
+- The engine now includes what its picture decoders need at run time, and no longer tries to load an audio library it never uses (so no audio library is shipped either). The same check on the repaired build: **all 1,341 icons and all 285 SVG pictures draw, and 1,332 of the 1,369 textures.**
 - **A failed call now leaves its full error in the engine's log**, which used to stay empty: `%LOCALAPPDATA%\FM27SkinEditor\logs\app.log`. If something goes wrong, that file is what to send.
 - Every build of the engine now checks itself before it can be released: the picture code must load, and a deliberately failing call must leave its error in that log.
 
@@ -135,43 +135,75 @@ In the installed app (1.0.0 and 1.1.0) the **Images view could not draw the game
 Installed copies update through **Check for updates**, then **Install and restart**. If the update does not work, this release also carries the full installer (`FM.Skin.Studio_1.1.1_x64-setup.exe`): download it from this page and run it over your current copy. Your projects and settings are kept.
 
 ### What this release does not cover
+- **37 of the 1,369 textures still do not draw.** They are in the game's font and style files, and the engine run from the source code fails on exactly the same 37 with the same message: an older, separate limit that this release neither causes nor changes.
 - The self-check covers reading pictures and the error log. **Writing changed game bundles** (the Advanced "Build bundles" route) is not covered by it yet; that is planned before the next feature release.
 - **No calibration report is attached to this release, on purpose:** the render is unchanged, so the calibration report of 1.1.0 stands unchanged and lives on the **v1.1.0 release page** (`calibration-report-1.1.0.md` and `.json`).
 - Everything in the notes of 1.1.0 about the approximation still applies: it is an approximation, never the game. Use the PREVIEW tab to see your skin in the running game.
 ```
 
-Every digit sequence in the notes: `1.0.0`, `1.1.0`, `1.1.1`. These are **version numbers only** (`1.1.1`: `tauri.conf.json`, section 3; `1.1.0` and `1.0.0`: the releases it repairs and the older affected one, tags `v1.1.0` and `v1.0.0`; the installer's file name `FM.Skin.Studio_1.1.1_x64-setup.exe`, which the Tauri build produces, also contains the platform name `x64`, which is not a number the notes compute). **No measured value, count or rate appears in the notes, so no run produced a number in them.**
+**Provenance of the notes' figures.** The notes carry versions and the figures below, and nothing else numeric. Each figure is matched, by this script, to a value in the committed evidence file `docs/evidence/phase9-v111-frozen-picture-check-20261115.json` (blob `ea68656721` on `main`, sha256 `139E5C729FFC1FB0ACBA77B03671391B5504FB62D25742847C51CA901BFE7E35`), produced by `tools/frozen_picture_check.py` (which starts a frozen engine in a scratch workspace against the real game files, reads the game, asks for the picture catalogue and then for thumbnails). The script FAILS if a figure has no source.
+
+| figure in the notes | where it comes from in the evidence |
+|---|---|
+| `0` | `runs[0].sample.icon.ok`; `runs[0].sample.svg.failed`; `runs[0].sample.texture.ok`; `runs[0].everything.icon.ok` (and 14 more) |
+| `37` | `runs[1].everything.texture.failed`; `runs[2].everything.texture.failed` |
+| `285` | `runs[0].catalogue.by_kind.svg`; `runs[0].everything.svg.asked`; `runs[0].everything.svg.ok`; `runs[1].catalogue.by_kind.svg` (and 5 more) |
+| `1,332` | `runs[1].everything.texture.ok`; `runs[2].everything.texture.ok` |
+| `1,341` | `runs[0].catalogue.by_kind.icon`; `runs[0].everything.icon.asked`; `runs[0].everything.icon.failed`; `runs[0].everything.icon.failures_by_message.PyInstallerImportError: Failed to load dynlib/dll '<path>'. Most likely this dynlib/dll was not found when the` (and 6 more) |
+| `1,369` | `runs[0].catalogue.by_kind.texture`; `runs[0].everything.texture.asked`; `runs[0].everything.texture.failed`; `runs[1].catalogue.by_kind.texture` (and 3 more) |
+
+Run labels in the evidence: run 1: installed 1.1.0 engine (before the fix) (`fm-skin-engine.exe`, 9008081 bytes, sha256 `DAB6571C16A7AB8B`); run 2: frozen build of release/1.1.1 at 1e395e1 (the fix; engine files unchanged by any later commit on the branch) (`fm-skin-engine.exe`, 8861675 bytes, sha256 `30C8127E70909932`); run 3: the engine run from the source tree (the reference: what the frozen builds are compared with) (`python -m skin_editor (source tree, Python 3.14.10)`, 0 bytes, sha256 `n/a (source)`).
+
+Version numbers in the notes: `1.1.1` (`tauri.conf.json`, section 3), `1.1.0` and `1.0.0` (the releases it repairs; tags `v1.1.0` and `v1.0.0`).
 
 ## 6. Suites and CI
 
 | | result |
 |---|---|
-| engine suite on the branch head | Ran 366 tests in 129.964s / OK (skipped=1) |
+| engine suite on the branch head | Ran 366 tests in 129.787s / OK (skipped=1) |
 | Studio suite | not run on the branch: the Studio is byte-identical to `v1.1.0` (no file under `studio/src` is in the diff); the release workflow runs it before the build |
 
 CI runs on the branch (read from the API):
 
 | run | commit | conclusion |
 |---|---|---|
+| ci `43716699239` | `cf9cfcf` | success |
 | ci `43713236859` | `1e395e1` | success |
 | ci `43712752755` | `b1ddf93` | success |
 
-CI at the head `1e395e1`: **success**.
+CI at the head `cf9cfcf`: **success**.
 
-## 7. The frozen build was made the way the installer makes it
+## 7. The frozen build was made the way the installer makes it, and what it serves
 
-The release workflow's step is `python -m pip install -r requirements.txt pyinstaller`, then `python tools/freeze_engine.py` (section 4); the build tested here was made with the same script (`python tools/freeze_engine.py --out <dir>`), on the head above, followed by the script's own self-test (it runs after every freeze):
+The release workflow's step is `python -m pip install -r requirements.txt pyinstaller`, then `python tools/freeze_engine.py` (section 4). The build tested here was made with the same script (`python tools/freeze_engine.py --out <dir>`) in the branch worktree, and the script ran its own self-test after the freeze:
 
 | | |
 |---|---|
 | self-test line | `selftest ok: the picture code imports and a failed call leaves its traceback in app.log` |
-| frozen `fm-skin-engine.exe` | 8861675 bytes, sha256 `286675B64A7C7E832BDB655D5166716017732E3D40891A397EDD9FEEBC8A5B07` |
+| frozen `fm-skin-engine.exe` used by the after-run | 8861675 bytes, sha256 `30C8127E70909932289D233C48A1B2DD613F70372EE3852F2141987C0F37E425` |
 | the whole one-dir build | 109190095 bytes |
 | files with `fmod` in their name in the build | 0 |
-| interpreter, PyInstaller | Python 3.14.10, PyInstaller 6.22.3 |
-| thumbnails served by the frozen engine | 40/40 icon, 40/40 svg, 40/40 texture (run at fc1b8e8, engine files unchanged since) |
+| interpreter, PyInstaller (of this local build) | Python 3.14.10, PyInstaller 6.22.3 |
 
-The four engine files are blob-identical between `fc1b8e8` (the commit the thumbnail run was made on) and the head: **yes**, so that run describes this head's engine.
+**Which commit the after-run build came from, and how the tagged tip differs from it.** The after-run build was made from `1e395e1` (`frozen build of release/1.1.1 at 1e395e1`). The tip to be tagged is `cf9cfcf`. The difference between the two, from `git diff --name-status 1e395e1 cf9cfcf`:
+
+```text
+M	docs/RELEASE-NOTES-1.1.1.md
+```
+
+So the tip differs from the built commit by the notes file and nothing else, and the four engine files are blob-identical between them: **yes**; the release workflow builds the installer from the tip itself, and its own self-test runs on that build.
+
+**What the three runs of `tools/frozen_picture_check.py` found** (same tool, same scope: a thumbnail asked for every picture of the catalogue of 2,995 pictures, against the real game files; evidence file above):
+
+| kind | catalogue | installed 1.1.0 (before) | branch build (after) | engine run from source |
+|---|---|---|---|---|
+| icon | 1,341 | 0 of 1,341 | 1,341 of 1,341 | 1,341 of 1,341 |
+| svg | 285 | 285 of 285 | 285 of 285 | 285 of 285 |
+| texture | 1,369 | 0 of 1,369 | 1,332 of 1,369 | 1,332 of 1,369 |
+
+**The 37 textures that still fail after the fix fail the same way from the source engine: same messages, same bundles, same counts: confirmed by comparing `failures_by_message` of the two runs.** They are an older, separate limit that this release neither causes nor changes (the failing bundles are font and style files; see the plan). All 1,341 icons and all 285 SVG pictures draw after the fix, and none of the icons did before.
+
+**The logging fix's evidence:** for one deliberately failing call, the old engine's `app.log` is **0 bytes** (empty, no traceback); the fixed build's is **29,741 bytes** and holds the traceback (`has_traceback_for_the_deliberate_failure`: True); the source engine's: 40,770 bytes, True.
 
 How the CI build differs from the one tested here: the workflow installs `pyinstaller` **unpinned** (`pip install -r requirements.txt pyinstaller`), so the CI build uses the PyInstaller current on the day (here 6.22.3), and its Python is `3.14`. The self-test in the workflow is what guards that drift.
 
@@ -179,14 +211,14 @@ What this does not show: the build is not byte-reproducible (the CI build of the
 
 ## 8. Byte-identity of the repair: the branch against main, file by file
 
-`94b1157` (main) is **not** the release target. It holds the same repair as ordinary commits plus the unreleased Simple mode work and keeps version 1.1.0, so 1.1.1 and 1.2.0 ship the same repair if the table below says so. sha256 of each file's bytes as committed:
+`1054bd2` (main) is **not** the release target. It holds the same repair as ordinary commits plus the unreleased Simple mode work and keeps version 1.1.0, so 1.1.1 and 1.2.0 ship the same repair if the table below says so. sha256 of each file's bytes as committed:
 
 | file | sha256 on the branch | sha256 on main | result |
 |---|---|---|---|
 | `.github/workflows/ci.yml` | `44e504a769641e70` | `44e504a769641e70` | **identical** |
 | `.github/workflows/release.yml` | `4cd6fb5839c1e120` | `4cd6fb5839c1e120` | **identical** |
 | `README.md` | `d98f1ab21e8aafcf` | `d98f1ab21e8aafcf` | **identical** |
-| `docs/RELEASE-NOTES-1.1.1.md` | `9c6ec890002d7534` | `9c6ec890002d7534` | **identical** |
+| `docs/RELEASE-NOTES-1.1.1.md` | `b7e147fc4014556f` | `b7e147fc4014556f` | **identical** |
 | `skin_editor/api/rpc.py` | `f28f6ffd75a8e602` | `3f83c06af5fa86f3` | differs: see the hunk check below |
 | `skin_editor/frozen.py` | `cb4253b7118adede` | `cb4253b7118adede` | **identical** |
 | `studio/src-tauri/Cargo.lock` | `dc6430e6dd77665c` | `ce398401c0d906b5` | differs BY DESIGN: main stays at 1.1.0 until the 1.2.0 bump |
@@ -258,11 +290,15 @@ test_simple_inventory.Inventory.test_literal_inventory_is_consistent
 test_simple_inventory.Inventory.test_summary_is_the_rows_counted
 ```
 
-Actual runs at these heads: branch `Ran 366 tests in 129.964s / OK (skipped=1)`; main `Ran 397 tests in 125.793s / OK (skipped=1)`.
+Actual runs at these heads: branch `Ran 366 tests in 129.787s / OK (skipped=1)`; main `Ran 397 tests in 128.999s / OK (skipped=1)`.
+
+## 8c. What the three new raw-hash manifest tests exercise, and whether that code is in the diff
+
+**Answer, read from the tests and checked in git:** the three tests (`test_every_listed_file_hashes_to_its_recorded_raw_value`, `test_every_normalised_entry_has_a_raw_entry_and_the_tool_lists_the_same_files`, `test_the_raw_hash_sees_a_line_ending_change_the_normalised_one_cannot`) call `mm.raw()`, `mm.parse()` and `mm.FILES` of `tools/make_manifest.py` and read the `raw ` lines of `docs/evidence/MANIFEST.sha256`. **That code is not in the 12-file diff and not on the branch:** `tools/make_manifest.py` on the branch defines `raw()`: **no**, `parse()`: **no**; the branch's manifest has 0 `raw ` lines (main's has 12); raw support arrived on main in `6c346a2`, which is an ancestor of `v1.1.0`: **no**. **It is evidence tooling that exists only on main: neither repair code nor Simple mode work. Nothing is backported;** the branch keeps the 1.1.0 manifest test and manifest, which pass.
 
 ## 9. After the owner's approval (the order, unchanged)
 
-1. Push the tag `v1.1.1` on the head above (`git tag v1.1.1 1e395e1`; `git push origin v1.1.1`). 2. Post-run checks: the installer's size and sha256; `latest.json` version 1.1.1, notes equal to `RELEASE-NOTES-1.1.1.md`, both signatures equal to the `.sig` asset; the v1.0.0 and v1.1.0 releases untouched (their assets byte-identical to the hashes in the plan, still downloadable); **no calibration asset on 1.1.1**; the self-test ran in the workflow on the shipped artifact and passed (the run's log). 3. The owner, in order: Check for updates (with the fallback in the plan), the Images view icon thumbnails, the click-to-explain step of the smoke test, the S2 section C look including Images. 4. Only after ALL of the above has passed: remove the release worktree and record that CI runs on `release/**` as a standing rule. **The branch `release/1.1.1` is KEPT after the tag: it is the provenance of the tag.**
+1. Push the tag `v1.1.1` on the head above (`git tag v1.1.1 cf9cfcf`; `git push origin v1.1.1`). 2. Post-run checks: the installer's size and sha256; `latest.json` version 1.1.1, notes equal to `RELEASE-NOTES-1.1.1.md`, both signatures equal to the `.sig` asset; the v1.0.0 and v1.1.0 releases untouched (their assets byte-identical to the hashes in the plan, still downloadable); **no calibration asset on 1.1.1**; the self-test ran in the workflow on the shipped artifact and passed (the run's log). 3. The owner, in order: Check for updates (with the fallback in the plan), the Images view icon thumbnails, the click-to-explain step of the smoke test, the S2 section C look including Images. 4. Only after ALL of the above has passed: remove the release worktree and record that CI runs on `release/**` as a standing rule. **The branch `release/1.1.1` is KEPT after the tag: it is the provenance of the tag.**
 
 ## 10. Two things for the owner to decide or know
 
