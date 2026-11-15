@@ -1,0 +1,20 @@
+{
+ "note": "S0 measurements, one machine, one run, offline; scratch workspace for everything that writes",
+ "machine": "owner's PC",
+ "crimson_built_in_memory_s": 0.006,
+ "snapshot_copy_s": 0.15,
+ "snapshot_files": 2,
+ "snapshot_mb": 1.5,
+ "index_built_from": "the scratch snapshot just taken from the game folder",
+ "index_build_cold_s": 0.8,
+ "index_sheets": 49,
+ "index_tokens": 2059,
+ "index_load_warm_s": 0.08,
+ "index_cache_mb": 3.6,
+ "render_layout_list_cold_s": 1.51,
+ "render_first_layout_cold_s": 9.12,
+ "render_first_layout": "Intro (37 elements)",
+ "render_same_layout_again_s": 0.0,
+ "render_cache_after_mb": 9.6,
+ "render_cache_after_files": 15
+}
