@@ -57,6 +57,19 @@ describe('the mode a run starts in', () => {
     expect((item as HTMLButtonElement).disabled).toBe(true)
   })
 
+  it('the bottom panel has no Build and no Preview tab in Simple mode (bundles and game screenshots are Advanced), and has them in Advanced', async () => {
+    engine(ready, [])
+    const { unmount } = render(<App />)
+    await screen.findByText('Look at it')
+    expect(screen.getByText('PROBLEMS')).toBeTruthy(); expect(screen.getByText('OUTPUT')).toBeTruthy()
+    expect(screen.queryByText('BUILD')).toBeNull(); expect(screen.queryByText('PREVIEW')).toBeNull()
+    unmount(); cleanup()
+    localStorage.setItem('studio.mode', 'advanced')
+    engine(ready, [])
+    render(<App />)
+    expect(await screen.findByText('BUILD')).toBeTruthy(); expect(screen.getByText('PREVIEW')).toBeTruthy()
+  })
+
   it('a stored "simple" is kept even with projects', async () => {
     localStorage.setItem('studio.mode', 'simple')
     engine(ready, ['a', 'b'])

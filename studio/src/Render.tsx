@@ -182,16 +182,17 @@ export const FIRST_RENDER_TEXT = "Reading the game's styles for the first time. 
 let renderedOnce = false
 
 /** One layout drawn from its render tree, with the explain panel beside it. */
-export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult, highlight = [] }: { layout: LayoutRow | null; say: (s: string) => void; project?: string | null; onOpenFile?: (file: string, line?: number) => void; onResult?: (r: RResult | null, layout: LayoutRow | null) => void; highlight?: string[] }) {
+export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult, highlight = [], skinOverride, bare = false, zoom0 }: { skinOverride?: boolean; bare?: boolean; zoom0?: number; layout: LayoutRow | null; say: (s: string) => void; project?: string | null; onOpenFile?: (file: string, line?: number) => void; onResult?: (r: RResult | null, layout: LayoutRow | null) => void; highlight?: string[] }) {
   const [res, setRes] = useState<RResult | null>(null)
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
   const [sel, setSel] = useState<string | null>(null)
   const [w, setW] = useState(800)
   const [h, setH] = useState(600)
-  const [zoom, setZoom] = useState(1)
+  const [zoom, setZoom] = useState(zoom0 ?? 1)
   const [markers, setMarkers] = useState(true)
-  const [skin, setSkin] = useState(true)          // the vanilla/skin toggle: on = the open project's edits are drawn, off = the game as it ships
+  const [skinState, setSkin] = useState(true)          // the vanilla/skin toggle: on = the open project's edits are drawn, off = the game as it ships
+  const skin = skinOverride ?? skinState         // Look at it (Simple mode) fixes the side: the game as it ships, or with the skin
   const [tick, setTick] = useState(0)             // bumped by every `render.invalidate` event of the open project, so the view repaints after any edit
   const [explainW, setExplainW] = useStoredSize('studio.explainW', 400, 240, 800)
   // M8, large layouts: the engine cuts the tree to about 1,000 nodes; `open` is the list of collapsed nodes the user expanded, `all` asks for every node. Both belong to one layout and reset with it.
@@ -215,6 +216,19 @@ export function RenderCanvas({ layout, say, project = null, onOpenFile, onResult
   const node = useMemo(() => (res ? at(res.tree, sel) : null), [res, sel])
   const hl = useMemo(() => new Set(highlight), [highlight])
   if (!layout) return <div className="empty">Pick a game layout on the left to see it drawn.</div>
+  if (bare) {                       // Simple mode's Look at it: the picture only, with its progress line and any error; the approximation notice is shown once by the caller
+    return (
+      <div className="rbare">
+        {busy && <div className="dim small" data-testid="render-progress">{renderedOnce ? 'rendering ...' : FIRST_RENDER_TEXT}</div>}
+        {err && <div className="warn small" role="alert">{err}</div>}
+        <div className="rscroll rbare-scroll" style={{ width: w * zoom, height: h * zoom }}>
+          <div className="rstage" data-testid="stage" style={{ width: w, height: h, transform: `scale(${zoom})`, transformOrigin: '0 0' }}>
+            {res?.tree.map((n, i) => <Node key={i} n={n} path={String(i)} sel={null} onSel={() => {}} markers={false} hl={hl} onOpen={openNode} />)}
+          </div>
+        </div>
+      </div>
+    )
+  }
   const by = res?.summary.by_status ?? {}
   return (
     <div className="rsplit">

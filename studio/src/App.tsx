@@ -15,6 +15,7 @@ import Gutter, { useStoredSize } from './Gutter'
 import Setup from './Setup'
 import Start from './Start'
 import PutInGame from './PutInGame'
+import LookAtIt from './LookAtIt'
 import { resolveMode, readStoredMode, storeMode, type Mode } from './mode'
 import { sayOf, sayOfJobError, type Said } from './plainError'
 import { RenderScreenView, RenderTableView } from './RenderScreens'
@@ -222,13 +223,14 @@ export default function App() {
     if (!confirm('Put the stock game files back for every bundle this editor changed?\n\nThe game must be closed. Hashes are verified afterwards.')) return
     try { const r = await rpc<any>('backup.restore', { backup: 'vanilla' }); say('restored: ' + JSON.stringify(r).slice(0, 400)); setPanel('output') } catch (e) { fail(e) }
   }
-  const setModeP = (m: Mode) => { setMode(m); storeMode(m); if (m === 'simple' && !SIMPLE_VIEWS.includes(view)) setView('explorer') }
+  const setModeP = (m: Mode) => { setMode(m); storeMode(m); if (m === 'simple' && !SIMPLE_VIEWS.includes(view)) setView('explorer'); if (m === 'simple' && (panel === 'build' || panel === 'preview')) setPanel('problems') }
 
   useEffect(() => {              // the mode, once the engine has said how many projects exist: a fresh install (no projects, nothing stored) is Simple, an existing one Advanced
     if (boot !== 'ready' || modeResolved.current || !state) return
     modeResolved.current = true
     const m = resolveMode(readStoredMode(), projects.length)
     setMode(m); storeMode(m)
+    if (m === 'simple') setPanel((p) => (p === 'build' || p === 'preview' ? 'problems' : p))
   }, [boot, state, projects])
 
   useEffect(() => {
@@ -258,6 +260,7 @@ export default function App() {
 
   const actW = mode === 'simple' ? 132 : 44                                            // Simple mode's navigation carries words, so it is wider
   const needsSetup = !!state && (!state.install || !state.vanilla || !state.indexed)   // a fresh install: the game has not been found and read yet (S1a)
+  const panelTabs: PanelTab[] = mode === 'simple' ? ['problems', 'output'] : ['problems', 'output', 'build', 'preview']        // Simple mode has no Build tab (bundles) and no Preview tab (it can show in-game screenshots)
   const showStart = !project && !needsSetup && view === 'explorer'                      // the choices are the landing page in both modes while no project is open; the other views (render, layouts, ...) still work without a project
   const pickGameFolder = async () => {
     if ('__TAURI_INTERNALS__' in window) {
@@ -298,8 +301,8 @@ export default function App() {
         {view === 'layouts' && <Guard name="Layouts"><Layouts key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
         {view === 'tiles' && <Guard name="Tile layout"><Tiles key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
         {view === 'tables' && <Guard name="Table views"><Tables key={project ?? ''} project={project} target={target} onChanged={reloadClean} say={say} /></Guard>}
-        {view === 'render' && <div className="rmodes" role="tablist">{(['layout', 'screen', 'table'] as const).map((m) => <button key={m} role="tab" aria-selected={rmode === m} className={rmode === m ? 'on' : ''} onClick={() => setRmode(m)}>{m}</button>)}</div>}
-        {view === 'render' && rmode === 'layout' && <Guard name="Render browser"><RenderBrowser picked={rl ? rl.bundle + rl.path_id : null} onPick={setRl} say={say} /></Guard>}
+        {view === 'render' && mode !== 'simple' && <div className="rmodes" role="tablist">{(['layout', 'screen', 'table'] as const).map((m) => <button key={m} role="tab" aria-selected={rmode === m} className={rmode === m ? 'on' : ''} onClick={() => setRmode(m)}>{m}</button>)}</div>}
+        {view === 'render' && mode !== 'simple' && rmode === 'layout' && <Guard name="Render browser"><RenderBrowser picked={rl ? rl.bundle + rl.path_id : null} onPick={setRl} say={say} /></Guard>}
         {view === 'checklist' && <Guard name="In-game checklist"><Checklist say={say} /></Guard>}
         {view === 'updates' && <Guard name="Game updates"><Updates project={project} say={say} onChanged={reloadClean} /></Guard>}
         {view === 'palette' && project && <Palette project={project} onChanged={reloadClean} say={say} />}
@@ -320,7 +323,7 @@ export default function App() {
       </aside>
       <main className="editor">
         {notice && !needsSetup && <div className="notice" role="alert"><div>{notice.plain}</div><details><summary>details</summary><div className="mono small">{notice.details}</div></details><button onClick={() => setNotice(null)} aria-label="Dismiss">×</button></div>}
-        {needsSetup && state ? <Guard name="Setup"><Setup state={state} refresh={refreshState} say={say} pickFolder={pickGameFolder} /></Guard> : view === 'put' && project ? <Guard name="Put it in the game"><PutInGame key={project} project={project} say={say} /></Guard> : showStart ? <Guard name="Start"><Start projects={projects} say={say} onImport={importNative} onCreated={async (n) => { await refreshState(); await openProject(n); setView('palette') }} /></Guard> : view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
+        {needsSetup && state ? <Guard name="Setup"><Setup state={state} refresh={refreshState} say={say} pickFolder={pickGameFolder} /></Guard> : view === 'render' && mode === 'simple' ? <Guard name="Look at it"><LookAtIt project={project} say={say} /></Guard> : view === 'put' && project ? <Guard name="Put it in the game"><PutInGame key={project} project={project} say={say} /></Guard> : showStart ? <Guard name="Start"><Start projects={projects} say={say} onImport={importNative} onCreated={async (n) => { await refreshState(); await openProject(n); setView('palette') }} /></Guard> : view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
         <div className="tabs">{tabs.map((t) => <div key={t.path} className={'tab' + (t.path === active ? ' on' : '')} onClick={() => setActive(t.path)}>{t.path.split('/').pop()}{t.readonly ? ' (game)' : ''}{dirty(t.path) ? ' •' : ''}<button onClick={(e) => { e.stopPropagation(); closeTab(t.path) }}>×</button></div>)}</div>
         <div className="surface">
           {tab ? <Editor path={tab.path} language={langOf(tab.path)} theme="vs-dark" value={tab.text}
@@ -356,13 +359,13 @@ export default function App() {
       </main>
       <section className="panel">
         <div className="ptabs">
-          {(['problems', 'output', 'build', 'preview'] as PanelTab[]).map((p) => <button key={p} className={panel === p ? 'on' : ''} onClick={() => setPanel(p)}>{p.toUpperCase()}{p === 'problems' && problems.length ? ` (${problems.length})` : ''}</button>)}
+          {panelTabs.map((p) => <button key={p} className={panel === p ? 'on' : ''} onClick={() => setPanel(p)}>{p.toUpperCase()}{p === 'problems' && problems.length ? ` (${problems.length})` : ''}</button>)}
         </div>
         <div className="pbody">
           {panel === 'problems' && (problems.length ? problems.map((p, i) => <div key={i} className="prob" onClick={() => p.file.endsWith('.uss') || p.file.endsWith('.json') ? openFile(p.file, p.line) : undefined}><b>{p.file}</b>:{p.line ?? '?'} {p.message}</div>) : <div className="dim">{project ? 'No problems.' : ''}</div>)}
           {panel === 'output' && log.map((l, i) => <div key={i} className="mono">{l}</div>)}
-          {panel === 'preview' && <Guard name="Preview"><Preview project={project} say={say} /></Guard>}
-          {panel === 'build' && <div className="build">
+          {panel === 'preview' && mode !== 'simple' && <Guard name="Preview"><Preview project={project} say={say} /></Guard>}
+          {panel === 'build' && mode !== 'simple' && <div className="build">
             <p>{project ? <>Target of <b>{project}</b>: <b>{target}</b>.</> : 'Open a project.'}</p>
             {planErr && <div className="warn">{planErr}</div>}
             {plan && <div className="plan">

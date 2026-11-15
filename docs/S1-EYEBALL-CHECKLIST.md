@@ -38,6 +38,19 @@ The launcher sends "Put it in the game" to a folder INSIDE the scratch workspace
 5. Is the middle-of-the-screen card what you meant? Does anything read oddly?
 6. **The Images view (I) explicitly:** open it in a project and scroll the game's pictures: **icons, SVGs and textures all draw as thumbnails**, none shows an error. This is the surface the packaging fix touches, and the Pictures path of S6 depends on it. (In the scratch source build this always worked; the check that matters for the installed app is in the 1.1.1 post-run checks.)
 
+## D. Look at it (S5)
+Open the launcher with `--keep` (the setup is already done) and a project that has changes (the ready-made theme is the clearest).
+1. Click **Look at it**. On the left: six layouts (Loans tile, Atmosphere tile, Medical centre tile, Tactics tile, Training tile, Preferences card) and a search box. The first time in a run, a line says it is reading the game's styles for the first time and takes about ten seconds; then the picture appears.
+2. With a project open it starts **side by side**: on the left "The game as it ships", on the right "With my skin: <name>". With the Crimson theme the colours must visibly differ. Does it read as before and after?
+3. The three buttons: **The game as it ships** and **With my skin** each show one side only; **Side by side** shows both.
+4. One line says it is an approximation, not the game's renderer. It appears once, not on each picture.
+5. Click the other layouts. Type `Squad` in the search box and open one of the results.
+6. **There is no BUILD tab and no PREVIEW tab at the bottom in Simple mode** (only PROBLEMS and OUTPUT). Click **Advanced**: both appear. **Nowhere in Simple mode should a screenshot of the game appear.**
+7. Close the project (or open Look at it with none): it shows only the game and says to open or make a skin.
+
+## E. My colours
+In **Colours**: 1. A **My colours (0/10)** section with a colour box and **Add to My colours**. Add a colour; it appears with its code and a cross. Add the same again: it refuses in words. Add ten: the eleventh is refused and the button is off. 2. Open a group in the list: every row now has a star (saves that row's current colour) and a small arrow (opens your saved colours as one-click choices beside the picker). Click the arrow, pick a saved colour: the row takes it, keeping its transparency; **put back** returns the GAME's colour, not your previous pick. 3. With **Top bar and headers** ticked, the same two controls sit beside the bar's colour. 4. Close and reopen the Studio (same launcher, `--keep`): your saved colours are still there.
+
 ## B. An existing install
 Stop the first run (Enter), then:
 

@@ -186,3 +186,13 @@ button.sw { cursor: pointer }
 button.mini { padding: 0 5px; min-width: 20px; height: 20px; line-height: 18px; border: 1px solid #3a3d44; background: none; color: var(--dim); border-radius: 3px }
 .pal-mine-add { display: flex; gap: 8px; align-items: center }
 .palette ul.tokens li { flex-wrap: wrap }
+
+/* S5: Look at it */
+.look { display: grid; grid-template-columns: 220px 1fr; height: 100%; min-height: 0 }
+.look-list { border-right: 1px solid #26282d; overflow: auto; padding-bottom: 8px }
+.look-list ul { list-style: none; margin: 0; padding: 0 } .look-list li button { display: grid; width: 100%; text-align: left; padding: 6px 12px; border: 0; background: none; color: var(--fg) }
+.look-list li.sel button { box-shadow: inset 3px 0 var(--acc); background: #1f2126 } .look-list small { color: var(--dim) }
+.look-main { overflow: auto; min-width: 0 } .look-bar { display: flex; gap: 6px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #26282d } .look-bar button.on { background: var(--acc); color: #fff }
+.look-title { margin-left: auto }
+.look-panes { display: flex; gap: 14px; padding: 10px 12px; align-items: flex-start; flex-wrap: wrap } .look-pane { margin: 0 } .look-pane figcaption { font-weight: 600; margin-bottom: 4px }
+.rbare-scroll { overflow: hidden; border: 1px solid #2c2f35; background: #101114 }
