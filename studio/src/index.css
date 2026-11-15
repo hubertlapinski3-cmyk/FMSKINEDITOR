@@ -175,3 +175,14 @@ button.primary:disabled { opacity: .5 }
 .busy-overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.55); z-index: 50 }
 .busy-card { background: #1b1c20; border: 1px solid #2c2f35; border-radius: 8px; padding: 22px 30px; min-width: 340px; display: grid; gap: 12px; text-align: center }
 .busy-step { font-size: 15px } .busy-card progress { width: 100%; height: 10px }
+
+/* My colours (S3 requirement, applied to the Colours view) */
+.pal-mine { margin: 4px 10px 8px; display: grid; gap: 6px }
+.pal-mine-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.pal-mine-item { display: inline-flex; gap: 4px; align-items: center; border: 1px solid #2c2f35; border-radius: 4px; padding: 2px 4px }
+.sw { width: 18px; height: 18px; border: 1px solid #555; border-radius: 3px; padding: 0; display: inline-block }
+button.sw { cursor: pointer }
+.pal-strip { display: inline-flex; gap: 4px; flex-wrap: wrap } .pal-rowstrip { flex-basis: 100%; padding: 2px 0 4px 28px }
+button.mini { padding: 0 5px; min-width: 20px; height: 20px; line-height: 18px; border: 1px solid #3a3d44; background: none; color: var(--dim); border-radius: 3px }
+.pal-mine-add { display: flex; gap: 8px; align-items: center }
+.palette ul.tokens li { flex-wrap: wrap }

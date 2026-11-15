@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { groupOf, grouped, hexOf } from './colourGroups'
 import Palette, { lightTextContrast } from './Palette'
+import { MAX_MY_COLOURS, MY_COLOURS_KEY, addMine, loadMine, removeMine } from './myColours'
 
 vi.mock('./engine', () => ({ rpc: vi.fn(), RpcError: class extends Error {}, connect: vi.fn(), subscribe: vi.fn(() => () => {}) }))
 import { rpc } from './engine'
@@ -15,6 +16,7 @@ const rows = [
 ]
 let model: any
 beforeEach(() => {
+  localStorage.clear()
   model = { name: 'p', options: {}, token_overrides: [] }
   ;(rpc as any).mockImplementation(async (m: string, p: any) => {
     if (m === 'project.get') return model
@@ -129,5 +131,75 @@ describe('the bar colour and its light text', () => {
     render(<Palette project="p" onChanged={() => {}} say={() => {}} />)
     await screen.findByLabelText('Top bar colour')
     expect(screen.queryByTestId('bar-contrast')).toBeNull()
+  })
+})
+
+describe('My colours (a personal palette)', () => {
+  const stored = () => JSON.parse(localStorage.getItem(MY_COLOURS_KEY) || '[]')
+  const add = (hex: string) => { fireEvent.change(screen.getByLabelText('A colour to add to My colours'), { target: { value: hex } }); fireEvent.click(screen.getByText('Add to My colours')) }
+
+  it('the storage rules: up to ten, no duplicates, upper case, nothing that is not a colour', () => {
+    let l: string[] = []
+    for (let i = 0; i < MAX_MY_COLOURS; i++) { const r = addMine(l, '#0000' + (i < 10 ? '0' + i : i)); expect(r.ok).toBe(true); l = r.list }
+    expect(l.length).toBe(10)
+    expect(addMine(l, '#FFFFFF')).toMatchObject({ ok: false }); expect(addMine(l, '#FFFFFF').why).toMatch(/holds 10/)
+    expect(addMine(['#AABBCC'], '#aabbcc')).toMatchObject({ ok: false }); expect(addMine([], 'red').ok).toBe(false)
+    expect(addMine([], '#aabbcc').list).toEqual(['#AABBCC'])
+    expect(removeMine(['#AABBCC', '#112233'], '#aabbcc')).toEqual(['#112233'])
+  })
+
+  it('a stored value that is not ours, or storage that throws, starts empty and never crashes', () => {
+    localStorage.setItem(MY_COLOURS_KEY, '{"not":"a list"}'); expect(loadMine()).toEqual([])
+    localStorage.setItem(MY_COLOURS_KEY, JSON.stringify(['#aabbcc', 'nope', '#AABBCC', 7, '#112233'])); expect(loadMine()).toEqual(['#AABBCC', '#112233'])
+    const spy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new Error('blocked') }); expect(loadMine()).toEqual([]); spy.mockRestore()
+  })
+
+  it('starts empty and says what it is for; adding is an explicit action that is remembered', async () => {
+    render(<Palette project="p" onChanged={() => {}} say={() => {}} />)
+    expect((await screen.findByTestId('my-colours')).textContent).toMatch(/Nothing saved yet/)
+    expect(screen.getByText('MY COLOURS (0/10)')).toBeTruthy()
+    add('#ff8800')
+    expect(await screen.findByLabelText('Remove #FF8800 from My colours')).toBeTruthy()
+    expect(stored()).toEqual(['#FF8800'])
+    expect(saved().length).toBe(0)                                  // saving a colour to My colours never touches the project
+  })
+
+  it('refuses a duplicate and an eleventh colour, in words, and removal is explicit', async () => {
+    render(<Palette project="p" onChanged={() => {}} say={() => {}} />)
+    await screen.findByTestId('my-colours')
+    add('#112233'); add('#112233')
+    expect(screen.getByRole('status').textContent).toMatch(/already in My colours/)
+    for (let i = 1; i < 10; i++) add('#00000' + i)
+    expect(screen.getByText('MY COLOURS (10/10)')).toBeTruthy()
+    expect((screen.getByText('Add to My colours') as HTMLButtonElement).disabled).toBe(true)
+    fireEvent.click(screen.getByLabelText('Remove #112233 from My colours'))
+    expect(screen.getByText('MY COLOURS (9/10)')).toBeTruthy(); expect(stored().includes('#112233')).toBe(false)
+  })
+
+  it('a saved colour is one click beside the raw picker of a row: it applies the colour and keeps the alpha, and put back still returns to the game', async () => {
+    localStorage.setItem(MY_COLOURS_KEY, JSON.stringify(['#FF8800']))
+    render(<Palette project="p" onChanged={() => {}} say={() => {}} />)
+    fireEvent.click(await screen.findByText(/Panels, cards and tiles/))
+    fireEvent.click(screen.getByLabelText('My colours for layout-surfaces-cards-surface'))
+    fireEvent.click(screen.getByLabelText('Use #FF8800'))
+    await waitFor(() => expect(saved().length).toBe(1))
+    expect(saved()[0].token_overrides).toEqual([{ token: '--layout-surfaces-cards-surface', value: { rgb: '#FF8800', a: 0.5 }, vanilla: '#1E212880' }])
+    expect(screen.queryByLabelText('Use #FF8800')).toBeNull()                 // the choices close after a pick
+    fireEvent.click(await screen.findByText('put back'))
+    await waitFor(() => expect(saved().length).toBe(2))
+    expect(saved()[1].token_overrides).toEqual([])                           // back to the game's own colour, not to a previous pick
+  })
+
+  it('a row can save its own current colour with the star, and the top bar colour has the same two controls', async () => {
+    model.options = { club_colours: false, club_colours_replacement: { rgb: '#202020', a: 1 } }
+    render(<Palette project="p" onChanged={() => {}} say={() => {}} />)
+    fireEvent.click(await screen.findByText(/Page background/))
+    fireEvent.click(screen.getByLabelText('Save the colour of global-background to My colours'))
+    expect(stored()).toEqual(['#16181D'])
+    fireEvent.click(screen.getByLabelText('Save the top bar colour to My colours'))
+    expect(stored()).toEqual(['#16181D', '#202020'])
+    fireEvent.click(screen.getByLabelText('Use #16181D', { selector: 'button' }))
+    await waitFor(() => expect(saved().length).toBe(1))
+    expect(saved()[0].options.club_colours_replacement).toEqual({ rgb: '#16181D', a: 1 })
   })
 })

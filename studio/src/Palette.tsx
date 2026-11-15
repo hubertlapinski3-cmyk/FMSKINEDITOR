@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { rpc } from './engine'
 import { sayOf } from './plainError'
 import { grouped, hexOf, shortName, type BrowseRow } from './colourGroups'
+import { addMine, loadMine, MAX_MY_COLOURS, removeMine, saveMine } from './myColours'
 
 interface Col { rgb: string; a: number }
 interface Override { token: string; value: Col | string; vanilla?: string }
@@ -16,6 +17,12 @@ export function lightTextContrast(rgb: string): number {
   return 1.05 / (l + 0.05)
 }
 
+/** My colours as one-click choices: each swatch applies its colour where the picker it sits beside is used. Nothing here adds or removes an entry (that is explicit, in the My colours section). */
+function Strip({ mine, onPick, label }: { mine: string[]; onPick: (rgb: string) => void; label: string }) {
+  if (!mine.length) return <span className="dim small pal-strip-empty">My colours is empty: save a colour with ☆.</span>
+  return <span className="pal-strip" role="group" aria-label={label}>{mine.map((c) => <button key={c} className="sw" style={{ background: c }} aria-label={`Use ${c}`} title={`Use ${c}`} onClick={() => onPick(c)} />)}</span>
+}
+
 /** The project's colours (Simple mode's Colours view). Three parts: the top bar and headers (one flat colour instead of each club's, an option of the project), what the game uses
  *  (every colour its rules use, grouped; click a swatch to change it, "put back" to undo), and the list of the changes made. Every edit goes through the engine's project model,
  *  which rewrites styles/tokens.uss. */
@@ -27,6 +34,10 @@ export default function Palette({ project, onChanged, say }: { project: string; 
   const [all, setAll] = useState<BrowseRow[] | null>(null)
   const [filter, setFilter] = useState('')
   const [open, setOpen] = useState<Set<string>>(new Set())
+  const [mine, setMine] = useState<string[]>(() => loadMine())        // My colours: up to 10, kept on this PC
+  const [mineNew, setMineNew] = useState('#808080')
+  const [mineMsg, setMineMsg] = useState('')
+  const [stripRow, setStripRow] = useState<string | null>(null)       // the row whose My colours choices are open
   const load = useCallback(async () => { setModel(await rpc('project.get', { name: project })) }, [project])
   useEffect(() => { setErr(''); load().catch((e) => { setModel(null); setErr(String(e.message || e)) }) }, [load])
   useEffect(() => { rpc<{ rows: BrowseRow[] }>('tokens.browse').then((r) => setAll(r.rows)).catch((e) => say('ERROR ' + sayOf(e).details)) }, [say])
@@ -55,6 +66,8 @@ export default function Palette({ project, onChanged, say }: { project: string; 
     return grouped(list)
   }, [all, filter])
 
+  const addMy = (rgb: string) => { const r = addMine(mine, rgb); setMineMsg(r.ok ? '' : r.why || ''); if (r.ok) { setMine(r.list); saveMine(r.list) } }
+  const removeMy = (rgb: string) => { const l = removeMine(mine, rgb); setMine(l); saveMine(l); setMineMsg('') }
   // a click on a swatch: change an existing override's colour, or start one from the game's own value
   const pick = (row: BrowseRow, rgb: string) => {
     const o = byToken.get(row.name)
@@ -74,9 +87,21 @@ export default function Palette({ project, onChanged, say }: { project: string; 
       <section className="pal-bar" data-testid="topbar-section">
         <div className="head">TOP BAR AND HEADERS</div>
         <label><input type="checkbox" checked={flat} onChange={(e) => setBar({ club_colours: !e.target.checked })} /> One flat colour instead of each club&apos;s colours</label>
-        {flat && <label className="pal-barcol"><input type="color" aria-label="Top bar colour" value={bar.rgb.toLowerCase()} onChange={(e) => setBar({ club_colours_replacement: { rgb: e.target.value.toUpperCase(), a: 1 } })} /> {bar.rgb.toUpperCase()}</label>}
+        {flat && <div className="pal-barcol"><label><input type="color" aria-label="Top bar colour" value={bar.rgb.toLowerCase()} onChange={(e) => setBar({ club_colours_replacement: { rgb: e.target.value.toUpperCase(), a: 1 } })} /> {bar.rgb.toUpperCase()}</label>
+          <button className="mini" aria-label="Save the top bar colour to My colours" title="Save this colour to My colours" onClick={() => addMy(bar.rgb)}>☆</button>
+          <Strip mine={mine} label="My colours for the top bar" onPick={(c) => setBar({ club_colours_replacement: { rgb: c, a: 1 } })} /></div>}
         {flat && lightTextContrast(bar.rgb) < 4.5 && <div className="warn" role="alert" data-testid="bar-contrast">The bar's text stays light in this look, so on this colour it will be hard to read. Pick a darker colour.</div>}
         <div className="dim small">The game paints the top bar and the club headers from the club&apos;s colours, in code, so there is no single colour to change: this is the way to set them, for every club at once. Not yet checked in the game in this form.</div>
+      </section>
+
+      <section className="pal-mine" data-testid="my-colours">
+        <div className="head">MY COLOURS ({mine.length}/{MAX_MY_COLOURS})</div>
+        <div className="pal-mine-row">
+          {mine.map((c) => <span key={c} className="pal-mine-item"><span className="sw" style={{ background: c }} title={c} /><code>{c}</code><button className="mini" aria-label={`Remove ${c} from My colours`} title="Remove from My colours" onClick={() => removeMy(c)}>×</button></span>)}
+          {!mine.length && <span className="dim small">Nothing saved yet. Save up to {MAX_MY_COLOURS} colours here; they then appear as one-click choices beside every colour picker.</span>}
+        </div>
+        <div className="pal-mine-add"><input type="color" aria-label="A colour to add to My colours" value={mineNew.toLowerCase()} onChange={(e) => setMineNew(e.target.value)} /><button disabled={mine.length >= MAX_MY_COLOURS} onClick={() => addMy(mineNew)}>Add to My colours</button>
+          {mineMsg && <span className="warn small" role="status">{mineMsg}</span>}</div>
       </section>
 
       <div className="head">WHAT THE GAME USES {all ? `(${all.length})` : ''}</div>
@@ -95,9 +120,12 @@ export default function Palette({ project, onChanged, say }: { project: string; 
               const cur = o && isCol(o.value) ? o.value : { rgb: r.rgb, a: r.a }
               return <li key={r.name} className={o ? 'changed' : ''}>
                 <input type="color" aria-label={`Colour of ${shortName(r.name)}`} value={cur.rgb.toLowerCase()} onChange={(e) => pick(r, e.target.value)} />
+                <button className="mini" aria-label={`Save the colour of ${shortName(r.name)} to My colours`} title="Save this colour to My colours" onClick={() => addMy(cur.rgb)}>☆</button>
+                <button className="mini" aria-label={`My colours for ${shortName(r.name)}`} aria-expanded={stripRow === r.name} title="Choose from My colours" onClick={() => setStripRow(stripRow === r.name ? null : r.name)}>▾</button>
                 <span className="name" title={`${r.name} · game's colour ${hexOf(r.rgb, r.a)} · used in ${r.reach} place(s)`}>{shortName(r.name)}</span>
                 <small className="dim">used in {r.reach}</small>
                 {o && <button onClick={() => remove(r.name)} title="Back to the game's colour">put back</button>}
+                {stripRow === r.name && <div className="pal-rowstrip"><Strip mine={mine} label={`My colours for ${shortName(r.name)}`} onPick={(c) => { pick(r, c); setStripRow(null) }} /></div>}
               </li>
             })}</ul>}
           </div>
