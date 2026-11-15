@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { groupOf, grouped, hexOf } from './colourGroups'
-import Palette from './Palette'
+import Palette, { lightTextContrast } from './Palette'
 
 vi.mock('./engine', () => ({ rpc: vi.fn(), RpcError: class extends Error {}, connect: vi.fn(), subscribe: vi.fn(() => () => {}) }))
 import { rpc } from './engine'
@@ -114,5 +114,20 @@ describe('the top bar and headers', () => {
     model.options = { club_colours: false, club_colours_replacement: { rgb: '#202020', a: 1 } }
     render(<Palette project="p" onChanged={() => {}} say={() => {}} />)
     expect(((await screen.findByLabelText('Top bar colour')) as HTMLInputElement).value).toBe('#202020')
+  })
+})
+
+describe('the bar colour and its light text', () => {
+  it('the game keeps light text on the bar, so a light colour is warned about and a dark one is not', async () => {
+    expect(lightTextContrast('#171717')).toBeGreaterThan(10)
+    expect(lightTextContrast('#FFFFFF')).toBeLessThan(1.1)
+    model.options = { club_colours: false, club_colours_replacement: { rgb: '#E0E0E0', a: 1 } }
+    render(<Palette project="p" onChanged={() => {}} say={() => {}} />)
+    expect((await screen.findByTestId('bar-contrast')).textContent).toMatch(/hard to read/)
+    cleanup()
+    model.options = { club_colours: false, club_colours_replacement: { rgb: '#202020', a: 1 } }
+    render(<Palette project="p" onChanged={() => {}} say={() => {}} />)
+    await screen.findByLabelText('Top bar colour')
+    expect(screen.queryByTestId('bar-contrast')).toBeNull()
   })
 })

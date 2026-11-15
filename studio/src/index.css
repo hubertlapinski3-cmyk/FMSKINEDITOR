@@ -167,3 +167,11 @@ button.primary:disabled { opacity: .5 }
 .pal-ghead { width: 100%; text-align: left; border: 0; background: none; color: var(--fg); padding: 4px 10px; font-weight: 600 } .pal-ghead small { color: var(--dim); font-weight: 400; margin-left: 6px }
 .palette li.changed { box-shadow: inset 2px 0 var(--acc) }
 .palette li small.dim { margin-left: auto; padding-right: 6px }
+
+/* S2: Put it in the game */
+.put { max-width: 640px; margin: 24px auto; padding: 0 16px; display: grid; gap: 10px }
+.put-done, .put-remove { border: 1px solid #2c2f35; border-radius: 6px; padding: 10px 14px }
+.put-done ol { margin: 6px 0 0 18px } .put-done li { margin: 4px 0 }
+.busy-overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.55); z-index: 50 }
+.busy-card { background: #1b1c20; border: 1px solid #2c2f35; border-radius: 8px; padding: 22px 30px; min-width: 340px; display: grid; gap: 12px; text-align: center }
+.busy-step { font-size: 15px } .busy-card progress { width: 100%; height: 10px }

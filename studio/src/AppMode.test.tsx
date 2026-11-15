@@ -37,7 +37,7 @@ describe('the mode a run starts in', () => {
     engine(ready, [])
     render(<App />)
     await screen.findByTestId('start')
-    fireEvent.click(screen.getByText('Look at it'))
+    fireEvent.click(await screen.findByText('Look at it'))
     await waitFor(() => expect(screen.queryByTestId('start')).toBeNull())
   })
 
@@ -47,6 +47,14 @@ describe('the mode a run starts in', () => {
     render(<App />)
     await waitFor(() => expect(localStorage.getItem('studio.mode')).toBe('advanced'))
     expect(screen.getByTitle('Explorer')).toBeTruthy()
+  })
+
+  it('Simple mode has "Put it in the game" as a labelled sidebar item, switched off until a project is open', async () => {
+    engine(ready, [])
+    render(<App />)
+    const item = await screen.findByText('Put it in the game')
+    expect(item.tagName).toBe('BUTTON')
+    expect((item as HTMLButtonElement).disabled).toBe(true)
   })
 
   it('a stored "simple" is kept even with projects', async () => {

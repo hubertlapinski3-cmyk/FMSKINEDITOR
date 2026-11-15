@@ -88,6 +88,9 @@ def nav_on_light_rules(index):
 def skins_root():
     """The FM27 user folder's skins folder (created on export). Windows: Documents (or OneDrive Documents); macOS: Application
     Support. Returns the path even when it does not exist yet; None when no FM27 user folder is found."""
+    import os
+    if os.environ.get("FM27SE_SKINS_DIR"):                    # test and scratch runs (tools/run_studio_scratch.py) write here, never into the real skins folder
+        return Path(os.environ["FM27SE_SKINS_DIR"])
     from . import userdirs
     folder = userdirs.user_folder()
     return folder / "skins" if folder else None
@@ -297,6 +300,38 @@ def _export(ws, p, index, aa_dir, dest, skin_id, display):
         "%s - exported by FM27 Skin Editor from project %s.\n\nFM27: cog > Preferences > pick \"%s\" in the drop-down next to "
         "\"Reload Skin\".\nTo remove: delete this folder.\n" % (name, p["name"], name), encoding="utf-8")
     return report
+
+
+MARKER = ".fm27se-export.json"
+
+
+def changes(project):
+    """What a native export of this project would carry, counted by kind. Zero everywhere means the project changes nothing yet (Simple mode refuses to export it, in plain words)."""
+    p = project_mod.migrate(project)
+    reverts = set(p.get("reverts", []))
+    c = {"colours": len([e for e in p.get("token_overrides", []) if e["token"] not in reverts]), "colour swaps": len(p.get("literal_swaps", [])), "rules": len(p.get("scoped_rules", [])),
+         "pictures": len(p.get("image_swaps", [])), "fonts": len(p.get("font_swaps", [])), "imported files": len(p.get("native_support", [])),
+         "flat look": 1 if p.get("options", {}).get("club_colours", True) is False else 0}
+    return {k: v for k, v in c.items() if v}
+
+
+def steps_left(name, first_time):
+    """The steps left in the game after an export, with the skin's name filled in. Once a skin has been exported before only the second is needed."""
+    reload_ = 'Press "Reload Skin".'
+    if not first_time:
+        return [reload_]
+    return ['In Football Manager, open Preferences (the cog). In the drop-down next to "Reload Skin", pick "%s".' % name, reload_]
+
+
+def remove(skins_root_path, name):
+    """Delete a skin folder this editor wrote (it carries the marker), nothing else."""
+    final = Path(skins_root_path) / name
+    if not final.is_dir():
+        raise FileNotFoundError("no skin folder to remove: %s" % final)
+    if not (final / MARKER).is_file():
+        raise ValueError("%s was not written by this editor; it is not removed" % final)
+    shutil.rmtree(final)
+    return str(final)
 
 
 def validate(folder):

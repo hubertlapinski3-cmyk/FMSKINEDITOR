@@ -9,6 +9,13 @@ const isCol = (v: unknown): v is Col => !!v && typeof v === 'object' && 'rgb' in
 const css = (c: Col) => `rgba(${parseInt(c.rgb.slice(1, 3), 16)},${parseInt(c.rgb.slice(3, 5), 16)},${parseInt(c.rgb.slice(5, 7), 16)},${c.a})`
 const BAR_DEFAULT: Col = { rgb: '#171717', a: 1 }
 
+/** Contrast of the game's light bar text (white) on a colour: the flat look keeps the game's own dark-bar text values, which are light, whatever colour the bar is given. */
+export function lightTextContrast(rgb: string): number {
+  const lin = (v: number) => { const c = v / 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4 }
+  const l = 0.2126 * lin(parseInt(rgb.slice(1, 3), 16)) + 0.7152 * lin(parseInt(rgb.slice(3, 5), 16)) + 0.0722 * lin(parseInt(rgb.slice(5, 7), 16))
+  return 1.05 / (l + 0.05)
+}
+
 /** The project's colours (Simple mode's Colours view). Three parts: the top bar and headers (one flat colour instead of each club's, an option of the project), what the game uses
  *  (every colour its rules use, grouped; click a swatch to change it, "put back" to undo), and the list of the changes made. Every edit goes through the engine's project model,
  *  which rewrites styles/tokens.uss. */
@@ -68,6 +75,7 @@ export default function Palette({ project, onChanged, say }: { project: string; 
         <div className="head">TOP BAR AND HEADERS</div>
         <label><input type="checkbox" checked={flat} onChange={(e) => setBar({ club_colours: !e.target.checked })} /> One flat colour instead of each club&apos;s colours</label>
         {flat && <label className="pal-barcol"><input type="color" aria-label="Top bar colour" value={bar.rgb.toLowerCase()} onChange={(e) => setBar({ club_colours_replacement: { rgb: e.target.value.toUpperCase(), a: 1 } })} /> {bar.rgb.toUpperCase()}</label>}
+        {flat && lightTextContrast(bar.rgb) < 4.5 && <div className="warn" role="alert" data-testid="bar-contrast">The bar's text stays light in this look, so on this colour it will be hard to read. Pick a darker colour.</div>}
         <div className="dim small">The game paints the top bar and the club headers from the club&apos;s colours, in code, so there is no single colour to change: this is the way to set them, for every club at once. Not yet checked in the game in this form.</div>
       </section>
 

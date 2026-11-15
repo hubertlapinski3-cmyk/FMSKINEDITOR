@@ -43,6 +43,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--existing", action="store_true", help="seed one project, so the install looks like an existing one")
     ap.add_argument("--open", action="store_true")
+    ap.add_argument("--real-skins", action="store_true", help="let \"Put it in the game\" write into your REAL skins folder (Documents\\...\\skins), so the game can load it; without this flag it writes into the scratch workspace instead")
     ap.add_argument("--check", action="store_true", help="start, probe both servers, stop (for tests)")
     ap.add_argument("--keep", action="store_true", help="use a PERSISTENT scratch workspace (%%LOCALAPPDATA%%\\FM27SkinEditor-scratch) that survives between runs, like a real install: the setup is done once, your test skin is still there next time")
     ap.add_argument("--reset", action="store_true", help="with --keep: delete that persistent scratch workspace first (a fresh install again)")
@@ -55,6 +56,8 @@ def main():
     else:
         scratch = Path(tempfile.mkdtemp(prefix="studio-scratch-"))
     env = dict(os.environ, FM27SE_WORKSPACE=str(scratch))
+    if not a.real_skins:
+        env["FM27SE_SKINS_DIR"] = str(scratch / "skins")      # "Put it in the game" lands in the scratch workspace, not in the real skins folder
     engine = vite = None
     try:
         if a.existing:
@@ -72,7 +75,8 @@ def main():
         if not wait_http("http://127.0.0.1:1420/"):
             print("the Studio page did not start on port 1420 (is another dev server running?)"); return 1
         page = "http://127.0.0.1:1420/?engine=http://127.0.0.1:%s&token=%s" % (m.group(1), m.group(2))
-        print("workspace (temporary):", scratch)
+        print("workspace:", scratch)
+        print("skins folder for \"Put it in the game\":", "YOUR REAL ONE (--real-skins)" if a.real_skins else scratch / "skins")
         print("OPEN THIS ADDRESS IN YOUR BROWSER:\n\n  " + page + "\n")
         if a.check:
             print("check: the engine printed its address and the Studio page answered on port 1420"); return 0

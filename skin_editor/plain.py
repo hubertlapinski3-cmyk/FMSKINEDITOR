@@ -40,8 +40,12 @@ RULES = [
     (r"no build for this project", "Nothing has been built for this project yet."),
     (r"target must be one of", "That way of putting the skin into the game isn't available."),
     (r"skin folder name", "Use only letters, digits, dots, dashes and underscores in the skin's name."),
+    (r"confirm is required", "Please confirm first; nothing was removed."),
+    (r"is not removed", "That folder wasn't made by this Studio, so it isn't touched. Remove it yourself if you are sure."),
     (r"was not written by this editor", "A skin with that name is already in your skins folder and was not made by this Studio. Choose another name."),
     (r"collides with a file this export writes|has the same name as a file this export writes", "A file of the skin you imported clashes with one this Studio writes. Rename it and try again."),
+    (r"changes nothing yet", "You haven't changed anything yet, so there is nothing to put in the game. Open Colours and change something first."),
+    (r"no skin folder to remove", "There is no skin of that name in your skins folder to take out."),
     (r"no FM27 user folder", "I couldn't find your Football Manager 27 documents folder. Start the game once so it creates it, or choose where to save the skin."),
     (r"only export folders can be opened|only a live-preview screenshot", "That file can't be opened from here."),
     # -- pictures and fonts

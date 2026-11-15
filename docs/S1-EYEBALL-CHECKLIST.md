@@ -27,6 +27,16 @@ Tick each line; write down anything that reads wrong, looks odd, or that you wou
 9. Click **Advanced** (bottom of the left bar): the bar turns into single letters and more tools appear. Click **S** at the bottom of that bar: back to words. Reload the page (F5): it stays in the mode you left it in.
 10. **A plain-words error:** in Advanced, open the bottom tab **BUILD** and click **Install build**. (The scratch workspace has no build, so nothing is installed; it must only refuse.) A red box at the top should say, in a sentence, that nothing has been built for this project yet, with a **details** line you can open that shows the technical text. Dismiss it with the ×.
 
+11. **Close a project and see the start screen come back** (the explanation for what you saw before is a hypothesis, not yet observed): use `--keep`, open the project from Projects, click **close** next to it. The start choices must come back. Run the launcher again with `--keep`: the setup must NOT come back, and your project must still be listed.
+
+## C. Put it in the game (S2)
+The launcher sends "Put it in the game" to a folder INSIDE the scratch workspace, not to your real skins folder (add `--real-skins` only when you want the game to see it).
+1. In a project that has a change (or the ready-made theme), the sidebar has **Put it in the game**, between Look at it and Advanced. With no project open it is greyed out.
+2. A brand-new empty project: the page says you haven't changed anything and the button is off.
+3. With a change: the page says what the skin carries. Click **Put it in the game**: a card appears in the middle of the screen naming each step in words with a bar, then the result with the steps left and the skin's name in them (two steps the first time).
+4. Click it again: only **Press "Reload Skin"** is left.
+5. Is the middle-of-the-screen card what you meant? Does anything read oddly?
+
 ## B. An existing install
 Stop the first run (Enter), then:
 

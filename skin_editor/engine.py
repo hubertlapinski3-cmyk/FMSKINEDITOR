@@ -1088,6 +1088,48 @@ class Engine:
         info = self.info or {}
         return native.export(self.ws, p, self.index, info.get("aa_dir"), root, b.get("id") or None, b.get("display") or None)
 
+    # ---- Simple mode: "Put it in the game" (docs/SIMPLE-MODE-PLAN.md S2). The native route only; no game file is written.
+    def native_preflight(self, q, b):
+        """What 'Put it in the game' would do, without doing it: the skin's name in the game, what it carries (empty = nothing changed yet), the skins folder, and whether this skin was put there before."""
+        p = project_mod.load(self.ws, b["project"])
+        root = native.skins_root()
+        ch = native.changes(p)
+        final = Path(root) / p["name"] if root else None
+        first = not (final and (final / native.MARKER).is_file())
+        return {"project": p["name"], "skin": p.get("native_name") or p["name"], "changes": ch, "has_changes": bool(ch), "skins_folder": str(root) if root else None,
+                "skins_folder_found": bool(root), "folder": str(final) if final else None, "first_time": first}
+
+    def native_put(self, q, b):
+        """The job behind the button: check, write the native skin folder, check what was written. Progress messages are the words the centre indicator shows."""
+        name = b["project"]
+
+        def fn(prog):
+            prog("Checking your skin", 0.1)
+            p = project_mod.load(self.ws, name)
+            if not native.changes(p):
+                raise ValueError("this skin changes nothing yet: change a colour first")
+            root = native.skins_root()
+            if root is None:
+                raise ValueError("no FM27 user folder found (Documents/Sports Interactive/Football Manager 27); give a destination folder")
+            first = not ((Path(root) / p["name"] / native.MARKER).is_file())
+            prog("Writing the skin into your skins folder", 0.4)
+            rep = native.export(self.ws, p, self.index, (self.info or {}).get("aa_dir"), Path(root), None, None)
+            prog("Checking what was written", 0.85)
+            problems = native.validate(rep["folder"])
+            return {"project": p["name"], "skin": rep["skin"], "folder": rep["folder"], "first_time": first, "steps_left": native.steps_left(rep["skin"], first),
+                    "tokens": rep["tokens"], "rules": rep["rules"], "images": rep["images"], "fonts": rep["fonts"], "skipped": rep["skipped"], "problems": list(rep["problems"]) + problems}
+        return self.start_job("put it in the game", fn)
+
+    def native_remove(self, q, b):
+        """Take a skin this editor put in the skins folder out again (only a folder with the editor's marker). The interface offers it only behind a setting until the in-game check has been run."""
+        if b.get("confirm") is not True:
+            raise ValueError("confirm is required to remove a skin folder")
+        p = project_mod.load(self.ws, b["project"])
+        root = native.skins_root()
+        if root is None:
+            raise ValueError("no FM27 user folder found (Documents/Sports Interactive/Football Manager 27); give a destination folder")
+        return {"removed": native.remove(root, p["name"])}
+
     def open_folder(self, q, b):
         """Open an export folder in the file manager (inside the workspace's exports, or an exported native skin)."""
         f = Path(b["path"]).resolve()

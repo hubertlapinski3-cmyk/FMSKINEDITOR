@@ -14,6 +14,7 @@ import Search from './Search'
 import Gutter, { useStoredSize } from './Gutter'
 import Setup from './Setup'
 import Start from './Start'
+import PutInGame from './PutInGame'
 import { resolveMode, readStoredMode, storeMode, type Mode } from './mode'
 import { sayOf, sayOfJobError, type Said } from './plainError'
 import { RenderScreenView, RenderTableView } from './RenderScreens'
@@ -22,7 +23,7 @@ import { RenderBrowser, RenderCanvas, ruleAtLine, rulePaths, tokenAt, tokenPaths
 interface Tab { path: string; text: string; saved: string; readonly?: boolean }
 interface Plan { target: string; operations: { op: string; count: number; summary: string; detail: any[] }[]; dropped: { item: string; reason: string }[]; warnings: string[] }
 type PanelTab = 'problems' | 'output' | 'build' | 'preview'
-type View = 'explorer' | 'search' | 'palette' | 'assets' | 'layouts' | 'tiles' | 'tables' | 'updates' | 'checklist' | 'game' | 'render'
+type View = 'explorer' | 'search' | 'palette' | 'assets' | 'layouts' | 'tiles' | 'tables' | 'updates' | 'checklist' | 'game' | 'render' | 'put'
 const SESSION = 'studio.session'
 
 /** A view that throws while rendering shows its error instead of taking the whole window down (a blank black screen). */
@@ -36,12 +37,13 @@ export class Guard extends Component<{ name: string; children: ReactNode }, { er
   }
 }
 
-const SIMPLE_VIEWS: View[] = ['explorer', 'palette', 'assets', 'render']
+const SIMPLE_VIEWS: View[] = ['explorer', 'palette', 'assets', 'render', 'put']
 const SIMPLE_NAV: { view: View; label: string; title: string; needsProject?: boolean }[] = [
   { view: 'explorer', label: 'Projects', title: 'Your skins' },
   { view: 'palette', label: 'Colours', title: 'Change the colours', needsProject: true },
   { view: 'assets', label: 'Pictures', title: "Replace the game's pictures and icons", needsProject: true },
   { view: 'render', label: 'Look at it', title: 'See a game screen drawn with your skin (an approximation, not the game)' },
+  { view: 'put', label: 'Put it in the game', title: 'Write your skin into your skins folder so the game can use it', needsProject: true },
 ]
 const langOf = (p: string) => (p.endsWith('.json') ? 'json' : p.endsWith('.uss') ? 'css' : 'plaintext')
 const SIMPLE_FILES = (f: FileItem) => f.path === 'styles/tokens.uss' || f.path.startsWith('images/')
@@ -318,7 +320,7 @@ export default function App() {
       </aside>
       <main className="editor">
         {notice && !needsSetup && <div className="notice" role="alert"><div>{notice.plain}</div><details><summary>details</summary><div className="mono small">{notice.details}</div></details><button onClick={() => setNotice(null)} aria-label="Dismiss">×</button></div>}
-        {needsSetup && state ? <Guard name="Setup"><Setup state={state} refresh={refreshState} say={say} pickFolder={pickGameFolder} /></Guard> : showStart ? <Guard name="Start"><Start projects={projects} say={say} onImport={importNative} onCreated={async (n) => { await refreshState(); await openProject(n); setView('palette') }} /></Guard> : view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
+        {needsSetup && state ? <Guard name="Setup"><Setup state={state} refresh={refreshState} say={say} pickFolder={pickGameFolder} /></Guard> : view === 'put' && project ? <Guard name="Put it in the game"><PutInGame key={project} project={project} say={say} /></Guard> : showStart ? <Guard name="Start"><Start projects={projects} say={say} onImport={importNative} onCreated={async (n) => { await refreshState(); await openProject(n); setView('palette') }} /></Guard> : view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>
         <div className="tabs">{tabs.map((t) => <div key={t.path} className={'tab' + (t.path === active ? ' on' : '')} onClick={() => setActive(t.path)}>{t.path.split('/').pop()}{t.readonly ? ' (game)' : ''}{dirty(t.path) ? ' •' : ''}<button onClick={(e) => { e.stopPropagation(); closeTab(t.path) }}>×</button></div>)}</div>
         <div className="surface">
           {tab ? <Editor path={tab.path} language={langOf(tab.path)} theme="vs-dark" value={tab.text}
