@@ -127,8 +127,8 @@
    "note": "Calendar grid neutral black-grey."
   },
   "ocean/competition": {
-   "v": "not-done",
-   "note": "The Competitions tab is a dropdown that clicks cannot open."
+   "v": "exceptions",
+   "note": "Navy bodies and readable tables; the Champions League blue, DFB-Pokal green and Supercup grey headers and the own-club orange-red row are the game's."
   },
   "ocean/datahub": {
    "v": "exceptions",
@@ -346,12 +346,11 @@
   {
    "id": "competition-missing",
    "kind": "open",
-   "title": "Competition was not captured for Ocean and Slate and amber",
+   "title": "Competition was not captured for Slate and amber (Ocean done 2026-11-16)",
    "screens": [
     "competition"
    ],
    "themes": [
-    "ocean",
     "slate"
    ],
    "text": "The Competitions tab is a dropdown with no button ancestor; the inspector's click cannot open it (same for the settings cog, so skins are picked by hand)."
