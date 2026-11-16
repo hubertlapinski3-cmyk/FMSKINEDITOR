@@ -17,6 +17,9 @@ export function suggestName(existing: string[], base = 'my-first-skin'): string 
 /** What removing the club colours does in the native route (from the code, skin_editor/club_colours.py and native.py). Not "proven in the Crimson skin": that was the bundle build. */
 export const CLUB_REMOVAL_TEXT = "The top bar's text and icons use the dark-bar colours, so light club colours stay readable; the club wallpaper (the picture and the 3D background) stops drawing; the club's card frames and the news headers are hidden and filled with one flat colour; the kit strip disappears. This has not been looked at in the game in this form yet."
 
+/** The plain limit every theme screen states (owner decision rule, 2026-11-16; evidence: docs/evidence/phase9-simple-session-2-20261115.md). */
+export const KEEPS_SENTENCE = "Some surfaces, like the Tactics panels, keep the game's own colours."
+
 /** Every generated theme says this until Session 2 has looked at it in the game (docs/SIMPLE-MODE-PLAN.md S4). */
 export const UNCHECKED = 'not yet checked in the game'
 
@@ -66,7 +69,7 @@ function CheckView({ c }: { c: Check }) {
   const k = c.contrast
   return (
     <div className="theme-check" data-testid="theme-check">
-      <div>This theme sets {c.writes} of the game&apos;s colours and leaves {c.keeps} at the game&apos;s own colour. It is {UNCHECKED}.</div>
+      <div>This theme sets {c.writes} of the game&apos;s colours and leaves {c.keeps} at the game&apos;s own colour. It is {UNCHECKED}. {KEEPS_SENTENCE}</div>
       {c.missing && c.missing.length > 0 && <div className="notice" role="alert" data-testid="theme-missing">This version of the game no longer has {c.missing.length} of the colours a theme sets, so the theme can&apos;t be made. Read the game again; if it repeats, update FM Skin Studio.</div>}
       {k.failures.length === 0
         ? <div className="ok">Readable: all {k.checked - k.game_failures.length} text and background pairs it changes reach {k.minimum} to 1.</div>

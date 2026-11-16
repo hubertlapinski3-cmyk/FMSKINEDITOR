@@ -69,6 +69,7 @@ describe('a theme from three colours', () => {
     expect(await screen.findByText(/Readable/)).toBeTruthy()
     expect(screen.getByText(/sets 82 of the game's colours and leaves 148/)).toBeTruthy()
     expect(screen.getByTestId('theme-check').textContent).toContain(UNCHECKED)
+    expect(screen.getByTestId('theme-check').textContent).toContain("Some surfaces, like the Tactics panels, keep the game's own colours.")
     await waitFor(() => expect(make().disabled).toBe(false))
     fireEvent.click(make())
     await waitFor(() => expect(rpc).toHaveBeenCalledWith('theme.create', { name: 'my-first-skin', ...CRIMSON, keep_club_colours: true }))
