@@ -377,14 +377,14 @@
   {
    "id": "kept-checked",
    "kind": "open",
-   "title": "The 148 kept colours: inventoried, only partly seen in the game",
+   "title": "The 148 kept colours: inventoried; about 9 seen in the game, all at the game's own value",
    "screens": [],
    "themes": [
     "forest",
     "ocean",
     "slate"
    ],
-   "text": "Inventory in docs/evidence/s2-kept-tokens-20261116.json. Seen in the game: the defender chip fill, one calendar tile family, the continue button. Not seen: colours-base (71), colours-linear (29), colours-data (10), communication-feedback (4), data-average (4) and the rest of tactics and calendar. The 7 unchecked pairs were computed from the game's chip fills (all 5.59 or more), not measured in the game."
+   "text": "Inventory in docs/evidence/s2-kept-tokens-20261116.json. Seen in the game under Slate and amber, each at the game's own value: colours-base teal-strong (the 'Wnt' badge, #25E381), colours-data linear-scale-strong-ondark-5 (#FCD110), data-average 7-8 (#577100), communication-feedback-positive (#4EEB3D), two calendar families, the defender chip fill. Not seen: colours-linear (29: no element found on the screens opened), the rest of each group. The 7 unchecked pairs were computed from the game's chip fills (all 5.59 or more), not measured in the game."
   }
  ]
 }
