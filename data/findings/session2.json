@@ -163,8 +163,8 @@
    "note": "Calendar grid neutral; amber date pill."
   },
   "slate/competition": {
-   "v": "not-done",
-   "note": "Not reachable by click."
+   "v": "exceptions",
+   "note": "Neutral dark bodies, legible tables; amber, yellow and green form bars; the game's competition-coloured headers and own-club row."
   },
   "slate/datahub": {
    "v": "exceptions",
@@ -344,18 +344,6 @@
    "text": "'N. Schlotterbeck' overlaps the DM and WCB chips near the centre circle. Not compared with the default skin."
   },
   {
-   "id": "competition-missing",
-   "kind": "open",
-   "title": "Competition was not captured for Slate and amber (Ocean done 2026-11-16)",
-   "screens": [
-    "competition"
-   ],
-   "themes": [
-    "slate"
-   ],
-   "text": "The Competitions tab is a dropdown with no button ancestor; the inspector's click cannot open it (same for the settings cog, so skins are picked by hand)."
-  },
-  {
    "id": "not-measured",
    "kind": "open",
    "title": "No contrast was measured in the game",
@@ -366,6 +354,37 @@
     "slate"
    ],
    "text": "Every readability call is by eye. The 7 pairs the offline check cannot compute and the 148 kept colours were not examined one by one. The dimmest text seen: 'Style' and 'Mentality' in the Tactics selectors."
+  },
+  {
+   "id": "continue-button",
+   "kind": "works",
+   "title": "The continue button follows the theme's accent",
+   "screens": [
+    "squad",
+    "club",
+    "portal",
+    "tactics",
+    "recruitment",
+    "training"
+   ],
+   "themes": [
+    "forest",
+    "ocean",
+    "slate"
+   ],
+   "text": "'Review Team Selection' is green under Forest, blue under Ocean and #F2B33D under Slate and amber (inspector). Its tokens --continue-button-default-grad-l/r are not in the map and the index says purple #A40FC7: another definition wins in the game; not traced."
+  },
+  {
+   "id": "kept-checked",
+   "kind": "open",
+   "title": "The 148 kept colours: inventoried, only partly seen in the game",
+   "screens": [],
+   "themes": [
+    "forest",
+    "ocean",
+    "slate"
+   ],
+   "text": "Inventory in docs/evidence/s2-kept-tokens-20261116.json. Seen in the game: the defender chip fill, one calendar tile family, the continue button. Not seen: colours-base (71), colours-linear (29), colours-data (10), communication-feedback (4), data-average (4) and the rest of tactics and calendar. The 7 unchecked pairs were computed from the game's chip fills (all 5.59 or more), not measured in the game."
   }
  ]
 }
