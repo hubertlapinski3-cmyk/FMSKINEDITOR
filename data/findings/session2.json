@@ -313,7 +313,7 @@
    "themes": [
     "forest"
    ],
-   "text": "The chip label 'D (C)' is painted by .text-regular (#FFFFFF), not by --data-player-position-defender-foreground, which no style rule uses. The role-map entry and the badge pair were removed (82 entries, 42 checked pairs). The chip's FILL source was not found; one chip, one screen, one theme."
+   "text": "The chip label 'D (C)' is painted by .text-regular (#FFFFFF), not by --data-player-position-defender-foreground, which no style rule uses. The role-map entry and the badge pair were removed (82 entries, 42 checked pairs). The chip's FILL source was not found; one chip, one screen, one theme. Found later (Ocean, 2026-11-16): the chip FILL is the token --colours-tactics-defender-background (#00756B), which the map keeps at the game's colour; changeable as one token in Colours."
   },
   {
    "id": "overlap-portal",
