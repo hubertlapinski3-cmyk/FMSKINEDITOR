@@ -11,7 +11,12 @@ ENTRY = (ROOT / "tools" / "engine_entry.py").read_text(encoding="utf-8")
 
 
 def run(code):
-    return subprocess.run([sys.executable, "-c", textwrap.dedent(code)], cwd=str(ROOT), capture_output=True, text=True, timeout=120, env={"PYTHONPATH": str(ROOT), "SYSTEMROOT": __import__("os").environ.get("SYSTEMROOT", "")})
+    import os
+    env = {"PYTHONPATH": str(ROOT), "SYSTEMROOT": os.environ.get("SYSTEMROOT", "")}
+    for k in ("APPDATA", "LOCALAPPDATA", "USERPROFILE"):     # Python's per-user site-packages (UnityPy lives there on Windows)
+        if os.environ.get(k):
+            env[k] = os.environ[k]
+    return subprocess.run([sys.executable, "-c", textwrap.dedent(code)], cwd=str(ROOT), capture_output=True, text=True, timeout=120, env=env)
 
 
 class FrozenEngine(unittest.TestCase):

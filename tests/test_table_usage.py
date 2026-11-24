@@ -26,6 +26,7 @@ class Decode(unittest.TestCase):
 class Build(unittest.TestCase):
     def db(self):
         d = sqlite3.connect(":memory:")
+        self.addCleanup(d.close)
         d.executescript("""
         create table data_guids(guid, bundle, path_id, name);
         create table assets(id, bundle_id, cab, path_id, class, name, guid, is_root);

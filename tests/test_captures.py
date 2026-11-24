@@ -2,11 +2,12 @@
 import json
 import tempfile
 import unittest
+from tests import gamebuild
 from pathlib import Path
 
 from skin_editor.render import captures
 
-AA = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+AA = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 
 HEADER = {"schema": "fm-capture/1", "mode": "styles", "styles": True, "sources": True, "game": "27.0.1.2503222", "plugin": "0.3.0-capture", "source_property_available": True}
 ROWS = [
@@ -190,6 +191,7 @@ class Matching(unittest.TestCase):
         self.assertEqual(r[0]["status"], "matched by name and content hash")
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir(), "needs the game install")
 class RealHash(unittest.TestCase):
     def test_parsed_layouts_carry_the_content_hash_used_for_matching(self):

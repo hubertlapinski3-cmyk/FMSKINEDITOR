@@ -44,8 +44,14 @@ export default function Setup({ state, refresh, say, pickFolder }: { state: Engi
       let s = state
       if (!s.install) s = chosen ? await timed('find', () => rpc<EngineState>('game.select', { game_dir: chosen })) : await timed('find', findGame)
       if (!s.vanilla) {
-        set('read', { note: 'Reading the game\'s style files (the game must be closed)' })
-        s = await timed('read', () => rpc<EngineState>('snapshot.take', {}))
+        set('read', { note: 'Reading the game\'s style files and layouts (the game must be closed)' })
+        s = await timed('read', async () => {
+          const st = await rpc<EngineState>('snapshot.take', {})
+          const { job } = await rpc<{ job: string }>('layout.scan')
+          const done = await rpc<{ state: string; error: string | null }>('jobs.wait', { id: job, timeout: 600 })
+          if (done.state !== 'done') throw new Error(done.error || 'the game\'s layout files could not be read')
+          return st
+        })
       }
       if (!s.indexed) {
         set('styles', { note: 'Reading the game\'s colours and rules' })

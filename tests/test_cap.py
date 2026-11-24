@@ -1,4 +1,5 @@
 """M8: the node cap and lazy expansion (skin_editor/render/cap.py), and the 13 layouts that exceeded the 200 ms budget."""
+from tests import gamebuild
 import copy
 import time
 import unittest
@@ -88,6 +89,7 @@ THIRTEEN = ["DetailedPreferencesBlock", "GameCreationLoadingScreen", "GameCreati
             "data_display-graph-shotmap-default"]
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA is not None and AA.is_dir(), "needs the game install")
 class Budget(unittest.TestCase):
     """The 13 layouts the plan published as exceptions to the 200 ms cached budget: with the cap every one is inside it, and the 5,487-element one renders cold in seconds."""

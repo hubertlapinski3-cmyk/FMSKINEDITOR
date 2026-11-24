@@ -137,10 +137,14 @@ def plan(ws, project, index, aa_dir=None, target=None):
     except (ValueError, OSError) as ex:
         tops = []
         warnings.append("tile position edits cannot be built: %s" % ex)
+    if project_mod.experimental_bundle_layout_edits(p) and target == "bundles":
+        warnings.append(project_mod.EXPERIMENTAL_BUNDLE_LAYOUT_WARNING)
     if tops:
-        if target == "bundles":
+        if target == "bundles" and project_mod.experimental_bundle_layout_edits(p):
             ops.append(_op("MoveCell", "Move %d grid cell(s) in %d composition(s) (x, y only; the composition bundle copy is patched, sizes are never written)" % (len(tops), len({o["composition"] for o in tops})),
                            [{"composition": o["composition"], "cell": "%d (%s)" % (o["cell_index"], o["cell_id"]), "from": "%d,%d" % (o["from"]["x"], o["from"]["y"]), "to": "%d,%d" % (o["to"]["x"], o["to"]["y"]), "bundle": o["bundle"]} for o in tops]))
+        elif target == "bundles":
+            dropped.append({"item": "%d tile position edit(s)" % len(tops), "reason": "excluded from bundle builds by the route lock (layout edits use custom-layout files via Apply; turn on 'experimental: layout edits via bundles' to build them into bundles)"})
         else:
             dropped.append({"item": "%d tile position edit(s)" % len(tops), "reason": "grid compositions live in the game's bundles; a native skin cannot move cells. Use the bundle target"})
     fonts = p.get("font_swaps", [])

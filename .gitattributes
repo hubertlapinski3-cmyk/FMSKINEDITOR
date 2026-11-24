@@ -2,3 +2,5 @@
 docs/evidence/** -text
 # the frozen engine's round-trip fixture is a binary Unity bundle (tools/make_selftest_bundle.py writes it; a test pins the bytes)
 data/selftest/*.unity3d binary
+atlas/*.json -text
+docs/ATLAS-CONTRACT.md -text

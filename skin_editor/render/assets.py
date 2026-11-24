@@ -10,6 +10,7 @@ import json
 import re
 from collections import OrderedDict
 from pathlib import Path
+from ..asset_hash import bundle_manifest
 
 REF = re.compile(r"asset\((-?\d+):(-?\d+)\)")
 
@@ -27,16 +28,29 @@ class AssetResolver:
         self._env = OrderedDict()
         self._memo = {}                     # resolve() results by (source bundle, F, P): the same reference is asked for many times per render
         self._keep = keep
+        self._bundle_manifest = None
 
     # ---- index
     def _index_file(self):
-        return self.cache / "asset-index.json"
+        manifest = self._manifest()
+        return self.cache / ("asset-index-%s.json" % manifest["sha256"][:24])
+
+    def _manifest(self):
+        if self._bundle_manifest is None:
+            # Asset references in the skin/render pipeline are sourced from the UI bundle family.
+            # Hash their actual bytes so stale CAB indexes cannot survive same-size replacements.
+            self._bundle_manifest = bundle_manifest(self.aa, "ui-*.bundle")
+        return self._bundle_manifest
 
     def index(self):
         if self._index is None:
             f = self._index_file()
             if f.is_file():
-                self._index = json.loads(f.read_text(encoding="utf-8"))
+                cached = json.loads(f.read_text(encoding="utf-8"))
+                if cached.get("bundle_manifest_sha256") == self._manifest()["sha256"]:
+                    self._index = cached
+                else:
+                    self._index = self.build_index()
             else:
                 self._index = self.build_index()
         return self._index
@@ -44,7 +58,7 @@ class AssetResolver:
     def build_index(self):
         import UnityPy
         cab, ext = {}, {}
-        for b in sorted(self.aa.glob("*.bundle")):
+        for b in sorted(self.aa.glob("ui-*.bundle")):
             try:
                 env = UnityPy.load(str(b))
             except Exception:
@@ -54,7 +68,8 @@ class AssetResolver:
                     if n.startswith("CAB-") and not n.endswith(".resS"):
                         cab[n] = b.name
                         ext[b.name] = [e.path.split("/")[-1] for e in (getattr(sub, "externals", None) or [])]
-        idx = {"schema": "fm-asset-index/1", "cab_to_bundle": cab, "externals": ext}
+        idx = {"schema": "fm-asset-index/2", "bundle_manifest_sha256": self._manifest()["sha256"],
+               "bundle_hashes": self._manifest()["bundles"], "cab_to_bundle": cab, "externals": ext}
         self.cache.mkdir(parents=True, exist_ok=True)
         self._index_file().write_text(json.dumps(idx), encoding="utf-8")
         return idx

@@ -11,7 +11,7 @@ What maps to USS:
                            stylesheets map to that icon (PNG at 4x; an SVG source is rasterised)       (images.uss)
   SVG swaps                same, through the FMImages_SVG classes (rasterised PNG at 8x)
   texture swaps            wallpapers are chosen in code, so the skin hides or covers the game's picture and paints the image on
-                           the chosen places (PLACES; default from the texture's name), as the Jonukas skin does
+                           the chosen places (PLACES; default from the texture's name), as custom native skins do
 Not expressible either: class renames, flatten_gradients (listed in the export report)."""
 import io
 import json
@@ -28,7 +28,7 @@ from . import project as project_mod
 ID_RE = re.compile(r"[A-Za-z0-9][\w.-]{0,63}")
 
 # Where a wallpaper can be shown in a native skin. The game picks its wallpaper textures in code, so a skin cannot replace them;
-# like the Jonukas skin, it hides the code-set image where needed and paints its own picture on a container USS reaches.
+# custom native skins hide the code-set image where needed and paint their own picture on a container USS reaches.
 PLACES = {
     "report-pages": ("Report and tool pages (player, club, competition, squad report ...)",
                      ["#Card-frame > #Header, #Card-frame > #GridSafeArea"],
@@ -167,6 +167,19 @@ def export(ws, project, index, aa_dir, dest_root, skin_id=None, display=None):
     report["folder"] = str(final)
     (final / ".fm27se-export.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
     return report
+
+
+def backup(folder, backup_root):
+    """Copy a written skin folder to <backup_root>/<skin>/<UTC stamp>/ and return that path. Every save is its own folder: nothing already there is overwritten or deleted."""
+    import time
+    src = Path(folder)
+    dst = Path(backup_root) / src.name / time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    n = 1
+    while dst.exists():                                    # two saves in one second
+        n += 1
+        dst = dst.with_name("%s-%d" % (dst.name.split("-")[0], n))
+    shutil.copytree(src, dst)
+    return dst
 
 
 def _export(ws, p, index, aa_dir, dest, skin_id, display):

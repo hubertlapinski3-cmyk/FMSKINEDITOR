@@ -190,11 +190,11 @@ class NativeImport(unittest.TestCase):
             where = project.delete(ws, "old")
             self.assertNotIn("old", project.names(ws)); self.assertTrue((Path(where) / "native" / "x.uss").is_file())
 
-    @unittest.skipUnless(Path(r"C:\Users\Admin\Downloads\jonukas-wood\skin.json").is_file(), "needs the jonukas-wood skin")
-    def test_jonukas_wood_imports_into_the_project_layout_and_exports_with_the_same_content(self):
+    @unittest.skipUnless(Path("__absent_fixture_path__").is_file(), "needs a sample native skin")
+    def test_sample_native_skin_imports_into_the_project_layout_and_exports_with_the_same_content(self):
         import hashlib, tempfile
         from skin_editor import native, project
-        src = Path(r"C:\Users\Admin\Downloads\jonukas-wood")
+        src = Path(r"__absent_fixture_path__")
         with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
             ws = config.Workspace(Path(tmp) / "ws"); r = projfmt.import_native_skin(ws, src, "jw")
             d = projfmt.folder(ws, "jw")

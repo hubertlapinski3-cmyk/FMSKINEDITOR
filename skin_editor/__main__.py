@@ -26,6 +26,12 @@ def main(argv=None):
     s = sub.add_parser("check-layout"); s.add_argument("dump")
     s = sub.add_parser("import-layout"); s.add_argument("dump")
     sub.add_parser("paths")
+    s = sub.add_parser("uidoc", help="read only: print a screen's UiDocument as JSON (Gate B of docs/UIDOCUMENT-AUDIT.md)")
+    s.add_argument("--fixture", default="screen-team-instructions-large", help="a screen fixture under tests/fixtures/render (its composition, area, padding, reserved_right)")
+    s.add_argument("--aa", help="the aa/StandaloneWindows64 folder to read (default: the configured game)"); s.add_argument("--dump", help="a fmlayout-index/2 file (default: the imported dump)")
+    s.add_argument("--cache", help="the renderer's cache folder (default: a new folder of its own)"); s.add_argument("--build-label"); s.add_argument("--status"); s.add_argument("--label-source")
+    s.add_argument("--computed", choices=["none", "summary", "full"], default="summary"); s.add_argument("--no-cascade", action="store_true"); s.add_argument("--order", choices=["natural", "reversed"], default="natural")
+    s.add_argument("--out"); s.add_argument("--indent", action="store_true")
     s = sub.add_parser("fixture", help="render calibration fixtures: add one from a capture, or run them and publish the report")
     fs = s.add_subparsers(dest="fcmd")
     f = fs.add_parser("add"); f.add_argument("--name", required=True); f.add_argument("--capture", required=True); f.add_argument("--host", required=True, help="the host element of the subtree (e.g. Loans)")
@@ -50,6 +56,9 @@ def main(argv=None):
             return 1
         print(json.dumps(r, indent=1))
         return 0 if r["valid"] else 1
+    if a.cmd == "uidoc":
+        from .uidoc import cli as uidoc_cli
+        return uidoc_cli.run(a)
     if a.cmd == "fixture":
         from .render import fixtures
         if a.fcmd == "add":

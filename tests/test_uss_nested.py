@@ -1,4 +1,5 @@
 """Nested function values decode as the game wrote them (found by the Phase 9 render: 30 nested var() fallbacks in 8 Training layouts)."""
+from tests import gamebuild
 import unittest
 
 from skin_editor import uss
@@ -39,7 +40,8 @@ class Nested(unittest.TestCase):
         self.assertEqual(uss.value_text(tree, hs)[0], "var(--a, var(--b, var(--c)))")
 
 
-@unittest.skipUnless(__import__("pathlib").Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa").is_dir(), "needs the game install")
+@gamebuild.requires_build
+@unittest.skipUnless(gamebuild.aa().parent.is_dir(), "needs the game install")
 class RealData(unittest.TestCase):
     def test_the_training_rule_that_exposed_it_now_decodes_as_one_var(self):
         from skin_editor import config, index_styles

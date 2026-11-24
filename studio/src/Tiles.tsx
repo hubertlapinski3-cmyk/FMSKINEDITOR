@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { pickScreenshot } from './pickImage'
 import { rpc, RpcError } from './engine'
 import { collisions, commitEdits, dirty, extent, movable, pos, snap, stage, type Cell, type Staged } from './tileStage'
+import ReadLayoutDump from './ReadLayoutDump'
 
 interface Variant { breakpoint: number; variant_idx: number; composition: string; composition_info: { preset_w: number; preset_h: number; layout_mode: string; preset_name: string } | null; cells: (Cell & { configs: { layout: string; cfg_index: number; size_w: number; size_h: number }[]; h_align: string; v_align: string })[] }
 interface SetInfo { set_name: string; host: { layout: string }; variants: Variant[] }
@@ -13,7 +14,7 @@ const BP = ['XS', 'S', 'Standard', 'Large', 'XL', 'Phone']
 
 /** Tile layout editor: the grid compositions of a screen as a canvas, one breakpoint at a time. Drag a cell (or type x and y) to stage a move; positions
  *  only, a cell's size comes from its configs. Commit stores the moves as placement edits; a bundle build writes them (bundle target). */
-export default function Tiles({ project, target, onChanged, say }: { project: string | null; target: string; onChanged: () => void; say: (s: string) => void }) {
+export default function Tiles({ project, target, expTileSizes = false, onChanged, say }: { project: string | null; target: string; expTileSizes?: boolean; onChanged: () => void; say: (s: string) => void }) {
   const [state, setState] = useState<any>(null)
   const [q, setQ] = useState('')
   const [screens, setScreens] = useState<{ panel_id: string; area: string; tiles: number }[]>([])
@@ -25,6 +26,17 @@ export default function Tiles({ project, target, onChanged, say }: { project: st
   const [checks, setChecks] = useState<Record<number, Check>>({})
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
+  const [tileTab, setTileTab] = useState<'layout' | 'sizes' | 'sets'>('layout')
+  const [descs, setDescs] = useState<{ path_id: string; name: string; id: string; configurations: { width: number; height: number; guid: string }[] }[]>([])
+  const [esets, setEsets] = useState<{ path_id: string; name: string; descriptions: { path_id: string; name: string; id: string }[] }[]>([])
+  const [dq, setDq] = useState('')
+  const [eq, setEq] = useState('')
+  const [selDesc, setSelDesc] = useState('')
+  const [sizeW, setSizeW] = useState(4)
+  const [sizeH, setSizeH] = useState(4)
+  const [selSet, setSelSet] = useState('')
+  const [addDesc, setAddDesc] = useState('')
+  const [tileOps, setTileOps] = useState<any[]>([])
   // a screenshot of the real game behind the grid, to line the tiles up by eye (Advanced only; the pictures live in the workspace, never in a project or a skin)
   const [shots, setShots] = useState<{ name: string; width: number; height: number }[]>([])
   const [shot, setShot] = useState('')
@@ -111,13 +123,123 @@ export default function Tiles({ project, target, onChanged, say }: { project: st
   const revertStored = async (id: string) => { try { await rpc('placement.remove', { project, id }); await loadStored(); onChanged() } catch (e) { fail(e) } }
   const selCell = cells.find((c) => c.cell_index === sel)
 
+  useEffect(() => {
+    if (tileTab === 'layout') return
+    let live = true
+    if (!descs.length) {
+      rpc<{ descriptions: typeof descs }>('tiles.descriptions', {}).then((r) => {
+        if (!live) return
+        setDescs(r.descriptions || [])
+        if (!selDesc && r.descriptions?.length) setSelDesc(r.descriptions[0].id || r.descriptions[0].name)
+        if (!addDesc && r.descriptions?.length) setAddDesc(r.descriptions[0].id || r.descriptions[0].name)
+      }).catch((e) => { if (live) fail(e) })
+    }
+    if (tileTab === 'sets' && !esets.length) {
+      rpc<{ element_sets: typeof esets }>('tiles.element_sets', {}).then((r) => {
+        if (!live) return
+        setEsets(r.element_sets || [])
+        if (!selSet && r.element_sets?.length) setSelSet(r.element_sets[0].name)
+      }).catch((e) => { if (live) fail(e) })
+    }
+    return () => { live = false }
+  }, [tileTab])
+
+  const filteredDescs = useMemo(() => {
+    const f = dq.trim().toLowerCase()
+    return f ? descs.filter((d) => d.id.toLowerCase().includes(f) || d.name.toLowerCase().includes(f)) : descs
+  }, [descs, dq])
+  const filteredSets = useMemo(() => {
+    const f = eq.trim().toLowerCase()
+    return f ? esets.filter((s) => s.name.toLowerCase().includes(f)) : esets
+  }, [esets, eq])
+  const curDesc = descs.find((d) => d.id === selDesc || d.name === selDesc)
+  const curSet = esets.find((s) => s.name === selSet)
+
+  const addTileSize = async () => {
+    if (!project || !curDesc) return
+    setBusy(true); setErr('')
+    try {
+      const r = await rpc<{ op: any; tile_bundle_ops: any[] }>('tiles.add_size', { project, description: curDesc.id || curDesc.name, width: sizeW, height: sizeH })
+      setTileOps(r.tile_bundle_ops || [])
+      say(`Staged add-tile-size ${curDesc.id} ${sizeW}x${sizeH}. Click Build bundles, then Install build.`)
+      onChanged()
+    } catch (e) { fail(e) } finally { setBusy(false) }
+  }
+
+  const allowTileInSet = async (action: 'add' | 'remove', descId: string) => {
+    if (!project || !curSet || !descId) return
+    setBusy(true); setErr('')
+    try {
+      const r = await rpc<{ op: any; tile_bundle_ops: any[] }>('tiles.set_allow', { project, action, element_set: curSet.name, description: descId })
+      setTileOps(r.tile_bundle_ops || [])
+      say(`Staged set-${action}-tile ${descId} on ${curSet.name}. Click Build bundles, then Install build.`)
+      onChanged()
+    } catch (e) { fail(e) } finally { setBusy(false) }
+  }
+
   return (
     <div className="tiles">
-      <div className="head">TILE LAYOUT</div>
+      <div className="head" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span>TILE LAYOUT</span>
+        <button type="button" className={tileTab === 'layout' ? 'primary' : ''} onClick={() => setTileTab('layout')}>Layout index</button>
+        <button type="button" className={tileTab === 'sizes' ? 'primary' : ''} data-testid="tiles-tab-sizes" onClick={() => setTileTab('sizes')}>Tile sizes</button>
+        <button type="button" className={tileTab === 'sets' ? 'primary' : ''} data-testid="tiles-tab-sets" onClick={() => setTileTab('sets')}>Allowed tiles</button>
+      </div>
       {err && <div className="warn pad">{err}</div>}
+      {tileTab === 'sizes' && (
+        <div className="pad" data-testid="tiles-sizes-panel">
+          <div className="small dim" style={{ marginBottom: 8 }}>Add a new size to an existing TileDescription (reuses an existing UXML GUID). After adding, click <b>Build bundles</b> then <b>Install build</b>.</div>
+          {!expTileSizes && <div className="warn" data-testid="tile-sizes-experimental-note" style={{ marginBottom: 8 }}>Experimental (not owner-confirmed in v1.5): enable <b>experimental: tile sizes</b> in the BUILD panel to unlock adding new tile sizes.</div>}
+          {!project && <div className="warn" style={{ marginBottom: 8 }}>Open a project first.</div>}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 8 }}>
+            <input className="search" placeholder="Filter tiles (e.g. Atmosphere) ..." value={dq} onChange={(e) => setDq(e.target.value)} />
+            <select data-testid="tile-size-desc" value={selDesc} onChange={(e) => setSelDesc(e.target.value)}>
+              {filteredDescs.slice(0, 120).map((d) => <option key={d.path_id} value={d.id || d.name}>{d.id || d.name} ({d.name})</option>)}
+            </select>
+            <label className="small">W <input data-testid="tile-size-w" type="number" min={1} max={30} value={sizeW} onChange={(e) => setSizeW(Number(e.target.value) || 1)} style={{ width: 52 }} /></label>
+            <label className="small">H <input data-testid="tile-size-h" type="number" min={1} max={20} value={sizeH} onChange={(e) => setSizeH(Number(e.target.value) || 1)} style={{ width: 52 }} /></label>
+            <button type="button" className="primary" data-testid="tile-size-add" disabled={!project || !curDesc || !expTileSizes || busy} onClick={addTileSize}>Add tile size</button>
+          </div>
+          {curDesc && <div className="small dim">Existing sizes: {curDesc.configurations.map((c) => `${c.width}×${c.height}`).join(', ') || 'none'}</div>}
+          {tileOps.length > 0 && <div className="small mono" style={{ marginTop: 8 }}>Staged bundle ops: {tileOps.map((o) => `${o.op}:${o.description || o.description_id}`).join(', ')}</div>}
+        </div>
+      )}
+      {tileTab === 'sets' && (
+        <div className="pad" data-testid="tiles-sets-panel">
+          <div className="small dim" style={{ marginBottom: 8 }}>Add or remove an existing TileDescription in a screen’s GridElementSet (e.g. SquadTileSet). After editing, click <b>Build bundles</b> then <b>Install build</b>.</div>
+          {!project && <div className="warn" style={{ marginBottom: 8 }}>Open a project first.</div>}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 8 }}>
+            <input className="search" placeholder="Filter tile sets (e.g. SquadTileSet) ..." value={eq} onChange={(e) => setEq(e.target.value)} />
+            <select data-testid="tile-set-select" value={selSet} onChange={(e) => setSelSet(e.target.value)}>
+              {filteredSets.map((s) => <option key={s.path_id} value={s.name}>{s.name} ({s.descriptions.length})</option>)}
+            </select>
+            <select data-testid="tile-set-add-desc" value={addDesc} onChange={(e) => setAddDesc(e.target.value)}>
+              {descs.map((d) => <option key={d.path_id} value={d.id || d.name}>{d.id || d.name} ({d.name})</option>)}
+            </select>
+            <button type="button" className="primary" data-testid="tile-set-add-btn" disabled={!project || !curSet || !addDesc || busy} onClick={() => allowTileInSet('add', addDesc)}>Add tile to set</button>
+          </div>
+          {curSet && (
+            <ul className="llist" style={{ maxHeight: 240, overflow: 'auto' }}>
+              {curSet.descriptions.map((d) => (
+                <li key={d.path_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{d.id || d.name} <small className="dim">{d.name}</small></span>
+                  <button type="button" className="small" disabled={!project || busy} onClick={() => allowTileInSet('remove', d.id || d.name)}>Remove</button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {tileOps.length > 0 && <div className="small mono" style={{ marginTop: 8 }}>Staged bundle ops: {tileOps.map((o) => `${o.op}:${o.description || o.description_id}`).join(', ')}</div>}
+        </div>
+      )}
+      {tileTab === 'layout' && <>
       {target !== 'bundles' && project && <div className="warn pad">This project's target is <b>{target}</b>: position edits are written only by a bundle build.</div>}
       {!state && <div className="dim pad">Loading ...</div>}
-      {state && !state.present && <div className="pad">No layout index is imported yet. <button onClick={async () => { setBusy(true); try { const r = await rpc<any>('layout.export_index'); say(`layout index loaded: ${r.crosscheck.compositions} compositions, ${r.crosscheck.cells} cells checked against the bundles`); await loadState() } catch (e) { fail(e) } finally { setBusy(false) } }} disabled={busy}>Load the layout index</button></div>}
+      {state && !state.present && <>
+        <ReadLayoutDump say={say} onDone={loadState} detail="This reads the layouts, compositions and tile configs from your own game files; it only reads." />
+        {state.index?.configured
+          ? <div className="pad">No layout index is imported yet. <button data-testid="load-layout-index" onClick={async () => { setBusy(true); try { const r = await rpc<any>('layout.export_index'); say(`layout index loaded: ${r.crosscheck.compositions} compositions, ${r.crosscheck.cells} cells checked against the bundles`); await loadState() } catch (e) { fail(e) } finally { setBusy(false) } }} disabled={busy}>Load the layout index</button> <span className="dim">Developer cross-check only: FM27_LayoutMCP’s sqlite index.</span></div>
+          : <div className="pad" data-testid="layout-index-not-configured">No layout index is imported yet, and none is configured. <span className="dim">{state.index?.help || 'The layout index is built by FM27_LayoutMCP, a developer-only tool that is not shipped with FM27 Skin Studio; set FM27_LAYOUT_INDEX (or layout_index in the workspace config.json) to use the Tiles view.'}</span></div>}
+      </>}
       {state?.present && state.staleness.status !== 'fresh' && <div className="warn pad">The imported layout index is <b>{state.staleness.status}</b>: {state.staleness.message || 'edits are not accepted'}</div>}
       {state?.present && <>
         <input className="search" placeholder="Filter screens (panel id) ..." value={q} onChange={(e) => setQ(e.target.value)} />
@@ -176,6 +298,7 @@ export default function Tiles({ project, target, onChanged, say }: { project: st
           </>}
           {stored.length > 0 && <div className="pad"><b>Stored edits ({stored.length})</b>{stored.map((e) => <div key={e.id} className="small mono">{e.composition.slice(-34)} / {e.cell_element_id}: {e.old.geometry.x},{e.old.geometry.y} → {e.geometry ? `${e.geometry.x},${e.geometry.y}` : 'config'} <span className={e.state === 'valid' ? 'ok' : 'bad'}>{e.state}</span> <a onClick={() => revertStored(e.id)}>revert</a></div>)}</div>}
         </>}
+      </>}
       </>}
       <span hidden>{cellsKey}</span>
     </div>

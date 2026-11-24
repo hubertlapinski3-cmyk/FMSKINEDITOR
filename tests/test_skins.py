@@ -1,4 +1,5 @@
 """Compare another skin (USS folder or bundles) and export originals at true size."""
+from tests import gamebuild
 import io, json, logging, os, tempfile, threading, unittest, urllib.error, urllib.request
 from pathlib import Path
 from unittest import mock
@@ -88,6 +89,7 @@ class Export(unittest.TestCase):
         self.assertTrue(s.startswith('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"'))
         self.assertIn('fill="#DA0037"', s); self.assertIn('fill-opacity="0.502', s)
 
+    @gamebuild.requires_build
     @unittest.skipUnless((GAME / "ui-icons_assets_common.bundle").is_file(), "needs the game")
     def test_export_real_items_at_true_size(self):
         from PIL import Image
@@ -140,6 +142,7 @@ if __name__ == "__main__":
     unittest.main()
 
 
+@gamebuild.requires_build
 @unittest.skipUnless((GAME / "ui-styles_assets_2x.bundle").is_file(), "needs the game")
 class IconClasses(unittest.TestCase):
     def test_classes_from_the_games_image_stylesheets(self):
@@ -184,7 +187,8 @@ class NativeExport(unittest.TestCase):
         self.assertTrue(rules.index(".navigation-header-gradient {") < rules.index(".mine {"))      # club rules first: the project's win ties
         self.assertIn("color: #FF0000;", rules)
         img = (d / "images.uss").read_text(); self.assertIn('.game-concepts-win_small {\n    background-image: url("images/win_small.png");', img)
-        self.assertEqual(Image.open(d / "images" / "win_small.png").size, (64, 64))                     # 16 px icon at 4x
+        with Image.open(d / "images" / "win_small.png") as im:
+            self.assertEqual(im.size, (64, 64))                                 # 16 px icon at 4x
         self.assertEqual((r["problems"], r["skipped"]), ([], []))
         self.assertIn("#Card-frame {\n    --unity-image-tint-color: #00000000;", img)                 # the wallpaper: game picture hidden ...
         self.assertIn(".base-layer-content {\n    background-image: url(\"images/wall.png\");", img)    # ... and covered (default places)

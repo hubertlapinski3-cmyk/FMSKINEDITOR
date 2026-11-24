@@ -23,6 +23,7 @@ def command(out, name):
            "--add-data", "%s%sfrontend" % (ROOT / "frontend", sep),
            "--add-data", "%s%sdata" % (ROOT / "data", sep),
            "--add-data", "%s%sdocs" % (ROOT / "docs" / "INGAME-CHECKLIST.md", sep),
+           "--add-data", "%s%sdocs/rea/data" % (ROOT / "docs" / "rea" / "data", sep),
            "--add-data", "%s%sskin_editor/render" % (ROOT / "skin_editor" / "render" / "pitch.json", sep),      # measured cell pitch (M3), read by render.pitch
            # UnityPy loads its typetree and resource files by path, and texture codecs are C extensions imported by name
            "--collect-all", "UnityPy", "--collect-all", "texture2ddecoder", "--collect-all", "etcpak",

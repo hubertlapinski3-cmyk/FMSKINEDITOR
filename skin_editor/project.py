@@ -14,13 +14,25 @@ from . import token_patch as tp
 
 SCHEMA = 2
 KEYS = {"schema", "name", "game_build", "vanilla_manifest", "options", "token_overrides", "literal_swaps",
-        "scoped_rules", "rename_classes", "contrast_pairs", "tile_placement", "reverts", "image_swaps", "native_sheets", "native_support", "native_name",
-        "layout_patches", "font_swaps", "table_patches"}
+        "scoped_rules", "declaration_edits", "rename_classes", "contrast_pairs", "tile_placement", "reverts", "image_swaps", "native_sheets", "native_support", "native_name",
+        "layout_patches", "font_swaps", "table_patches", "tile_bundle_ops"}
 FONT_FILE = re.compile(r"[A-Za-z0-9][\w.-]{0,100}\.(?:ttf|otf)", re.I)
-OPTION_KEYS = {"flatten_gradients", "skip_sheets", "raise_specificity", "contrast_backdrop", "club_colours", "club_colours_replacement", "output"}
+OPTION_KEYS = {"flatten_gradients", "skip_sheets", "raise_specificity", "contrast_backdrop", "club_colours", "club_colours_replacement", "output", "route_preference", "route_preference_explicit", "edit_competition_sheets", "edit_competition_sheets_explicit", "layout_route", "layout_route_explicit", "layout_engine", "layout_engine_explicit", "experimental_bundle_layout_edits", "experimental_bundle_layout_edits_explicit", "experimental_tile_sizes", "experimental_tile_sizes_explicit", "experimental_slot_edits", "experimental_slot_edits_explicit"}
+EXPERIMENTAL_BUNDLE_LAYOUT_WARNING = (
+    "experimental: layout edits via bundles is on — bundle composition edits rewrite "
+    "ui-tileslayouts_assets_all.bundle, move every stored composition in that bundle, and are "
+    "ignored on screens customised in the game"
+)
+ROUTE_PREFERENCES = ("skin_folder", "bundle")
+DEFAULT_ROUTE_PREFERENCE = "bundle"
+LAYOUT_ROUTES = ("custom_layout", "bundle")       # ST1: how LAYOUT operations (move, resize, max size, add tile, slots, swap tile) reach the game
+DEFAULT_LAYOUT_ROUTE = "custom_layout"             # the default for layout operations ONLY; styles and pictures keep route_preference
+LAYOUT_ENGINES = ("one_rule", "rea")              # REA-WIN-4: which layout rule the preview uses (both stay selectable)
+DEFAULT_LAYOUT_ENGINE = "rea"                     # UI1: the REA port is the default; one_rule remains an explicit project choice
+TOKEN_BUNDLES = ("ui-styles_assets_default.bundle", "ui-styles_assets_common.bundle")
 OUTPUTS = ("bundles", "native")                    # how the skin reaches the game: patched game bundles, or a native skin folder
 CLUB_DEFAULT = {"rgb": "#171717", "a": 1.0}
-RULE_KEYS = {"sheet", "selector", "props", "why", "note", "on", "op", "remove"}   # op: replace | remove edit the game's own rule in place (bundle target)
+RULE_KEYS = {"sheet", "selector", "props", "why", "note", "on", "op", "remove", "source"}   # op: replace | remove edit the game's own rule in place (bundle target)
 MODES = ("rgba", "rgb-keep-alpha")
 NAME_RE = re.compile(r"[A-Za-z0-9][\w.-]{0,63}")
 IDENT = re.compile(r"[A-Za-z_][\w-]*")
@@ -31,12 +43,130 @@ def new(name, game_build=None):
     return {"schema": SCHEMA, "name": name, "game_build": game_build, "vanilla_manifest": None,
             "options": {"flatten_gradients": False, "skip_sheets": [], "raise_specificity": True,
                         "contrast_backdrop": {"rgb": "#171717", "a": 1.0}},
-            "token_overrides": [], "literal_swaps": [], "scoped_rules": [], "rename_classes": {},
+            "token_overrides": [], "literal_swaps": [], "scoped_rules": [], "declaration_edits": [], "rename_classes": {},
             "contrast_pairs": [], "tile_placement": [], "reverts": [], "image_swaps": [], "layout_patches": [], "font_swaps": [], "table_patches": []}
 
 
+def route_preference(p):
+    """The EFFECTIVE build routing of a project. A value counts only when the user chose it explicitly
+    (`options.route_preference_explicit` true); otherwise the default is bundle.
+
+    5I commits abf1dac..414990c wrote `route_preference: skin_folder` automatically in `project.new()`; those
+    values are treated as UNSET by `migrate()` and take the bundle default. New projects carry no
+    route_preference key at all."""
+    opts = (p or {}).get("options") or {}
+    if opts.get("route_preference_explicit") and opts.get("route_preference") in ROUTE_PREFERENCES:
+        return opts["route_preference"]
+    return DEFAULT_ROUTE_PREFERENCE
+
+
+def layout_route(p):
+    """The route of the project's LAYOUT operations: the game's own custom-layout files (default; no bundle rebuild, no checksum mismatch, undo = restore the file) or the
+    bundle. Only a choice made explicitly counts."""
+    opts = (p or {}).get("options") or {}
+    if opts.get("layout_route_explicit") and opts.get("layout_route") in LAYOUT_ROUTES:
+        return opts["layout_route"]
+    return DEFAULT_LAYOUT_ROUTE
+
+
+def set_layout_route(p, value):
+    if value not in LAYOUT_ROUTES:
+        raise ValueError("layout_route must be 'custom_layout' or 'bundle'")
+    opts = p.setdefault("options", {})
+    opts["layout_route"] = value
+    opts["layout_route_explicit"] = True
+    return p
+
+
+def layout_engine(p):
+    """The preview's layout rule. UI1: default rea (the recovered game runtime port, 27/27 measured
+    cases); one_rule stays selectable as an explicit project choice."""
+    opts = (p or {}).get("options") or {}
+    if opts.get("layout_engine_explicit") and opts.get("layout_engine") in LAYOUT_ENGINES:
+        return opts["layout_engine"]
+    return DEFAULT_LAYOUT_ENGINE
+
+
+def set_layout_engine(p, value):
+    """Record an EXPLICIT preview-engine choice in the project."""
+    if value not in LAYOUT_ENGINES:
+        raise ValueError("layout_engine must be 'one_rule' or 'rea'")
+    opts = p.setdefault("options", {})
+    opts["layout_engine"] = value
+    opts["layout_engine_explicit"] = True
+    return p
+
+
+def set_route_preference(p, value):
+    """Record an EXPLICIT routing choice in the project (the only way the setting is stored)."""
+    if value not in ROUTE_PREFERENCES:
+        raise ValueError("route_preference must be 'skin_folder' or 'bundle'")
+    opts = p.setdefault("options", {})
+    opts["route_preference"] = value
+    opts["route_preference_explicit"] = True
+    return p
+
+
+def edit_competition_sheets(p):
+    """Whether this project chooses to edit competition sheets' own definitions. OFF unless chosen explicitly."""
+    opts = (p or {}).get("options") or {}
+    return bool(opts.get("edit_competition_sheets_explicit") and opts.get("edit_competition_sheets"))
+
+
+def set_edit_competition_sheets(p, value):
+    opts = p.setdefault("options", {})
+    opts["edit_competition_sheets"] = bool(value)
+    opts["edit_competition_sheets_explicit"] = True
+    return p
+
+
+def experimental_bundle_layout_edits(p):
+    """UI2/UI5 route lock: bundle builds exclude grid-composition edits unless the advanced setting
+    'experimental: layout edits via bundles' is explicitly on (off by default)."""
+    opts = (p or {}).get("options") or {}
+    if "experimental_bundle_layout_edits" in opts:
+        return bool(opts.get("experimental_bundle_layout_edits_explicit") and opts.get("experimental_bundle_layout_edits"))
+    return bool(opts.get("layout_route_explicit") and opts.get("layout_route") == "bundle")
+
+
+def set_experimental_bundle_layout_edits(p, value):
+    opts = p.setdefault("options", {})
+    opts["experimental_bundle_layout_edits"] = bool(value)
+    opts["experimental_bundle_layout_edits_explicit"] = True
+    return p
+
+
+def experimental_tile_sizes(p):
+    """REL15 G1 gate: tile sizes (add-tile-size) ships behind 'experimental: tile sizes' (off by default)
+    until owner-confirmed in-game on a standalone bundle + layout run."""
+    opts = (p or {}).get("options") or {}
+    return bool(opts.get("experimental_tile_sizes_explicit") and opts.get("experimental_tile_sizes"))
+
+
+def set_experimental_tile_sizes(p, value):
+    opts = p.setdefault("options", {})
+    opts["experimental_tile_sizes"] = bool(value)
+    opts["experimental_tile_sizes_explicit"] = True
+    return p
+
+
+def experimental_slot_edits(p):
+    """REL15-C gate: slot editing (add, remove, reorder) ships behind 'experimental: slot edits'
+    (off by default) because 20261124T070834Z-03e293d7 was rolled back before an in-game check."""
+    opts = (p or {}).get("options") or {}
+    return bool(opts.get("experimental_slot_edits_explicit") and opts.get("experimental_slot_edits"))
+
+
+def set_experimental_slot_edits(p, value):
+    opts = p.setdefault("options", {})
+    opts["experimental_slot_edits"] = bool(value)
+    opts["experimental_slot_edits_explicit"] = True
+    return p
+
+
 def migrate(p, boundary=colour.B_SCHEMA1):
-    """Any schema -> schema 2, colours in canonical form. Idempotent; never drops a field.
+    """Any schema -> schema 2, colours in canonical form. Idempotent; never drops an authored field (the two
+    automatic 5I routing values are dropped: they count as UNSET, see route_preference()).
     Schema 1 input is a legacy ingestion boundary: percent alphas are normalised and logged (colour.legacy).
     Schema 2 input goes through the strict canonical form; an out-of-range alpha raises."""
     if not isinstance(p, dict):
@@ -67,6 +197,15 @@ def migrate(p, boundary=colour.B_SCHEMA1):
     opts["contrast_backdrop"] = conv(opts.get("contrast_backdrop", "#171717"), "contrast_backdrop")
     if "club_colours_replacement" in opts:
         opts["club_colours_replacement"] = conv(opts["club_colours_replacement"], "club_colours_replacement")
+    # 5I migration: `route_preference` written automatically by project.new() in commits abf1dac..414990c is
+    # UNSET, not a user choice. Same for the automatic edit_competition_sheets: false. An explicit choice is
+    # the only stored one. The file is not rewritten here; a normal save writes the migrated options.
+    if not opts.get("route_preference_explicit"):
+        opts.pop("route_preference", None)
+        opts.pop("route_preference_explicit", None)
+    if not opts.get("edit_competition_sheets_explicit"):
+        opts.pop("edit_competition_sheets", None)
+        opts.pop("edit_competition_sheets_explicit", None)
     p["schema"] = SCHEMA
     return p
 
@@ -135,6 +274,40 @@ def validate(p):
     colour.from_obj(p.get("options", {}).get("contrast_backdrop", {"rgb": "#171717", "a": 1.0}))
     if p.get("options", {}).get("output", "bundles") not in OUTPUTS:
         raise ValueError("options.output must be 'bundles' or 'native'")
+    if p.get("options", {}).get("route_preference", DEFAULT_ROUTE_PREFERENCE) not in ROUTE_PREFERENCES:
+        raise ValueError("options.route_preference must be 'skin_folder' (default) or 'bundle'")
+    if not isinstance(p.get("options", {}).get("route_preference_explicit", False), bool):
+        raise ValueError("options.route_preference_explicit must be true or false")
+    if "route_preference" in p.get("options", {}) and not p["options"].get("route_preference_explicit"):
+        raise ValueError("route_preference is stored only on an explicit choice: use set_route_preference()")
+    if not isinstance(p.get("options", {}).get("edit_competition_sheets", False), bool):
+        raise ValueError("options.edit_competition_sheets must be true (explicit choice) or false (default)")
+    if "edit_competition_sheets" in p.get("options", {}) and not p["options"].get("edit_competition_sheets_explicit"):
+        raise ValueError("edit_competition_sheets is stored only on an explicit choice: use set_edit_competition_sheets()")
+    if p.get("options", {}).get("layout_engine", DEFAULT_LAYOUT_ENGINE) not in LAYOUT_ENGINES:
+        raise ValueError("options.layout_engine must be 'rea' (default) or 'one_rule'")
+    if not isinstance(p.get("options", {}).get("layout_engine_explicit", False), bool):
+        raise ValueError("options.layout_engine_explicit must be true or false")
+    if "layout_engine" in p.get("options", {}) and not p["options"].get("layout_engine_explicit"):
+        raise ValueError("layout_engine is stored only on an explicit choice: use set_layout_engine()")
+    if not isinstance(p.get("options", {}).get("experimental_bundle_layout_edits", False), bool):
+        raise ValueError("options.experimental_bundle_layout_edits must be true or false")
+    if not isinstance(p.get("options", {}).get("experimental_bundle_layout_edits_explicit", False), bool):
+        raise ValueError("options.experimental_bundle_layout_edits_explicit must be true or false")
+    if "experimental_bundle_layout_edits" in p.get("options", {}) and not p["options"].get("experimental_bundle_layout_edits_explicit"):
+        raise ValueError("experimental_bundle_layout_edits is stored only on an explicit choice: use set_experimental_bundle_layout_edits()")
+    if not isinstance(p.get("options", {}).get("experimental_tile_sizes", False), bool):
+        raise ValueError("options.experimental_tile_sizes must be true or false")
+    if not isinstance(p.get("options", {}).get("experimental_tile_sizes_explicit", False), bool):
+        raise ValueError("options.experimental_tile_sizes_explicit must be true or false")
+    if "experimental_tile_sizes" in p.get("options", {}) and not p["options"].get("experimental_tile_sizes_explicit"):
+        raise ValueError("experimental_tile_sizes is stored only on an explicit choice: use set_experimental_tile_sizes()")
+    if not isinstance(p.get("options", {}).get("experimental_slot_edits", False), bool):
+        raise ValueError("options.experimental_slot_edits must be true or false")
+    if not isinstance(p.get("options", {}).get("experimental_slot_edits_explicit", False), bool):
+        raise ValueError("options.experimental_slot_edits_explicit must be true or false")
+    if "experimental_slot_edits" in p.get("options", {}) and not p["options"].get("experimental_slot_edits_explicit"):
+        raise ValueError("experimental_slot_edits is stored only on an explicit choice: use set_experimental_slot_edits()")
     if not isinstance(p.get("options", {}).get("club_colours", True), bool):
         raise ValueError("options.club_colours must be true (keep the game's club colours) or false (remove them)")
     colour.from_obj(p.get("options", {}).get("club_colours_replacement", CLUB_DEFAULT))
@@ -165,12 +338,27 @@ def validate(p):
                     raise ValueError("unknown property: " + n)
             continue
         if set(e) - RULE_KEYS or not e.get("sheet") or not e.get("props") or "remove" in e:
-            raise ValueError("scoped rule needs sheet, selector, props (optional why, note, on)")
+            raise ValueError("scoped rule needs sheet, selector, props (optional why, note, on, source)")
         check_selector(e["selector"])
         for k, v in e["props"].items():
             if not k.startswith("--") and k not in tp.PROP_TABLE:
                 raise ValueError("unknown property: " + k)
             check_value(v)
+    seen_decl = set()
+    for e in p.get("declaration_edits", []):
+        if not isinstance(e, dict) or set(e) - {"bundle", "sheet", "selector", "occurrence", "property", "old", "new", "reach"}:
+            raise ValueError("a declaration edit takes bundle, sheet, selector, occurrence, property, old, new (and reach)")
+        for k in ("bundle", "sheet", "selector", "property", "new"):
+            if not e.get(k):
+                raise ValueError("a declaration edit needs %s" % k)
+        if e["property"] not in tp.PROP_TABLE and not str(e["property"]).startswith("--"):
+            raise ValueError("unknown declaration property: " + str(e["property"]))
+        check_selector(e["selector"])
+        check_value(e["new"])
+        key = (e["bundle"], e["sheet"], e["selector"], int(e.get("occurrence") or 0), e["property"])
+        if key in seen_decl:
+            raise ValueError("declaration %s of %s %s is edited twice" % (e["property"], e["sheet"], e["selector"]))
+        seen_decl.add(key)
     ns = p.get("native_sheets", [])
     if not isinstance(ns, list) or not all(isinstance(x, str) and x.startswith("styles/") and x.endswith(".uss") and ".." not in x for x in ns):
         raise ValueError("native_sheets must be a list of styles/<name>.uss paths")
@@ -246,12 +434,15 @@ def to_spec(p):
                         for _, e in swaps if e["mode"] == "rgb-keep-alpha"},
         "rgba_swaps": [[i, list(colour.from_obj(e["from"])), list(colour.from_obj(e["to"]))]
                        for i, e in swaps if e["mode"] == "rgba"],
+        "declaration_edits": copy.deepcopy(p.get("declaration_edits", [])),
         "append_rules_by_sheet": rules,
         "edit_rules_by_sheet": edits,
         "layout_patches": copy.deepcopy(p.get("layout_patches", [])),
         "table_patches": copy.deepcopy(p.get("table_patches", [])),
         "skip_sheets": list(opts.get("skip_sheets", [])),
         "flatten_gradients": bool(opts.get("flatten_gradients", False)),
+        "route_preference": route_preference(p),
+        "token_bundles": list(TOKEN_BUNDLES) if route_preference(p) == "bundle" else [],
         "rename_classes": dict(club_colours.RENAMES, **p.get("rename_classes", {})) if opts.get("club_colours", True) is False
         else dict(p.get("rename_classes", {})),
     }
@@ -260,6 +451,8 @@ def to_spec(p):
 def warnings(p, swap_hits=None):
     """swap_hits: per-swap hit counts from a build (same order as literal_swaps), or None before a build."""
     out = []
+    if experimental_bundle_layout_edits(p):
+        out.append(EXPERIMENTAL_BUNDLE_LAYOUT_WARNING)
     legacy = [e for e in p.get("tile_placement", []) if not (isinstance(e, dict) and "schema" in e)]
     if legacy:      # entries from before placement edits had their own list: preserved untouched, never validated, never built
         out.append("tile_placement has %d legacy entr%s (no schema marker): kept untouched, not validated, not built. Placement edits live in their own per-project list (Layout tab)" % (len(legacy), "y" if len(legacy) == 1 else "ies"))

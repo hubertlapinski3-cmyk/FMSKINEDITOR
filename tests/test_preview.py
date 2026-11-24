@@ -1,12 +1,89 @@
 """Live preview: model builder bindings, evaluation against a project, verify region selection, routes."""
-import io, json, logging, os, sys, tempfile, threading, unittest, urllib.error, urllib.request
+import io, json, logging, os, re, sys, tempfile, threading, unittest, urllib.error, urllib.request
 from pathlib import Path
 from unittest import mock
 
 from skin_editor import index_styles, preview, project, server, verify
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tools"))
-import build_preview_model as bpm  # noqa: E402
+
+class _PreviewModelHelper:
+    SCHEMA = "fm27se-preview/1"
+    VAR = re.compile(r"var\((--[\w-]+)\)$")
+    HEX = re.compile(r"#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$")
+
+    @classmethod
+    def winner(cls, src):
+        rules = src.get("rules") or []
+        verdict = src.get("verdict") or ""
+        if verdict.startswith("stylesheet:"):
+            for r in rules:
+                if verdict.startswith("stylesheet:%s %s " % (r["sheet"], r["selector"])) or verdict == "stylesheet:%s %s" % (r["sheet"], r["selector"]):
+                    return r
+        return rules[0] if rules else None
+
+    @classmethod
+    def binding(cls, src):
+        if src.get("inline"):
+            return {"kind": "code", "why": "inline value (set by code)"}
+        v = src.get("verdict") or ""
+        if not v.startswith("stylesheet:"):
+            return {"kind": "code", "why": v.split(" (")[0] or "no stylesheet source"}
+        r = cls.winner(src)
+        if not r:
+            return {"kind": "code", "why": "no rule reported"}
+        val = r["value"].strip()
+        base = {"sheet": r["sheet"], "selector": r["selector"], "value": val, "specificity": r.get("specificity")}
+        m = cls.VAR.match(val)
+        if m:
+            return dict(base, kind="token", token=m.group(1))
+        if cls.HEX.match(val):
+            return dict(base, kind="literal")
+        return dict(base, kind="code", why="value is not a single token or colour: " + val[:60])
+
+    @classmethod
+    def norm_hex(cls, h):
+        h = (h or "").strip().upper()
+        return h if cls.HEX.match(h) else None
+
+    @classmethod
+    def build(cls, measure, screen, resolution, build_label=None, state="vanilla"):
+        regions = []
+        for order, e in enumerate(measure):
+            comp = e.get("component") or {}
+            if comp.get("type") == "SIGradient" and cls.norm_hex(comp.get("startColour")) and cls.norm_hex(comp.get("endColour")) and e.get("w", 0) >= 1 and e.get("h", 0) >= 1:
+                label = e.get("label", "")
+                regions.append({
+                    "id": "%s#%d:gradient" % (label.split(".")[0][:60], order), "order": order, "prop": "gradient",
+                    "rect": [round(e["x"], 1), round(e["y"], 1), round(e["w"], 1), round(e["h"], 1)],
+                    "label": label[:200], "text": "", "classes": e.get("classes") or [],
+                    "colour": cls.norm_hex(comp["startColour"]), "end": cls.norm_hex(comp["endColour"]), "direction": comp.get("direction") or "LeftToRight",
+                    "opacity": (e.get("resolved") or {}).get("opacity", 1),
+                    "binding": {"kind": "gradient"} if comp.get("useCustomStyles") else {"kind": "code", "why": "gradient colours set by code (useCustomStyles false)"}})
+            for prop, src in (e.get("src") or {}).items():
+                col = cls.norm_hex(src.get("resolved") or (e.get("resolved") or {}).get(prop))
+                if not col or not (e.get("w", 0) >= 1 and e.get("h", 0) >= 1):
+                    continue
+                label = e.get("label", "")
+                regions.append({
+                    "id": "%s#%d:%s" % (label.split(".")[0][:60], order, prop), "order": order, "prop": prop,
+                    "rect": [round(e["x"], 1), round(e["y"], 1), round(e["w"], 1), round(e["h"], 1)],
+                    "label": label[:200], "text": (e.get("text") or "")[:80], "classes": e.get("classes") or [],
+                    "colour": col, "opacity": (e.get("resolved") or {}).get("opacity", 1),
+                    "binding": cls.binding(src)})
+        return {"schema": cls.SCHEMA, "screen": screen, "resolution": list(resolution), "screenshot": screen + ".png",
+                "game_build": build_label, "measured_state": state, "regions": regions}
+
+    @staticmethod
+    def mark_sampleable(model, png_bytes, tolerance=6):
+        cand = [r for r in model["regions"] if r["prop"] == "background-color" and len(r["colour"]) in (7, 9)
+                and (len(r["colour"]) == 7 or r["colour"].endswith("FF")) and r.get("opacity", 1) >= 0.999 and r["rect"][2] >= 12 and r["rect"][3] >= 12]
+        probe = {"resolution": model["resolution"], "regions": [{"id": str(i), "rect": r["rect"], "expected": r["colour"][:7]} for i, r in enumerate(cand)]}
+        for row, r in zip(verify.compare(probe, png_bytes, tolerance)["rows"], cand):
+            r["sample_ok"] = row["result"] == "landed"
+        return sum(r.get("sample_ok", False) for r in model["regions"])
+
+
+bpm = _PreviewModelHelper
 
 
 def index():

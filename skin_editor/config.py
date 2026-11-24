@@ -13,7 +13,10 @@ DEFAULTS = {
     "platform_folder": "auto",
     "store": "auto",
     "workspace_dir": None,
+    "skin_backup_dir": None,         # optional: every skin written into the game's skins folder is also copied here (new dated folder per save)
     "vanilla_dir": None,
+    "layout_index": None,            # FM27_LayoutMCP's index/layout-vanilla.sqlite (developer-only tool, not shipped); or set FM27_LAYOUT_INDEX
+    "layout_areas": None,            # FM27_LayoutMCP's config/areas.json (optional); or set FM27_LAYOUT_AREAS
     "process_names": ["fm", "Football Manager 27"],
     "server": {"host": "127.0.0.1", "port": 8765, "open_browser": True},
     "build": {"keep_last_builds": 5, "flatten_gradients_default": False},

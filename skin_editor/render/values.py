@@ -202,7 +202,7 @@ _add(_P, "background positioning and size are approximated; drawn once backgroun
 SHORTHANDS = ("margin", "padding", "border-width", "border-color", "border-radius", "flex")
 
 
-# Names for property ids the editor's token_patch table does not have. NOT from decompiled code. Source of each name: Unity numbers the style properties of a group
+# Names for property ids the editor's token_patch table does not have (derived from Unity property numbering and observed rule values). Source of each name: Unity numbers the style properties of a group
 # alphabetically (the editor's own known ids show it: 131072 align-content, 131073 align-items, 131074 align-self, 131076 border-bottom-width ...), so an unknown id
 # sits in the alphabetical gap of its neighbours; the CONFIRMING OBSERVATION is the value pattern of every rule that uses the id in the 49 sheets (counts in
 # data/render/uss-property-census.json), e.g. 393216..393219 carry '0s' / durations / 'opacity' / 'ease-in-out' = transition-delay, -duration, -property,

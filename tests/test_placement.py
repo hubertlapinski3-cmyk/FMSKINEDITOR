@@ -253,6 +253,11 @@ class BuildReport(unittest.TestCase):
             plain = patcher.build(p, ws, ix)
             dump_bytes = (ws.layout / "current.json").read_bytes()
             pl.add(ws, "t", edit(geometry=geo(2, 1, 4, 2))); pl.add(ws, "t", edit(cell=2, geometry=geo(0, 5, 4, 2)))
+            # UI2/UI5 route lock: by default bundle builds exclude grid-composition edits; turning the experimental
+            # setting on enables the bundle composition path (which then checks the dump's bundle name).
+            locked = patcher.build(p, ws, ix)
+            self.assertEqual(locked["tile_edits"]["cells"], 0)
+            project.set_experimental_bundle_layout_edits(p, True)
             with self.assertRaisesRegex(ValueError, "re-export the layout dump"):                  # a fixture dump names no bundle: the writer refuses instead of guessing
                 patcher.build(p, ws, ix)
             with mock.patch("skin_editor.tiles.ops_for", return_value=[]):                          # the report section itself, without the writer

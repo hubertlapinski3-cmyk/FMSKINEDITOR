@@ -1,5 +1,6 @@
 """Image and SVG swaps: conversion, validation, snapshot / build / gate / install flow, routes, and (when the game is installed) a
 real swap on copies of game bundles."""
+from tests import gamebuild
 import io, json, logging, os, tempfile, threading, unittest, urllib.error, urllib.request
 from pathlib import Path
 from unittest import mock
@@ -10,7 +11,7 @@ from tests.test_core import fake, sheet
 SVG = (b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#DA0037"/>'
        b'<path d="M30 30 H70 V70 H30 Z M40 40 V60 H60 V40 Z" fill="#FFFFFF" fill-rule="evenodd"/>'
        b'<rect x="5" y="5" width="20" height="10" fill="#00AA00" fill-opacity="0.5" stroke="#000" stroke-width="2"/></svg>')
-GAME = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+GAME = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 
 
 def png(w=64, h=40, col=(200, 10, 10)):
@@ -166,8 +167,10 @@ class Routes(unittest.TestCase):
             self.assertIn(needle, html)
 
 
+@gamebuild.requires_build
 @unittest.skipUnless((GAME / "ui-icons_assets_common.bundle").is_file() and (GAME / "ui-backgrounds_assets_1x.bundle").is_file(), "needs the game")
 class RealBundles(unittest.TestCase):
+    @gamebuild.requires_build
     @unittest.skipUnless((GAME / "ui-iconspriteatlases_assets_2x.bundle").is_file(), "needs the game")
     def test_icon_into_every_atlas(self):
         with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:     # UnityPy keeps read bundles mapped on Windows
@@ -184,7 +187,7 @@ class RealBundles(unittest.TestCase):
 
     """On copies of real game bundles (the game folder is only read): the swap lands, everything else stays identical."""
     def test_texture_and_svg(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:     # UnityPy keeps read bundles mapped on Windows: deleting the copies can fail after the checks passed (a test-cleanup flake, not a fault of the code)
             src_dir, out = Path(tmp) / "src", Path(tmp) / "out"; src_dir.mkdir(); out.mkdir()
             (src_dir / "a.png").write_bytes(png(50, 50, (10, 200, 30))); (src_dir / "i.svg").write_bytes(SVG)
             for b, kind, srcf in (("ui-backgrounds_assets_1x.bundle", "texture", "a.png"), ("ui-icons_assets_common.bundle", "svg", "i.svg")):

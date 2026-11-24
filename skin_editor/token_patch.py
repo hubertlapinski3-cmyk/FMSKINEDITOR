@@ -491,6 +491,42 @@ class SheetPatcher:
         self.count_edited += changed
         return hits, changed
 
+    def set_declaration(self, e):
+        """Stage 5H: change ONE declaration's whole value list. Handle: {bundle, sheet, selector,
+        occurrence, property, old}. The rule index is never stored - it is resolved here from the normalized
+        selector and the declaration occurrence. Supports replacing any value text, including var() -> literal.
+        Refuses when the handle resolves to zero or several declarations, or the old value differs."""
+        from . import index_styles
+        entry = index_styles.sheet_entry(e.get("bundle") or "", self.t)
+        want = selector_key(e["selector"])
+        occurrence = int(e.get("occurrence") or 0)
+        prop, old = e["property"], e.get("old")
+        found = []
+        seen = 0
+        for r in entry["rules"]:
+            if selector_key(", ".join(r["s"])) != want:
+                continue
+            for p in r["p"]:
+                if p[0] != prop:
+                    continue
+                if seen == occurrence:
+                    found.append((r["i"], p))
+                seen += 1
+        if len(found) != 1:
+            raise ValueError("declaration handle resolves to %d declarations (expected exactly one): %s %s #%d %s"
+                             % (len(found), e.get("sheet"), e.get("selector"), occurrence, prop))
+        rule_index, prop_entry = found[0]
+        if prop_entry[1] != old:
+            raise ValueError("declaration handle is stale: %s #%d %s is %r, the handle expects %r"
+                             % (e.get("selector"), occurrence, prop, prop_entry[1], old))
+        rule = self.t["m_Rules"][rule_index]
+        same = [p for p in rule.get("m_Properties") or [] if prop_matches(p, prop)]
+        if len(same) != 1:
+            raise ValueError("the addressed rule carries %d declarations of %s; the per-declaration writer "
+                             "refuses this case" % (len(same), prop))
+        self.set_props(rule, {prop: e["new"]})
+        return 1, 1
+
     def set_props(self, rule, new_props):
         """Set {property: value text} on one decoded rule in place (an existing declaration gets the new value, a missing one is added at
         the end). The value pools only grow. Returns the number of declarations set."""

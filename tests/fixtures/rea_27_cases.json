@@ -1,0 +1,5943 @@
+{
+ "tol": 1.5,
+ "mini_dump": {
+  "meta": {
+   "schema": "fmlayout-index/2",
+   "game_build": "27.1.0.2505117",
+   "index_fingerprint": "733bf5567fb239dff33eeb519aa9b74540d1722e298b023072f7c529804c42be",
+   "exported_at": "2026-11-17T19:28:28Z",
+   "source": {
+    "platform_folder": "StandaloneWindows64",
+    "catalog_hash": "ccf4d25f06156f55e54a3548a6a2bb2d",
+    "bundles": {
+     "ui-styles_assets_.bundle": "1ca70c0d77d357b9b0f079f1ecf7ecc885123387517569df33b5146d22eea987",
+     "ui-styles_assets_1x.bundle": "bc7f093ea2e49e43b9c3ee8c0ae669062e11a336dc2a311adc4f843014a38c4f",
+     "ui-styles_assets_2x.bundle": "acfd796d88a0132d74611b85bc498c704dbe9ceaa386e168a14f11f369f8ccf5",
+     "ui-styles_assets_3x.bundle": "728b158fb5242d62a8d6830ed300326b258f84eb07309f5437f0c9f3f4fbdd05",
+     "ui-styles_assets_4x.bundle": "2fa3bc97b6fd4368af982d6a87e105cad3f244fb181c0b5a07c827b584eed6e6",
+     "ui-styles_assets_common.bundle": "8a95687e800f996b0234d7c5a039da17e578f14834eeb97054aeaf138870baea",
+     "ui-styles_assets_default.bundle": "44f92ef5b5bc0537e3821cbf963aab2fa25563e1b9695895337d26cc0fc914a7",
+     "ui-styles_assets_match.bundle": "309a1834c44b3a5658f9488758f6b4e071bde8b9ebb02dabdd2a01880b834108",
+     "ui-visualtreeassets_assets_fantasydraftvisualtreeassetpreload.bundle": "10d30e6c23a856daa109d4ca29091e0594a9533f8e92e7e63901ae15b8df90e3",
+     "ui-visualtreeassets_assets_gameworldvisualtreeassetpreload.bundle": "1618945bc2fd70fa234d61ee35b4802012b56fdf3b2bbaca062bdaad732059d2",
+     "ui-visualtreeassets_assets_globalvisualtreeassetpreload.bundle": "9912a5b1b264112739dff1487414725dd5277ad87bab5526291ea751b2859559",
+     "ui-visualtreeassets_assets_initvisualtreeassetpreload.bundle": "c38a51973f1e01f73c94b44ac3e487f2159fb426bbe48deaa0780420c201feab",
+     "ui-visualtreeassets_assets_introvisualtreeassetpreload.bundle": "43d2c751c7071565887f6b6d11432c004341e6d0f242168448bd02ed80c4d835",
+     "ui-visualtreeassets_assets_matchvisualtreeassetpreload.bundle": "25fad901a77a442afb2c04a967cb0338590aa6a8ca37d90d0b3846fbb2a0667e",
+     "ui-tileslayouts_assets_all.bundle": "569666607b04449dd48c00390615b196c0218889c406a6cb0d46d5754d0792e6",
+     "ui-tactics_assets_all.bundle": "9ed9b111b1287f4ce05b3c22ebfc4bccd3df09f14893562c2ebb668edb3594f3",
+     "ui-dynamiccardcollections_assets_all.bundle": "4d41e7cb2528b58d0fd431280de837e43f44108a55017e3605cc9e41a229221f",
+     "ui-panelids_assets_all.bundle": "c1ff659fa38327b8a5f96316abb68783eab785587ca8afb01e323439ccc9411c"
+    }
+   }
+  },
+  "areas": {},
+  "layouts": [],
+  "elements": [],
+  "includes": [],
+  "panels": [],
+  "tiles": [
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 0,
+    "cell_element_id": "PlayerAttributesBlock",
+    "cfg_index": 0,
+    "size": {
+     "w": 20,
+     "h": 6
+    },
+    "tile_layout_id": 9349
+   },
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 1,
+    "cell_element_id": "Happiness",
+    "cfg_index": 0,
+    "size": {
+     "w": 2,
+     "h": 2
+    },
+    "tile_layout_id": 8138
+   },
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 2,
+    "cell_element_id": "FItness",
+    "cfg_index": 0,
+    "size": {
+     "w": 2,
+     "h": 2
+    },
+    "tile_layout_id": 3714
+   },
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 3,
+    "cell_element_id": "PlayerForm",
+    "cfg_index": 0,
+    "size": {
+     "w": 2,
+     "h": 2
+    },
+    "tile_layout_id": 10113
+   },
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 4,
+    "cell_element_id": "PlayerTrainingOverview",
+    "cfg_index": 0,
+    "size": {
+     "w": 2,
+     "h": 2
+    },
+    "tile_layout_id": 7398
+   },
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 4,
+    "cell_element_id": "PlayerTrainingOverview",
+    "cfg_index": 1,
+    "size": {
+     "w": 2,
+     "h": 2
+    },
+    "tile_layout_id": 6362
+   },
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 4,
+    "cell_element_id": "PlayerTrainingOverview",
+    "cfg_index": 2,
+    "size": {
+     "w": 2,
+     "h": 2
+    },
+    "tile_layout_id": 9438
+   },
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 5,
+    "cell_element_id": "PlayerSeasonStats",
+    "cfg_index": 0,
+    "size": {
+     "w": 8,
+     "h": 2
+    },
+    "tile_layout_id": 10072
+   },
+   {
+    "panel_layout_id": 9726,
+    "set_name": "PlayerReportOverviewCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 6,
+    "cell_element_id": "CareerStats",
+    "cfg_index": 0,
+    "size": {
+     "w": 4,
+     "h": 2
+    },
+    "tile_layout_id": 6823
+   },
+   {
+    "panel_layout_id": 405,
+    "set_name": "SquadTileCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "SquadComposition-Large",
+    "cell_index": 0,
+    "cell_element_id": "Atmosphere",
+    "cfg_index": 0,
+    "size": {
+     "w": 4,
+     "h": 2
+    },
+    "tile_layout_id": 604
+   },
+   {
+    "panel_layout_id": 405,
+    "set_name": "SquadTileCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "SquadComposition-Large",
+    "cell_index": 1,
+    "cell_element_id": "Tactics",
+    "cfg_index": 0,
+    "size": {
+     "w": 4,
+     "h": 4
+    },
+    "tile_layout_id": 7071
+   },
+   {
+    "panel_layout_id": 405,
+    "set_name": "SquadTileCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "SquadComposition-Large",
+    "cell_index": 2,
+    "cell_element_id": "Training",
+    "cfg_index": 0,
+    "size": {
+     "w": 4,
+     "h": 4
+    },
+    "tile_layout_id": 7248
+   },
+   {
+    "panel_layout_id": 405,
+    "set_name": "SquadTileCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "SquadComposition-Large",
+    "cell_index": 3,
+    "cell_element_id": "HumanActionsControlPanelBlock",
+    "cfg_index": 0,
+    "size": {
+     "w": 16,
+     "h": 1
+    },
+    "tile_layout_id": 8829
+   },
+   {
+    "panel_layout_id": 405,
+    "set_name": "SquadTileCompositionSet",
+    "breakpoint": 3,
+    "variant_idx": 0,
+    "composition": "SquadComposition-Large",
+    "cell_index": 4,
+    "cell_element_id": "FirstTeamOverview",
+    "cfg_index": 0,
+    "size": {
+     "w": 12,
+     "h": 5
+    },
+    "tile_layout_id": 8965
+   }
+  ],
+  "compositions": [
+   {
+    "name": "PlayerReportOverviewComposition-Large",
+    "layout_mode": "Standard",
+    "preset_name": "",
+    "preset_w": 0,
+    "preset_h": 0,
+    "instantiation_order": [
+     3,
+     4,
+     1,
+     6,
+     0,
+     2,
+     5,
+     7
+    ],
+    "conditions": [],
+    "bundle": "ui-tileslayouts_assets_all.bundle",
+    "path_id": 3901662990989568885
+   },
+   {
+    "name": "SquadComposition-Large",
+    "layout_mode": "Standard",
+    "preset_name": "",
+    "preset_w": 0,
+    "preset_h": 0,
+    "instantiation_order": [
+     3,
+     4,
+     1,
+     6,
+     0,
+     2,
+     5,
+     7
+    ],
+    "conditions": [],
+    "bundle": "ui-tileslayouts_assets_all.bundle",
+    "path_id": 4181126630784745451
+   }
+  ],
+  "cells": [
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 0,
+    "element_id": "PlayerAttributesBlock",
+    "x": 0,
+    "y": 0,
+    "w": 20,
+    "h": 6,
+    "min_w": 20,
+    "min_h": 6,
+    "max_w": 100,
+    "max_h": 100,
+    "flags": [
+     "locked",
+     "takes_focus"
+    ],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 1,
+    "element_id": "Happiness",
+    "x": 0,
+    "y": 6,
+    "w": 2,
+    "h": 2,
+    "min_w": 2,
+    "min_h": 2,
+    "max_w": 4,
+    "max_h": 4,
+    "flags": [],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 2,
+    "element_id": "FItness",
+    "x": 2,
+    "y": 6,
+    "w": 2,
+    "h": 2,
+    "min_w": 2,
+    "min_h": 2,
+    "max_w": 4,
+    "max_h": 4,
+    "flags": [],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 3,
+    "element_id": "PlayerForm",
+    "x": 4,
+    "y": 6,
+    "w": 2,
+    "h": 2,
+    "min_w": 2,
+    "min_h": 2,
+    "max_w": 4,
+    "max_h": 4,
+    "flags": [],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 4,
+    "element_id": "PlayerTrainingOverview",
+    "x": 6,
+    "y": 6,
+    "w": 2,
+    "h": 2,
+    "min_w": 2,
+    "min_h": 2,
+    "max_w": 4,
+    "max_h": 4,
+    "flags": [],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 5,
+    "element_id": "PlayerSeasonStats",
+    "x": 8,
+    "y": 6,
+    "w": 8,
+    "h": 2,
+    "min_w": 8,
+    "min_h": 2,
+    "max_w": 8,
+    "max_h": 4,
+    "flags": [],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 6,
+    "element_id": "CareerStats",
+    "x": 16,
+    "y": 6,
+    "w": 4,
+    "h": 2,
+    "min_w": 4,
+    "min_h": 2,
+    "max_w": 4,
+    "max_h": 4,
+    "flags": [],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 0,
+    "element_id": "Atmosphere",
+    "x": 16,
+    "y": 8,
+    "w": 4,
+    "h": 2,
+    "min_w": 4,
+    "min_h": 2,
+    "max_w": 4,
+    "max_h": 2,
+    "flags": [
+     "dynamic"
+    ],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 1,
+    "element_id": "Tactics",
+    "x": 16,
+    "y": 0,
+    "w": 4,
+    "h": 4,
+    "min_w": 4,
+    "min_h": 4,
+    "max_w": 4,
+    "max_h": 4,
+    "flags": [],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 2,
+    "element_id": "Training",
+    "x": 16,
+    "y": 4,
+    "w": 4,
+    "h": 4,
+    "min_w": 4,
+    "min_h": 4,
+    "max_w": 4,
+    "max_h": 4,
+    "flags": [
+     "dynamic"
+    ],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 3,
+    "element_id": "HumanActionsControlPanelBlock",
+    "x": 0,
+    "y": 0,
+    "w": 16,
+    "h": 1,
+    "min_w": 16,
+    "min_h": 1,
+    "max_w": 100,
+    "max_h": 100,
+    "flags": [
+     "features:2"
+    ],
+    "h_align": "0",
+    "v_align": "0"
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 4,
+    "element_id": "FirstTeamOverview",
+    "x": 0,
+    "y": 1,
+    "w": 16,
+    "h": 9,
+    "min_w": 12,
+    "min_h": 8,
+    "max_w": 100,
+    "max_h": 100,
+    "flags": [],
+    "h_align": "0",
+    "v_align": "0"
+   }
+  ],
+  "cell_configs": [
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 0,
+    "cfg_index": 0,
+    "size_w": 20,
+    "size_h": 6,
+    "tile_layout_id": 9349
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 1,
+    "cfg_index": 0,
+    "size_w": 2,
+    "size_h": 2,
+    "tile_layout_id": 8138
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 2,
+    "cfg_index": 0,
+    "size_w": 2,
+    "size_h": 2,
+    "tile_layout_id": 3714
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 3,
+    "cfg_index": 0,
+    "size_w": 2,
+    "size_h": 2,
+    "tile_layout_id": 10113
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 4,
+    "cfg_index": 0,
+    "size_w": 2,
+    "size_h": 2,
+    "tile_layout_id": 7398
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 4,
+    "cfg_index": 1,
+    "size_w": 2,
+    "size_h": 2,
+    "tile_layout_id": 6362
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 4,
+    "cfg_index": 2,
+    "size_w": 2,
+    "size_h": 2,
+    "tile_layout_id": 9438
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 5,
+    "cfg_index": 0,
+    "size_w": 8,
+    "size_h": 2,
+    "tile_layout_id": 10072
+   },
+   {
+    "composition": "PlayerReportOverviewComposition-Large",
+    "cell_index": 6,
+    "cfg_index": 0,
+    "size_w": 4,
+    "size_h": 2,
+    "tile_layout_id": 6823
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 0,
+    "cfg_index": 0,
+    "size_w": 4,
+    "size_h": 2,
+    "tile_layout_id": 604
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 1,
+    "cfg_index": 0,
+    "size_w": 4,
+    "size_h": 4,
+    "tile_layout_id": 7071
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 2,
+    "cfg_index": 0,
+    "size_w": 4,
+    "size_h": 4,
+    "tile_layout_id": 7248
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 3,
+    "cfg_index": 0,
+    "size_w": 16,
+    "size_h": 1,
+    "tile_layout_id": 8829
+   },
+   {
+    "composition": "SquadComposition-Large",
+    "cell_index": 4,
+    "cfg_index": 0,
+    "size_w": 12,
+    "size_h": 5,
+    "tile_layout_id": 8965
+   }
+  ]
+ },
+ "cases": [
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "CoachReportCardGridComposition-Large",
+   "composition": "CoachReportCardGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "CoachReportCardGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "PlayerInfoBlock",
+     "x": 0,
+     "y": 0,
+     "w": 20,
+     "h": 1,
+     "min_w": 20,
+     "min_h": 1,
+     "max_w": 100,
+     "max_h": 1,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "CoachReportCardGridComposition-Large",
+     "cell_index": 1,
+     "element_id": "CoachReport",
+     "x": 0,
+     "y": 1,
+     "w": 20,
+     "h": 9,
+     "min_w": 20,
+     "min_h": 9,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "PlayerInfoBlock": [
+     28.3,
+     97.7,
+     2443.4,
+     66.4
+    ],
+    "CoachReport": [
+     28.3,
+     179.7,
+     2443.4,
+     1213.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "ContractNegotiationPromisesGridComposition_Large",
+   "composition": "ContractNegotiationPromisesGridComposition_Large",
+   "rect": [
+    18.6,
+    85.9,
+    2139.6,
+    1319.3
+   ],
+   "cols": 26,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    16,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "ContractNegotiationPromisesGridComposition_Large",
+     "cell_index": 0,
+     "element_id": "RecruitmentBudgets",
+     "x": 0,
+     "y": 4,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "ContractNegotiationPromisesGridComposition_Large",
+     "cell_index": 1,
+     "element_id": "Contract Negotiation Promises Block",
+     "x": 4,
+     "y": 0,
+     "w": 12,
+     "h": 10,
+     "min_w": 12,
+     "min_h": 10,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "ContractNegotiationPromisesGridComposition_Large",
+     "cell_index": 2,
+     "element_id": "Playing Time",
+     "x": 0,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "ContractNegotiationPromisesGridComposition_Large",
+     "cell_index": 3,
+     "element_id": "PortalPlayerReport",
+     "x": 0,
+     "y": 0,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "RecruitmentBudgets": [
+     30.3,
+     425.8,
+     311.5,
+     147.5
+    ],
+    "Contract Negotiation Promises Block": [
+     358.4,
+     97.7,
+     1788.1,
+     1295.9
+    ],
+    "Playing Time": [
+     30.3,
+     589.8,
+     311.5,
+     147.5
+    ],
+    "PortalPlayerReport": [
+     30.3,
+     97.7,
+     311.5,
+     311.5
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "InjuryHistoryCardGridComposition",
+   "composition": "InjuryHistoryCardGridComposition",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    12,
+    8
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "InjuryHistoryCardGridComposition",
+     "cell_index": 0,
+     "element_id": "InjuryHistory",
+     "x": 0,
+     "y": 0,
+     "w": 12,
+     "h": 6,
+     "min_w": 12,
+     "min_h": 6,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [
+      "takes_focus"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "InjuryHistoryCardGridComposition",
+     "cell_index": 1,
+     "element_id": "InjuryRiskTile",
+     "x": 0,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "InjuryHistoryCardGridComposition",
+     "cell_index": 2,
+     "element_id": "InjurySusceptibility",
+     "x": 4,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "InjuryHistoryCardGridComposition",
+     "cell_index": 3,
+     "element_id": "InjuryPlayerSummary",
+     "x": 8,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "InjuryHistory": [
+     28.3,
+     97.7,
+     2443.4,
+     1131.8
+    ],
+    "InjuryRiskTile": [
+     28.3,
+     1246.1,
+     311.5,
+     147.5
+    ],
+    "InjurySusceptibility": [
+     356.4,
+     1246.1,
+     311.5,
+     147.5
+    ],
+    "InjuryPlayerSummary": [
+     683.6,
+     1246.1,
+     312.5,
+     147.5
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "PersonBiographyCardGridComposition-Large",
+   "composition": "PersonBiographyCardGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "PersonBiographyCardGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "PersonBiography",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 10,
+     "min_w": 16,
+     "min_h": 10,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PersonBiographyCardGridComposition-Large",
+     "cell_index": 1,
+     "element_id": "RetiredPlayerHistory",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 10,
+     "min_w": 4,
+     "min_h": 10,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "PersonBiography": [
+     28.3,
+     97.7,
+     1706.1,
+     1295.9
+    ],
+    "RetiredPlayerHistory": [
+     1750.0,
+     97.7,
+     721.7,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "PlayerContractUserOwnedNoWorkPermitGridComposition-Large",
+   "composition": "PlayerContractUserOwnedNoWorkPermitGridComposition-Large",
+   "rect": [
+    15.6,
+    265.6,
+    2468.8,
+    1074.2
+   ],
+   "cols": 30,
+   "rows": 13,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    8
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "PlayerContractUserOwnedNoWorkPermitGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "PlayerCoachReport",
+     "x": 16,
+     "y": 4,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerContractUserOwnedNoWorkPermitGridComposition-Large",
+     "cell_index": 1,
+     "element_id": "Playing Time",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerContractUserOwnedNoWorkPermitGridComposition-Large",
+     "cell_index": 2,
+     "element_id": "Contracts",
+     "x": 16,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerContractUserOwnedNoWorkPermitGridComposition-Large",
+     "cell_index": 3,
+     "element_id": "PlayerContractBlockNew",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 8,
+     "min_w": 16,
+     "min_h": 8,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "PlayerCoachReport": [
+     2160.2,
+     606.4,
+     311.5,
+     147.5
+    ],
+    "Playing Time": [
+     2160.2,
+     278.3,
+     311.5,
+     311.5
+    ],
+    "Contracts": [
+     2160.2,
+     769.5,
+     311.5,
+     148.4
+    ],
+    "PlayerContractBlockNew": [
+     28.3,
+     278.3,
+     2115.2,
+     1049.8
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "PlayerReportFitnessCardGridComposition-Large",
+   "composition": "PlayerReportFitnessCardGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "PlayerReportFitnessCardGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "InjuryHistory",
+     "x": 16,
+     "y": 4,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportFitnessCardGridComposition-Large",
+     "cell_index": 1,
+     "element_id": "PlayerTrainingOverview",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportFitnessCardGridComposition-Large",
+     "cell_index": 2,
+     "element_id": "PlayerReportFitnessFull",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 10,
+     "min_w": 8,
+     "min_h": 6,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "InjuryHistory": [
+     2160.2,
+     425.8,
+     311.5,
+     311.5
+    ],
+    "PlayerTrainingOverview": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "PlayerReportFitnessFull": [
+     28.3,
+     97.7,
+     2115.2,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "PlayerReportPersonal-Large",
+   "composition": "PlayerReportPersonal-Large",
+   "rect": [
+    15.6,
+    273.4,
+    2468.8,
+    1074.2
+   ],
+   "cols": 30,
+   "rows": 13,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    8
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "PlayerReportPersonal-Large",
+     "cell_index": 0,
+     "element_id": "PlayerTransferStatus",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportPersonal-Large",
+     "cell_index": 1,
+     "element_id": "PlayerContractNegotiationTile",
+     "x": 16,
+     "y": 4,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportPersonal-Large",
+     "cell_index": 2,
+     "element_id": "PersonPersonal",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 8,
+     "min_w": 4,
+     "min_h": 8,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportPersonal-Large",
+     "cell_index": 3,
+     "element_id": "PlayerHomegrownStatus",
+     "x": 16,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "PlayerTransferStatus": [
+     2160.2,
+     286.1,
+     311.5,
+     311.5
+    ],
+    "PlayerContractNegotiationTile": [
+     2160.2,
+     614.3,
+     311.5,
+     311.5
+    ],
+    "PersonPersonal": [
+     28.3,
+     286.1,
+     2115.2,
+     1049.8
+    ],
+    "PlayerHomegrownStatus": [
+     2160.2,
+     941.4,
+     311.5,
+     312.5
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "PlayingTimeCardGridComposition-Large",
+   "composition": "PlayingTimeCardGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "PlayingTimeCardGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "PlayerForm",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayingTimeCardGridComposition-Large",
+     "cell_index": 1,
+     "element_id": "PlayerSeasonStats",
+     "x": 16,
+     "y": 4,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayingTimeCardGridComposition-Large",
+     "cell_index": 2,
+     "element_id": "PlayingTime",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 10,
+     "min_w": 16,
+     "min_h": 10,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "PlayerForm": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "PlayerSeasonStats": [
+     2160.2,
+     425.8,
+     311.5,
+     311.5
+    ],
+    "PlayingTime": [
+     28.3,
+     97.7,
+     2115.2,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "SquadComposition-Large",
+   "composition": "SquadComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 1,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": [
+     {
+      "element_id": "SquadHierachy",
+      "offset": [
+       16,
+       0
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "MedicalCentre",
+      "offset": [
+       16,
+       2
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "Loans",
+      "offset": [
+       16,
+       4
+      ],
+      "size": [
+       4,
+       2
+      ]
+     }
+    ]
+   },
+   "cells": [
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 0,
+     "element_id": "Atmosphere",
+     "x": 16,
+     "y": 8,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "dynamic"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 1,
+     "element_id": "Tactics",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 2,
+     "element_id": "Training",
+     "x": 16,
+     "y": 4,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [
+      "dynamic"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 3,
+     "element_id": "HumanActionsControlPanelBlock",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 1,
+     "min_w": 16,
+     "min_h": 1,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [
+      "features:2"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 4,
+     "element_id": "FirstTeamOverview",
+     "x": 0,
+     "y": 1,
+     "w": 16,
+     "h": 9,
+     "min_w": 12,
+     "min_h": 8,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "Atmosphere": [
+     2160.2,
+     753.9,
+     311.5,
+     147.5
+    ],
+    "Tactics": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "Training": [
+     2160.2,
+     425.8,
+     311.5,
+     311.5
+    ],
+    "HumanActionsControlPanelBlock": [
+     28.3,
+     97.7,
+     2115.2,
+     66.4
+    ],
+    "FirstTeamOverview": [
+     28.3,
+     179.7,
+     2115.2,
+     1213.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "AA1",
+   "label": "PlayerReportOverviewComposition-Large",
+   "composition": "PlayerReportOverviewComposition-Large",
+   "rect": [
+    15.6,
+    273.4,
+    2468.8,
+    1074.2
+   ],
+   "cols": 30,
+   "rows": 13,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    8
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "PlayerReportOverviewComposition-Large",
+     "cell_index": 0,
+     "element_id": "PlayerAttributesBlock",
+     "x": 0,
+     "y": 0,
+     "w": 20,
+     "h": 6,
+     "min_w": 20,
+     "min_h": 6,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [
+      "locked",
+      "takes_focus"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportOverviewComposition-Large",
+     "cell_index": 1,
+     "element_id": "Happiness",
+     "x": 0,
+     "y": 6,
+     "w": 2,
+     "h": 2,
+     "min_w": 2,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportOverviewComposition-Large",
+     "cell_index": 2,
+     "element_id": "FItness",
+     "x": 2,
+     "y": 6,
+     "w": 2,
+     "h": 2,
+     "min_w": 2,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportOverviewComposition-Large",
+     "cell_index": 3,
+     "element_id": "PlayerForm",
+     "x": 4,
+     "y": 6,
+     "w": 2,
+     "h": 2,
+     "min_w": 2,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportOverviewComposition-Large",
+     "cell_index": 4,
+     "element_id": "PlayerTrainingOverview",
+     "x": 6,
+     "y": 6,
+     "w": 2,
+     "h": 2,
+     "min_w": 2,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportOverviewComposition-Large",
+     "cell_index": 5,
+     "element_id": "PlayerSeasonStats",
+     "x": 8,
+     "y": 6,
+     "w": 8,
+     "h": 2,
+     "min_w": 8,
+     "min_h": 2,
+     "max_w": 8,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerReportOverviewComposition-Large",
+     "cell_index": 6,
+     "element_id": "CareerStats",
+     "x": 16,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "PlayerAttributesBlock": [
+     28.3,
+     286.1,
+     2443.4,
+     803.7
+    ],
+    "Happiness": [
+     28.3,
+     1105.5,
+     311.5,
+     230.5
+    ],
+    "FItness": [
+     356.4,
+     1105.5,
+     311.5,
+     230.5
+    ],
+    "PlayerForm": [
+     683.6,
+     1105.5,
+     312.5,
+     230.5
+    ],
+    "PlayerTrainingOverview": [
+     1011.7,
+     1105.5,
+     312.5,
+     230.5
+    ],
+    "PlayerSeasonStats": [
+     1339.8,
+     1105.5,
+     640.6,
+     230.5
+    ],
+    "CareerStats": [
+     1996.1,
+     1105.5,
+     311.5,
+     230.5
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "C4",
+   "label": "HomegrownStatusToolGridComposition-Large",
+   "composition": "HomegrownStatusToolGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "HomegrownStatusToolGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "HomegrownStatus",
+     "x": 0,
+     "y": 0,
+     "w": 20,
+     "h": 10,
+     "min_w": 20,
+     "min_h": 10,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "HomegrownStatus": [
+     28.3,
+     97.7,
+     2443.4,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "C4",
+   "label": "PlayerReportDevelopmentProgressReportCardGridComposition-Large",
+   "composition": "PlayerReportDevelopmentProgressReportCardGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    16,
+    9
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "PlayerReportDevelopmentProgressReportCardGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "PlayerReportDevelopmentProgressReport",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 9,
+     "min_w": 16,
+     "min_h": 9,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [
+      "takes_focus"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "PlayerReportDevelopmentProgressReport": [
+     28.3,
+     97.7,
+     2443.4,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "C4",
+   "label": "TacticalEffectivenessGridComposition-Large",
+   "composition": "TacticalEffectivenessGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "TacticalEffectivenessGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "TacticalEffectiveness",
+     "x": 0,
+     "y": 0,
+     "w": 20,
+     "h": 10,
+     "min_w": 20,
+     "min_h": 10,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "TacticalEffectiveness": [
+     28.3,
+     97.7,
+     2443.4,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "C4",
+   "label": "TeamIndividualTrainingToolTileComposition-Large",
+   "composition": "TeamIndividualTrainingToolTileComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    16,
+    8
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "TeamIndividualTrainingToolTileComposition-Large",
+     "cell_index": 0,
+     "element_id": "IndividualTrainingBlock",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 8,
+     "min_w": 16,
+     "min_h": 8,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "IndividualTrainingBlock": [
+     28.3,
+     97.7,
+     2443.4,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "C4",
+   "label": "TransferStatusCardGridComposition-Large",
+   "composition": "TransferStatusCardGridComposition-Large",
+   "rect": [
+    15.6,
+    273.4,
+    2468.8,
+    1074.2
+   ],
+   "cols": 30,
+   "rows": 13,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    8
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "TransferStatusCardGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "TransferStatus Transfer Information Block",
+     "x": 0,
+     "y": 0,
+     "w": 20,
+     "h": 8,
+     "min_w": 20,
+     "min_h": 8,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "TransferStatus Transfer Information Block": [
+     28.3,
+     286.1,
+     2443.4,
+     1049.8
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "L3",
+   "label": "Portal-Large (PortalScreen)",
+   "composition": "Portal-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 1,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": [
+     {
+      "element_id": "PlayerSearch",
+      "offset": [
+       16,
+       0
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "PlayerRecommendations",
+      "offset": [
+       16,
+       2
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "Shortlist",
+      "offset": [
+       16,
+       4
+      ],
+      "size": [
+       4,
+       2
+      ]
+     }
+    ]
+   },
+   "cells": [
+    {
+     "composition": "Portal-Large",
+     "cell_index": 0,
+     "element_id": "Messages",
+     "x": 0,
+     "y": 0,
+     "w": 6,
+     "h": 10,
+     "min_w": 6,
+     "min_h": 10,
+     "max_w": 6,
+     "max_h": 100,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 1,
+     "element_id": "ClubTeamReport",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 2,
+     "element_id": "DataHub",
+     "x": 16,
+     "y": 2,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 3,
+     "element_id": "TransferBudget",
+     "x": 16,
+     "y": 4,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 4,
+     "element_id": "WageBudget",
+     "x": 16,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 5,
+     "element_id": "PortalAdaptiveContent",
+     "x": 6,
+     "y": 0,
+     "w": 10,
+     "h": 10,
+     "min_w": 8,
+     "min_h": 8,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 6,
+     "element_id": "Training",
+     "x": 16,
+     "y": 8,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "Messages": [
+     28.3,
+     97.7,
+     475.6,
+     1295.9
+    ],
+    "ClubTeamReport": [
+     2160.2,
+     97.7,
+     311.5,
+     148.4
+    ],
+    "DataHub": [
+     2160.2,
+     261.7,
+     311.5,
+     147.5
+    ],
+    "TransferBudget": [
+     2160.2,
+     425.8,
+     311.5,
+     147.5
+    ],
+    "WageBudget": [
+     2160.2,
+     589.8,
+     311.5,
+     147.5
+    ],
+    "PortalAdaptiveContent": [
+     519.5,
+     97.7,
+     1624.0,
+     1295.9
+    ],
+    "Training": [
+     2160.2,
+     753.9,
+     311.5,
+     147.5
+    ],
+    "PlayerSearch": [
+     2160.2,
+     918.0,
+     311.5,
+     147.5
+    ],
+    "PlayerRecommendations": [
+     2160.2,
+     1082.0,
+     311.5,
+     147.5
+    ],
+    "Shortlist": [
+     2160.2,
+     1246.1,
+     311.5,
+     147.5
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "L3",
+   "label": "SquadComposition-Large (SquadScreen)",
+   "composition": "SquadComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 1,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": [
+     {
+      "element_id": "SquadHierachy",
+      "offset": [
+       16,
+       0
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "MedicalCentre",
+      "offset": [
+       16,
+       2
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "Loans",
+      "offset": [
+       16,
+       4
+      ],
+      "size": [
+       4,
+       2
+      ]
+     }
+    ]
+   },
+   "cells": [
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 0,
+     "element_id": "Atmosphere",
+     "x": 16,
+     "y": 8,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "dynamic"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 1,
+     "element_id": "Tactics",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 2,
+     "element_id": "Training",
+     "x": 16,
+     "y": 4,
+     "w": 4,
+     "h": 4,
+     "min_w": 4,
+     "min_h": 4,
+     "max_w": 4,
+     "max_h": 4,
+     "flags": [
+      "dynamic"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 3,
+     "element_id": "HumanActionsControlPanelBlock",
+     "x": 0,
+     "y": 0,
+     "w": 16,
+     "h": 1,
+     "min_w": 16,
+     "min_h": 1,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [
+      "features:2"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "SquadComposition-Large",
+     "cell_index": 4,
+     "element_id": "FirstTeamOverview",
+     "x": 0,
+     "y": 1,
+     "w": 16,
+     "h": 9,
+     "min_w": 12,
+     "min_h": 8,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "Atmosphere": [
+     2160.2,
+     753.9,
+     311.5,
+     147.5
+    ],
+    "Tactics": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "Training": [
+     2160.2,
+     425.8,
+     311.5,
+     311.5
+    ],
+    "HumanActionsControlPanelBlock": [
+     28.3,
+     97.7,
+     2115.2,
+     66.4
+    ],
+    "FirstTeamOverview": [
+     28.3,
+     179.7,
+     2115.2,
+     1213.9
+    ],
+    "SquadHierachy": [
+     2160.2,
+     918.0,
+     311.5,
+     147.5
+    ],
+    "MedicalCentre": [
+     2160.2,
+     1082.0,
+     311.5,
+     147.5
+    ],
+    "Loans": [
+     2160.2,
+     1246.1,
+     311.5,
+     147.5
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "L3b",
+   "label": "ClubProfileCardGridComposition-Large (ClubProfileCard)",
+   "composition": "ClubProfileCardGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "ClubProfileCardGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "ClubProfileBlock",
+     "x": 0,
+     "y": 0,
+     "w": 20,
+     "h": 10,
+     "min_w": 20,
+     "min_h": 10,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "ClubProfileBlock": [
+     28.3,
+     97.7,
+     2443.4,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "L3b",
+   "label": "Portal-Large (PortalScreen)",
+   "composition": "Portal-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 1,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": [
+     {
+      "element_id": "PlayerSearch",
+      "offset": [
+       16,
+       0
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "PlayerRecommendations",
+      "offset": [
+       16,
+       2
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "Shortlist",
+      "offset": [
+       16,
+       4
+      ],
+      "size": [
+       4,
+       2
+      ]
+     }
+    ]
+   },
+   "cells": [
+    {
+     "composition": "Portal-Large",
+     "cell_index": 0,
+     "element_id": "Messages",
+     "x": 0,
+     "y": 0,
+     "w": 6,
+     "h": 10,
+     "min_w": 6,
+     "min_h": 10,
+     "max_w": 6,
+     "max_h": 100,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 1,
+     "element_id": "ClubTeamReport",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 2,
+     "element_id": "DataHub",
+     "x": 16,
+     "y": 2,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 3,
+     "element_id": "TransferBudget",
+     "x": 16,
+     "y": 4,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 4,
+     "element_id": "WageBudget",
+     "x": 16,
+     "y": 6,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 5,
+     "element_id": "PortalAdaptiveContent",
+     "x": 6,
+     "y": 0,
+     "w": 10,
+     "h": 10,
+     "min_w": 8,
+     "min_h": 8,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "Portal-Large",
+     "cell_index": 6,
+     "element_id": "Training",
+     "x": 16,
+     "y": 8,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 4,
+     "max_h": 2,
+     "flags": [
+      "features:64"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "Messages": [
+     28.3,
+     97.7,
+     475.6,
+     1295.9
+    ],
+    "ClubTeamReport": [
+     2160.2,
+     97.7,
+     311.5,
+     148.4
+    ],
+    "DataHub": [
+     2160.2,
+     261.7,
+     311.5,
+     147.5
+    ],
+    "TransferBudget": [
+     2160.2,
+     425.8,
+     311.5,
+     147.5
+    ],
+    "WageBudget": [
+     2160.2,
+     589.8,
+     311.5,
+     147.5
+    ],
+    "PortalAdaptiveContent": [
+     519.5,
+     97.7,
+     1624.0,
+     1295.9
+    ],
+    "Training": [
+     2160.2,
+     753.9,
+     311.5,
+     147.5
+    ],
+    "PlayerSearch": [
+     2160.2,
+     918.0,
+     311.5,
+     147.5
+    ],
+    "PlayerRecommendations": [
+     2160.2,
+     1082.0,
+     311.5,
+     147.5
+    ],
+    "Shortlist": [
+     2160.2,
+     1246.1,
+     311.5,
+     147.5
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "L3b",
+   "label": "TacticalEffectivenessGridComposition-Large (TacticalEffectivenessCard)",
+   "composition": "TacticalEffectivenessGridComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "cols": 30,
+   "rows": 16,
+   "padding": 12,
+   "reflow": 0,
+   "design_size": [
+    20,
+    10
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "TacticalEffectivenessGridComposition-Large",
+     "cell_index": 0,
+     "element_id": "TacticalEffectiveness",
+     "x": 0,
+     "y": 0,
+     "w": 20,
+     "h": 10,
+     "min_w": 20,
+     "min_h": 10,
+     "max_w": 100,
+     "max_h": 100,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "TacticalEffectiveness": [
+     28.3,
+     97.7,
+     2443.4,
+     1295.9
+    ]
+   }
+  },
+  {
+   "mode": "place_rule",
+   "case": "G1",
+   "label": "PlayerSearchReportGridCompositionBottomBarLarge",
+   "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+   "rect": [
+    28.3,
+    1246.1,
+    2279.3,
+    147.5
+   ],
+   "cols": 28,
+   "rows": 2,
+   "padding": 0,
+   "reflow": 0,
+   "design_size": [
+    20,
+    2
+   ],
+   "layout_mode": 0,
+   "optional_slices": {
+    "m_right": [
+     {
+      "element_id": "RecruitmentFeedback",
+      "offset": [
+       0,
+       0
+      ],
+      "size": [
+       4,
+       2
+      ]
+     },
+     {
+      "element_id": "TransferRoomIn",
+      "offset": [
+       4,
+       0
+      ],
+      "size": [
+       4,
+       2
+      ]
+     }
+    ],
+    "m_bottom": []
+   },
+   "cells": [
+    {
+     "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+     "cell_index": 0,
+     "element_id": "RecruitmentBudgets",
+     "x": 12,
+     "y": 0,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+     "cell_index": 1,
+     "element_id": "TransferWindow",
+     "x": 0,
+     "y": 0,
+     "w": 2,
+     "h": 2,
+     "min_w": 2,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+     "cell_index": 2,
+     "element_id": "ScoutingRange",
+     "x": 2,
+     "y": 0,
+     "w": 2,
+     "h": 2,
+     "min_w": 2,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+     "cell_index": 3,
+     "element_id": "PlayerRecommendations",
+     "x": 4,
+     "y": 0,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+     "cell_index": 4,
+     "element_id": "Shortlist",
+     "x": 8,
+     "y": 0,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [
+      "takes_focus"
+     ],
+     "h_align": "0",
+     "v_align": "0"
+    },
+    {
+     "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+     "cell_index": 5,
+     "element_id": "RecruitmentFocuses",
+     "x": 16,
+     "y": 0,
+     "w": 4,
+     "h": 2,
+     "min_w": 4,
+     "min_h": 2,
+     "max_w": 0,
+     "max_h": 0,
+     "flags": [],
+     "h_align": "0",
+     "v_align": "0"
+    }
+   ],
+   "moves": [],
+   "adds": [],
+   "measured": {
+    "RecruitmentBudgets": [
+     1011.7,
+     1246.1,
+     312.5,
+     147.5
+    ],
+    "TransferWindow": [
+     28.3,
+     1246.1,
+     147.5,
+     147.5
+    ],
+    "ScoutingRange": [
+     192.4,
+     1246.1,
+     147.5,
+     147.5
+    ],
+    "PlayerRecommendations": [
+     356.4,
+     1246.1,
+     311.5,
+     147.5
+    ],
+    "Shortlist": [
+     683.6,
+     1246.1,
+     312.5,
+     147.5
+    ],
+    "RecruitmentFocuses": [
+     1339.8,
+     1246.1,
+     312.5,
+     147.5
+    ]
+   }
+  },
+  {
+   "mode": "profile_hosts",
+   "case": "CL B",
+   "label": "PlayerReportOverviewComposition-Large",
+   "composition": "PlayerReportOverviewComposition-Large",
+   "show_tactical_effectiveness": true,
+   "custom": {
+    "m_compositionVersion": 1,
+    "m_gridBreakpoint": 3,
+    "m_layoutMode": 0,
+    "m_layoutPreset": {
+     "Name": "",
+     "Size": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "m_allowedTags": [],
+    "m_contentAlignment": 0,
+    "m_gridComponents": [
+     {
+      "m_elementID": "PlayerAttributesBlock",
+      "m_configDescriptions": [
+       {
+        "instanceID": 18654
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "PlayerAttributesBlock"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 18654
+        },
+        "Size": {
+         "x": 20,
+         "y": 6
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "25abee27232f15047840e1c3900a8a9c",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 0,
+       "width": 20,
+       "height": 6
+      },
+      "m_minSize": {
+       "x": 20,
+       "y": 6
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": true,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": true,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "TacticalEffectiveness",
+      "m_configDescriptions": [
+       {
+        "instanceID": 20130
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "TacticalEffectiveness"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 18658
+        },
+        "Size": {
+         "x": 2,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "3f6143aa7c9070c4e8a16ab338bba154",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 6,
+       "width": 2,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 2,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "FItness",
+      "m_configDescriptions": [
+       {
+        "instanceID": 18652
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "FItness"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 18652
+        },
+        "Size": {
+         "x": 2,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "c9429824709d7884b8529a1b275d608d",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 2,
+       "y": 6,
+       "width": 2,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 2,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 6,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "PlayerForm",
+      "m_configDescriptions": [
+       {
+        "instanceID": 18644
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "PlayerForm"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 18644
+        },
+        "Size": {
+         "x": 2,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "38d3952d3ac0133439b787c692f47d7f",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 4,
+       "y": 6,
+       "width": 2,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 2,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "PlayerTrainingOverview",
+      "m_configDescriptions": [
+       {
+        "instanceID": 19770
+       },
+       {
+        "instanceID": 22472
+       },
+       {
+        "instanceID": 19416
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "PlayerTrainingOverview",
+       "PlayerHomegrownStatus",
+       "PlayerLoanReport"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 19770
+        },
+        "Size": {
+         "x": 2,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "38d19da5c51041a4d92cabf86e406eb9",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       },
+       {
+        "Description": {
+         "instanceID": 22472
+        },
+        "Size": {
+         "x": 2,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "b92d732e5545396429c2585efcd3eded",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       },
+       {
+        "Description": {
+         "instanceID": 19416
+        },
+        "Size": {
+         "x": 2,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "fb4c7e28da92a2947bd79668f43be5c0",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 6,
+       "y": 6,
+       "width": 2,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 2,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "PlayerSeasonStats",
+      "m_configDescriptions": [
+       {
+        "instanceID": 18646
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "PlayerSeasonStats"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 18646
+        },
+        "Size": {
+         "x": 8,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "c83093f833e6cfb48bc57d548176a9ce",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 8,
+       "y": 6,
+       "width": 8,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 8,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 8,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "CareerStats",
+      "m_configDescriptions": [
+       {
+        "instanceID": 18656
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "CareerStats"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 18656
+        },
+        "Size": {
+         "x": 4,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "53fbd19acd2f8be45933969c5b8a91c2",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 6,
+       "width": 4,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     }
+    ],
+    "m_optionalSlices": {
+     "m_contentModeX": 0,
+     "m_contentModeY": 0,
+     "m_overrideSlicesOrder": false,
+     "m_instantiationOrder": [
+      3,
+      4,
+      1,
+      6,
+      0,
+      2,
+      5,
+      7
+     ],
+     "m_topLeft": [],
+     "m_top": [],
+     "m_topRight": [],
+     "m_left": [],
+     "m_right": [],
+     "m_bottomLeft": [],
+     "m_bottom": [],
+     "m_bottomRight": []
+    },
+    "m_gridElementSet": {
+     "instanceID": 18650
+    },
+    "m_validator": {
+     "instanceID": 18710
+    },
+    "m_editorValidator": {
+     "instanceID": 0
+    },
+    "m_reflowMode": 0,
+    "m_reverseOptionalForRTL": false,
+    "m_isCustom": true,
+    "m_optionalConditions": [],
+    "m_optionalConfigConditions": [],
+    "m_bindingExpect": [],
+    "m_expectRemaps": [],
+    "m_placementBindings": [
+     {
+      "m_elementID": "CareerStats",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Discipline",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "FItness",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Happiness",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "PlayerAttributesBlock",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "PlayerForm",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "PlayerSeasonStats",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "PlayerTrainingOverview",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     }
+    ]
+   },
+   "measured_sorted": [
+    {
+     "element_id": "PlayerAttributesBlock",
+     "rect": [
+      28.3,
+      286.1,
+      2443.4,
+      803.7
+     ]
+    },
+    {
+     "element_id": "TacticalEffectiveness",
+     "rect": [
+      28.3,
+      1105.5,
+      311.5,
+      230.5
+     ]
+    },
+    {
+     "element_id": "FItness",
+     "rect": [
+      356.4,
+      1105.5,
+      475.6,
+      230.5
+     ]
+    },
+    {
+     "element_id": "PlayerForm",
+     "rect": [
+      847.7,
+      1105.5,
+      312.5,
+      230.5
+     ]
+    },
+    {
+     "element_id": "PlayerTrainingOverview",
+     "rect": [
+      1175.8,
+      1105.5,
+      312.5,
+      230.5
+     ]
+    },
+    {
+     "element_id": "PlayerSeasonStats",
+     "rect": [
+      1503.9,
+      1105.5,
+      639.6,
+      230.5
+     ]
+    },
+    {
+     "element_id": "CareerStats",
+     "rect": [
+      2160.2,
+      1105.5,
+      311.5,
+      230.5
+     ]
+    }
+   ]
+  },
+  {
+   "mode": "profile_hosts",
+   "case": "CL C",
+   "label": "PlayerReportOverviewComposition-Large",
+   "composition": "PlayerReportOverviewComposition-Large",
+   "show_tactical_effectiveness": false,
+   "custom": null,
+   "measured_sorted": [
+    {
+     "element_id": "PlayerAttributesBlock",
+     "rect": [
+      28.3,
+      286.1,
+      2443.4,
+      803.7
+     ]
+    },
+    {
+     "element_id": "Happiness",
+     "rect": [
+      28.3,
+      1105.5,
+      311.5,
+      230.5
+     ]
+    },
+    {
+     "element_id": "FItness",
+     "rect": [
+      356.4,
+      1105.5,
+      311.5,
+      230.5
+     ]
+    },
+    {
+     "element_id": "PlayerForm",
+     "rect": [
+      683.6,
+      1105.5,
+      312.5,
+      230.5
+     ]
+    },
+    {
+     "element_id": "PlayerTrainingOverview",
+     "rect": [
+      1011.7,
+      1105.5,
+      312.5,
+      230.5
+     ]
+    },
+    {
+     "element_id": "PlayerSeasonStats",
+     "rect": [
+      1339.8,
+      1105.5,
+      640.6,
+      230.5
+     ]
+    },
+    {
+     "element_id": "CareerStats",
+     "rect": [
+      1996.1,
+      1105.5,
+      311.5,
+      230.5
+     ]
+    }
+   ]
+  },
+  {
+   "mode": "screen_hosts",
+   "case": "Test D",
+   "label": "SquadComposition-Large",
+   "composition": "SquadComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "reflow": 1,
+   "custom": {
+    "m_compositionVersion": 1,
+    "m_gridBreakpoint": 3,
+    "m_layoutMode": 0,
+    "m_layoutPreset": {
+     "Name": "",
+     "Size": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "m_allowedTags": [],
+    "m_contentAlignment": 0,
+    "m_gridComponents": [
+     {
+      "m_elementID": "Atmosphere",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Atmosphere"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "f3efbac2b378b4b779c78744b7a86d4c",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 8,
+       "width": 4,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": true,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Tactics",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Tactics"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "a653d065e432dd049ac74d64b85659f2",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 0,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Training",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Training"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "f2f247589d223b54a978f8d687337c12",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 4,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": true,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "HumanActionsControlPanelBlock",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "HumanActionsControlPanelBlock"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 16,
+         "y": 1
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "d0c7f4cf2bbf02d40a088eae7a768a42",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 0,
+       "width": 16,
+       "height": 1
+      },
+      "m_minSize": {
+       "x": 16,
+       "y": 1
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 2,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "FirstTeamOverview",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "FirstTeamOverview"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 12,
+         "y": 5
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "3c6b24be8ba166141859febbd8e11c20",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 1,
+       "width": 16,
+       "height": 9
+      },
+      "m_minSize": {
+       "x": 12,
+       "y": 8
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Happiness",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Happiness"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "ee9c1eef7befdb74d818d840506962b4",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 12,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     }
+    ],
+    "m_optionalSlices": {
+     "m_contentModeX": 0,
+     "m_contentModeY": 0,
+     "m_overrideSlicesOrder": false,
+     "m_instantiationOrder": [
+      3,
+      4,
+      1,
+      7,
+      0,
+      2,
+      6,
+      8,
+      5
+     ],
+     "m_topLeft": [],
+     "m_top": [],
+     "m_topRight": [],
+     "m_left": [],
+     "m_right": [],
+     "m_bottomLeft": [],
+     "m_bottom": [
+      {
+       "m_elementID": "SquadHierachy",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "SquadHierachy"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 0,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 0,
+       "m_verticalAlignment": 0
+      },
+      {
+       "m_elementID": "MedicalCentre",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "MedicalCentre"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 2,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 2,
+       "m_verticalAlignment": 1
+      },
+      {
+       "m_elementID": "Loans",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "Loans"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 4,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 0,
+       "m_verticalAlignment": 0
+      }
+     ],
+     "m_bottomRight": []
+    },
+    "m_gridElementSet": {
+     "instanceID": 0
+    },
+    "m_validator": {
+     "instanceID": 0
+    },
+    "m_editorValidator": {
+     "instanceID": 0
+    },
+    "m_reflowMode": 1,
+    "m_reverseOptionalForRTL": false,
+    "m_isCustom": true,
+    "m_optionalConditions": [],
+    "m_optionalConfigConditions": [],
+    "m_bindingExpect": [],
+    "m_expectRemaps": [],
+    "m_placementBindings": [
+     {
+      "m_elementID": "Atmosphere",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "FirstTeamOverview",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "HumanActionsControlPanelBlock",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Tactics",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Training",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Happiness",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     }
+    ]
+   },
+   "measured": {
+    "Atmosphere": [
+     2160.2,
+     753.9,
+     311.5,
+     147.5
+    ],
+    "Tactics": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "Training": [
+     2160.2,
+     425.8,
+     311.5,
+     311.5
+    ],
+    "HumanActionsControlPanelBlock": [
+     28.3,
+     97.7,
+     2115.2,
+     66.4
+    ],
+    "FirstTeamOverview": [
+     28.3,
+     179.7,
+     2115.2,
+     1213.9
+    ],
+    "Happiness": [
+     2160.2,
+     918.0,
+     311.5,
+     311.5
+    ]
+   }
+  },
+  {
+   "mode": "screen_hosts",
+   "case": "JX X1",
+   "label": "SquadComposition-Large",
+   "composition": "SquadComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "reflow": 1,
+   "custom": {
+    "m_compositionVersion": 1,
+    "m_gridBreakpoint": 3,
+    "m_layoutMode": 0,
+    "m_layoutPreset": {
+     "Name": "",
+     "Size": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "m_allowedTags": [],
+    "m_contentAlignment": 0,
+    "m_gridComponents": [
+     {
+      "m_elementID": "Atmosphere",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Atmosphere"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "f3efbac2b378b4b779c78744b7a86d4c",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 4,
+       "width": 4,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": true,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Tactics",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Tactics"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "a653d065e432dd049ac74d64b85659f2",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 0,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Training",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Training"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "f2f247589d223b54a978f8d687337c12",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 6,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": true,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "HumanActionsControlPanelBlock",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "HumanActionsControlPanelBlock"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 16,
+         "y": 1
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "d0c7f4cf2bbf02d40a088eae7a768a42",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 0,
+       "width": 16,
+       "height": 1
+      },
+      "m_minSize": {
+       "x": 16,
+       "y": 1
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 2,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "FirstTeamOverview",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "FirstTeamOverview"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 12,
+         "y": 5
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "3c6b24be8ba166141859febbd8e11c20",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 1,
+       "width": 16,
+       "height": 9
+      },
+      "m_minSize": {
+       "x": 12,
+       "y": 8
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     }
+    ],
+    "m_optionalSlices": {
+     "m_contentModeX": 0,
+     "m_contentModeY": 0,
+     "m_overrideSlicesOrder": false,
+     "m_instantiationOrder": [
+      3,
+      4,
+      1,
+      6,
+      0,
+      2,
+      5,
+      7
+     ],
+     "m_topLeft": [],
+     "m_top": [],
+     "m_topRight": [],
+     "m_left": [],
+     "m_right": [],
+     "m_bottomLeft": [],
+     "m_bottom": [
+      {
+       "m_elementID": "SquadHierachy",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "SquadHierachy"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 0,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 0,
+       "m_verticalAlignment": 0
+      },
+      {
+       "m_elementID": "MedicalCentre",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "MedicalCentre"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 2,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 2,
+       "m_verticalAlignment": 1
+      },
+      {
+       "m_elementID": "Loans",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "Loans"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 4,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 0,
+       "m_verticalAlignment": 0
+      }
+     ],
+     "m_bottomRight": []
+    },
+    "m_gridElementSet": {
+     "instanceID": 0
+    },
+    "m_validator": {
+     "instanceID": 0
+    },
+    "m_editorValidator": {
+     "instanceID": 0
+    },
+    "m_reflowMode": 1,
+    "m_reverseOptionalForRTL": false,
+    "m_isCustom": true,
+    "m_optionalConditions": [],
+    "m_optionalConfigConditions": [],
+    "m_bindingExpect": [],
+    "m_expectRemaps": [],
+    "m_placementBindings": [
+     {
+      "m_elementID": "Atmosphere",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "FirstTeamOverview",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "HumanActionsControlPanelBlock",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Tactics",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Training",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     }
+    ]
+   },
+   "measured": {
+    "Atmosphere": [
+     2160.2,
+     425.8,
+     311.5,
+     147.5
+    ],
+    "Tactics": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "Training": [
+     2160.2,
+     589.8,
+     311.5,
+     311.5
+    ],
+    "HumanActionsControlPanelBlock": [
+     28.3,
+     97.7,
+     2115.2,
+     66.4
+    ],
+    "FirstTeamOverview": [
+     28.3,
+     179.7,
+     2115.2,
+     1213.9
+    ],
+    "SquadHierachy": [
+     2160.2,
+     918.0,
+     311.5,
+     147.5
+    ],
+    "MedicalCentre": [
+     2160.2,
+     1082.0,
+     311.5,
+     147.5
+    ],
+    "Loans": [
+     2160.2,
+     1246.1,
+     311.5,
+     147.5
+    ]
+   }
+  },
+  {
+   "mode": "screen_hosts",
+   "case": "JX X2",
+   "label": "SquadComposition-Large",
+   "composition": "SquadComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "reflow": 1,
+   "custom": {
+    "m_compositionVersion": 1,
+    "m_gridBreakpoint": 3,
+    "m_layoutMode": 0,
+    "m_layoutPreset": {
+     "Name": "",
+     "Size": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "m_allowedTags": [],
+    "m_contentAlignment": 0,
+    "m_gridComponents": [
+     {
+      "m_elementID": "Atmosphere",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Atmosphere"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "f3efbac2b378b4b779c78744b7a86d4c",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 8,
+       "width": 4,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": true,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Tactics",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Tactics"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "a653d065e432dd049ac74d64b85659f2",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 0,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Training",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Training"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "f2f247589d223b54a978f8d687337c12",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 4,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": true,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "HumanActionsControlPanelBlock",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "HumanActionsControlPanelBlock"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 16,
+         "y": 1
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "d0c7f4cf2bbf02d40a088eae7a768a42",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 0,
+       "width": 16,
+       "height": 1
+      },
+      "m_minSize": {
+       "x": 16,
+       "y": 1
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 2,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "FirstTeamOverview",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "FirstTeamOverview"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 12,
+         "y": 5
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "3c6b24be8ba166141859febbd8e11c20",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 1,
+       "width": 16,
+       "height": 9
+      },
+      "m_minSize": {
+       "x": 12,
+       "y": 8
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Happiness",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Happiness"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "ee9c1eef7befdb74d818d840506962b4",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 10,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     }
+    ],
+    "m_optionalSlices": {
+     "m_contentModeX": 0,
+     "m_contentModeY": 0,
+     "m_overrideSlicesOrder": false,
+     "m_instantiationOrder": [
+      3,
+      4,
+      1,
+      7,
+      0,
+      2,
+      6,
+      8,
+      5
+     ],
+     "m_topLeft": [],
+     "m_top": [],
+     "m_topRight": [],
+     "m_left": [],
+     "m_right": [],
+     "m_bottomLeft": [],
+     "m_bottom": [
+      {
+       "m_elementID": "SquadHierachy",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "SquadHierachy"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 0,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 0,
+       "m_verticalAlignment": 0
+      },
+      {
+       "m_elementID": "MedicalCentre",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "MedicalCentre"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 2,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 2,
+       "m_verticalAlignment": 1
+      },
+      {
+       "m_elementID": "Loans",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "Loans"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 4,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 0,
+       "m_verticalAlignment": 0
+      }
+     ],
+     "m_bottomRight": []
+    },
+    "m_gridElementSet": {
+     "instanceID": 0
+    },
+    "m_validator": {
+     "instanceID": 0
+    },
+    "m_editorValidator": {
+     "instanceID": 0
+    },
+    "m_reflowMode": 1,
+    "m_reverseOptionalForRTL": false,
+    "m_isCustom": true,
+    "m_optionalConditions": [],
+    "m_optionalConfigConditions": [],
+    "m_bindingExpect": [],
+    "m_expectRemaps": [],
+    "m_placementBindings": [
+     {
+      "m_elementID": "Atmosphere",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "FirstTeamOverview",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "HumanActionsControlPanelBlock",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Tactics",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Training",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Happiness",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     }
+    ]
+   },
+   "measured": {
+    "Atmosphere": [
+     2160.2,
+     753.9,
+     311.5,
+     147.5
+    ],
+    "Tactics": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "Training": [
+     2160.2,
+     425.8,
+     311.5,
+     311.5
+    ],
+    "HumanActionsControlPanelBlock": [
+     28.3,
+     97.7,
+     2115.2,
+     66.4
+    ],
+    "FirstTeamOverview": [
+     28.3,
+     179.7,
+     2115.2,
+     1213.9
+    ],
+    "Happiness": [
+     2160.2,
+     918.0,
+     311.5,
+     311.5
+    ],
+    "SquadHierachy": [
+     2160.2,
+     1246.1,
+     311.5,
+     147.5
+    ]
+   }
+  },
+  {
+   "mode": "screen_hosts",
+   "case": "JX X3",
+   "label": "SquadComposition-Large",
+   "composition": "SquadComposition-Large",
+   "rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+   ],
+   "reflow": 1,
+   "custom": {
+    "m_compositionVersion": 1,
+    "m_gridBreakpoint": 3,
+    "m_layoutMode": 0,
+    "m_layoutPreset": {
+     "Name": "",
+     "Size": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "m_allowedTags": [],
+    "m_contentAlignment": 0,
+    "m_gridComponents": [
+     {
+      "m_elementID": "Atmosphere",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Atmosphere"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 2
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "f3efbac2b378b4b779c78744b7a86d4c",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 8,
+       "width": 4,
+       "height": 2
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 2
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": true,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Tactics",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Tactics"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "a653d065e432dd049ac74d64b85659f2",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 0,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "Training",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "Training"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 4,
+         "y": 4
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "f2f247589d223b54a978f8d687337c12",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 0
+       }
+      ],
+      "m_location": {
+       "x": 16,
+       "y": 4,
+       "width": 4,
+       "height": 4
+      },
+      "m_minSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_maxSize": {
+       "x": 4,
+       "y": 4
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": true,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "HumanActionsControlPanelBlock",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "HumanActionsControlPanelBlock"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 16,
+         "y": 1
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "d0c7f4cf2bbf02d40a088eae7a768a42",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 0,
+       "width": 16,
+       "height": 1
+      },
+      "m_minSize": {
+       "x": 16,
+       "y": 1
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 2,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     },
+     {
+      "m_elementID": "FirstTeamOverview",
+      "m_configDescriptions": [
+       {
+        "instanceID": 0
+       }
+      ],
+      "m_configDescriptionKeys": [
+       "FirstTeamOverview"
+      ],
+      "m_gridElementConfigs": [
+       {
+        "Description": {
+         "instanceID": 0
+        },
+        "Size": {
+         "x": 12,
+         "y": 5
+        },
+        "Asset": {
+         "instanceID": 0
+        },
+        "AssetRef": {
+         "m_AssetGUID": "3c6b24be8ba166141859febbd8e11c20",
+         "m_SubObjectName": "",
+         "m_SubObjectType": ""
+        },
+        "Type": 1
+       }
+      ],
+      "m_location": {
+       "x": 0,
+       "y": 1,
+       "width": 16,
+       "height": 9
+      },
+      "m_minSize": {
+       "x": 12,
+       "y": 8
+      },
+      "m_maxSize": {
+       "x": 100,
+       "y": 100
+      },
+      "m_isLocked": false,
+      "m_isDebug": false,
+      "m_isDynamic": false,
+      "m_features": 0,
+      "m_expandToContent": false,
+      "m_takesFocus": false,
+      "m_isOptional": false,
+      "m_horizontalAlignment": 0,
+      "m_verticalAlignment": 0
+     }
+    ],
+    "m_optionalSlices": {
+     "m_contentModeX": 0,
+     "m_contentModeY": 0,
+     "m_overrideSlicesOrder": false,
+     "m_instantiationOrder": [
+      3,
+      4,
+      1,
+      6,
+      0,
+      2,
+      5,
+      7
+     ],
+     "m_topLeft": [],
+     "m_top": [],
+     "m_topRight": [],
+     "m_left": [],
+     "m_right": [],
+     "m_bottomLeft": [],
+     "m_bottom": [
+      {
+       "m_elementID": "SquadHierachy",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "SquadHierachy"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 0,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 0,
+       "m_verticalAlignment": 0
+      },
+      {
+       "m_elementID": "MedicalCentre",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "MedicalCentre"
+       ],
+       "m_gridElementConfigs": [],
+       "m_location": {
+        "x": 16,
+        "y": 2,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 2,
+       "m_verticalAlignment": 1
+      },
+      {
+       "m_elementID": "Happiness",
+       "m_configDescriptions": [
+        {
+         "instanceID": 0
+        }
+       ],
+       "m_configDescriptionKeys": [
+        "Happiness"
+       ],
+       "m_gridElementConfigs": [
+        {
+         "Description": {
+          "instanceID": 0
+         },
+         "Size": {
+          "x": 4,
+          "y": 2
+         },
+         "Asset": {
+          "instanceID": 0
+         },
+         "AssetRef": {
+          "m_AssetGUID": "7a79bdef8d3fb45a68ec51dd30cea2ea",
+          "m_SubObjectName": "",
+          "m_SubObjectType": ""
+         },
+         "Type": 0
+        }
+       ],
+       "m_location": {
+        "x": 16,
+        "y": 4,
+        "width": 4,
+        "height": 2
+       },
+       "m_minSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_maxSize": {
+        "x": 4,
+        "y": 2
+       },
+       "m_isLocked": false,
+       "m_isDebug": false,
+       "m_isDynamic": false,
+       "m_features": 0,
+       "m_expandToContent": false,
+       "m_takesFocus": false,
+       "m_isOptional": true,
+       "m_horizontalAlignment": 0,
+       "m_verticalAlignment": 0
+      }
+     ],
+     "m_bottomRight": []
+    },
+    "m_gridElementSet": {
+     "instanceID": 0
+    },
+    "m_validator": {
+     "instanceID": 0
+    },
+    "m_editorValidator": {
+     "instanceID": 0
+    },
+    "m_reflowMode": 1,
+    "m_reverseOptionalForRTL": false,
+    "m_isCustom": true,
+    "m_optionalConditions": [],
+    "m_optionalConfigConditions": [],
+    "m_bindingExpect": [],
+    "m_expectRemaps": [],
+    "m_placementBindings": [
+     {
+      "m_elementID": "Atmosphere",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "FirstTeamOverview",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "HumanActionsControlPanelBlock",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Tactics",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     },
+     {
+      "m_elementID": "Training",
+      "m_optionalConditions": [],
+      "m_optionalConfigConditions": []
+     }
+    ]
+   },
+   "measured": {
+    "Atmosphere": [
+     2160.2,
+     753.9,
+     311.5,
+     147.5
+    ],
+    "Tactics": [
+     2160.2,
+     97.7,
+     311.5,
+     311.5
+    ],
+    "Training": [
+     2160.2,
+     425.8,
+     311.5,
+     311.5
+    ],
+    "HumanActionsControlPanelBlock": [
+     28.3,
+     97.7,
+     2115.2,
+     66.4
+    ],
+    "FirstTeamOverview": [
+     28.3,
+     179.7,
+     2115.2,
+     1213.9
+    ],
+    "SquadHierachy": [
+     2160.2,
+     918.0,
+     311.5,
+     147.5
+    ],
+    "MedicalCentre": [
+     2160.2,
+     1082.0,
+     311.5,
+     147.5
+    ],
+    "Happiness": [
+     2160.2,
+     1246.1,
+     311.5,
+     147.5
+    ]
+   }
+  }
+ ]
+}

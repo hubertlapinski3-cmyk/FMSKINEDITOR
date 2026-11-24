@@ -1,7 +1,7 @@
 """The sheets a render applies, in the order they apply, and an index of their rules for matching.
 
-Where the order comes from (every line is evidence, none is from decompiled code):
-- The game's own sheet-configuration assets, read from the AssetRipper rip (`Ripped/ExportedProject/Assets/*StylesheetConfig.asset`; their GUIDs resolved through the
+Where the order comes from (observed directly from serialized game stylesheet configuration assets):
+- The game's own sheet-configuration assets (`*StylesheetConfig` assets; their GUIDs resolved through the
   `AssetBundle` containers of the `ui-styles_assets_*.bundle` files): AlwaysAppliedStylesheetConfig -> AlwaysAppliedStyleSheet; LanguageStylesheetConfig ->
   LanguageDirectionLTRCombined (or RTL); LanguageNameOrderStylesheetConfig -> LanguageNameOrderGivenFirst (or SurnameFirst); ResolutionScaleStylesheetConfig ->
   FMImages_{1..4}x; PCPlatformResolutionScaleStylesheetConfig -> FMControllerIconsPC_{1..4}x. `AlwaysAppliedStyleSheet` imports `default` (its
@@ -24,6 +24,7 @@ import json
 from pathlib import Path
 
 from .. import bundles, index_styles, token_patch as tp
+from ..asset_hash import sha256_file
 
 D = "ui-styles_assets_default.bundle"
 X2 = "ui-styles_assets_2x.bundle"
@@ -78,8 +79,8 @@ class SheetBank:
         disk = None
         if self.cache_dir:
             f = self.folder / bundle
-            st = f.stat()
-            disk = self.cache_dir / ("render-sheet-%s-%s-%d-%d.json" % (bundle[:-len(".bundle")], name, st.st_size, st.st_mtime_ns))
+            digest = sha256_file(f)
+            disk = self.cache_dir / ("render-sheet-%s-%s-%s.json" % (bundle[:-len(".bundle")], name, digest))
             if disk.is_file():
                 return json.loads(disk.read_text(encoding="utf-8"))
         for tree in bundles.read_sheets(self.folder / bundle):

@@ -1,0 +1,2649 @@
+{
+  "schema": "fm-fs1-measurements/1",
+  "profile": "2560x1440 fullscreen, Small, Larger",
+  "window_mode": "fullscreen",
+  "resolution": [
+    2560,
+    1440
+  ],
+  "information_display": "Small",
+  "text_scaling": "Larger",
+  "scale": 1.024,
+  "tolerance_px": 1.5,
+  "sweep_stamp": "20261123T123035Z",
+  "default_content_rect": [
+    15.6,
+    85.9,
+    2468.8,
+    1319.3
+  ],
+  "default_grid": [
+    30,
+    16
+  ],
+  "counts": {
+    "compositions_seen": 123,
+    "scored": 122,
+    "measured": 121,
+    "measured_mismatch": 1,
+    "unmeasurable": 1
+  },
+  "compositions": [
+    {
+      "composition": "3_Tiles_8x4-Expandable_2x4x2",
+      "game_composition": "3_Tiles_8x4-Expandable_2x4x2(Clone)",
+      "panel": "PortalMessagesTool",
+      "is_custom": false,
+      "content_rect": [
+        561.5,
+        223.6,
+        1870.1,
+        639.6
+      ],
+      "grid": [
+        23,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": false,
+      "worst_px": 245.8,
+      "mismatches": [
+        {
+          "cell": "Portal Card Template Element",
+          "predicted": [
+            889.5,
+            961.6,
+            312,
+            148
+          ],
+          "game": [
+            889.6,
+            715.8,
+            312.5,
+            147.5
+          ],
+          "delta": [
+            -0.1,
+            245.8,
+            -0.5,
+            0.5
+          ],
+          "max_px": 245.8,
+          "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+        },
+        {
+          "cell": "RelatedInfoTitle",
+          "predicted": [
+            561.5,
+            879.6,
+            1870,
+            66
+          ],
+          "game": [
+            561.5,
+            633.8,
+            1870.1,
+            65.4
+          ],
+          "delta": [
+            0.0,
+            245.8,
+            -0.1,
+            0.6
+          ],
+          "max_px": 245.8,
+          "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+        }
+      ]
+    },
+    {
+      "composition": "BestXICardGridComposition",
+      "game_composition": "BestXICardGridComposition",
+      "panel": "BestXICard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "CalendarToolFixturesGridComposition-Large",
+      "game_composition": "CalendarToolFixturesGridComposition-Large",
+      "panel": "CalendarToolFixturesTab",
+      "is_custom": false,
+      "content_rect": [
+        15.6,
+        151.4,
+        2468.8,
+        1237.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.9,
+      "mismatches": []
+    },
+    {
+      "composition": "CalendarToolGeneralGridComposition-Large",
+      "game_composition": "CalendarToolGeneralGridComposition-Large",
+      "panel": "CalendarTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        151.4,
+        2468.8,
+        1237.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "CalendarToolTrainingGridComposition-Large",
+      "game_composition": "CalendarToolTrainingGridComposition-Large",
+      "panel": "CalendarToolTrainingTab",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        151.4,
+        2468.8,
+        1237.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubAffiliatesCardComposition-Large",
+      "game_composition": "ClubAffiliatesCardComposition-Large",
+      "panel": "ClubAffiliatesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubBoardCardGridComposition-Large",
+      "game_composition": "ClubBoardCardGridComposition-Large",
+      "panel": "ClubBoardCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubComposition-Large",
+      "game_composition": "ClubComposition-Large",
+      "panel": "ClubScreen",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 9,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubFacilitiesCardGridComposition-NONE",
+      "game_composition": "ClubFacilitiesCardGridComposition-NONE",
+      "panel": "ClubFacilitiesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubFinancesCardGridComposition-Large",
+      "game_composition": "ClubFinancesCardGridComposition-Large",
+      "panel": "ClubFinancesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubFinancesSummaryCardGridComposition",
+      "game_composition": "ClubFinancesSummaryCardGridComposition",
+      "panel": "ClubFinancesSummaryCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryBestXICardGridComposition",
+      "game_composition": "ClubHistoryBestXICardGridComposition",
+      "panel": "ClubHistoryBestXICard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryCardGridComposition",
+      "game_composition": "ClubHistoryCardGridComposition",
+      "panel": "ClubHistoryCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryHonoursCardGridComposition",
+      "game_composition": "ClubHistoryHonoursCardGridComposition",
+      "panel": "ClubHistoryHonoursCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryLandmarksCardGridComposition-Large",
+      "game_composition": "ClubHistoryLandmarksCardGridComposition-Large",
+      "panel": "ClubHistoryLandmarksCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryRecordsAllTimeBlockGridComposition-Large",
+      "game_composition": "ClubHistoryRecordsAllTimeBlockGridComposition-Large",
+      "panel": "ClubHistoryRecordsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        128.9,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubInfoCardGridComposition",
+      "game_composition": "ClubInfoCardGridComposition",
+      "panel": "ClubInfoCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubProfileCardGridComposition-Large",
+      "game_composition": "ClubProfileCardGridComposition-Large",
+      "panel": "ClubProfileCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubStatsCardGridComposition-Large",
+      "game_composition": "ClubStatsCardGridComposition-Large",
+      "panel": "ClubStatsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubSupportersCardGridComposition-Large",
+      "game_composition": "ClubSupportersCardGridComposition-Large",
+      "panel": "ClubSupportersCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 11,
+      "pass": true,
+      "worst_px": 0.9,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubVisionCardGridComposition-Large",
+      "game_composition": "ClubVisionCardGridComposition-Large",
+      "panel": "ClubVisionCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionEstimatedTradeValuesCardGridComposition",
+      "game_composition": "CompetitionEstimatedTradeValuesCardGridComposition",
+      "panel": "CompetitionEstimatedTradeValuesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionHub9CompsGridComposition-Large",
+      "game_composition": "CompetitionHub9CompsGridComposition-Large",
+      "panel": "NewsCompetitionHubSite",
+      "is_custom": false,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 9,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionSiteAboutDraftHistoryCardGridComposition-Large",
+      "game_composition": "CompetitionSiteAboutDraftHistoryCardGridComposition-Large",
+      "panel": "CompetitionSiteAboutDraftHistoryCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionSiteLeagueComposition - Large",
+      "game_composition": "CompetitionSiteLeagueComposition - Large",
+      "panel": "CompetitionSite",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        301.8,
+        2468.8,
+        1074.2
+      ],
+      "grid": [
+        30,
+        13
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionWaiverListToolGridComposition-Large",
+      "game_composition": "CompetitionWaiverListToolGridComposition-Large",
+      "panel": "CompetitionWaiverListTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionsOverview4CompsGridComposition-Large",
+      "game_composition": "CompetitionsOverview4CompsGridComposition-Large",
+      "panel": "CompetitionsOverviewTool",
+      "is_custom": false,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "DataHubKeyFindingsGridComposition-Large",
+      "game_composition": "DataHubKeyFindingsGridComposition-Large",
+      "panel": "Data Hub",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        246.1,
+        2468.8,
+        1156.2
+      ],
+      "grid": [
+        30,
+        14
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 10,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "DisciplineToolGridComposition-Large",
+      "game_composition": "DisciplineToolGridComposition-Large",
+      "panel": "DisciplineTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "DraftAllocationsCardGridComposition",
+      "game_composition": "DraftAllocationsCardGridComposition",
+      "panel": "DraftAllocationsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FeedbackCardPerformanceGridComposition-Large",
+      "game_composition": "FeedbackCardPerformanceGridComposition-Large",
+      "panel": "FeedbackCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        132.8,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FeedbackCardRecruitmentGridComposition-Large",
+      "game_composition": "FeedbackCardRecruitmentGridComposition-Large",
+      "panel": "FeedbackCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        132.8,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "FeedbackCardSquadGridComposition-Large",
+      "game_composition": "FeedbackCardSquadGridComposition-Large",
+      "panel": "FeedbackCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        132.8,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FeedbackCardTacticsGridComposition-Large",
+      "game_composition": "FeedbackCardTacticsGridComposition-Large",
+      "panel": "FeedbackCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        132.8,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FeedbackPerformanceTilesBoardGridComposition",
+      "game_composition": "FeedbackPerformanceTilesBoardGridComposition",
+      "panel": "FeedbackCard",
+      "is_custom": true,
+      "content_rect": [
+        37.1,
+        1202.1,
+        2279.3,
+        147.5
+      ],
+      "grid": [
+        28,
+        2
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FfpCardGridComposition-Large",
+      "game_composition": "FfpCardGridComposition-Large",
+      "panel": "FFPCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FinanceSponsorshipsIncomeCardGridComposition",
+      "game_composition": "FinanceSponsorshipsIncomeCardGridComposition",
+      "panel": "FinanceSponsorshipsIncomeCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesDebtsAndLoansCardGridComposition",
+      "game_composition": "FinancesDebtsAndLoansCardGridComposition",
+      "panel": "FinancesDebtsAndLoansCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesExpenditureCardGridComposition",
+      "game_composition": "FinancesExpenditureCardGridComposition",
+      "panel": "FinancesExpenditureCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesIncomeCardGridComposition",
+      "game_composition": "FinancesIncomeCardGridComposition",
+      "panel": "FinancesIncomeCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesLeagueSpecificCardGridComposition",
+      "game_composition": "FinancesLeagueSpecificCardGridComposition",
+      "panel": "FinancesLeagueSpecificCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesProjectionsCardGridComposition",
+      "game_composition": "FinancesProjectionsCardGridComposition",
+      "panel": "FinancesProjectionsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesWagesCardGridComposition-Standard",
+      "game_composition": "FinancesWagesCardGridComposition-Standard",
+      "panel": "FinancesWagesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "JobCentreGridComposition-Large",
+      "game_composition": "JobCentreGridComposition-Large",
+      "panel": "JobCentreCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "JobMarketComposition-Large",
+      "game_composition": "JobMarketComposition-Large",
+      "panel": "JobMarketReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "ManagerHistoryCardGridComposition-Large",
+      "game_composition": "ManagerHistoryCardGridComposition-Large",
+      "panel": "ManagerHistoryCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentreCurrentInjuriesReportGridComposition-Large",
+      "game_composition": "MedicalCentreCurrentInjuriesReportGridComposition-Large",
+      "panel": "MedicalCentreCurrentInjuriesReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentrePlayerSummaryCardGridComposition",
+      "game_composition": "MedicalCentrePlayerSummaryCardGridComposition",
+      "panel": "MedicalCentrePlayerSummaryCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentreRecentlyReturnedReportGridComposition-Large",
+      "game_composition": "MedicalCentreRecentlyReturnedReportGridComposition-Large",
+      "panel": "MedicalCentreRecentlyReturnedReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentreRiskAssessmentGridComposition-Large",
+      "game_composition": "MedicalCentreRiskAssessmentGridComposition-Large",
+      "panel": "MedicalCentreRiskAssessmentReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        132.8,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentreSeasonSummaryCardGridComposition",
+      "game_composition": "MedicalCentreSeasonSummaryCardGridComposition",
+      "panel": "MedicalCentreSeasonSummaryCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "MentoringCardGridComposition-Large",
+      "game_composition": "MentoringCardGridComposition-Large",
+      "panel": "MentoringCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "MyCareerMyProfileCardGridComposition-Large",
+      "game_composition": "MyCareerMyProfileCardGridComposition-Large",
+      "panel": "MyCareerMyProfileCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        302.7,
+        2468.8,
+        1074.2
+      ],
+      "grid": [
+        30,
+        13
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "MyContractCardGridComposition",
+      "game_composition": "MyContractCardGridComposition",
+      "panel": "MyCareerMyContractCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "MyHistoryCardGridComposition-Large",
+      "game_composition": "MyHistoryCardGridComposition-Large",
+      "panel": "MyCareerMyHistoryCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "MyRelationshipsCardComposition-Large",
+      "game_composition": "MyRelationshipsCardComposition-Large",
+      "panel": "MyCareerMyRelationshipsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsAroundTheWorldComposition-Large",
+      "game_composition": "NewsAroundTheWorldComposition-Large",
+      "panel": "NewsAroundTheWorldSite",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        300.8,
+        2468.8,
+        1074.2
+      ],
+      "grid": [
+        30,
+        13
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsClubComposition-Large",
+      "game_composition": "NewsClubComposition-Large",
+      "panel": "NewsTeamSite",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        215.8,
+        2468.8,
+        1156.2
+      ],
+      "grid": [
+        30,
+        14
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsForYouComposition-Large",
+      "game_composition": "NewsForYouComposition-Large",
+      "panel": "NewsForYouSite",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        300.8,
+        2468.8,
+        1074.2
+      ],
+      "grid": [
+        30,
+        13
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsHomeComposition-Large",
+      "game_composition": "NewsHomeComposition-Large",
+      "panel": "NewsHomeSite",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        300.8,
+        2468.8,
+        1074.2
+      ],
+      "grid": [
+        30,
+        13
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsTransfersHubComposition-Large",
+      "game_composition": "NewsTransfersHubComposition-Large",
+      "panel": "NewsTransfersHubSite",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        300.8,
+        2468.8,
+        1074.2
+      ],
+      "grid": [
+        30,
+        13
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "NonPlayerReportCareerManagerialStatsCardGridComposition-Large",
+      "game_composition": "NonPlayerReportCareerManagerialStatsCardGridComposition-Large",
+      "panel": "NonPlayerReportCareerManagerialStatsTabbedCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        132.8,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "OnThePitchPenaltiesToolGridComposition-Large",
+      "game_composition": "OnThePitchPenaltiesToolGridComposition-Large",
+      "panel": "OnThePitchPenaltiesTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "OnThePitchSetPiecesToolGridComposition-Large",
+      "game_composition": "OnThePitchSetPiecesToolGridComposition-Large",
+      "panel": "OnThePitchSetPiecesTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "OppositionInstructionsComposition-Large",
+      "game_composition": "OppositionInstructionsComposition-Large",
+      "panel": "OnThePitchOppositionInstructionsTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "OverviewTabGridComposition-Large",
+      "game_composition": "OverviewTabGridComposition-Large",
+      "panel": "ClubAllStaffTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        128.9,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 9,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerReportDevelopmentProgressReportCardGridComposition-Large",
+      "game_composition": "PlayerReportDevelopmentProgressReportCardGridComposition-Large",
+      "panel": "PlayerReportDevelopmentProgressReportCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerReportFitnessCardGridComposition-Large",
+      "game_composition": "PlayerReportFitnessCardGridComposition-Large",
+      "panel": "PlayerReportFitnessCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerReportOverviewComposition-Large",
+      "game_composition": "PlayerReportOverviewComposition-Large",
+      "panel": "PlayerReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        273.4,
+        2468.8,
+        1074.2
+      ],
+      "grid": [
+        30,
+        13
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerReportPersonal-Large",
+      "game_composition": "PlayerReportPersonal-Large",
+      "panel": "PlayerReportPersonal",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        273.4,
+        2468.8,
+        1074.2
+      ],
+      "grid": [
+        30,
+        13
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.9,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerSearchReportGridComposition-Large",
+      "game_composition": "PlayerSearchReportGridComposition-Large",
+      "panel": "PlayerSearchReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+      "game_composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+      "panel": "PlayerSearchReport",
+      "is_custom": true,
+      "content_rect": [
+        28.3,
+        1246.1,
+        2279.3,
+        147.5
+      ],
+      "grid": [
+        28,
+        2
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "Portal-Large",
+      "game_composition": "Portal-Large",
+      "panel": "PortalScreen",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 10,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "PortalMessagesToolGridComposition-Large",
+      "game_composition": "PortalMessagesToolGridComposition-Large",
+      "panel": "PortalMessagesTool",
+      "is_custom": false,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentClausesCardGridComposition-Large",
+      "game_composition": "RecruitmentClausesCardGridComposition-Large",
+      "panel": "RecruitmentClausesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentComposition-Large",
+      "game_composition": "RecruitmentComposition-Large",
+      "panel": "RecruitmentScreen",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 9,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentContractsCardGridComposition-Large",
+      "game_composition": "RecruitmentContractsCardGridComposition-Large",
+      "panel": "RecruitmentContractsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentFocusToolGridComposition-Large",
+      "game_composition": "RecruitmentFocusToolGridComposition-Large",
+      "panel": "RecruitmentFocusTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentNotInterestedCardGridComposition-Large",
+      "game_composition": "RecruitmentNotInterestedCardGridComposition-Large",
+      "panel": "NotInterestedCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentObjectivesCardGridComposition-Large",
+      "game_composition": "RecruitmentObjectivesCardGridComposition-Large",
+      "panel": "RecruitmentObjectivesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentPlayerRecommendationsCardGridComposition-Large",
+      "game_composition": "RecruitmentPlayerRecommendationsCardGridComposition-Large",
+      "panel": "RecruitmentPlayerRecommendationsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 9,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentScoutAssignmentsCardGridComposition",
+      "game_composition": "RecruitmentScoutAssignmentsCardGridComposition",
+      "panel": "RecruitmentScoutAssignmentsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentScoutPrioritiesCardGridComposition-Large",
+      "game_composition": "RecruitmentScoutPrioritiesCardGridComposition-Large",
+      "panel": "RecruitmentScoutPrioritiesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentScoutingBudgetCardGridComposition-Large",
+      "game_composition": "RecruitmentScoutingBudgetCardGridComposition-Large",
+      "panel": "RecruitmentScoutingBudgetCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentSquadPlannerReportGridComposition",
+      "game_composition": "RecruitmentSquadPlannerReportGridComposition",
+      "panel": "RecruitmentSquadPlannerReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentTeamReportPrioritiesCardGridComposition-Large",
+      "game_composition": "RecruitmentTeamReportPrioritiesCardGridComposition-Large",
+      "panel": "RecruitmentTeamReportPrioritiesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentTransferActivityCardComposition-Large",
+      "game_composition": "RecruitmentTransferActivityCardComposition-Large",
+      "panel": "RecruitmentTransferActivityTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentTransferBudgetsCardGridComposition-Large",
+      "game_composition": "RecruitmentTransferBudgetsCardGridComposition-Large",
+      "panel": "RecruitmentTransferBudgetsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentTransferWindowCardGridComposition-Large",
+      "game_composition": "RecruitmentTransferWindowCardGridComposition-Large",
+      "panel": "RecruitmentTransferWindowCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentWageBudgetCardGridComposition-Large",
+      "game_composition": "RecruitmentWageBudgetCardGridComposition-Large",
+      "panel": "RecruitmentWageBudgetCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "ScoutingRangeCardGridComposition",
+      "game_composition": "ScoutingRangeCardGridComposition",
+      "panel": "ScoutingRangeCard",
+      "is_custom": false,
+      "content_rect": [
+        929.7,
+        396.5,
+        640.6,
+        721.7
+      ],
+      "grid": [
+        8,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.6,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadAtmosphereCardComposition-Large",
+      "game_composition": "SquadAtmosphereCardComposition-Large",
+      "panel": "SquadAtmosphereCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 11,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadCaptainsCardGridComposition",
+      "game_composition": "SquadCaptainsCardGridComposition",
+      "panel": "SquadCaptainsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadComposition-Large",
+      "game_composition": "SquadComposition-Large",
+      "panel": "SquadScreen",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadHappinessToolGridComposition-Large",
+      "game_composition": "SquadHappinessToolGridComposition-Large",
+      "panel": "SquadHappinessTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadHierarchyToolComposition-Large",
+      "game_composition": "SquadHierarchyToolComposition-Large",
+      "panel": "SquadHierarchyTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadInternationalsToolComposition-Large",
+      "game_composition": "SquadInternationalsToolComposition-Large",
+      "panel": "SquadInternationalsTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadLoansCardPlayersOnLoanComposition-Large",
+      "game_composition": "SquadLoansCardPlayersOnLoanComposition-Large",
+      "panel": "SquadLoansCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        128.9,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadNumbersToolComposition-Large",
+      "game_composition": "SquadNumbersToolComposition-Large",
+      "panel": "SquadNumbersTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadPromisesCardComposition",
+      "game_composition": "SquadPromisesCardComposition",
+      "panel": "SquadPromisesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadRegistrationCardComposition-Large",
+      "game_composition": "SquadRegistrationCardComposition-Large",
+      "panel": "SquadRegistrationCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadSocialGroupsCardComposition",
+      "game_composition": "SquadSocialGroupsCardComposition",
+      "panel": "SquadSocialGroupsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadTargetsCardComposition",
+      "game_composition": "SquadTargetsCardComposition",
+      "panel": "SquadTargetsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadYouthCandidatesCardComposition-Large",
+      "game_composition": "SquadYouthCandidatesCardComposition-Large",
+      "panel": "YouthReportSiteYouthCandidatesTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadYouthDynamicsTabComposition-Large",
+      "game_composition": "SquadYouthDynamicsTabComposition-Large",
+      "panel": "YouthReportSiteYouthDynamicsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        128.9,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadYouthSetupReportComposition",
+      "game_composition": "SquadYouthSetupReportComposition",
+      "panel": "SquadYouthSetupReport",
+      "is_custom": false,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadYouthSetupReportOverviewGridComposition-Large",
+      "game_composition": "SquadYouthSetupReportOverviewGridComposition-Large",
+      "panel": "SquadYouthSetupReport",
+      "is_custom": true,
+      "content_rect": [
+        69.3,
+        97.7,
+        2361.3,
+        1295.9
+      ],
+      "grid": [
+        29,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "StaffResponsibilitiesDelegationCardGridComposition-Large",
+      "game_composition": "StaffResponsibilitiesDelegationCardGridComposition-Large",
+      "panel": "StaffResponsibilitiesCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        117.2,
+        2468.8,
+        1238.3
+      ],
+      "grid": [
+        30,
+        15
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "StaffSearchReportBottomBarGridComposition",
+      "game_composition": "StaffSearchReportBottomBarGridComposition",
+      "panel": "StaffSearchReport",
+      "is_custom": true,
+      "content_rect": [
+        28.3,
+        1246.1,
+        803.7,
+        147.5
+      ],
+      "grid": [
+        10,
+        2
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "StaffTransferActivityCardGridComposition-Large",
+      "game_composition": "StaffTransferActivityCardGridComposition-Large",
+      "panel": "StaffTransferActivityCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TacticalEffectivenessGridComposition-Large",
+      "game_composition": "TacticalEffectivenessGridComposition-Large",
+      "panel": "TacticalEffectivenessCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TacticalPlannerCoreComposition-Large",
+      "game_composition": "TacticalPlannerCoreComposition-Large",
+      "panel": "TacticalPlannerTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TeamFactsCardGridComposition-Large",
+      "game_composition": "TeamFactsCardGridComposition-Large",
+      "panel": "TeamFactsCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TeamIndividualTrainingToolTileComposition-Large",
+      "game_composition": "TeamIndividualTrainingToolTileComposition-Large",
+      "panel": "TeamIndividualTrainingTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TeamReportOverviewTabGridComposition-Large",
+      "game_composition": "TeamReportOverviewTabGridComposition-Large",
+      "panel": "TeamReportSite",
+      "is_custom": true,
+      "content_rect": [
+        0.0,
+        246.1,
+        2467.8,
+        1156.2
+      ],
+      "grid": [
+        30,
+        14
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TeamSquadReportComposition-Large",
+      "game_composition": "TeamSquadReportComposition-Large",
+      "panel": "TeamSquadReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TrainingCoachAssignmentsToolGridComposition-Large",
+      "game_composition": "TrainingCoachAssignmentsToolGridComposition-Large",
+      "panel": "TrainingCoachAssignmentsTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TrainingIntensityCardTileComposition-NONE",
+      "game_composition": "TrainingIntensityCardTileComposition-NONE",
+      "panel": "TrainingIntensityCard",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.7,
+      "mismatches": []
+    },
+    {
+      "composition": "TrainingOverviewGridComposition-Large",
+      "game_composition": "TrainingOverviewGridComposition-Large",
+      "panel": "TrainingScreen",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "TransferHistoryCardGridComposition-Large",
+      "game_composition": "TransferHistoryCardGridComposition-Large",
+      "panel": "RecruitmentTransferHistoryReport",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "TransferRoomInToolGridComposition-Large",
+      "game_composition": "TransferRoomInToolGridComposition-Large",
+      "panel": "TransferRoomInTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    },
+    {
+      "composition": "TransferRoomOutToolGridComposition-Large",
+      "game_composition": "TransferRoomOutToolGridComposition-Large",
+      "panel": "TransferRoomOutTool",
+      "is_custom": true,
+      "content_rect": [
+        15.6,
+        85.9,
+        2468.8,
+        1319.3
+      ],
+      "grid": [
+        30,
+        16
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.8,
+      "mismatches": []
+    }
+  ],
+  "unmeasurable": [
+    {
+      "composition": "StaffResponsibilitiesOverviewCardGridComposition-Large",
+      "panel": "StaffResponsibilitiesCard",
+      "reason": "hidden or 0 visible hosts at capture"
+    }
+  ]
+}

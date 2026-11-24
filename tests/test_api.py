@@ -91,6 +91,24 @@ class Rpc(unittest.TestCase):
         if params is not None: req["params"] = params
         return json.loads(rpc.handle(self.e, json.dumps(req)))
 
+    def test_project_routing_choices_are_explicit_and_saved(self):
+        self.rpc("project.create", {"name": "routing"})
+        r = self.rpc("project.routing", {"project": "routing"})["result"]
+        self.assertEqual(r["route_preference"], "bundle")                 # default, not stored
+        self.assertFalse(r["route_preference_explicit"])
+        self.assertFalse(r["edit_competition_sheets"])
+        self.assertIn("changes the game files", r["tradeoffs"]["bundle"])
+        self.assertIn("changes no game file", r["tradeoffs"]["skin_folder"])
+        r = self.rpc("project.set_routing", {"project": "routing", "route_preference": "skin_folder",
+                                             "edit_competition_sheets": True})["result"]
+        self.assertEqual((r["route_preference"], r["route_preference_explicit"]), ("skin_folder", True))
+        self.assertTrue(r["edit_competition_sheets"])
+        self.assertTrue(r["edit_competition_sheets_explicit"])
+        stored = self.rpc("project.get", {"name": "routing"})["result"]["options"]
+        self.assertEqual(stored["route_preference"], "skin_folder")
+        self.assertTrue(stored["route_preference_explicit"])
+        self.assertTrue(stored["edit_competition_sheets_explicit"])
+
     def test_calls_errors_and_batches(self):
         self.assertEqual(self.rpc("project.list")["result"], [])
         r = self.rpc("project.create", {"name": "demo"}); self.assertEqual(r["result"]["project"]["name"], "demo")

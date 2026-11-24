@@ -1,12 +1,11 @@
 """Project option "club colours: remove". The game paints club (and nation / competition) colours in code: gradients bound to
 the club's colours (useCustomStyles false, so colour rules lose), the club wallpaper, entity textures, and the top-left kit strip.
-These rules are the ones proven in game in the Crimson skin (D:\\drive\\FM27-Crimson, make_crimson_json.py rounds 1-5, the same
+These rules are the ones proven in game for flat neutral-bar themes (the same
 rules the crimson preset carries): a code-bound gradient is never recoloured, it stops drawing (opacity 0, or visibility hidden
 when it is the parent of real content, whose children are set visible again), and the flat bar behind it takes one neutral colour.
 
 `rules(colour)` returns the scoped rules (for AlwaysAppliedStyleSheet) with every surface set to `colour`.
-Not covered (kept as in the Crimson skin): the header-sweep rules (header_sweep.json) for every other club-bound header, and the
-headers the owner chose to keep club-coloured there (staff profile, club / continent site headers)."""
+Not covered: header-sweep rules for extra club-bound headers, and headers kept club-coloured (staff profile, club / continent site headers)."""
 from . import colour as colour_mod
 
 SHEET = "AlwaysAppliedStyleSheet"

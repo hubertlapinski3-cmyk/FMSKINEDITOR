@@ -41,6 +41,13 @@ def read_sheets(path):
         yield tree
 
 
+def sheets(path):
+    """(path id, name, tree) of every StyleSheet in a bundle. The typed build plan (Stage 4D) addresses a sheet as an
+    asset. Read through open_readonly (bytes): a path-based UnityPy load leaves a Windows file handle open."""
+    for obj, tree in _sheets(open_readonly(path)):
+        yield obj.path_id, tree.get("m_Name"), tree
+
+
 def patch_bundle(src, out_dir, fn, touched=None):
     """Call fn(tree) for every StyleSheet; save the ones it changed. Writes out_dir/<same name> only
     when something changed. Returns True when a file was written. `touched` (a set), when given, receives the
@@ -167,3 +174,54 @@ def read_visual_trees(path):
             for ch in reversed(d.get("m_Children") or []):
                 stack.append((ch["rid"], me))
         yield t.get("m_Name", ""), nodes
+
+
+def open_readonly(path):
+    """A bundle opened from bytes read in one go, so no file handle stays open on the game file (on Windows an open handle blocks replacing or deleting the file, which the
+    installer must never be blocked by). Costs the bundle's size in memory for the duration of the call."""
+    import UnityPy
+    with open(path, "rb") as f:
+        data = f.read()
+    return UnityPy.load(data)
+
+
+def crc32_of_env(env):
+    """CRC-32 (zlib/IEEE) over the UNCOMPRESSED content of an opened bundle: every serialized-data node of the bundle, concatenated in the
+    order UnityPy lists them. This is the value the Addressables catalog stores per bundle (docs/rea/STAGE-3B-CATALOG-ANALYSIS.md; 534/534 set-C
+    records). It is not the CRC of the compressed file and not of a re-saved node."""
+    import zlib
+    crc = 0
+    for node in env.file.files.values():
+        data = node.reader.bytes if hasattr(node, "reader") else node.bytes
+        crc = zlib.crc32(bytes(data), crc)
+    return crc & 0xFFFFFFFF
+
+
+def crc32_uncompressed(path):
+    """crc32_of_env for a bundle file (the file is only read)."""
+    return crc32_of_env(open_readonly(path))
+
+
+def bundle_header(path):
+    """The UnityFS header of a bundle file without loading it: {signature, format, unity_version, unity_revision, size, flags} or None when the file is not a UnityFS bundle."""
+    import struct
+    with open(path, "rb") as f:
+        head = f.read(512)
+    try:
+        sig_end = head.index(0)
+        sig = head[:sig_end].decode("ascii")
+        if sig != "UnityFS":
+            return None
+        i = sig_end + 1
+        fmt = struct.unpack(">I", head[i:i + 4])[0]
+        i += 4
+        j = head.index(0, i)
+        player = head[i:j].decode("ascii", "replace")
+        i = j + 1
+        j = head.index(0, i)
+        revision = head[i:j].decode("ascii", "replace")
+        i = j + 1
+        size, _comp, _unc, flags = struct.unpack(">qIII", head[i:i + 20])
+        return {"signature": sig, "format": fmt, "player_version": player, "unity_revision": revision, "size": size, "flags": flags}
+    except (ValueError, struct.error, UnicodeDecodeError):
+        return None

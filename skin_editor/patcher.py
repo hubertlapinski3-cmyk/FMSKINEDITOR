@@ -16,6 +16,20 @@ class BuildRefused(RuntimeError):
     pass
 
 
+def _refusal(blocks):
+    """One refusal message from the plan's blocking findings (plain words; the findings stay in the manifest)."""
+    parts = []
+    for b in blocks:
+        parts.append(b.get("message") or b.get("code", "unknown block"))
+    head = {"tile_overlap": "the build is refused: tiles would overlap, and the game drops a tile when they do "
+                            "(Stage 3E). Move the tile so it does not overlap, or start the build with allow overlap "
+                            "to record the deliberate exception",
+            "impact_unresolved": "the build is refused: an edit's dependency impact is unresolved",
+            "unknown_edit_kind": "the build is refused: an edit cannot be classified safely"}.get(blocks[0].get("code"),
+                                                                                                 "the build is refused")
+    return head + ": " + "; ".join(parts[:6]) + ("; and %d more" % (len(parts) - 6) if len(parts) > 6 else "")
+
+
 def refuse_unproven(tree, spec):
     """Safety rule: a build never writes a colour derived from a bundle entry that did not decode.
     token_patch's rgb-keep-alpha swap copies the old entry's alpha into a new entry, so a swap that would hit
@@ -69,6 +83,24 @@ def swap_rgba(tree, spec):
     return hits
 
 
+def apply_declaration_edits(tree, bundle, spec, acc):
+    """Stage 5H per-declaration edits for one sheet tree. Returns True when anything changed."""
+    edits = [e for e in spec.get("declaration_edits") or []
+             if e.get("bundle") == bundle and e.get("sheet") == tree.get("m_Name")]
+    if not edits:
+        return False
+    sp = tp.SheetPatcher(tree, spec)
+    changed = False
+    for e in edits:
+        hits, n = sp.set_declaration(e)
+        acc.setdefault("declaration_edits", []).append({"sheet": tree.get("m_Name"), "selector": e["selector"],
+                                                        "occurrence": e.get("occurrence", 0),
+                                                        "property": e["property"], "old": e.get("old"),
+                                                        "new": e.get("new"), "hits": hits, "changed": n})
+        changed = changed or bool(n)
+    return changed
+
+
 def patch_sheet(tree, spec, acc):
     """One sheet: exact RGBA swaps, then token_patch in its own step order. Returns True when the tree changed."""
     refuse_unproven(tree, spec)
@@ -110,17 +142,27 @@ def swap_report(project, hits):
     return rows
 
 
-def build(project, ws, index, game_dir=None, keep=5, progress=None):
-    """Never reads or writes the game dir."""
+def build(project, ws, index, game_dir=None, keep=5, progress=None, reg=None, profile=None,
+          allow_overlap=False, allow_unknown_impact=False):
+    """Never reads or writes the game dir. Stage 4D: the typed plan (buildplan.review) runs first and its policy can
+    refuse the build (tile overlap without an override, an unresolved identity/reference impact); the finished build
+    writes the schema 2 manifest (build-manifest.json) and a schema 2 package.json (schema 1 keys unchanged)."""
     project = project_mod.validate(project_mod.migrate(project))
     spec = project_mod.to_spec(project)
     opts = project.get("options", {})
     man = ws.vanilla_manifest()
     if not man:
         raise RuntimeError("no vanilla snapshot; take one first")
+    from . import buildplan
+    plan = buildplan.review(ws, project, index, reg=reg, allow_overlap=allow_overlap,
+                            allow_unknown_impact=allow_unknown_impact)
+    if plan["blocked"]:
+        raise BuildRefused(_refusal(plan["blocked"]))
     spec_log = specificity.raise_spec(spec, index) if opts.get("raise_specificity", True) else []
     from . import tiles as _tiles
-    spec["tile_ops"] = _tiles.validate_ops(_tiles.ops_for(ws, project["name"]))         # the gate re-checks the built composition bundles against these
+    allow_bundle_tiles = project_mod.experimental_bundle_layout_edits(project)
+    catalog_ops = _tiles.validate_ops(project.get("tile_bundle_ops") or [])
+    spec["tile_ops"] = (_tiles.validate_ops(_tiles.ops_for(ws, project["name"])) if allow_bundle_tiles else []) + catalog_ops         # route lock: cell moves need flag; B2/B3 catalog ops use bundle route
     ts = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     out = ws.build / project["name"] / ts
     if "football manager 27" in str(out).lower() or (game_dir and Path(game_dir).resolve() in out.resolve().parents):
@@ -128,6 +170,7 @@ def build(project, ws, index, game_dir=None, keep=5, progress=None):
     out.mkdir(parents=True, exist_ok=True)
     acc = new_acc()
     files, touched = {}, {}
+    semantics = {}                                          # per-bundle semantic summary for the build manifest
     names = sorted(man["files"])
     for k, name in enumerate(names):
         if progress:
@@ -136,9 +179,13 @@ def build(project, ws, index, game_dir=None, keep=5, progress=None):
         if bundles.sha256(src) != man["files"][name]["sha256"]:
             raise RuntimeError("vanilla copy of %s does not match its manifest" % name)
         touched[name] = set()
-        changed = bundles.patch_bundle(src, out, lambda tree: patch_sheet(tree, spec, acc), touched[name])
+        changed = bundles.patch_bundle(
+            src, out, lambda tree, _b=name: (patch_sheet(tree, spec, acc) or apply_declaration_edits(tree, _b, spec, acc)),
+            touched[name])
         files[name] = {"changed": changed, "vanilla_sha256": man["files"][name]["sha256"],
                        "sha256": bundles.sha256(out / name) if changed else man["files"][name]["sha256"]}
+        if changed:
+            semantics.setdefault(name, {"adapter": "stylesheet"})
     # image and SVG swaps: every image bundle of the snapshot is part of the build, unchanged ones install as the vanilla file
     image_notes = []
     swaps, icon_swaps = {}, [e for e in project.get("image_swaps", []) if e["kind"] == "icon"]
@@ -150,7 +197,10 @@ def build(project, ws, index, game_dir=None, keep=5, progress=None):
         layout_docs.setdefault(doc["layout"]["bundle"], []).append(doc)
     from . import tiles as tiles_mod
     tile_ops = {}
-    for op in tiles_mod.validate_ops(tiles_mod.ops_for(ws, project["name"])):
+    if allow_bundle_tiles:
+        for op in tiles_mod.validate_ops(tiles_mod.ops_for(ws, project["name"])):
+            tile_ops.setdefault(op["bundle"], []).append(op)
+    for op in catalog_ops:
         tile_ops.setdefault(op["bundle"], []).append(op)
     table_docs = {}
     for doc in project.get("table_patches", []):
@@ -176,26 +226,33 @@ def build(project, ws, index, game_dir=None, keep=5, progress=None):
             changed, notes, _ = tables_mod.apply_patches(src, out, table_docs[name], touched[name])
             image_notes += notes
             files[name] = {"changed": changed, "tables": True, "vanilla_sha256": f["sha256"], "sha256": bundles.sha256(out / name) if changed else f["sha256"]}
+            semantics[name] = {"kind": "table_patch", "notes": notes}
             continue
         if name in tile_ops:
             changed, notes, _ = tiles_mod.apply_ops(src, out, tile_ops[name], touched[name])
             image_notes += notes
             files[name] = {"changed": changed, "tiles": True, "vanilla_sha256": f["sha256"], "sha256": bundles.sha256(out / name) if changed else f["sha256"]}
+            semantics[name] = {"adapter": "composition", "notes": notes}
             continue
         if name in layout_docs:
             from . import uxml
             changed, notes, _ = uxml.apply_patches(src, out, layout_docs[name], touched[name])
             image_notes += notes
             files[name] = {"changed": changed, "layout": True, "vanilla_sha256": f["sha256"], "sha256": bundles.sha256(out / name) if changed else f["sha256"]}
+            semantics[name] = {"kind": "layout_patch", "notes": notes}
             continue
         if name in swaps:
             changed, notes, _ = images.apply_swaps(src, out, swaps[name], project_mod.images_dir(ws, project["name"]), touched[name])
             image_notes += notes
+            semantics[name] = {"adapter": "texture", "notes": notes}
         elif icon_swaps and name in atlas_scale:
             icons_src = ws.vanilla / (images.ICONS % atlas_scale[name])
             changed, notes = images.apply_icon_swaps(src, icons_src, out, icon_swaps, project_mod.images_dir(ws, project["name"]), touched[name])
             image_notes += notes
+            semantics[name] = {"adapter": "sprite", "scale": atlas_scale[name], "notes": notes}
         files[name] = {"changed": changed, "vanilla_sha256": f["sha256"], "sha256": bundles.sha256(out / name) if changed else f["sha256"]}
+        if changed and name not in semantics:
+            semantics[name] = {"kind": "image_swaps"}
     if progress:
         progress("verifying build", len(names) / (len(names) + 1))
     gate, built = verify_static.gate(spec, ws.vanilla, out, files, touched)
@@ -227,19 +284,43 @@ def build(project, ws, index, game_dir=None, keep=5, progress=None):
         "layout_patches": {"files": len(project.get("layout_patches", [])), "ops": sum(len(d["ops"]) for d in project.get("layout_patches", []))},
     }
     (out / "build-report.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
-    report["package"] = write_package(ws, project, index, report, out, man, ts)
-    old = sorted(p for p in (ws.build / project["name"]).iterdir() if p.is_dir())
+    if progress:
+        progress("recording the build manifest", 0.98)
+    from . import manifest as manifest_mod
+    m = manifest_mod.build_manifest(ws, project, plan, report, out, ts, reg=reg, profile=profile, semantics=semantics)
+    manifest_mod.write(m, out)
+    report["manifest"] = {"schema": m["schema"], "file": "build-manifest.json", "outputs": len(m["outputs"]),
+                          "edits": len(m["edits"]), "overrides": m["overrides"],
+                          "installation_readiness": m["impact"].get("installation_readiness")}
+    # Stage 4E: the report's integrity section. A catalog or manifest MISMATCH is reported here as an installation
+    # warning, never as a build failure: the gate decides buildability, the statuses decide readiness.
+    report["integrity"] = {
+        "sources": m.get("integrity_sources"),
+        "buildable": plan["impact"]["buildable"], "installation_readiness": plan["impact"]["installation_readiness"],
+        "outputs": {o["rel_path"]: {"source_sha256": o["source_sha256"], "output_sha256": o["output_sha256"],
+                                    "source_crc32": o["source_crc32"], "output_crc32": o["output_crc32"],
+                                    "catalog_crc_status": o["catalog_crc_status"],
+                                    "catalog_record_offset": ((o.get("integrity") or {}).get("catalog") or {}).get("record_offset"),
+                                    "catalog_stored_crc32": ((o.get("integrity") or {}).get("catalog") or {}).get("stored_crc32"),
+                                    "manifest_status": o.get("manifest_status"),
+                                    "output_whole_file_crc32": ((o.get("integrity") or {}).get("manifest_dat") or {}).get("output_whole_file_crc32")}
+                    for o in m["outputs"]},
+        "note": "a catalog CRC or manifest mismatch is an installation warning, not a build failure; the game logged a "
+                "CRC mismatch and still used the modified bundle in the one tested scenario (Stage 3G) - observed, not guaranteed"}
+    report["package"] = write_package(ws, project, index, report, out, man, ts, m)
+    old = sorted(p for p in (ws.build / project["name"]).iterdir() if p.is_dir() and (p / "build-report.json").exists())
     for p in old[:-keep] if keep else []:
         shutil.rmtree(p, ignore_errors=True)
     report["dir"] = str(out)
     return report
 
 
-def write_package(ws, project, index, report, out, man, ts):
+def write_package(ws, project, index, report, out, man, ts, manifest2=None):
     """The build's package manifest (spec: Package = id, profile, plan digest, files with hashes, gate result): written as package.json next to
     the bundles and mirrored to <project folder>/packages/<id>.json. The plan digest is the sha256 of the build plan's operations and dropped
-    items (not its warnings), so two builds of the same project state have the same digest. Installing still goes through install.install,
-    which re-checks the gate and the tamper state; the manifest is the record of what was built."""
+    items (not its warnings), so two builds of the same project state have the same digest. Stage 4D: with a finished build manifest the
+    package is schema 2 (every schema 1 key unchanged, the typed edits/outputs/validation sections added). Installing still goes through
+    install.install, which re-checks the gate and the tamper state; the manifest is the record of what was built."""
     import hashlib
     from . import plan as plan_mod, profile, projfmt
     try:
@@ -260,6 +341,9 @@ def write_package(ws, project, index, report, out, man, ts):
            "files": {n: {"sha256": f["sha256"], "vanilla_sha256": f["vanilla_sha256"]} for n, f in report["files"].items() if f["changed"]},
            "gate": {"passed": not gate["fail"], "failures": gate["fail"], "checked": {k: v for k, v in gate.items() if k.endswith("_checked") or k == "untouched_bundles_checked"}},
            "installable": not gate["fail"]}
+    if manifest2 is not None:
+        from . import manifest as manifest_mod
+        pkg = manifest_mod.schema2_package(pkg, manifest2)
     text = json.dumps(pkg, indent=1)
     (Path(out) / "package.json").write_text(text, encoding="utf-8")
     if projfmt.is_folder(ws, project["name"]):

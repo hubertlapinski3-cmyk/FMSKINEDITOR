@@ -76,9 +76,19 @@ describe('Tiles view', () => {
   })
 
   it('without a layout index it offers to load it, and says nothing is imported', async () => {
-    answer({ 'layout.state': { present: false } })
+    answer({ 'layout.state': { present: false, index: { configured: true, source: 'environment', path: 'C:/x/layout-vanilla.sqlite', help: null } } })
     render(<Tiles project="p" target="bundles" onChanged={() => {}} say={() => {}} />)
     expect(await screen.findByText(/No layout index is imported yet/)).toBeTruthy(); expect(screen.getByText('Load the layout index')).toBeTruthy()
+    expect(screen.getByTestId('read-game-layouts')).toBeTruthy()
+  })
+
+  it('with no layout index configured it hides the loader and names the developer-only tool', async () => {
+    answer({ 'layout.state': { present: false, index: { configured: false, source: null, path: null, help: 'No layout index is configured. Set FM27_LAYOUT_INDEX ... FM27_LayoutMCP is a developer-only tool and does not ship.' } } })
+    render(<Tiles project="p" target="bundles" onChanged={() => {}} say={() => {}} />)
+    expect(await screen.findByTestId('layout-index-not-configured')).toBeTruthy()
+    expect(screen.queryByText('Load the layout index')).toBeNull()
+    expect(screen.getByTestId('layout-index-not-configured').textContent).toMatch(/developer-only/)
+    expect(screen.getByTestId('read-game-layouts')).toBeTruthy()
   })
 
   it('an engine failure is shown as text, and a broken payload shows the guard instead of a black window', async () => {

@@ -2,13 +2,14 @@
 Synthetic tests run anywhere; the real-data tests run when the game is installed and skip otherwise."""
 import time
 import unittest
+from tests import gamebuild
 from pathlib import Path
 
 from skin_editor.render import values
 from skin_editor.render.cascade import Cascade
 from skin_editor.render.sheets import Sheet
 
-AA = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+AA = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 TILE = ("ui-visualtreeassets_assets_gameworldvisualtreeassetpreload.bundle", "-3957983696827071101")      # LoansTile_4x2
 # the element order of the c2 session's inspector tree of this tile (2026-11-13, build 27.0.1.2503222), top node first: the structural fixture
 C2_ORDER = ["BindingExpect#TileBindingExpect", "ComponentElement#", "TemplateContainer#tile-wide-4x2", "BindingExpect#TileTemplateBindingExpect",
@@ -114,6 +115,7 @@ class CascadeRules(unittest.TestCase):
         self.assertEqual(top["components"], ["BindingRemapperComponent"])
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir(), "needs the game install")
 class RealTile(unittest.TestCase):
     @classmethod

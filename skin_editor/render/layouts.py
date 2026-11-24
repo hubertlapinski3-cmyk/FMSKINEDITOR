@@ -8,9 +8,10 @@ import json
 from pathlib import Path
 
 from .. import uxml
+from ..asset_hash import sha256_file
 from .guids import GuidIndex
 
-PARSE_VERSION = 2                         # 2: records carry the layout's m_ContentHash (matched against mode-2 template sources)
+PARSE_VERSION = 3                         # 3: records are bound to the bundle SHA256, not size/mtime
 NON_VISUAL_SUFFIX = "Component"          # BindingRemapperComponent, BindingVariablesComponent ...: attached to the parent, not elements of the visual tree
 VISUAL_COMPONENT = "ComponentElement"
 
@@ -32,6 +33,7 @@ class LayoutStore:
         self._objs = {}
         self._parsed = {}
         self._target = {}
+        self._bundle_hashes = {}
         self.stats = {"decoded": 0, "disk_hits": 0, "memory_hits": 0}
 
     def catalog(self):
@@ -47,14 +49,15 @@ class LayoutStore:
             self._objs[bundle] = {o.path_id: o for o in UnityPy.load(str(self.folder / bundle)).objects}
         return self._objs[bundle]
 
-    def _stat(self, bundle):
-        s = (self.folder / bundle).stat()
-        return "%d-%d" % (s.st_size, s.st_mtime_ns)
+    def _bundle_hash(self, bundle):
+        if bundle not in self._bundle_hashes:
+            self._bundle_hashes[bundle] = sha256_file(self.folder / bundle)
+        return self._bundle_hashes[bundle]
 
     def _disk(self, bundle, path_id):
         if not self.cache_dir:
             return None
-        return self.cache_dir / ("render-layout-%s-%s-%s.json" % (bundle[:-len(".bundle")], path_id, self._stat(bundle)))
+        return self.cache_dir / ("render-layout-%s-%s-%s.json" % (bundle[:-len(".bundle")], path_id, self._bundle_hash(bundle)))
 
     def parse(self, bundle, path_id):
         """The layout as {bundle, path_id, name, usings: {alias: {guid}}, content_container, root} with a nested `root`; cached."""
@@ -65,7 +68,7 @@ class LayoutStore:
         disk = self._disk(bundle, path_id)
         if disk is not None and disk.is_file():
             rec = json.loads(disk.read_text(encoding="utf-8"))
-            if rec.get("v") == PARSE_VERSION:                      # an older cache entry (no content hash) is decoded again, never trusted
+            if rec.get("v") == PARSE_VERSION and rec.get("bundle_sha256") == self._bundle_hash(bundle):
                 self._parsed[key] = rec
                 self.stats["disk_hits"] += 1
                 return rec
@@ -92,7 +95,7 @@ class LayoutStore:
             node["children"] = [c for c in (build(r) for r in e["children"]) if c]
             return node
 
-        rec = {"v": PARSE_VERSION, "bundle": bundle, "path_id": str(path_id), "name": t.get("m_Name", ""), "content_hash": t.get("m_ContentHash"),
+        rec = {"v": PARSE_VERSION, "bundle": bundle, "bundle_sha256": self._bundle_hash(bundle), "path_id": str(path_id), "name": t.get("m_Name", ""), "content_hash": t.get("m_ContentHash"),
                "usings": {a: {"guid": u["path"]} for a, u in uxml.usings(t).items()},
                "content_container": t.get("m_ContentContainerId", 0), "root": build(t["m_VisualTree"]["rid"])}
         self._parsed[key] = rec

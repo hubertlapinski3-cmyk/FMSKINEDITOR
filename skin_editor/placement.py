@@ -97,7 +97,9 @@ def check(grid, edit, others=()):
                 if geo["x"] + geo["w"] > pw or geo["y"] + geo["h"] > ph:
                     blocks.append("out of bounds: x+w=%d, y+h=%d exceed the composition grid %d x %d" % (geo["x"] + geo["w"], geo["y"] + geo["h"], pw, ph))
             else:
-                warns.append("the composition has no preset size in the dump: grid bounds were not checked")
+                warns.append("the composition has no preset size in the dump, so this gate cannot check whether "
+                             "the cell fits the grid the game shows; it checks collisions between cells only. The "
+                             "real grid size is chosen at run time (the serialized composition stores 0 x 0).")
             og = old["geometry"]
             if og and (geo["w"] != og["w"] or geo["h"] != og["h"]):
                 blocks.append("size change not supported: cell size is largely derived from its configs (4,724 of 5,162 config cells in the game data); only a position change (x, y) is allowed")

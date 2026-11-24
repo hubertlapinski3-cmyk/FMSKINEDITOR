@@ -35,6 +35,36 @@ def last_installed(ws):
     return out
 
 
+def installed_hashes(ws):
+    """{file: {sha256 this app ever wrote into the game folder}}: every `after` of the install log, not only the latest."""
+    out = {}
+    f = ws.logs / "install-log.jsonl"
+    if f.is_file():
+        for line in f.read_text(encoding="utf-8").splitlines():
+            try:
+                e = json.loads(line)
+                out.setdefault(e["file"], set()).add(e["after"])
+            except (ValueError, KeyError):
+                pass
+    return out
+
+
+def skinned_bundles(ws, aa_dir):
+    """Live bundles that are, by hash, a file this app installed and not that file's stock hash (the snapshot's own copy or its reference). A snapshot taken while any of these is in the game
+    folder would record a skin as the game's own, so `snapshot_vanilla` refuses."""
+    man = ws.vanilla_manifest() or {}
+    stock = {n: {v.get("sha256")} for n, v in (man.get("files") or {}).items()}
+    for n, h in ((man.get("reference") or {}).get("bundles") or {}).items():
+        stock.setdefault(n, set()).add(h)
+    out = []
+    for name, hashes in sorted(installed_hashes(ws).items()):
+        f = Path(aa_dir) / name
+        if f.is_file():
+            h = _live_sha(f)
+            if h in hashes and h not in stock.get(name, set()):
+                out.append(name)
+    return out
+
 def live_status(ws, aa_dir):
     man = ws.vanilla_manifest() or {"files": {}}
     last = last_installed(ws)
@@ -94,6 +124,22 @@ def _live_sha(path):
     return _HASH_CACHE[key]
 
 
+UPDATED_MESSAGE = ("The game's catalog.hash changed since the snapshot (%s, was %s): the game was updated, so the snapshot, the style index and every backup made before the update "
+                   "describe an older game build. Nothing that copies game files will run until there is a new snapshot. Steam overwrites only the files an update changed, so a skin you "
+                   "installed can still be inside the files it left alone, and a snapshot of those would record them as the game's own. So, with Football Manager closed: FIRST run Steam's "
+                   "Verify integrity of game files (Steam, right-click Football Manager 27, Properties, Installed files) and let it finish; THEN use the Re-read the game button on the "
+                   "Studio's Game updates screen (the command-line equivalent, for a Studio that will not start: "
+                   "& \"$env:LOCALAPPDATA\\FM Skin Studio\\fm-skin-engine\\fm-skin-engine.exe\" snapshot --force   and then the same line with   index   in place of   snapshot --force; "
+                   "from a source checkout:   python -m skin_editor snapshot --force   and   python -m skin_editor index  ). "
+                   "The re-read refuses while a game file is still one this app installed. Verify alone does not read the game again for the Studio.")
+
+def refuse_if_updated(ws, aa_dir, what):
+    """SAFETY: a write of game files from a snapshot or a backup is refused when the game's catalog is not the one the snapshot was taken against. `force` never overrides this: the files would be of two builds."""
+    t = tamper_status(ws, aa_dir)
+    if t["state"] == "game_updated":
+        raise InstallError("%s was not done. %s" % (what, t["message"]))
+
+
 def tamper_status(ws, aa_dir):
     """Live ui-*.bundle files against the snapshot's reference hashes.
     state: no_reference (cannot check), game_updated (live catalog.hash differs: the reference no longer applies),
@@ -109,8 +155,7 @@ def tamper_status(ws, aa_dir):
     live_cat = cat.read_text(encoding="utf-8", errors="replace").strip() if cat else None
     if live_cat != ref["catalog_hash"]:
         return {"state": "game_updated", "catalog_live": live_cat, "catalog_reference": ref["catalog_hash"],
-                "message": "The game's catalog.hash changed since the snapshot (%s, was %s): the game was updated or verified. "
-                           "Take a new vanilla snapshot, re-index and rebuild." % ((live_cat or "missing")[:12], ref["catalog_hash"][:12])}
+                "message": UPDATED_MESSAGE % ((live_cat or "missing")[:12], ref["catalog_hash"][:12])}
     last = last_installed(ws)
     files, bad = {}, []
     for name, want in sorted(ref["bundles"].items()):
@@ -165,6 +210,9 @@ def add_image_bundle(ws, aa_dir, name):
 
 def snapshot_vanilla(ws, aa_dir, game_build=None, force=False):
     """Copy the stock style bundles into the read-only vanilla dir. Only correct on an unskinned install."""
+    bad = skinned_bundles(ws, aa_dir)                       # never overridden by force: it would record a skin as the game's own
+    if bad:
+        raise InstallError("not snapshotted: %s %s still a file this app installed (a skin). Run Steam's Verify integrity of game files first (Steam, right-click Football Manager 27, Properties, Installed files), let it finish, then take the snapshot again." % (", ".join(bad[:4]), "is" if len(bad) == 1 else "are"))
     if ws.vanilla_manifest() and not force:
         raise InstallError("vanilla snapshot exists; pass force to replace it")
     for old in ws.vanilla.glob("*.bundle"):                # image bundles of an older snapshot: never restore stale copies
@@ -241,6 +289,27 @@ def _write_set(ws, aa_dir, targets, label, backup_keep):
     return {"copied": sorted(todo), "backup": str(bdir)}
 
 
+def reread_after_update(ws, aa_dir, game_build=None, progress=None):
+    """The guided 'the game was updated' recovery, in ONE call: the same two steps the PowerShell advice named
+    (snapshot --force, then index), from inside the app. REFUSES while a live bundle is still a file this app
+    installed - the owner must run Steam's Verify integrity first, or the snapshot would record a skin as the
+    game's own (the same precondition as snapshot_vanilla, and it is never overridden). Nothing here writes the
+    game folder: a snapshot is a read of it. Returns what the new notes hold."""
+    progress = progress or (lambda m, f: None)
+    bad = skinned_bundles(ws, aa_dir)                       # never overridden by force: it would record a skin as the game's own
+    if bad:
+        raise InstallError("not re-read: %s %s still a file this app installed (a skin). Run Steam's Verify integrity of game files first (Steam, right-click Football Manager 27 > Properties > Installed files), let it finish, then use the Re-read the game button again." % (", ".join(bad[:4]), "is" if len(bad) == 1 else "are"))
+    progress("reading the game's files", 0.1)
+    man = snapshot_vanilla(ws, aa_dir, game_build, force=True)
+    progress("reading the game's colours and rules", 0.5)
+    from . import index_styles
+    ix = index_styles.build(ws, lambda m, f: progress(m, 0.5 + f / 2))
+    return {"snapshot": {"taken_utc": man["taken_utc"], "game_build": man.get("game_build"),
+                          "catalog_hash": (man.get("reference") or {}).get("catalog_hash")},
+            "index": {"sheets": len(ix.sheets), "tokens": len(ix.defs), "literals": len(ix.literals)},
+            "quarantined": len(ix.failures)}
+
+
 def same_dir(a, b):
     return bool(a) and bool(b) and os.path.normcase(os.path.abspath(str(a))) == os.path.normcase(os.path.abspath(str(b)))
 
@@ -254,7 +323,169 @@ def snapshot_mismatch(ws, aa_dir):
     return None
 
 
-def install(ws, aa_dir, build_dir, running, force=False, backup_keep=20):
+def stock_hashes(ws):
+    """{bundle_name: stock_sha256} from the vanilla snapshot's reference hashes and copied style/image files."""
+    man = ws.vanilla_manifest() or {}
+    out = dict(((man.get("reference") or {}).get("bundles") or {}))
+    for sec in ("files", "image_files"):
+        for n, v in (man.get(sec) or {}).items():
+            if isinstance(v, dict) and v.get("sha256") and n not in out:
+                out[n] = v["sha256"]
+    return out
+
+
+def find_verified_stock_backups(ws, names=None, stock_overrides=None):
+    """Locate a verified stock backup in the workspace (vanilla/ or backups/) for each requested bundle name
+    (or every bundle in stock_hashes(ws) when names is None). Returns ({name: Path}, [missing_names])."""
+    stock = dict(stock_hashes(ws))
+    if stock_overrides:
+        for k, v in stock_overrides.items():
+            if v and k not in stock:
+                stock[k] = v
+    want = list(names) if names is not None else sorted(stock)
+    candidates = []
+    if ws.vanilla.is_dir():
+        candidates.append(ws.vanilla)
+    if ws.backups.is_dir():
+        for p in sorted(ws.backups.iterdir(), reverse=True):
+            if not p.is_dir():
+                continue
+            if (p / "manifest.json").is_file() or any(p.glob("*.bundle")):
+                candidates.append(p)
+            for sub in sorted(p.iterdir(), reverse=True):
+                if sub.is_dir() and (sub / "files").is_dir():
+                    candidates.append(sub / "files")
+    found, missing = {}, []
+    for name in want:
+        expected = stock.get(name)
+        if not expected:
+            missing.append(name)
+            continue
+        match = None
+        for d in candidates:
+            cand = d / name
+            if cand.is_file() and _live_sha(cand) == expected:
+                match = cand
+                break
+        if match is not None:
+            found[name] = match
+        else:
+            missing.append(name)
+    return found, missing
+
+
+def ensure_verified_stock_backups(ws, aa_dir, names, stock_overrides=None):
+    """Ensure every bundle in `names` has a verified stock backup in the workspace before install replaces it.
+    If a bundle has no verified stock backup yet and the live file in `aa_dir` equals the stock hash record,
+    copy and verify it into `ws.vanilla` first. Raises InstallError listing any bundle that neither has a
+    verified stock backup nor is currently stock on disk."""
+    stock = dict(stock_hashes(ws))
+    if stock_overrides:
+        for k, v in stock_overrides.items():
+            if v and k not in stock:
+                stock[k] = v
+    found, missing = find_verified_stock_backups(ws, names, stock_overrides=stock)
+    if not missing:
+        return found
+    still_missing = []
+    man = ws.vanilla_manifest()
+    man_dirty = False
+    for name in missing:
+        expected = stock.get(name)
+        live = Path(aa_dir) / name
+        if expected and live.is_file() and sha256(live) == expected and ws.vanilla.is_dir():
+            dst = ws.vanilla / name
+            if dst.exists():
+                dst.chmod(0o644)
+            shutil.copyfile(live, dst)
+            dst.chmod(0o444)
+            if sha256(dst) != expected:
+                still_missing.append(name)
+                continue
+            _HASH_CACHE.pop((str(dst), dst.stat().st_size, dst.stat().st_mtime_ns), None)
+            found[name] = dst
+            if isinstance(man, dict) and name not in STYLE_BUNDLES:
+                man.setdefault("image_files", {})[name] = {"sha256": expected, "size": dst.stat().st_size}
+                man_dirty = True
+        else:
+            still_missing.append(name)
+    if man_dirty and isinstance(man, dict):
+        (ws.vanilla / "manifest.json").write_text(json.dumps(man, indent=1), encoding="utf-8")
+    if still_missing:
+        raise InstallError("refused to install: no verified stock backup exists for %s (and the live file is not stock); "
+                           "restore stock first before installing" % ", ".join(still_missing))
+    return found
+
+
+def project_last_changed_ts(ws, project_name):
+    """Latest modification timestamp (POSIX seconds) across a project's authored files, or None if not found."""
+    if not project_name:
+        return None
+    latest = None
+    projects_dir = getattr(ws, "projects", None)
+    if projects_dir:
+        proj_dir = Path(projects_dir) / project_name
+        if proj_dir.is_dir():
+            for p in proj_dir.rglob("*"):
+                if not p.is_file():
+                    continue
+                try:
+                    rel = p.relative_to(proj_dir)
+                except ValueError:
+                    continue
+                if rel.parts and rel.parts[0] == "packages":
+                    continue                                    # written by builds, not project edits
+                mt = p.stat().st_mtime
+                if latest is None or mt > latest:
+                    latest = mt
+        single_proj = Path(projects_dir) / ("%s.skin.json" % project_name)
+        if single_proj.is_file():
+            mt = single_proj.stat().st_mtime
+            if latest is None or mt > latest:
+                latest = mt
+    placements_dir = getattr(ws, "placements", None)
+    if placements_dir:
+        single_pl = Path(placements_dir) / ("%s.placements.json" % project_name)
+        if single_pl.is_file():
+            mt = single_pl.stat().st_mtime
+            if latest is None or mt > latest:
+                latest = mt
+    return latest
+
+
+def package_built_ts(build_dir, meta=None):
+    """Build timestamp (POSIX seconds) from built_utc or build-report.json/package.json mtime."""
+    import calendar
+    built_utc = (meta or {}).get("built_utc")
+    if isinstance(built_utc, str) and built_utc:
+        try:
+            return float(calendar.timegm(time.strptime(built_utc, "%Y%m%dT%H%M%SZ")))
+        except ValueError:
+            pass
+    for name in ("build-report.json", "package.json"):
+        p = Path(build_dir) / name
+        if p.is_file():
+            return p.stat().st_mtime
+    return None
+
+
+def stale_package_info(ws, project_name, build_dir, meta=None, grace_seconds=2.0):
+    """Return a dict describing the age mismatch when the build package is older than the project's last change, else None."""
+    proj_ts = project_last_changed_ts(ws, project_name)
+    built_ts = package_built_ts(build_dir, meta)
+    if proj_ts is None or built_ts is None:
+        return None
+    if proj_ts > built_ts + grace_seconds:
+        return {
+            "project": project_name,
+            "package_built_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(built_ts)),
+            "project_changed_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(proj_ts)),
+            "age_seconds": round(proj_ts - built_ts, 1),
+        }
+    return None
+
+
+def install(ws, aa_dir, build_dir, running, force=False, backup_keep=20, confirm_stale=False):
     """running: callable -> bool (game process or Steam update detected)."""
     if running():
         raise InstallError("the game is running or updating; close it first")
@@ -265,21 +496,40 @@ def install(ws, aa_dir, build_dir, running, force=False, backup_keep=20):
     report = json.loads((build_dir / "build-report.json").read_text(encoding="utf-8"))
     if report.get("gate", {}).get("fail"):
         raise InstallError("this build failed the structural gate and cannot be installed: " + report["gate"]["fail"][0])
+    stale = stale_package_info(ws, report.get("project"), build_dir, report)
+    if stale and not confirm_stale and not force:
+        raise InstallError("this build package (%s) is older than the project's last change (%s); rebuild first or confirm stale_package"
+                           % (stale["package_built_utc"], stale["project_changed_utc"]))
+    refuse_if_updated(ws, aa_dir, "The install")               # even with force: a changed catalog means another game build
     tamper = tamper_status(ws, aa_dir)
-    if tamper["state"] in ("modified", "game_updated") and not force:
+    if tamper["state"] == "modified" and not force:
         raise InstallError("tamper check: " + tamper["message"])
     last = last_installed(ws)
-    targets = {}
-    for name, f in report["files"].items():
+    stock = stock_hashes(ws)
+    report_stock = {name: f.get("vanilla_sha256") for name, f in report["files"].items() if f.get("vanilla_sha256")}
+    changed_names = [name for name, f in sorted(report["files"].items()) if f.get("changed")]
+    for name, f in sorted(report["files"].items()):
         live = Path(aa_dir) / name
         if not live.is_file():
             raise InstallError("missing in the game folder: " + name)
         h = sha256(live)
-        if h not in (f["vanilla_sha256"], last.get(name), f["sha256"]) and not force:
+        expected_stock = stock.get(name) or f.get("vanilla_sha256")
+        if h not in (f["vanilla_sha256"], expected_stock, last.get(name), f["sha256"]) and not force:
             raise InstallError("%s differs from the vanilla snapshot and from the last install; the game was "
                                "probably updated. Take a new vanilla snapshot, re-index and rebuild." % name)
-        targets[name] = build_dir / name if f["changed"] else ws.vanilla / name
-    return _write_set(ws, aa_dir, targets, report["project"], backup_keep)
+    verified_backups = ensure_verified_stock_backups(ws, aa_dir, changed_names, stock_overrides=report_stock)
+    unchanged_backups, _ = find_verified_stock_backups(ws, [n for n, f in sorted(report["files"].items()) if not f.get("changed")], stock_overrides=report_stock)
+    targets = {}
+    for name, f in report["files"].items():
+        if f.get("changed"):
+            targets[name] = build_dir / name
+        elif name in unchanged_backups:
+            targets[name] = unchanged_backups[name]
+        elif (ws.vanilla / name).is_file():
+            targets[name] = ws.vanilla / name
+    res = _write_set(ws, aa_dir, targets, report["project"], backup_keep)
+    res["verified_stock_backups"] = {k: str(v) for k, v in sorted(verified_backups.items())}
+    return res
 
 
 def restore(ws, aa_dir, backup, running, backup_keep=20):
@@ -287,16 +537,40 @@ def restore(ws, aa_dir, backup, running, backup_keep=20):
     if running():
         raise InstallError("the game is running or updating; close it first")
     src = ws.vanilla if backup == "vanilla" else ws.backups / Path(backup).name
+    refuse_if_updated(ws, aa_dir, "The restore")               # a snapshot or backup of the old build over the new one would mix two builds
     if backup == "vanilla":
         mm = snapshot_mismatch(ws, aa_dir)
         if mm:
             raise InstallError("not restored: " + mm)
+        stock = stock_hashes(ws)
+        files = {p.name: p for p in src.glob("*.bundle") if p.name not in stock or sha256(p) == stock[p.name]}
+        non_stock = []
+        for name, want in sorted(stock.items()):
+            live = Path(aa_dir) / name
+            if live.is_file() and sha256(live) != want:
+                non_stock.append(name)
+        need_from_backups = [n for n in non_stock if n not in files]
+        if need_from_backups:
+            found, missing = find_verified_stock_backups(ws, need_from_backups)
+            if missing:
+                raise InstallError("not restored: no verified stock backup matching the stock hash record for: "
+                                   + ", ".join(missing))
+            files.update(found)
+        for name, cand in sorted(files.items()):
+            if name in stock and sha256(cand) != stock[name]:
+                raise InstallError("not restored: backup for %s does not match the stock hash record" % name)
     else:
         m = src / "manifest.json"
-        origin = json.loads(m.read_text(encoding="utf-8")).get("game_dir") if m.is_file() else None
+        meta = json.loads(m.read_text(encoding="utf-8")) if m.is_file() else {}
+        origin = meta.get("game_dir")
         if origin and not same_dir(origin, aa_dir):
             raise InstallError("not restored: backup %s holds files from %s, not from the game folder in use (%s)" % (src.name, origin, aa_dir))
-    files = {p.name: p for p in src.glob("*.bundle")}
+        for e in meta.get("files", []):                        # the live file must still be one this backup was made from or installed over
+            live = Path(aa_dir) / e["file"]
+            if live.is_file() and sha256(live) not in (e.get("sha256_before"), e.get("sha256_new")):
+                raise InstallError("not restored: %s in the game folder is neither the file this backup was taken from nor the one it installed, so the game changed after the backup "
+                                   "(a game update). Restoring would mix two game builds. Take a new vanilla snapshot instead." % e["file"])
+        files = {p.name: p for p in src.glob("*.bundle")}
     if not files:
         raise InstallError("no bundles in " + str(src))
     return _write_set(ws, aa_dir, files, "restore:" + backup, backup_keep)

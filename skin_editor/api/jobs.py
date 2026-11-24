@@ -40,11 +40,21 @@ class EventBus:
         return ev
 
 
+class Cancelled(Exception):
+    """Raised by a cancellable job's function when it honours a cancel request; the first argument, when given, is its partial result."""
+
+
+def cancel_with(partial_result=None):
+    """Called by a cancellable job's function to end as cancelled, keeping `partial_result` as the job's result."""
+    raise Cancelled(partial_result)
+
+
 class Job:
     STATES = ("queued", "running", "done", "failed", "cancelled")
 
-    def __init__(self, id_, label, fn):
+    def __init__(self, id_, label, fn, cancellable=False):
         self.id, self.label, self.fn = id_, label, fn
+        self.cancellable, self.cancel_requested = cancellable, threading.Event()
         self.title = label                     # the label given at submit; 'label' follows the progress messages
         self.state, self.progress, self.error, self.result = "queued", 0.0, None, None
         self.created, self.started, self.finished = time.time(), None, None
@@ -52,7 +62,8 @@ class Job:
 
     def view(self):
         return {"id": self.id, "title": self.title, "label": self.label, "state": self.state, "progress": self.progress,
-                "error": self.error, "result": self.result if self.state == "done" else None,
+                "error": self.error, "result": self.result if self.state in ("done", "cancelled") else None,
+                "cancellable": self.cancellable, "cancel_requested": self.cancel_requested.is_set(),
                 "created": self.created, "started": self.started, "finished": self.finished}
 
     def legacy(self):
@@ -69,10 +80,11 @@ class JobQueue:
         self._worker = threading.Thread(target=self._run, daemon=True, name="fm27se-jobs")
         self._worker.start()
 
-    def submit(self, label, fn):
-        """fn(progress) -> result, where progress(message, fraction 0..1). Returns the Job."""
+    def submit(self, label, fn, cancellable=False):
+        """fn(progress) -> result, where progress(message, fraction 0..1). A cancellable job's `progress.cancelled()` turns true when a cancel is requested and the
+        function may raise Cancelled (optionally with a partial result). Returns the Job."""
         with self._lock:
-            job = Job("j%d" % next(self._ids), label, fn)
+            job = Job("j%d" % next(self._ids), label, fn, cancellable)
             self._jobs[job.id] = job
             self._order.append(job.id)
             for old in self._order[:-self._keep]:
@@ -93,8 +105,12 @@ class JobQueue:
         return [self._jobs[i].view() for i in self._order]
 
     def cancel(self, id_):
-        """Only a job that has not started can be cancelled (a running bundle write is never interrupted)."""
+        """A job that has not started is cancelled at once. A running job is only asked to stop when it was submitted as cancellable (an inventory scan);
+        a running bundle write is never interrupted."""
         job = self.get(id_)
+        if job.state == "running" and job.cancellable:
+            job.cancel_requested.set()
+            return True
         if job.state != "queued":
             return False
         job.state, job.finished = "cancelled", time.time()
@@ -127,11 +143,15 @@ class JobQueue:
                 if now - last[0] >= 0.1:                       # at most 10 progress events a second
                     last[0] = now
                     self.events.publish("job.progress", {"id": job.id, "label": job.label, "progress": job.progress})
+            progress.cancelled = job.cancel_requested.is_set
             try:
                 job.result = job.fn(progress)
                 job.state = "done"
+            except Cancelled as e:
+                job.result = e.args[0] if e.args else None
+                job.state = "cancelled"
             except Exception as e:
                 job.error, job.state = "%s: %s" % (type(e).__name__, e), "failed"
             job.progress, job.finished = 1.0, time.time()
             job.done.set()
-            self.events.publish("job.done" if job.state == "done" else "job.failed", job.view())
+            self.events.publish({"done": "job.done", "cancelled": "job.cancelled"}.get(job.state, "job.failed"), job.view())

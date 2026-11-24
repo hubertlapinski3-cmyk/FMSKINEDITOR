@@ -1,4 +1,4 @@
-﻿:root { color-scheme: dark; --bg:#1e1f22; --side:#25262a; --line:#34363b; --fg:#d6d8dd; --dim:#8b909a; --acc:#7694fe; --bad:#f2748a; --ok:#6fcf97; --warn:#e5b567 }
+:root { color-scheme: dark; --bg:#1e1f22; --side:#25262a; --line:#34363b; --fg:#d6d8dd; --dim:#8b909a; --acc:#7694fe; --bad:#f2748a; --ok:#6fcf97; --warn:#e5b567 }
 * { box-sizing: border-box }
 html, body, #root { height: 100%; margin: 0 }
 body { background: var(--bg); color: var(--fg); font: 13px/1.45 ui-sans-serif, system-ui, "Segoe UI", sans-serif; overflow: hidden }
@@ -21,20 +21,27 @@ button:hover:not(:disabled) { border-color: var(--dim) } button:disabled { opaci
 .explorer .rowbtns button { padding: 0 6px; font-size: 11px }
 .explorer li.image,.explorer li.other { color: var(--dim); cursor: default } .explorer small { color: var(--dim) }
 .note { padding: 6px 10px; color: var(--warn) }
-.editor { grid-area: ed; display: flex; flex-direction: column; min-width: 0 }
-.tabs { display: flex; background: #17181b; overflow-x: auto; min-height: 33px }
+.editor { grid-area: ed; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden }
+.tabs { display: flex; background: #17181b; overflow-x: auto; min-height: 33px; flex-shrink: 0 }
 .tab { padding: 7px 8px 7px 14px; color: var(--dim); cursor: pointer; border-right: 1px solid var(--line); white-space: nowrap }
 .tab.on { color: var(--fg); background: var(--bg); box-shadow: inset 0 2px var(--acc) }
 .tab button { border: 0; background: none; padding: 0 5px; color: var(--dim) }
-.surface { flex: 1; min-height: 0 } .empty { padding: 30px; color: var(--dim) }
+.surface { flex: 1; min-height: 0; min-width: 0; display: flex; flex-direction: column; overflow: hidden } .empty { padding: 30px; color: var(--dim) }
 .panel { grid-area: pn; border-top: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0 }
 .ptabs { display: flex; gap: 2px; padding: 0 8px; background: var(--side) }
 .ptabs button { border: 0; background: none; color: var(--dim); border-radius: 0; padding: 6px 10px; font-size: 11px; letter-spacing: .05em }
 .ptabs button.on { color: var(--fg); box-shadow: inset 0 -2px var(--acc) }
+.ptabs .pact { color: var(--fg); background: #2e3036; border: 1px solid var(--line); border-radius: 3px;
+  margin: 2px 0 2px 8px; padding: 2px 9px; letter-spacing: normal; font-size: 11px }
+.ptabs .pact:hover:not(:disabled) { border-color: var(--acc) }
 .pbody { flex: 1; overflow: auto; padding: 6px 12px }
 .prob { padding: 2px 0; cursor: pointer; color: var(--bad) } .prob b { color: var(--fg) } .prob:hover { background: #2d2f35 }
 .mono { font: 12px ui-monospace, Consolas, monospace; white-space: pre-wrap } .dim { color: var(--dim) } .warn { color: var(--warn) } .ok { color: var(--ok) } .bad { color: var(--bad) }
 .build { display: flex; flex-direction: column; gap: 8px; align-items: flex-start }
+/* Keep the install actions reachable even when the build plan is longer than the panel. */
+.build-actions { position: sticky; bottom: -6px; z-index: 2; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  width: 100%; padding: 6px 0; background: var(--bg); border-top: 1px solid var(--line) }
+.pbody { scrollbar-gutter: stable }
 .status { grid-area: st; display: flex; gap: 16px; align-items: center; padding: 0 12px; background: #2a3350; font-size: 12px }
 .status .click { cursor: pointer }
 
@@ -219,3 +226,227 @@ button.mini { padding: 0 5px; min-width: 20px; height: 20px; line-height: 18px; 
 .fnd-shot { display: block; max-width: 100%; border: 1px solid #3b3f46; border-radius: 4px; margin: 6px 0 } .fnd-shot.empty { padding: 40px; text-align: center; color: var(--dim) }
 .fnd-compare { display: flex; gap: 8px; flex-wrap: wrap } .fnd-compare figure { margin: 0; flex: 1 1 200px; max-width: 33% } .fnd-compare figure.on img { outline: 2px solid #8ab4f8 } .fnd-compare figcaption { font-size: 11px; color: var(--dim) } .fnd-compare .fnd-shot { cursor: pointer }
 .fnd-list { padding-left: 18px } .fnd-list li { margin: 8px 0 } .linkish { background: none; border: 0; color: #8ab4f8; padding: 0; cursor: pointer; text-align: left }
+
+/* Stage 4G: the asset explorer and the transactional install view */
+.explore, .installview { overflow: auto; padding: 4px 14px 40px }
+.tbl { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 12px }
+.tbl th { text-align: left; color: var(--dim); font-weight: normal; border-bottom: 1px solid var(--line) }
+.tbl td { padding: 3px 6px; border-bottom: 1px solid #22242a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.tbl tr.sel td { background: #353a4a } .tbl tr:hover td { background: #2d2f35 } .tbl tr { cursor: pointer }
+.badge.st.ok { background: #1e3324; color: #7ed098 } .badge.st.bad { background: #3a1e1e; color: #e08888 } .badge.st.warn { background: #3a331e; color: #d9c584 } .badge.st.dim { background: #2b2d33; color: var(--dim) }
+td.ok { color: #7ed098 } td.bad { color: #e08888 } td.warn { color: #d9c584 } td.dim { color: var(--dim) }
+.explore .adapter summary { cursor: pointer; margin-top: 4px } .explore .edge { margin: 2px 0 }
+.confirm { display: block; margin: 3px 0 } .recovery { border-left: 3px solid #6b2a2a; padding: 6px 8px; margin: 6px 0 }
+.tx { margin: 4px 0 } .tx.unresolved { border-left: 3px solid #6b2a2a; padding-left: 6px }
+.linkish { border: 0; background: none; color: var(--fg); cursor: pointer; padding: 0 } .linkish:hover { text-decoration: underline }
+
+/* The in-app game-update recovery card */
+.pkg.reread { border-left: 3px solid #6b2a2a; margin-top: 6px }
+.pkg.reread .ok { color: #7ed098 }
+
+/* Stage 5C: the Playground canvas */
+.pg { display: grid; grid-template-columns: 240px 1fr 300px 220px; height: 100%; min-height: 0 }
+.pg-tree { border-right: 1px solid #26282d; overflow: auto }
+.pg-tree .head, .pg-inspector .head { padding: 8px 10px; color: var(--dim) }
+.pgrow { display: flex; align-items: center; gap: 4px; padding: 2px 6px; cursor: pointer; white-space: nowrap; overflow: hidden }
+.pgrow:hover { background: #2d2f35 } .pgrow.sel { background: #353a4a; box-shadow: inset 3px 0 var(--acc) }
+.pgtw { width: 14px; flex: none; border: 0; background: none; color: var(--dim); cursor: pointer; padding: 0 }
+.pg-main { overflow: hidden; display: flex; flex-direction: column; min-width: 0 }
+.pg-canvas { flex: 1; overflow: auto; position: relative; cursor: grab; min-height: 0 }
+.pg-canvas:active { cursor: grabbing }
+.pg-inspector { border-left: 1px solid #26282d; overflow: auto }
+.pg-node.pgh { outline: 1px dashed #d9c584 } .pg-node.pghl { outline: 1px dotted #61afef }
+.pg-node.pghidden { opacity: .25 !important; outline: 1px dashed #e08888 }
+.pg-selbox { pointer-events: none; outline: 2px solid var(--acc); z-index: 5 }
+.pg-browser { border-left: 1px solid #26282d; overflow: hidden }
+.diag { padding: 3px 6px; margin: 2px 0; font-size: 12px; cursor: pointer; border-left: 3px solid var(--line) }
+.diag.error { border-left-color: #6b2a2a; color: #e08888 } .diag.limitation { border-left-color: #6b5a2a; color: #d9c584 }
+.diag:hover { background: #2d2f35 }
+
+.pg-hoverbox { pointer-events: none; outline: 1px dashed #d9c584; z-index: 4 }
+
+/* UI1: breakpoint selector, custom-layout folder view and transaction panels */
+.breakpoint-selector { border-left: 3px solid var(--acc); padding: 4px 0 4px 8px; margin: 4px 0 }
+.breakpoint-selector .small { margin: 1px 0 }
+.customlayouts .head { padding: 8px 10px; color: var(--dim) }
+.customlayouts .cl-table { width: 100%; border-collapse: collapse; font-size: 12px }
+.customlayouts .cl-table th, .customlayouts .cl-table td { text-align: left; padding: 3px 5px; border-bottom: 1px solid #26282d; vertical-align: top; word-break: break-all }
+.customlayouts .cl-owner td { background: #2a2f24 }
+.customlayouts .cl-studio td { background: #24303a }
+.customlayouts .cl-op { padding: 3px 5px; border-left: 3px solid var(--line); margin: 2px 0 }
+.customlayouts .cl-op.cl-user { border-left-color: #d9c584; background: #2f2a22 }
+.customlayouts .cl-op.cl-ours { border-left-color: #61afef }
+.customlayouts [data-testid="cl-recovery"] { border-left: 3px solid #6b2a2a; background: #2a2222; margin-bottom: 8px }
+
+/* UI1b: Game Layouts sidebar, layout tabs and the icon+label activity bar. The sidebar is one vertical
+   column (no horizontal scrolling); the Playground's old four-pane grid is no longer mounted inside it. */
+.activity.labelled { align-items: stretch; padding: 8px 6px; gap: 4px }
+.activity.labelled button { width: auto; height: 34px; padding: 0 8px; display: flex; align-items: center; gap: 8px; text-align: left; border-radius: 4px }
+.activity.labelled button.on { background: #24262b; box-shadow: inset 3px 0 var(--acc) }
+.activity.labelled .act-ico { width: 16px; flex: none; text-align: center; color: var(--dim) }
+.activity.labelled .act-lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 500 }
+.activity button[aria-label="Toggle activity bar labels"] { font-size: 15px }
+.explorer.layout { overflow-x: hidden }
+.tab.layout { color: var(--acc) }
+.tab.layout.on { color: var(--fg) }
+
+.glist { min-width: 0; width: 100%; display: flex; flex-direction: column }
+.glist .head { display: flex; justify-content: space-between; padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em }
+.glist .search { flex: none }
+.gl-rows { list-style: none; margin: 0; padding: 0 0 6px; min-width: 0; max-height: 45vh; overflow: auto }
+.gl-rows li { padding: 6px 10px; cursor: pointer; min-width: 0; border-left: 3px solid transparent }
+.gl-rows li:hover { background: #2d2f35 }
+.gl-rows li.sel { background: #353a4a; border-left-color: var(--acc) }
+.gl-profile-row { padding: 0 10px 6px }
+.gl-profile-select { width: 100%; max-width: 240px; font-size: 11px; background: #17181b; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px }
+.gl-favs { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #1d1f25; margin-bottom: 4px }
+.gl-favs-head { display: flex; justify-content: space-between; padding: 5px 10px 2px; color: var(--dim); font-size: 10px; letter-spacing: .06em }
+.gl-fav-rows { max-height: 22vh }
+.gl-row-top { display: flex; align-items: flex-start; gap: 5px; min-width: 0 }
+.gl-star { border: 0; background: none; color: var(--dim); padding: 0 2px; cursor: pointer; font-size: 12px; line-height: 1.2; flex: none }
+.gl-star.on, .gl-star:hover { color: #f2c94c }
+.gl-name { display: block; font-size: 12px; line-height: 1.3; overflow-wrap: anywhere; word-break: break-word }
+.gl-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 2px }
+.gl-bp, .gl-custom, .gl-conf { font-size: 10px; padding: 0 5px; border-radius: 8px; background: #34384a; color: var(--fg) }
+.gl-custom { background: #3a4a35; color: #c7e6b6 }
+.gl-conf[data-confidence="measured"] { background: #224432; color: #9ae6b4 }
+.gl-conf[data-confidence="measured mismatch"] { background: #5a2d2d; color: #feb2b2 }
+.gl-conf[data-confidence="computed"] { background: #2c3f59; color: #bee3f8 }
+.gl-conf[data-confidence="unverified"] { background: #34384a; color: var(--dim) }
+.gl-section { display: block; width: 100%; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: #232429; color: var(--dim); text-align: left; padding: 6px 10px; font-size: 11px; letter-spacing: .05em }
+.gl-section-body { padding: 4px 0 8px; min-width: 0; max-height: 30vh; overflow: auto }
+.gl-tile { display: flex; justify-content: space-between; gap: 6px; width: 100%; border: 0; border-radius: 0; background: none; padding: 3px 10px; text-align: left; font-size: 12px }
+.gl-tile:hover { background: #2d2f35 }
+.gl-tile.on { background: #353a4a; box-shadow: inset 3px 0 var(--acc) }
+.gl-tile .small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+
+.layouttab { display: flex; flex-direction: column; height: 100%; min-width: 0; min-height: 0 }
+.layouttab-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 6px 10px; border-bottom: 1px solid var(--line) }
+.layout-confidence { font-size: 12px; color: var(--dim) }
+.layout-confidence b { color: var(--ok) }
+.layouttab-body { display: grid; grid-template-columns: 1fr 250px; flex: 1; min-height: 0 }
+.layouttab-main { display: flex; flex-direction: column; min-width: 0; min-height: 0 }
+.breakpoint-selector { margin: 6px 10px 2px }
+.layout-canvas { position: relative; flex: 1; min-height: 0; overflow: auto; margin: 0 10px; background: #151821; border: 1px solid var(--line); background-image: linear-gradient(#1d2130 1px, transparent 1px), linear-gradient(90deg, #1d2130 1px, transparent 1px); background-size: 82px 82px }
+.layout-tile { position: absolute; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 4px 6px; overflow: hidden; text-align: left; background: rgba(48,62,100,.65); border: 1px solid #4a5b82; border-radius: 4px }
+.layout-tile:hover { border-color: var(--fg) }
+.layout-tile.on { border-color: var(--acc); box-shadow: 0 0 0 2px rgba(118,148,254,.35) }
+.layout-tile .small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.layout-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 10px; border-top: 1px solid var(--line) }
+.layout-inspector { border-left: 1px solid var(--line); overflow: auto; padding-bottom: 10px }
+.layout-inspector .head { padding: 8px 10px; color: var(--dim) }
+.layout-inspector > .small, .layout-inspector > label { display: block; margin: 4px 10px }
+.layout-inspector input { width: 90px; background: #17181b; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px }
+.layout-history { margin: 10px; padding-top: 6px; border-top: 1px solid var(--line) }
+.layout-history .small { margin: 2px 0; overflow-wrap: anywhere }
+
+/* UI1b follow-up: the expert activity bar keeps the daily tools, the rest live under More. */
+.activity { position: relative }
+.act-more { position: absolute; left: 42px; bottom: 60px; z-index: 40; min-width: 210px; max-height: 60vh; overflow-y: auto;
+  background: #202228; border: 1px solid #3a3d45; border-radius: 6px; padding: 6px; box-shadow: 0 8px 24px #0008;
+  display: flex; flex-direction: column; gap: 2px; align-items: stretch }
+.act-more button { width: auto; height: 30px; padding: 0 8px; text-align: left; font-weight: 500; border-radius: 4px }
+.act-more button.on { background: #2c2f36 }
+.activity.labelled .act-more { left: 188px }
+
+/* App update popup: centred over the whole Studio, dismissible for this launch. */
+.modal-shade { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
+  background: #000a; backdrop-filter: blur(2px) }
+.modal-shade .modal { min-width: 440px; max-width: 620px; background: #24262c; color: var(--fg);
+  border: 1px solid #444853; border-radius: 8px; padding: 20px 22px; box-shadow: 0 18px 50px #000c }
+.modal-shade .modal h2 { margin: 0 0 10px; font-size: 17px }
+.modal-shade .modal p { margin: 6px 0 12px; line-height: 1.45 }
+.modal-shade .modal .row { display: flex; gap: 10px; align-items: center; margin-top: 16px }
+
+/* Game Layouts tab: drag-to-move / drag-to-resize tiles, with a scrollable canvas. */
+.layout-canvas-wrap { overflow: auto; flex: 1; min-height: 0; min-width: 0; background: #14161a; border: 1px solid var(--line); position: relative }
+.layout-canvas-wrap .layout-canvas { position: relative; flex: none; overflow: visible }
+.layout-tile { position: absolute; cursor: grab; user-select: none; touch-action: none; overflow: hidden }
+.layout-tile.compact { flex-direction: row; align-items: center; justify-content: space-between; padding: 1px 14px 1px 5px; gap: 4px }
+.layout-tile .tile-name { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.2 }
+.layout-tile.compact .tile-name { flex: 1; font-size: 11px }
+.layout-tile.compact small { flex-shrink: 0; font-size: 10px }
+.layout-tile.on { outline: 2px solid var(--acc) }
+.layout-tile .resize-handle { position: absolute; right: -1px; bottom: -1px; width: 12px; height: 12px; cursor: nwse-resize;
+  background: var(--acc); border: 1px solid #fff6; border-radius: 2px; touch-action: none }
+.layout-tile.bundle-ghost { background: rgba(118,148,254,.08); border: 1px dashed var(--acc); pointer-events: none; cursor: default; opacity: .75; z-index: 0 }
+.layout-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; margin: 8px 0 }
+.layout-fields label { display: flex; align-items: center; justify-content: space-between; gap: 4px }
+.layout-fields input { width: 54px }
+
+/* UI4/UI5/UI6: design/slot edit pane + live runtime pane + non-overlapping breakpoint bar. */
+.layout-pane-tabs { display: flex; align-items: center; gap: 10px; padding: 4px 8px; border-bottom: 1px solid var(--line); flex-shrink: 0 }
+.layout-pane-tabs button { border: 0; background: none; color: var(--dim); padding: 3px 8px; font-size: 11px; letter-spacing: .05em }
+.layout-pane-tabs button.on { color: var(--fg); box-shadow: inset 0 -2px var(--acc) }
+.layout-bp-bar { flex-shrink: 0; padding: 4px 10px; border-bottom: 1px solid var(--line); background: #191b20 }
+.layout-bp-bar .breakpoint-selector { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0; padding: 2px 0 2px 8px }
+.layout-design { display: flex; flex-direction: column; gap: 10px; padding: 8px 6px 20px; width: max-content; min-width: 100% }
+.layout-zone { border-top: 1px dashed var(--line); padding-top: 6px; flex-shrink: 0 }
+.layout-zone-label { color: var(--dim); font-size: 11px; letter-spacing: .05em; margin: 2px 10px 4px }
+.layout-tile.moved { outline: 2px dashed var(--warn) }
+.layout-tile.runtime { cursor: default; opacity: .95 }
+.layout-tile .moved-why { display: block; color: var(--warn) }
+.layout-inspector .stale { opacity: .45; font-style: italic }
+
+/* SKIN-RR2: Read-only third-party skin inspector (screen-grouped, variants, tooltips, Source note) */
+.skininspect { display: flex; flex-direction: column; height: 100%; min-height: 0; min-width: 0 }
+.skininspect-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 12px; border-bottom: 1px solid var(--line); flex-shrink: 0 }
+.skininspect-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 6px 12px; border-bottom: 1px solid var(--line); background: #191b20; flex-shrink: 0 }
+.skininspect-cats { display: flex; gap: 4px; flex-wrap: wrap }
+.skininspect-cats button { border: 1px solid var(--line); background: none; color: var(--dim); padding: 2px 8px; font-size: 11px }
+.skininspect-cats button.on { color: var(--fg); border-color: var(--acc); background: #262b38 }
+.skininspect-body { display: grid; grid-template-columns: 310px 1fr; flex: 1; min-height: 0; overflow: hidden }
+.skininspect-screens { border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; overflow: hidden }
+.skininspect-screens .head, .skininspect-detail .head { padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em; word-break: break-word }
+.skininspect-screens ul { list-style: none; margin: 0; padding: 0; overflow: auto; flex: 1 }
+.skininspect-screens li { display: flex; flex-direction: column; gap: 3px; padding: 6px 10px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #202229 }
+.skininspect-screens li:hover { background: #2d2f35 }
+.skininspect-screens li.sel { background: #353a4a }
+.skininspect-screens li.untied { border-top: 2px solid var(--line); background: #1a1b21 }
+.skininspect-screens li.untied.sel { background: #353a4a }
+.skininspect-screen-row-main { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px }
+.skininspect-screen-name { word-break: break-word; overflow-wrap: anywhere; line-height: 1.3 }
+.skininspect-variants { display: flex; flex-wrap: wrap; gap: 4px }
+.skininspect-var-pill { font-size: 10px; padding: 1px 5px; border: 1px solid var(--line); border-radius: 3px; color: var(--dim); background: #1a1d24; white-space: nowrap }
+.skininspect-var-bar { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 0 8px }
+.skininspect-var-bar button { border: 1px solid var(--line); background: none; color: var(--dim); padding: 2px 7px; font-size: 11px }
+.skininspect-var-bar button.on { color: var(--fg); border-color: var(--acc); background: #262b38 }
+.skininspect-detail { overflow: auto; padding: 0 12px 16px; min-height: 0 }
+.skininspect-group { margin: 8px 0 12px; padding-top: 6px; border-top: 1px solid var(--line) }
+.skininspect-item { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 4px 0; border-bottom: 1px solid #1e2027 }
+.skininspect-item .mono { word-break: break-word; overflow-wrap: anywhere }
+.skininspect-source { font-size: 11px; color: #9eb3d6; background: #1b2230; border: 1px solid #2d3b55; border-radius: 3px; padding: 1px 6px }
+.skininspect-preview { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 8px }
+.skininspect-canvas-wrap { overflow: auto; max-height: 580px; background: #14161a; border: 1px solid var(--line); padding: 6px }
+
+/* SKIN-RR2 Part C: Injected styles (AlwaysAppliedStyleSheet) */
+.injectedstyles { display: flex; flex-direction: column; height: 100%; min-height: 0; min-width: 0 }
+.injectedstyles-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 12px; border-bottom: 1px solid var(--line); flex-shrink: 0 }
+.injectedstyles-export { display: flex; gap: 6px; padding-left: 8px; border-left: 1px solid var(--line) }
+.injectedstyles-body { display: grid; grid-template-columns: 270px 1fr 380px; flex: 1; min-height: 0; overflow: hidden }
+.injectedstyles-side { border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; overflow: auto }
+.injectedstyles-side .head, .injectedstyles-editor-col .head, .injectedstyles-preview-col .head { padding: 8px 10px; color: var(--dim); font-size: 11px; letter-spacing: .06em }
+.injectedstyles-side ul { list-style: none; margin: 0; padding: 0; max-height: 45%; overflow: auto }
+.injectedstyles-side li { display: flex; flex-direction: column; gap: 3px; padding: 5px 10px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #202229 }
+.injectedstyles-side li:hover { background: #2d2f35 }
+.injectedstyles-side li.sel { background: #353a4a }
+.injectedstyles-row-main { display: flex; justify-content: space-between; align-items: center; gap: 6px; word-break: break-word }
+.injectedstyles-editor-col { display: flex; flex-direction: column; min-height: 0; padding: 0 12px 12px; overflow: auto; border-right: 1px solid var(--line) }
+.injectedstyles-textarea { width: 100%; min-height: 260px; flex: 1; background: #14161a; color: var(--fg); border: 1px solid var(--line); padding: 10px; font-size: 13px; line-height: 1.45; resize: vertical }
+.injectedstyles-diags { max-height: 150px; overflow: auto; border: 1px solid var(--line); background: #181a20; padding: 6px 8px }
+.injectedstyles-diag-row { padding: 3px 0; border-bottom: 1px solid #22252d }
+.injectedstyles-preview-col { display: flex; flex-direction: column; min-height: 0; padding: 0 12px 12px; overflow: auto }
+.injectedstyles-reach { border: 1px solid var(--line); background: #181a20; padding: 8px; max-height: 240px; overflow: auto; margin-bottom: 10px }
+.injectedstyles-reach-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 3px 0; border-bottom: 1px solid #22252d }
+.injectedstyles-cascade-bar { display: flex; gap: 6px; margin-bottom: 8px }
+.injectedstyles-cascade-bar .search { margin: 0; flex: 1 }
+.injectedstyles-cascade { border: 1px solid var(--line); background: #181a20; padding: 8px; flex: 1; overflow: auto }
+.injectedstyles-origin { padding: 3px 0; border-bottom: 1px solid #22252d }
+.injectedstyles-matches { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line) }
+.injectedstyles-import { border: 1px solid var(--line); background: #191b22; padding: 8px; margin-top: 8px }
+.injectedstyles-import-bar { display: flex; gap: 6px; margin-top: 6px }
+.injectedstyles-import-bar .search { margin: 0; flex: 1 }
+.injectedstyles-import-lists { margin-top: 8px }
+.injectedstyles-import-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px }
+.injectedstyles-import-scroll { max-height: 160px; overflow: auto; border: 1px solid var(--line); padding: 4px 6px; background: #14161a }
+.injectedstyles-imp-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 2px 0; border-bottom: 1px solid #1e2027 }

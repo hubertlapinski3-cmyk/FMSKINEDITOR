@@ -259,6 +259,8 @@ def write(ws, p, images_from=None):
     cfg = {"options": opts}
     for k in ("literal_swaps", "rename_classes", "contrast_pairs", "reverts", "tile_placement"):
         cfg[k] = p.get(k, {} if k == "rename_classes" else [])
+    if "tile_bundle_ops" in p:
+        cfg["tile_bundle_ops"] = p["tile_bundle_ops"]
     _put(d / "config" / "options.json", json.dumps(cfg, indent=2) + "\n")
     return d
 
@@ -332,7 +334,7 @@ def read(ws, name, strict=True):
     if head.get("native_name"):
         p["native_name"] = head["native_name"]
     p["options"] = dict(cfg.get("options", p["options"]), output=head.get("target", "bundles"))
-    for k in ("literal_swaps", "rename_classes", "contrast_pairs", "reverts", "tile_placement"):
+    for k in ("literal_swaps", "rename_classes", "contrast_pairs", "reverts", "tile_placement", "tile_bundle_ops"):
         if k in cfg:
             p[k] = cfg[k]
     seen_sources = set()

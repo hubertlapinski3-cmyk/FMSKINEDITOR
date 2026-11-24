@@ -4,6 +4,7 @@ import json
 import os
 import tempfile
 import unittest
+from tests import gamebuild
 from pathlib import Path
 from unittest import mock
 
@@ -14,7 +15,7 @@ from skin_editor.render.sheets import ROOT_SHEETS
 
 from test_api import close_logs, engine
 
-AA = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+AA = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 
 
 class FakeBank:
@@ -153,7 +154,8 @@ class Moves(unittest.TestCase):
         base = self.a.place("C", 20, 8)
         moved = self.a.place("C", 20, 8, moves=[move])
         self.assertEqual((base["t2"]["col"], base["t2"]["row"]), (16, 4))
-        self.assertEqual((moved["t2"]["col"], moved["t2"]["row"]), (16, 6))
+        # the runtime packs a column: a move to row 6 lands at row 4, directly after t1 (Tests C+D rule)
+        self.assertEqual((moved["t2"]["col"], moved["t2"]["row"]), (16, 4))
         self.assertIn("moved by the project", moved["t2"]["mode"])
         self.assertEqual(moved["t1"], base["t1"])                                # the other cells do not change
 
@@ -167,6 +169,7 @@ class Moves(unittest.TestCase):
         self.assertEqual(self.a.place("C", 20, 8, moves=[move]), self.a.place("C", 20, 8))
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir(), "needs the game install")
 class RealTables(unittest.TestCase):
     def test_a_column_edit_changes_the_placeholder_header_row_and_vanilla_keeps_it(self):
@@ -307,6 +310,7 @@ class Api(unittest.TestCase):
         self.assertEqual([e["reason"] for e in self.events()], ["file"])
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir(), "needs the game install")
 class Real(unittest.TestCase):
     def test_a_token_edit_repaints_the_loans_tile_and_the_vanilla_render_is_unchanged(self):
@@ -336,6 +340,7 @@ class Real(unittest.TestCase):
         self.assertEqual(button(R.layout(r["bundle"], r["path_id"], project=p))["computed"]["background-color"]["value"], "#FF0000")
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir(), "needs the game install")
 class RealPatches(unittest.TestCase):
     def test_a_class_patch_and_an_inline_patch_are_visible_from_their_own_edit(self):

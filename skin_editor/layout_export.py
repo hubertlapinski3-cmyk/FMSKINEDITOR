@@ -186,4 +186,5 @@ def build_dump(sqlite_path, aa_dir, game_build, areas_json=None, now=None):
     fp = hashlib.sha256(json.dumps({k: [len(v), hashlib.sha256(json.dumps(v, sort_keys=True).encode()).hexdigest()] for k, v in sections.items()}, sort_keys=True).encode()).hexdigest()
     meta = {"schema": "fmlayout-index/2", "game_build": game_build, "index_fingerprint": fp, "exported_at": now or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "source": {"platform_folder": aa.name, "catalog_hash": cat.read_text(encoding="utf-8", errors="replace").strip() if cat else "", "bundles": read_bundles}}
+    db.close()
     return dict({"meta": meta, "areas": {"map": amap, "anchors": anchors}}, **sections)

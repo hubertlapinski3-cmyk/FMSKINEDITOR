@@ -1,5 +1,6 @@
 """Phase 6: UXML layouts (read, per-layout patches, gate) and native fonts. Synthetic layouts for the logic; the real game's layout bundles
 (skipped without them) for the UnityPy round trip, apply and gate."""
+from tests import gamebuild
 import copy, json, tempfile, unittest
 from pathlib import Path
 
@@ -7,9 +8,9 @@ from skin_editor import bundles, config, plan, project, projfmt, uxml
 from skin_editor import token_patch as tp
 from tests.test_preview import index
 
-GAME = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+GAME = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 BUNDLE = "ui-visualtreeassets_assets_fantasydraftvisualtreeassetpreload.bundle"
-needs_game = unittest.skipUnless((GAME / BUNDLE).is_file(), "needs the game's layout bundles")
+needs_game = lambda o: gamebuild.requires_build(unittest.skipUnless((GAME / BUNDLE).is_file(), "needs the game's layout bundles")(o))
 
 
 def ref(rid, cls, data):

@@ -1,6 +1,7 @@
 """Phase 9 M1: the property map is complete, inferred names are flagged, the cascade matches measured vanilla values (docs/PHASE9-PLAN.md section 1 and 9)."""
 import json
 import unittest
+from tests import gamebuild
 from pathlib import Path
 
 from skin_editor.render import values
@@ -9,7 +10,7 @@ from skin_editor.render.sheets import Sheet
 
 ROOT = Path(__file__).resolve().parent.parent
 CENSUS = ROOT / "data" / "render" / "uss-property-census.json"
-AA = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+AA = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 
 # The only names the map does not classify: rare (at most four uses in 7,545 sheets), mostly CSS-style names that are not USS properties, one id left unnamed.
 # A new name appearing in the census fails the test below instead of passing silently.
@@ -77,6 +78,7 @@ class CascadeMore(unittest.TestCase):
         self.assertEqual((d["value"], d["status"], d["inferred_name_from"]), ("8px", "mapped", "-unity-id-458759"))
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir(), "needs the game install")
 class MeasuredVanilla(unittest.TestCase):
     def test_cascade_reproduces_the_inspector_values(self):

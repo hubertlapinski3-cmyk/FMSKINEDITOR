@@ -3,12 +3,13 @@ that is not in baseline.json (the published list of known failures, each with it
 import json
 import tempfile
 import unittest
+from tests import gamebuild
 from pathlib import Path
 
 from skin_editor.render import delivered, fixtures
 from skin_editor.render.measure import edge_path
 
-AA = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+AA = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 BASELINE = fixtures.FIXTURES / "baseline-failures.json"
 
 
@@ -65,6 +66,7 @@ class Framework(unittest.TestCase):
         self.assertEqual(delivered.key_of(["a", g + "|" + g, "t:SIText"], 2), ("t:TemplateContainer", "t:SIText"))
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir() and edge_path(), "needs the game install and Microsoft Edge")
 class Calibration(unittest.TestCase):
     def test_every_fixture_runs_and_no_new_failure_appears(self):

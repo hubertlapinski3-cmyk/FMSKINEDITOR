@@ -8,6 +8,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from ..asset_hash import sha256_file
 
 HEX = re.compile(r"^[0-9a-f]{32}$")
 
@@ -27,7 +28,7 @@ class GuidIndex:
         return sorted(self.folder.glob("ui-visualtreeassets*.bundle"))
 
     def _key(self):
-        return hashlib.sha256(repr([(f.name, f.stat().st_size, f.stat().st_mtime_ns) for f in self._files()]).encode()).hexdigest()[:16]
+        return hashlib.sha256(repr([(f.name, sha256_file(f)) for f in self._files()]).encode()).hexdigest()[:24]
 
     def load(self):
         """{guid: [[bundle file name, path id as text], ...]}; built once per set of bundle files, then read from the disk cache."""

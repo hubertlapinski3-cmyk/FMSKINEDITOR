@@ -170,6 +170,41 @@ class Cascade:
                         out[lh] = {"value": text, "source": {"sheet": e.sheet.name, "rule": e.rule["i"], "selector": e.text, "specificity": e.spec}, "unresolved": unresolved or None}
         return out
 
+    def matches_with_states(self, path):
+        """Atlas (docs/ATLAS-CONTRACT.md): the entries whose selector matches the last node of `path` when each node's `_states` (a set of pseudo-class names, e.g. {"hover"})
+        is active: the resting matches (`matches`) plus the state-selector entries that match under those states, deduplicated per rule (best specificity), in cascade order.
+        Additive: `matches`, `state_declarations` and `compute` are unchanged. Returns (entries, resting_idents), resting_idents being the set of (sheet pos, rule index)
+        that also match at rest."""
+        def ok(node, parts):
+            for t, v in parts:
+                if t == P_ID and node.get("name") != v:
+                    return False
+                if t == P_CLASS and v not in node["_classes"]:
+                    return False
+                if t == P_ELEMENT and node.get("type") != v:
+                    return False
+                if t == P_PSEUDO and v not in node.get("_states", ()):
+                    return False
+            return True
+
+        def match(chain, k, i):
+            if not ok(path[i], chain[k][1]):
+                return False
+            if k == 0:
+                return True
+            if chain[k][0] == 1:
+                return i > 0 and match(chain, k - 1, i - 1)
+            return any(match(chain, k - 1, j) for j in range(i - 1, -1, -1))
+        resting = self.matches(path)
+        best = {(e.pos, e.rule["i"]): e for e in resting}
+        for e in self.state_entries:
+            for chain, spec, text in e.rule["chains"]:
+                if match(chain, len(chain) - 1, len(path) - 1):
+                    ident = (e.pos, e.rule["i"])
+                    if ident not in best or spec > best[ident].spec:
+                        best[ident] = Entry(spec, e.pos, e.rule, chain, text, e.sheet)
+        return sorted(best.values(), key=lambda e: (e.spec, e.pos, e.rule["i"])), {(e.pos, e.rule["i"]) for e in resting}
+
     # ---- compute
     def compute(self, top_nodes):
         """Annotate a list of top-level render nodes in place: `_classes`, `matched`, `computed`, `unmapped`. Non-visual nodes are removed from the tree and

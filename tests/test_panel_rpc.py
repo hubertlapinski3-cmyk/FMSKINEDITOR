@@ -3,6 +3,7 @@ tokens.get), each exercised THROUGH RPC against the real game data, each firing 
 import json
 import tempfile
 import unittest
+from tests import gamebuild
 from pathlib import Path
 from unittest import mock
 
@@ -11,9 +12,10 @@ from skin_editor.api import rpc
 
 from test_api import close_logs, engine
 
-AA = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+AA = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir(), "needs the game install")
 class PanelEndpoints(unittest.TestCase):
     def setUp(self):

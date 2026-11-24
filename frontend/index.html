@@ -778,7 +778,7 @@ function imSide() { const side = $("imside"); if (!side) return; const r = IM.se
     ${cur ? `<h3>Replacement</h3><img class="imbig" src="${srcUrl(cur)}"><div class="row"><button id="imdel">Remove swap</button></div>` : ""}
     ${cur && r.kind === "texture" && IM.places ? `<h3>Native skin: show it on</h3><div id="imwhere">${Object.entries(IM.places).map(([k, label]) =>
       `<label style="display:block"><input type="checkbox" value="${k}" ${(cur.where || imDefaultWhere(r.name)).includes(k) ? "checked" : ""}> ${esc(label)}</label>`).join("")}</div>
-      <p class="dim">The game picks wallpapers in code, so a native skin hides or covers its picture on these places and paints yours (as the Jonukas skin does). The bundle route replaces the texture itself instead.</p>` : ""}
+      <p class="dim">The game picks wallpapers in code, so a native skin hides or covers its picture on these places and paints yours (as the custom native skins does). The bundle route replaces the texture itself instead.</p>` : ""}
     <h3>${cur ? "Replace with another file" : "Swap"}</h3>
     <div class="row"><input type="file" id="imf" accept="${r.kind === "svg" ? ".svg,image/svg+xml" : r.kind === "icon" ? "image/png,image/jpeg,image/webp,.svg,image/svg+xml" : "image/png,image/jpeg,image/webp"}">
       ${r.kind === "texture" ? `<select id="imfit"><option value="cover">cover (fill, crop)</option><option value="contain">contain (fit, transparent bars)</option><option value="stretch">stretch</option></select>` : ""}

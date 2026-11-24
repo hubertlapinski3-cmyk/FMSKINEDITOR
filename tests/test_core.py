@@ -376,38 +376,6 @@ class Rgba(unittest.TestCase):
         self.assertGreater(opaque["rows"][0]["ratio"], t["ratio"])                      # treating .t as opaque would overstate it
 
 
-class Diagnostic(unittest.TestCase):
-    def test_analyse(self):
-        import importlib.util
-        spec = importlib.util.spec_from_file_location("diag_colours", config.resource_root() / "tools" / "diag_colours.py")
-        d = importlib.util.module_from_spec(spec); spec.loader.exec_module(d)
-        t = sheet()
-        t["colors"] += [{"r": 175 / 255, "g": 120 / 255, "b": 1.0, "a": 100.0}, {"r": 4 / 255, "g": 160 / 255, "b": 140 / 255, "a": 124.0}]
-        t["m_Rules"][0]["m_Properties"].append(P("--colours-brand-foundation-horizon-base", [H(4, 3)]))
-        t["m_Rules"].append({"m_Properties": [P("-unity-background-image-tint-color", [H(4, 4)]), P("color", [H(4, 9)])], "line": 1,
-                             "m_ComplexSelectors": [C(11, [([(3, "continue-button---carabao-cup")], 0)], 2)]})
-        raw = b"xx" + struct.pack("<4f", 4 / 255, 160 / 255, 140 / 255, 124.0)
-        r = d.analyse([{"bundle": "b", "name": "AlwaysAppliedStyleSheet", "path_id": 1, "tree": t, "raw": raw}])
-        self.assertEqual(r["entries"], {"total": 5, "any_out_of_range": 2, "alpha_only_out": 2, "rgb_out": 0,
-                                        "out_and_referenced": 2, "out_and_unreferenced": 0})
-        a = r["histogram"]["a"]
-        self.assertEqual((a["le1"], a["1_100"], a["100_255"], a["max"], a["gt1_integer"], a["gt1_noninteger"]), (3, 1, 1, 124.0, 2, 0))
-        self.assertEqual(r["histogram"]["r"]["le1"], 5)
-        f = {x["property"]: x for x in r["failures"]}
-        self.assertEqual(len(r["failures"]), 3)
-        tint = f["-unity-background-image-tint-color"]
-        self.assertEqual((tint["rule"], tint["selector"], tint["handles"], tint["raw"][3], tint["raw_bytes_found_in_object"], tint["raw_bytes_first_offset"]),
-                         (2, ".continue-button---carabao-cup", [[4, 4]], 124.0, 1, 2))
-        self.assertEqual((f["color"]["index"], f["color"]["raw"]), (9, None))            # handle outside the pool
-        self.assertEqual(r["handles_by_value_type"]["4"]["index_out_of_pool"], 1)
-        self.assertEqual(r["tint_property_handle_shapes"], [("4", 1)])
-        self.assertEqual((r["af78ff_entries"][0]["raw"][3], r["af78ff_entries"][0]["reference_count"]), (100.0, 1))
-        self.assertEqual(r["known_colour_tokens"][0]["rgb_matches"], True)
-        self.assertEqual(len(r["carabao_rules"]), 2); self.assertEqual(r["continue_button_tint_siblings"][0]["raw"][3], 124.0)
-        text = d.render(r, [], [])
-        self.assertIn("124.0", text); self.assertIn("carabao", text)
-
-
 class FakeBundles:
     """Bundles as JSON lists of sheets, to exercise build and install without Unity files."""
     @staticmethod

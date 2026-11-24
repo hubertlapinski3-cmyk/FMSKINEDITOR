@@ -1,15 +1,16 @@
 """Phase 7: tile position writes (tiles.py), table view edits (tables.py), the real layout index -> dump exporter. Pure logic on synthetic data;
 the real game's bundles and the FM27_LayoutMCP index (skipped without them) for the UnityPy round trips, the gates and the exporter."""
+from tests import gamebuild
 import copy, json, tempfile, unittest
 from pathlib import Path
 from unittest import mock
 
 from skin_editor import bundles, layout_dump, layout_export, placement, plan, project, projfmt, tables, tiles, config
 
-GAME = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
-INDEX = Path(r"C:\Users\Admin\Downloads\FM27_LayoutMCP\index\layout-vanilla.sqlite")
-needs_game = unittest.skipUnless((GAME / tiles.TILE_BUNDLES[1]).is_file() and (GAME / tables.VIEWS_BUNDLE).is_file(), "needs the game's bundles")
-needs_index = unittest.skipUnless(INDEX.is_file() and (GAME / layout_export.PANEL_BUNDLE).is_file(), "needs the FM27_LayoutMCP index and the game")
+GAME = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
+INDEX = Path(r"__absent_fixture_path__")
+needs_game = lambda o: gamebuild.requires_build(unittest.skipUnless((GAME / tiles.TILE_BUNDLES[1]).is_file() and (GAME / tables.VIEWS_BUNDLE).is_file(), "needs the game's bundles")(o))
+needs_index = lambda o: gamebuild.requires_build(unittest.skipUnless(INDEX.is_file() and (GAME / layout_export.PANEL_BUNDLE).is_file(), "needs the FM27_LayoutMCP index and the game")(o))
 TB = tiles.TILE_BUNDLES[1]
 
 
@@ -202,9 +203,12 @@ class RealTiles(unittest.TestCase):
         import sqlite3
         if not INDEX.is_file(): self.skipTest("needs the index")
         db = sqlite3.connect("file:%s?mode=ro" % INDEX.as_posix(), uri=True)
-        self.assertEqual(db.execute("select count(*) from (select distinct composition_path_id, cell_index from cell_configs)").fetchone()[0], 5162)
-        self.assertEqual(db.execute("select count(*) from (select c.composition_path_id, c.cell_index from composition_cells c join cell_configs f on f.composition_path_id=c.composition_path_id and f.cell_index=c.cell_index "
-                                    "group by c.composition_path_id, c.cell_index having sum(f.size_w=c.w and f.size_h=c.h) > 0)").fetchone()[0], 4724)
+        try:
+            self.assertEqual(db.execute("select count(*) from (select distinct composition_path_id, cell_index from cell_configs)").fetchone()[0], 5162)
+            self.assertEqual(db.execute("select count(*) from (select c.composition_path_id, c.cell_index from composition_cells c join cell_configs f on f.composition_path_id=c.composition_path_id and f.cell_index=c.cell_index "
+                                        "group by c.composition_path_id, c.cell_index having sum(f.size_w=c.w and f.size_h=c.h) > 0)").fetchone()[0], 4724)
+        finally:
+            db.close()
 
 
 @needs_game
@@ -240,7 +244,10 @@ class RealTables(unittest.TestCase):
 class RealIndex(unittest.TestCase):
     def test_crosscheck_dump_validates_and_screens_resolve(self):
         db = layout_export.connect(INDEX)
-        cc = layout_export.crosscheck(db, GAME)
+        try:
+            cc = layout_export.crosscheck(db, GAME)
+        finally:
+            db.close()
         self.assertEqual((cc["compositions"], cc["cells"], cc["mismatches"]), (1823, 5410, []))      # every cell of the index equals the bundle it was read from
         d = layout_export.build_dump(INDEX, GAME, "27.0.1.2503222", Path(INDEX).parents[1] / "config" / "areas.json")
         self.assertEqual(layout_dump.validate(d), ([], 0))

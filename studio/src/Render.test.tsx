@@ -21,9 +21,13 @@ const result = { layout: 'LoansTile_4x2', notice: 'Approximation, not the game\'
 const rows: LayoutRow[] = [{ name: 'LoansTile_2x1', bundle: 'b.bundle', path_id: '1', elements: 9 }, { name: 'LoansTile_4x2', bundle: 'b.bundle', path_id: '2', elements: 19 }]
 
 beforeEach(() => {
+  // force an invariant locale inside these tests: the OS locale (pl-PL here) would change the exact group separators
+  vi.spyOn(Number.prototype, 'toLocaleString').mockImplementation(function (this: number) {
+    return Intl.NumberFormat('en-US').format(this)
+  })
   ;(rpc as any).mockImplementation(async (m: string) => (m === 'render.layouts' ? { total: 13, layouts: rows } : m === 'render.layout' ? result : null))
 })
-afterEach(() => { cleanup(); vi.clearAllMocks() })
+afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.clearAllMocks() })
 
 describe('first render progress (S1)', () => {      // first in the file on purpose: the "first render" flag is module state
   it('says in words that the first render reads the game styles, and goes back to the short text afterwards', async () => {

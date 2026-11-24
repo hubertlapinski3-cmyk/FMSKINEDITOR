@@ -9,6 +9,7 @@ refer to, so a patch addresses elements by id (plus a type/name guard) and never
 import json
 import re
 from pathlib import Path
+from .asset_hash import sha256_file
 
 from . import bundles, uss
 from . import token_patch as tp
@@ -124,9 +125,10 @@ class Layouts:
         out = []
         for b in self.bundles():
             f = self.folder / b
-            key = (b, f.stat().st_size, f.stat().st_mtime_ns)
+            digest = sha256_file(f)
+            key = (b, digest)
             if key not in self._cache:
-                disk = self.cache_dir / ("layouts-%s-%d-%d.json" % (b[:-len(".bundle")], key[1], key[2])) if self.cache_dir else None
+                disk = self.cache_dir / ("layouts-%s-%s.json" % (b[:-len(".bundle")], digest)) if self.cache_dir else None
                 if disk is not None and disk.is_file():
                     self._cache[key] = json.loads(disk.read_text(encoding="utf-8"))
                 else:

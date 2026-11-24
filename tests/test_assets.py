@@ -1,11 +1,12 @@
 """M4: asset(F:P) resolution (the sheet's bundle, never a global file id), the render-tree pass, font naming, sample-text labelling."""
 import unittest
+from tests import gamebuild
 from pathlib import Path
 
 from skin_editor.render import assets
 from skin_editor.render.html import placeholder_kind, placeholder_text, font_label, to_html, switch_branch_rule
 
-AA = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Football Manager 27\fm_Data\StreamingAssets\aa\StandaloneWindows64")
+AA = gamebuild.aa()                                         # the configured game folder (tests/gamebuild.py), not a typed path
 
 
 class Fake:
@@ -98,6 +99,7 @@ class Labels(unittest.TestCase):
         self.assertNotIn("layout_rules", b)
 
 
+@gamebuild.requires_build
 @unittest.skipUnless(AA.is_dir(), "needs the game install")
 class Real(unittest.TestCase):
     def test_the_two_worked_examples_resolve_with_their_own_source_bundles(self):

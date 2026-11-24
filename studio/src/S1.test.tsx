@@ -48,6 +48,7 @@ describe('first-run setup', () => {
     ;(rpc as any).mockImplementation(async (m: string) => {
       if (m === 'game.detect') return { ...withGame }
       if (m === 'snapshot.take') return { ...withGame, vanilla: { game_build: '27.0.1' } }
+      if (m === 'layout.scan') return { job: 'j0' }
       if (m === 'index.build') return { job: 'j1' }
       if (m === 'jobs.wait') return { state: 'done', error: null }
       throw new Error('unexpected ' + m)
@@ -55,7 +56,7 @@ describe('first-run setup', () => {
     render(<Setup state={base} refresh={refresh} say={() => {}} />)
     fireEvent.click(screen.getByText('Find my game and read it'))
     await waitFor(() => expect(refresh).toHaveBeenCalled())
-    expect((rpc as any).mock.calls.map((c: unknown[]) => c[0])).toEqual(['game.detect', 'snapshot.take', 'index.build', 'jobs.wait'])
+    expect((rpc as any).mock.calls.map((c: unknown[]) => c[0])).toEqual(['game.detect', 'snapshot.take', 'layout.scan', 'jobs.wait', 'index.build', 'jobs.wait'])
     expect(screen.getAllByText(/done in \d/).length).toBe(3)
   })
 
