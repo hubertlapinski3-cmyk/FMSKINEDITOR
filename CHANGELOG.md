@@ -2,6 +2,15 @@
 
 All notable changes to **FM Skin Studio** are documented here.
 
+## [1.5.1] - 2026-11-24
+
+### New & Fixed
+- **FM27 `27.1.1` support**: verified layout compatibility and updated stock baseline support for FM27 build `27.1.1.2511875`.
+- **"FM27 was updated" launch banner & reread flow**: when `update.status` detects `catalog_changed`, Studio now displays a top launch banner (*"FM27 was updated. Studio needs to reread the game before installing anything."*) with a **Reread now** button that runs the guided reread flow and reports the result, while **Game Layouts** keeps working throughout.
+- **Clearer Restore stock explanation**: when Restore stock refuses old-build backups after a game update, Studio now explains why mixing two builds is unsafe and how to verify in Steam and reread first.
+- **Build-tagged measurement labels**: confidence labels now tag the build they were measured on, including carried-over entries (`measured (27.1.0, carried over to 27.1.1)`).
+- **Information Display viewport profiles**: added `2560x1440 fullscreen, Medium, Larger` (`25x13`) and `2560x1440 fullscreen, Large, Larger` (`20x11`) alongside `2560x1440 fullscreen, Small, Larger` (`30x16`).
+
 ## [1.5.0] - 2026-11-24
 
 ### New

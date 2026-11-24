@@ -33,6 +33,10 @@
 | `game.sheet` | call | name: str, bundle?: str | - | One vanilla sheet printed as USS. |
 | `build.plan` | call | project: str, target?: enum: native | bundles | - | What a build would do and drop for a target, without writing anything. |
 | `project.import_native` | call | path: str, name: str | - | A native USS skin folder (skin.json + sheets + assets) as a project; the source is only read. |
+| `project.import_skinbuilder` | call | path: str, name: str | - | An FM Skin Builder skin folder as a new project: rule sheets to the styles editor, resolved images to swaps, fonts to tokens, table views to table edits, tile layouts checked by the legality rules; everything unmappable is listed by file and line. The source is only read. |
+| `project.export_skinbuilder` | call | project: str, path: str | - | The project as an FM Skin Builder skin folder (styles, assets, fonts, table views, tile layouts); what the format cannot express is listed by file and line. The project is not changed. |
+| `layouts.export_uxml` | call | bundle: str, path_id: id | - | READ ONLY: one layout as UXML text with the proposed anchor comments (Type@name, Type@#id:pos for nameless elements). Nothing is written. |
+| `reports.style_usage` | binary | - | - | The style usage report as CSV: every class the game's rules define, the sheets and selectors that mention it, and the layouts whose elements carry it. |
 | `docs.checklist` | call | - | - | The in-game checklist (docs/INGAME-CHECKLIST.md) and its results block. |
 | `builds.list` | call | project?: str, limit?: int | - | Prepared packages: every build with a package.json (project, id, gate result, files with hashes, plan digest); `latest` marks what Install build would install. |
 | `layout.export_index` | call | index?: str, game_build?: str, areas?: str | - | Build the fmlayout-index/2 dump from the FM27_LayoutMCP sqlite index plus the game's composition bundles (cross-checked cell by cell against the bundles) and import it. |

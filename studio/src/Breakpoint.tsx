@@ -63,8 +63,10 @@ export function compositionForBreakpoint(composition: string | undefined | null,
 export type Confidence = 'measured' | 'measured mismatch' | 'computed' | 'unverified'
 
 export const VIEWPORT_FULLSCREEN = '2560x1440 fullscreen, Small, Larger'
+export const VIEWPORT_FULLSCREEN_MEDIUM = '2560x1440 fullscreen, Medium, Larger'
+export const VIEWPORT_FULLSCREEN_LARGE = '2560x1440 fullscreen, Large, Larger'
 export const VIEWPORT_WINDOWED = '2560x1440 windowed, Small, Larger'
-export const VIEWPORT_PROFILES = [VIEWPORT_FULLSCREEN, VIEWPORT_WINDOWED] as const
+export const VIEWPORT_PROFILES = [VIEWPORT_FULLSCREEN, VIEWPORT_FULLSCREEN_MEDIUM, VIEWPORT_FULLSCREEN_LARGE, VIEWPORT_WINDOWED] as const
 
 /** Consumes the confidence label the backend supplies additively (either `{ label: 'measured', ... }`
  *  from `preview.confidence_for` or a plain string); falls back to the existing MEASURED/ESTIMATE

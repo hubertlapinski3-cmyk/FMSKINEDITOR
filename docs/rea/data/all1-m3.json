@@ -1,0 +1,3152 @@
+{
+  "schema": "fm-fs1-measurements/1",
+  "entry": "M3",
+  "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+  "profile": "2560x1440 fullscreen, Large, Larger",
+  "window_mode": "fullscreen",
+  "resolution": [
+    2560,
+    1440
+  ],
+  "information_display": "Large",
+  "text_scaling": "Larger",
+  "scale": 1.5238096,
+  "tolerance_px": 1.5,
+  "sweep_stamp": "20261124T135123Z",
+  "default_content_rect": [
+    10.5,
+    57.7,
+    1659.0,
+    886.6
+  ],
+  "default_grid": [
+    20,
+    11
+  ],
+  "counts": {
+    "compositions_seen": 141,
+    "scored": 139,
+    "measured": 138,
+    "measured_mismatch": 1,
+    "unmeasurable": 2
+  },
+  "compositions": [
+    {
+      "composition": "3_Tiles_8x4-Expandable_2x4x2",
+      "game_composition": "3_Tiles_8x4-Expandable_2x4x2(Clone)",
+      "panel": "PortalMessagesTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": false,
+      "content_rect": [
+        561.8,
+        263.8,
+        1050.0,
+        639.8
+      ],
+      "grid": [
+        13,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": false,
+      "worst_px": 245.8,
+      "mismatches": [
+        {
+          "cell": "Portal Card Template Element",
+          "predicted": [
+            889.8,
+            1001.8,
+            312,
+            148
+          ],
+          "game": [
+            889.9,
+            756.0,
+            311.7,
+            147.7
+          ],
+          "delta": [
+            -0.1,
+            245.8,
+            0.3,
+            0.3
+          ],
+          "max_px": 245.8,
+          "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+        },
+        {
+          "cell": "RelatedInfoTitle",
+          "predicted": [
+            561.8,
+            919.8,
+            1050,
+            66
+          ],
+          "game": [
+            561.8,
+            674.0,
+            1050.0,
+            66.3
+          ],
+          "delta": [
+            0.0,
+            245.8,
+            0.0,
+            -0.3
+          ],
+          "max_px": 245.8,
+          "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+        }
+      ]
+    },
+    {
+      "composition": "AboutPastWinnersGridComposition",
+      "game_composition": "AboutPastWinnersGridComposition",
+      "panel": "CompetitionAboutPastWinnersCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "BestXICardGridComposition",
+      "game_composition": "BestXICardGridComposition",
+      "panel": "BestXICard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CalendarToolFixturesGridComposition-Large",
+      "game_composition": "CalendarToolFixturesGridComposition-Large",
+      "panel": "CalendarToolFixturesTab",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": false,
+      "content_rect": [
+        15.8,
+        150.9,
+        1648.5,
+        746.2
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "CalendarToolGeneralGridComposition-Large",
+      "game_composition": "CalendarToolGeneralGridComposition-Large",
+      "panel": "CalendarTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        150.9,
+        1648.5,
+        746.2
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "CalendarToolTrainingGridComposition-Large",
+      "game_composition": "CalendarToolTrainingGridComposition-Large",
+      "panel": "CalendarToolTrainingTab",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        150.9,
+        1648.5,
+        746.2
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubAffiliatesCardComposition-Large",
+      "game_composition": "ClubAffiliatesCardComposition-Large",
+      "panel": "ClubAffiliatesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubBoardCardGridComposition-Large",
+      "game_composition": "ClubBoardCardGridComposition-Large",
+      "panel": "ClubBoardCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubComposition-Large",
+      "game_composition": "ClubComposition-Large",
+      "panel": "ClubScreen",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubFacilitiesCardGridComposition-NONE",
+      "game_composition": "ClubFacilitiesCardGridComposition-NONE",
+      "panel": "ClubFacilitiesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubFinancesCardGridComposition-Large",
+      "game_composition": "ClubFinancesCardGridComposition-Large",
+      "panel": "ClubFinancesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubFinancesSummaryCardGridComposition",
+      "game_composition": "ClubFinancesSummaryCardGridComposition",
+      "panel": "ClubFinancesSummaryCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryBestXICardGridComposition",
+      "game_composition": "ClubHistoryBestXICardGridComposition",
+      "panel": "ClubHistoryBestXICard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryCardGridComposition",
+      "game_composition": "ClubHistoryCardGridComposition",
+      "panel": "ClubHistoryCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryHonoursCardGridComposition",
+      "game_composition": "ClubHistoryHonoursCardGridComposition",
+      "panel": "ClubHistoryHonoursCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryLandmarksCardGridComposition-Large",
+      "game_composition": "ClubHistoryLandmarksCardGridComposition-Large",
+      "panel": "ClubHistoryLandmarksCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubHistoryRecordsAllTimeBlockGridComposition-Large",
+      "game_composition": "ClubHistoryRecordsAllTimeBlockGridComposition-Large",
+      "panel": "ClubHistoryRecordsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        128.6,
+        1648.5,
+        746.2
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubInfoCardGridComposition",
+      "game_composition": "ClubInfoCardGridComposition",
+      "panel": "ClubInfoCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubProfileCardGridComposition-Large",
+      "game_composition": "ClubProfileCardGridComposition-Large",
+      "panel": "ClubProfileCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubStatsCardGridComposition-Large",
+      "game_composition": "ClubStatsCardGridComposition-Large",
+      "panel": "ClubStatsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubSupportersCardGridComposition-Large",
+      "game_composition": "ClubSupportersCardGridComposition-Large",
+      "panel": "ClubSupportersCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.6,
+      "mismatches": []
+    },
+    {
+      "composition": "ClubVisionCardGridComposition-Large",
+      "game_composition": "ClubVisionCardGridComposition-Large",
+      "panel": "ClubVisionCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CoachReportCardGridComposition-Large",
+      "game_composition": "CoachReportCardGridComposition-Large",
+      "panel": "CoachReportCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionAboutRankingsCardGridComposition",
+      "game_composition": "CompetitionAboutRankingsCardGridComposition",
+      "panel": "CompetitionAboutRankingsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionAboutRecordsCardGridComposition",
+      "game_composition": "CompetitionAboutRecordsCardGridComposition",
+      "panel": "CompetitionAboutRecordsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionEstimatedTradeValuesCardGridComposition",
+      "game_composition": "CompetitionEstimatedTradeValuesCardGridComposition",
+      "panel": "CompetitionEstimatedTradeValuesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionFixturesToolGridComposition_FixturesResults-Large",
+      "game_composition": "CompetitionFixturesToolGridComposition_FixturesResults-Large",
+      "panel": "CompetitionFixturesTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        128.6,
+        1648.5,
+        746.2
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionHub9CompsGridComposition-Large",
+      "game_composition": "CompetitionHub9CompsGridComposition-Large",
+      "panel": "NewsCompetitionHubSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": false,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 9,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionInjuryListCardGridComposition-Large",
+      "game_composition": "CompetitionInjuryListCardGridComposition-Large",
+      "panel": "CompetitionInjuryListCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionQualificationPlacesCardGridComposition",
+      "game_composition": "CompetitionQualificationPlacesCardGridComposition",
+      "panel": "CompetitionQualificationPlacesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionSiteAboutDraftHistoryCardGridComposition-Large",
+      "game_composition": "CompetitionSiteAboutDraftHistoryCardGridComposition-Large",
+      "panel": "CompetitionSiteAboutDraftHistoryCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionSiteDomesticCupComposition-Large",
+      "game_composition": "CompetitionSiteDomesticCupComposition-Large",
+      "panel": "CompetitionSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        275.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionSiteLeagueComposition - Large",
+      "game_composition": "CompetitionSiteLeagueComposition - Large",
+      "panel": "CompetitionSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        275.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionWaiverListToolGridComposition-Large",
+      "game_composition": "CompetitionWaiverListToolGridComposition-Large",
+      "panel": "CompetitionWaiverListTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "CompetitionsOverview4CompsGridComposition-Large",
+      "game_composition": "CompetitionsOverview4CompsGridComposition-Large",
+      "panel": "CompetitionsOverviewTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": false,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ContinentAwardWinnersCardGridComposition",
+      "game_composition": "ContinentAwardWinnersCardGridComposition",
+      "panel": "ContinentAwardWinnersCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ContinentCompetitionsCardGridComposition",
+      "game_composition": "ContinentCompetitionsCardGridComposition",
+      "panel": "ContinentCompetitionsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "DataHubKeyFindingsGridComposition-Large",
+      "game_composition": "DataHubKeyFindingsGridComposition-Large",
+      "panel": "Data Hub",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        261.8,
+        1648.5,
+        663.5
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "DisciplineToolGridComposition-Large",
+      "game_composition": "DisciplineToolGridComposition-Large",
+      "panel": "DisciplineTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "DraftAllocationsCardGridComposition",
+      "game_composition": "DraftAllocationsCardGridComposition",
+      "panel": "DraftAllocationsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "FfpCardGridComposition-Large",
+      "game_composition": "FfpCardGridComposition-Large",
+      "panel": "FFPCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "FinanceSponsorshipsIncomeCardGridComposition",
+      "game_composition": "FinanceSponsorshipsIncomeCardGridComposition",
+      "panel": "FinanceSponsorshipsIncomeCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesDebtsAndLoansCardGridComposition",
+      "game_composition": "FinancesDebtsAndLoansCardGridComposition",
+      "panel": "FinancesDebtsAndLoansCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesExpenditureCardGridComposition",
+      "game_composition": "FinancesExpenditureCardGridComposition",
+      "panel": "FinancesExpenditureCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesIncomeCardGridComposition",
+      "game_composition": "FinancesIncomeCardGridComposition",
+      "panel": "FinancesIncomeCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesLeagueSpecificCardGridComposition",
+      "game_composition": "FinancesLeagueSpecificCardGridComposition",
+      "panel": "FinancesLeagueSpecificCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesProjectionsCardGridComposition",
+      "game_composition": "FinancesProjectionsCardGridComposition",
+      "panel": "FinancesProjectionsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "FinancesWagesCardGridComposition-Standard",
+      "game_composition": "FinancesWagesCardGridComposition-Standard",
+      "panel": "FinancesWagesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "JobCentreGridComposition-Large",
+      "game_composition": "JobCentreGridComposition-Large",
+      "panel": "JobCentreCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "JobMarketComposition-Large",
+      "game_composition": "JobMarketComposition-Large",
+      "panel": "JobMarketReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ManagerHistoryCardGridComposition-Large",
+      "game_composition": "ManagerHistoryCardGridComposition-Large",
+      "panel": "ManagerHistoryCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MatchExperienceHumanGridComposition-Large",
+      "game_composition": "MatchExperienceHumanGridComposition-Large",
+      "panel": "OverviewPrototype",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        28.2,
+        85.3,
+        1623.6,
+        639.8
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.6,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentreCurrentInjuriesReportGridComposition-Large",
+      "game_composition": "MedicalCentreCurrentInjuriesReportGridComposition-Large",
+      "panel": "MedicalCentreCurrentInjuriesReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentrePlayerSummaryCardGridComposition",
+      "game_composition": "MedicalCentrePlayerSummaryCardGridComposition",
+      "panel": "MedicalCentrePlayerSummaryCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentreRecentlyReturnedReportGridComposition-Large",
+      "game_composition": "MedicalCentreRecentlyReturnedReportGridComposition-Large",
+      "panel": "MedicalCentreRecentlyReturnedReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentreRiskAssessmentGridComposition-Large",
+      "game_composition": "MedicalCentreRiskAssessmentGridComposition-Large",
+      "panel": "MedicalCentreRiskAssessmentReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        132.6,
+        1648.5,
+        746.2
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MedicalCentreSeasonSummaryCardGridComposition",
+      "game_composition": "MedicalCentreSeasonSummaryCardGridComposition",
+      "panel": "MedicalCentreSeasonSummaryCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MentoringCardGridComposition-Large",
+      "game_composition": "MentoringCardGridComposition-Large",
+      "panel": "MentoringCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MyCareerMyProfileCardGridComposition-Large",
+      "game_composition": "MyCareerMyProfileCardGridComposition-Large",
+      "panel": "MyCareerMyProfileCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        277.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MyContractCardGridComposition",
+      "game_composition": "MyContractCardGridComposition",
+      "panel": "MyCareerMyContractCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MyHistoryCardGridComposition-Large",
+      "game_composition": "MyHistoryCardGridComposition-Large",
+      "panel": "MyCareerMyHistoryCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "MyRelationshipsCardComposition-Large",
+      "game_composition": "MyRelationshipsCardComposition-Large",
+      "panel": "MyCareerMyRelationshipsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NationAwardWinnersCardGridComposition",
+      "game_composition": "NationAwardWinnersCardGridComposition",
+      "panel": "NationAwardWinnersCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NationCompetitionsCardGridComposition-Large",
+      "game_composition": "NationCompetitionsCardGridComposition-Large",
+      "panel": "NationCompetitionsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NationSiteClubsListComposition-Large",
+      "game_composition": "NationSiteClubsListComposition-Large",
+      "panel": "NationSiteClubsListCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NationSiteTransfersCardGridComposition",
+      "game_composition": "NationSiteTransfersCardGridComposition",
+      "panel": "NationSiteTransfersCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NationalTeamSiteComposition - Large",
+      "game_composition": "NationalTeamSiteComposition - Large",
+      "panel": "NationalTeamSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        275.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsAroundTheWorldComposition-Large",
+      "game_composition": "NewsAroundTheWorldComposition-Large",
+      "panel": "NewsAroundTheWorldSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        275.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsClubComposition-Large",
+      "game_composition": "NewsClubComposition-Large",
+      "panel": "NewsTeamSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        190.3,
+        1648.5,
+        745.5
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsCompetitionComposition-Large",
+      "game_composition": "NewsCompetitionComposition-Large",
+      "panel": "NewsCompetitionSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        190.3,
+        1648.5,
+        745.5
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsForYouComposition-Large",
+      "game_composition": "NewsForYouComposition-Large",
+      "panel": "NewsForYouSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        275.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsHomeComposition-Large",
+      "game_composition": "NewsHomeComposition-Large",
+      "panel": "NewsHomeSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        275.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsNationComposition-Large",
+      "game_composition": "NewsNationComposition-Large",
+      "panel": "NewsNationSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        190.3,
+        1648.5,
+        745.5
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NewsTransfersHubComposition-Large",
+      "game_composition": "NewsTransfersHubComposition-Large",
+      "panel": "NewsTransfersHubSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        275.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NonPlayerReportCareerManagerialStatsCardGridComposition-Large",
+      "game_composition": "NonPlayerReportCareerManagerialStatsCardGridComposition-Large",
+      "panel": "NonPlayerReportCareerManagerialStatsTabbedCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        132.6,
+        1648.5,
+        746.2
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "NonPlayerReportOverviewGridComposition-Large",
+      "game_composition": "NonPlayerReportOverviewGridComposition-Large",
+      "panel": "NonPlayerReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        28.2,
+        274.3,
+        1623.6,
+        639.8
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "NonPlayerReportOverviewHistoryCardGridComposition",
+      "game_composition": "NonPlayerReportOverviewHistoryCardGridComposition",
+      "panel": "NonPlayerReportOverviewHistoryCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        519.8,
+        288.8,
+        640.5,
+        476.4
+      ],
+      "grid": [
+        8,
+        6
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "NonPlayerReportPersonalGridComposition-Large",
+      "game_composition": "NonPlayerReportPersonalGridComposition-Large",
+      "panel": "NonPlayerReportPersonal",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        277.6,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "OnThePitchPenaltiesToolGridComposition-Large",
+      "game_composition": "OnThePitchPenaltiesToolGridComposition-Large",
+      "panel": "OnThePitchPenaltiesTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "OnThePitchSetPiecesToolGridComposition-Large",
+      "game_composition": "OnThePitchSetPiecesToolGridComposition-Large",
+      "panel": "OnThePitchSetPiecesTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "OppositionInstructionsComposition-Large",
+      "game_composition": "OppositionInstructionsComposition-Large",
+      "panel": "OnThePitchOppositionInstructionsTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "OverviewTabGridComposition-Large",
+      "game_composition": "OverviewTabGridComposition-Large",
+      "panel": "ClubAllStaffTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        128.6,
+        1648.5,
+        746.2
+      ],
+      "grid": [
+        20,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "PersonBiographyCardGridComposition-Large",
+      "game_composition": "PersonBiographyCardGridComposition-Large",
+      "panel": "PersonBiographyCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerContractUserOwnedNoWorkPermitGridComposition-Large",
+      "game_composition": "PlayerContractUserOwnedNoWorkPermitGridComposition-Large",
+      "panel": "PlayerContractCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        266.4,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerFormCardGridComposition-Large",
+      "game_composition": "PlayerFormCardGridComposition-Large",
+      "panel": "PlayerFormCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerReportDevelopmentProgressReportCardGridComposition-Large",
+      "game_composition": "PlayerReportDevelopmentProgressReportCardGridComposition-Large",
+      "panel": "PlayerReportDevelopmentProgressReportCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerReportFitnessCardGridComposition-Large",
+      "game_composition": "PlayerReportFitnessCardGridComposition-Large",
+      "panel": "PlayerReportFitnessCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerReportOverviewComposition-Large",
+      "game_composition": "PlayerReportOverviewComposition-Large",
+      "panel": "PlayerReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        274.3,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerReportPersonal-Large",
+      "game_composition": "PlayerReportPersonal-Large",
+      "panel": "PlayerReportPersonal",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        274.3,
+        1648.5,
+        664.1
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerSearchReportGridComposition-Large",
+      "game_composition": "PlayerSearchReportGridComposition-Large",
+      "panel": "PlayerSearchReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+      "game_composition": "PlayerSearchReportGridCompositionBottomBarLarge",
+      "panel": "PlayerSearchReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        28.2,
+        769.1,
+        1623.6,
+        147.7
+      ],
+      "grid": [
+        20,
+        2
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "Portal-Large",
+      "game_composition": "Portal-Large",
+      "panel": "PortalScreen",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.6,
+      "mismatches": []
+    },
+    {
+      "composition": "PortalMessagesToolGridComposition-Large",
+      "game_composition": "PortalMessagesToolGridComposition-Large",
+      "panel": "PortalMessagesTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": false,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentClausesCardGridComposition-Large",
+      "game_composition": "RecruitmentClausesCardGridComposition-Large",
+      "panel": "RecruitmentClausesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentComposition-Large",
+      "game_composition": "RecruitmentComposition-Large",
+      "panel": "RecruitmentScreen",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentContractsCardGridComposition-Large",
+      "game_composition": "RecruitmentContractsCardGridComposition-Large",
+      "panel": "RecruitmentContractsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentFocusToolGridComposition-Large",
+      "game_composition": "RecruitmentFocusToolGridComposition-Large",
+      "panel": "RecruitmentFocusTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentNotInterestedCardGridComposition-Large",
+      "game_composition": "RecruitmentNotInterestedCardGridComposition-Large",
+      "panel": "NotInterestedCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentObjectivesCardGridComposition-Large",
+      "game_composition": "RecruitmentObjectivesCardGridComposition-Large",
+      "panel": "RecruitmentObjectivesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentPlayerRecommendationsCardGridComposition-Large",
+      "game_composition": "RecruitmentPlayerRecommendationsCardGridComposition-Large",
+      "panel": "RecruitmentPlayerRecommendationsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 7,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentScoutPrioritiesCardGridComposition-Large",
+      "game_composition": "RecruitmentScoutPrioritiesCardGridComposition-Large",
+      "panel": "RecruitmentScoutPrioritiesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentScoutingBudgetCardGridComposition-Large",
+      "game_composition": "RecruitmentScoutingBudgetCardGridComposition-Large",
+      "panel": "RecruitmentScoutingBudgetCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentSquadPlannerReportGridComposition",
+      "game_composition": "RecruitmentSquadPlannerReportGridComposition",
+      "panel": "RecruitmentSquadPlannerReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentTeamReportPrioritiesCardGridComposition-Large",
+      "game_composition": "RecruitmentTeamReportPrioritiesCardGridComposition-Large",
+      "panel": "RecruitmentTeamReportPrioritiesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentTransferActivityCardComposition-Large",
+      "game_composition": "RecruitmentTransferActivityCardComposition-Large",
+      "panel": "RecruitmentTransferActivityTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentTransferBudgetsCardGridComposition-Large",
+      "game_composition": "RecruitmentTransferBudgetsCardGridComposition-Large",
+      "panel": "RecruitmentTransferBudgetsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentTransferWindowCardGridComposition-Large",
+      "game_composition": "RecruitmentTransferWindowCardGridComposition-Large",
+      "panel": "RecruitmentTransferWindowCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "RecruitmentWageBudgetCardGridComposition-Large",
+      "game_composition": "RecruitmentWageBudgetCardGridComposition-Large",
+      "panel": "RecruitmentWageBudgetCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 4,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "ScoutingRangeCardGridComposition",
+      "game_composition": "ScoutingRangeCardGridComposition",
+      "panel": "ScoutingRangeCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": false,
+      "content_rect": [
+        519.8,
+        166.0,
+        640.5,
+        721.9
+      ],
+      "grid": [
+        8,
+        9
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadAtmosphereCardComposition-Large",
+      "game_composition": "SquadAtmosphereCardComposition-Large",
+      "panel": "SquadAtmosphereCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 9,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadCaptainsCardGridComposition",
+      "game_composition": "SquadCaptainsCardGridComposition",
+      "panel": "SquadCaptainsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadComposition-Large",
+      "game_composition": "SquadComposition-Large",
+      "panel": "SquadScreen",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadHappinessToolGridComposition-Large",
+      "game_composition": "SquadHappinessToolGridComposition-Large",
+      "panel": "SquadHappinessTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadHierarchyToolComposition-Large",
+      "game_composition": "SquadHierarchyToolComposition-Large",
+      "panel": "SquadHierarchyTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadInternationalsToolComposition-Large",
+      "game_composition": "SquadInternationalsToolComposition-Large",
+      "panel": "SquadInternationalsTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadLoansCardPlayersOnLoanComposition-Large",
+      "game_composition": "SquadLoansCardPlayersOnLoanComposition-Large",
+      "panel": "SquadLoansCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        128.6,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadNumbersToolComposition-Large",
+      "game_composition": "SquadNumbersToolComposition-Large",
+      "panel": "SquadNumbersTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadRegistrationCardComposition-Large",
+      "game_composition": "SquadRegistrationCardComposition-Large",
+      "panel": "SquadRegistrationCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 2,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadSocialGroupsCardComposition",
+      "game_composition": "SquadSocialGroupsCardComposition",
+      "panel": "SquadSocialGroupsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadTargetsCardComposition",
+      "game_composition": "SquadTargetsCardComposition",
+      "panel": "SquadTargetsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadYouthCandidatesCardComposition-Large",
+      "game_composition": "SquadYouthCandidatesCardComposition-Large",
+      "panel": "YouthReportSiteYouthCandidatesTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadYouthDynamicsTabComposition-Large",
+      "game_composition": "SquadYouthDynamicsTabComposition-Large",
+      "panel": "YouthReportSiteYouthDynamicsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        128.6,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadYouthSetupReportComposition",
+      "game_composition": "SquadYouthSetupReportComposition",
+      "panel": "SquadYouthSetupReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": false,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "SquadYouthSetupReportOverviewGridComposition-Large",
+      "game_composition": "SquadYouthSetupReportOverviewGridComposition-Large",
+      "panel": "SquadYouthSetupReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        28.2,
+        112.9,
+        1623.6,
+        803.9
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 8,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "StaffResponsibilitiesDelegationCardGridComposition-Large",
+      "game_composition": "StaffResponsibilitiesDelegationCardGridComposition-Large",
+      "panel": "StaffResponsibilitiesCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        116.8,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "StaffSearchReportBottomBarGridComposition",
+      "game_composition": "StaffSearchReportBottomBarGridComposition",
+      "panel": "StaffSearchReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        28.2,
+        769.1,
+        803.9,
+        147.7
+      ],
+      "grid": [
+        10,
+        2
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 3,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "StaffTransferActivityCardGridComposition-Large",
+      "game_composition": "StaffTransferActivityCardGridComposition-Large",
+      "panel": "StaffTransferActivityCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TacticalEffectivenessGridComposition-Large",
+      "game_composition": "TacticalEffectivenessGridComposition-Large",
+      "panel": "TacticalEffectivenessCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TacticalPlannerCoreComposition-Large",
+      "game_composition": "TacticalPlannerCoreComposition-Large",
+      "panel": "TacticalPlannerTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TeamFactsCardGridComposition-Large",
+      "game_composition": "TeamFactsCardGridComposition-Large",
+      "panel": "TeamFactsCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TeamIndividualTrainingToolTileComposition-Large",
+      "game_composition": "TeamIndividualTrainingToolTileComposition-Large",
+      "panel": "TeamIndividualTrainingTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TeamReportOverviewTabGridComposition-Large",
+      "game_composition": "TeamReportOverviewTabGridComposition-Large",
+      "panel": "TeamReportSite",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        0.0,
+        261.8,
+        1647.8,
+        663.5
+      ],
+      "grid": [
+        20,
+        8
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.5,
+      "mismatches": []
+    },
+    {
+      "composition": "TeamSquadReportComposition-Large",
+      "game_composition": "TeamSquadReportComposition-Large",
+      "panel": "TeamSquadReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TrainingCoachAssignmentsToolGridComposition-Large",
+      "game_composition": "TrainingCoachAssignmentsToolGridComposition-Large",
+      "panel": "TrainingCoachAssignmentsTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TrainingIntensityCardTileComposition-NONE",
+      "game_composition": "TrainingIntensityCardTileComposition-NONE",
+      "panel": "TrainingIntensityCard",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 1,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TrainingOverviewGridComposition-Large",
+      "game_composition": "TrainingOverviewGridComposition-Large",
+      "panel": "TrainingScreen",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TransferHistoryCardGridComposition-Large",
+      "game_composition": "TransferHistoryCardGridComposition-Large",
+      "panel": "RecruitmentTransferHistoryReport",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TransferRoomInToolGridComposition-Large",
+      "game_composition": "TransferRoomInToolGridComposition-Large",
+      "panel": "TransferRoomInTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 5,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    },
+    {
+      "composition": "TransferRoomOutToolGridComposition-Large",
+      "game_composition": "TransferRoomOutToolGridComposition-Large",
+      "panel": "TransferRoomOutTool",
+      "build": "27.1.0.2505117 (carried over to 27.1.1.2511875)",
+      "is_custom": true,
+      "content_rect": [
+        15.8,
+        101.1,
+        1648.5,
+        828.2
+      ],
+      "grid": [
+        20,
+        10
+      ],
+      "grid_size_uncertain": false,
+      "scored_hosts": 6,
+      "pass": true,
+      "worst_px": 0.4,
+      "mismatches": []
+    }
+  ],
+  "unmeasurable": [
+    {
+      "composition": "RecruitmentScoutAssignmentsCardGridComposition",
+      "panel": "RecruitmentScoutAssignmentsCard",
+      "reason": "hidden or 0 visible hosts at capture"
+    },
+    {
+      "composition": "StaffResponsibilitiesOverviewCardGridComposition-Large",
+      "panel": "StaffResponsibilitiesCard",
+      "reason": "hidden or 0 visible hosts at capture"
+    }
+  ]
+}

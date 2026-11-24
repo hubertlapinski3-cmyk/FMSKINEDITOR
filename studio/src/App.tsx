@@ -142,6 +142,7 @@ export default function App() {
   const [appUpdate, setAppUpdate] = useState<{ checking: boolean; version?: string; current?: string; error?: string; installing?: boolean }>({ checking: false })
   const [appUpdateDismissed, setAppUpdateDismissed] = useState(false)   // one popup per launch; Continue just dismisses it
   const [aboutOpen, setAboutOpen] = useState(false)
+  const [gameUpdate, setGameUpdate] = useState<{ state: string; message?: string; rereading?: boolean; doneMsg?: string; errMsg?: string } | null>(null)
 
   const installAppUpdate = useCallback(async () => {
     if (!appUpdate.version) return
@@ -456,6 +457,45 @@ export default function App() {
     }))
   }, [project, tabs])
 
+  useEffect(() => {
+    if (boot !== 'ready') return
+    rpc<{ status?: { state: string; message?: string } }>('update.status')
+      .then((r) => {
+        if (r?.status?.state === 'catalog_changed') {
+          setGameUpdate({ state: 'catalog_changed', message: r.status.message })
+        }
+      })
+      .catch(() => { /* ignore when offline or mocked */ })
+  }, [boot])
+
+  const rereadFromBanner = useCallback(async () => {
+    setGameUpdate((g) => (g ? { ...g, rereading: true, errMsg: undefined } : g))
+    try {
+      const { job } = await rpc<{ job: string }>('snapshot.reread')
+      for (;;) {
+        const v = await rpc<{ state: string; error: string | null; result: { snapshot?: { catalog_hash?: string | null }; index?: { sheets?: number; tokens?: number } } | null }>('jobs.get', { id: job })
+        if (v.state === 'done' || v.state === 'failed' || v.state === 'cancelled') {
+          if (v.state === 'done' && v.result) {
+            const ch = v.result.snapshot?.catalog_hash ?? '?'
+            const sh = v.result.index?.sheets ?? 0
+            const tk = v.result.index?.tokens ?? 0
+            setGameUpdate({ state: 'done', doneMsg: `Done: reread complete (catalog ${ch}, ${sh} sheets, ${tk} colours, no layout changes).` })
+            say(`re-read the game: catalog ${ch} · ${sh} sheets, ${tk} colours`)
+            await reloadClean()
+          } else {
+            const s = await sayOfJobError(v.error || 'the re-read did not finish')
+            setGameUpdate((g) => (g ? { ...g, rereading: false, errMsg: s.plain } : g))
+          }
+          break
+        }
+        await new Promise((r) => setTimeout(r, 150))
+      }
+    } catch (e) {
+      const s = sayOf(e)
+      setGameUpdate((g) => (g ? { ...g, rereading: false, errMsg: s.plain } : g))
+    }
+  }, [reloadClean, say])
+
   const dirty = (p: string) => { const t = tabs.find((x) => isFileTab(x) && x.path === p); return !!t && isFileTab(t) && t.text !== t.saved }
   const tab = tabs.find((t) => tabKey(t) === active)
   // UI1b step 3: style diagnostics from other modes are not shown while the Game Layouts view is on screen.
@@ -541,6 +581,24 @@ export default function App() {
         </>}
       </aside>
       <main className="editor">
+        {gameUpdate && (
+          <div className="notice" role="status" data-testid="game-updated-banner">
+            <div>
+              {gameUpdate.state === 'catalog_changed' && (
+                <>
+                  <strong>FM27 was updated. Studio needs to reread the game before installing anything.</strong>{' '}
+                  <span className="small dim">Game Layouts keeps working throughout. Restore stock refuses old-build backups until reread completes.</span>{' '}
+                  <button className="primary" disabled={!!gameUpdate.rereading} data-testid="game-updated-reread-now" onClick={rereadFromBanner}>
+                    {gameUpdate.rereading ? 'Rereading ...' : 'Reread now'}
+                  </button>
+                </>
+              )}
+              {gameUpdate.state === 'done' && <span data-testid="game-updated-done">{gameUpdate.doneMsg}</span>}
+              {gameUpdate.errMsg && <div className="warn small">{gameUpdate.errMsg}</div>}
+            </div>
+            <button onClick={() => setGameUpdate(null)} aria-label="Dismiss">×</button>
+          </div>
+        )}
         {layoutRecovery.length > 0 && <div className="pad"><LayoutRecoveryDialog items={layoutRecovery} project={project} say={say} onDone={reloadLayoutRecovery} /></div>}
         {notice && !needsSetup && <div className="notice" role="alert"><div>{notice.plain}</div><details><summary>details</summary><div className="mono small">{notice.details}</div></details><button onClick={() => setNotice(null)} aria-label="Dismiss">×</button></div>}
         {needsSetup && state ? <Guard name="Setup"><Setup state={state} refresh={refreshState} say={say} pickFolder={pickGameFolder} /></Guard> : view === 'skin_inspect' && mode !== 'simple' ? <Guard name="Inspect skin"><SkinInspect say={say} onOpenGameLayout={(c) => { setView('play'); openLayout(c) }} /></Guard> : view === 'injected_styles' && mode !== 'simple' ? <Guard name="Injected styles"><InjectedStyles key={project ?? ''} project={project} say={say} onChanged={reloadClean} onExportNative={exportNative} onBuildBundles={buildBundles} /></Guard> : view === 'playground' ? <Guard name="Playground"><Playground key={project ?? ''} project={project} say={say} onOpenInstall={() => setView('install')} /></Guard> : view === 'render' && mode === 'simple' ? <Guard name="Look at it"><LookAtIt project={project} say={say} start={lookStart} /></Guard> : view === 'assets' && mode === 'simple' && project ? <Guard name="Pictures"><Pictures key={project} project={project} say={say} onChanged={reloadClean} onLook={(s) => { setLookStart(s); setView('render') }} /></Guard> : view === 'findings' && mode !== 'simple' ? <Guard name="Findings"><Findings say={say} /></Guard> : view === 'share' && mode === 'simple' ? <Guard name="Share and undo"><Share project={project} projects={projects} say={say} onOpened={async (n) => { await refreshState(); await openProject(n); setView('palette') }} onChanged={async () => { await refreshState(); if (project) await openProject(project) }} /></Guard> : view === 'put' && project ? <Guard name="Put it in the game"><PutInGame key={project} project={project} say={say} /></Guard> : showStart ? <Guard name="Start"><Start projects={projects} say={say} onImport={mode === 'simple' ? () => setView('share') : importNative} onCreated={async (n) => { await refreshState(); await openProject(n); setView('palette') }} /></Guard> : view === 'render' && rmode === 'screen' ? <Guard name="Render screen"><RenderScreenView project={project} say={say} /></Guard> : view === 'render' && rmode === 'table' ? <Guard name="Render table"><RenderTableView project={project} say={say} /></Guard> : view === 'render' ? <Guard name="Render"><RenderCanvas layout={rl} say={say} project={project} highlight={highlight} onResult={(res, layout) => setLastRender({ res, layout })} onOpenFile={(f, l) => { setView('explorer'); openFile(f, l) }} /></Guard> : <>

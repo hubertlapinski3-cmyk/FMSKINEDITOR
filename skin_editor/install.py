@@ -137,6 +137,12 @@ def refuse_if_updated(ws, aa_dir, what):
     """SAFETY: a write of game files from a snapshot or a backup is refused when the game's catalog is not the one the snapshot was taken against. `force` never overrides this: the files would be of two builds."""
     t = tamper_status(ws, aa_dir)
     if t["state"] == "game_updated":
+        if "restore" in str(what).lower():
+            raise InstallError(
+                "%s was not done. Restore stock refuses old-build backups because putting an older build's bundles "
+                "over an updated game mixes two builds and breaks FM27. Run Steam's Verify integrity of game files "
+                "first, then click Reread now. %s" % (what, t["message"])
+            )
         raise InstallError("%s was not done. %s" % (what, t["message"]))
 
 

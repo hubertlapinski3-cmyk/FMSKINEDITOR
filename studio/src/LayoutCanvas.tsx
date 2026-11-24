@@ -28,8 +28,10 @@ interface Props {
 }
 
 const DEFAULT_PROFILE = '2560x1440 fullscreen, Small, Larger'
+const MEDIUM_PROFILE = '2560x1440 fullscreen, Medium, Larger'
+const LARGE_PROFILE = '2560x1440 fullscreen, Large, Larger'
 const WINDOWED_PROFILE = '2560x1440 windowed, Small, Larger'
-const PROFILES = [DEFAULT_PROFILE, WINDOWED_PROFILE] as const
+const PROFILES = [DEFAULT_PROFILE, MEDIUM_PROFILE, LARGE_PROFILE, WINDOWED_PROFILE] as const
 
 const UNIT = 64
 const MAIN = 'main'

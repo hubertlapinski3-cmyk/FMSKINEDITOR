@@ -63,7 +63,8 @@ describe('Updates: the in-app re-read of an updated game', () => {
     render(<Updates project={null} say={() => {}} onChanged={() => {}} />)
     const card = await screen.findByTestId('reread-card')
     expect(card.textContent).toContain('Verify integrity of game files')            // the advice stays verify-first
-    expect(screen.getByText(/Bundle installs are blocked/)).toBeTruthy()
+    expect(screen.getByTestId('restore-refusal-note').textContent).toContain('mixes two builds')
+    expect(screen.getByText(/Bundle installs and Restore stock are blocked/)).toBeTruthy()
     fireEvent.click(await screen.findByTestId('reread-button'))
     expect((await screen.findByTestId('reread-done')).textContent).toContain('new123')
     expect((screen.getByTestId('reread-done') as HTMLElement).textContent).toContain('49 sheets')

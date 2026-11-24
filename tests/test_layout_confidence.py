@@ -16,6 +16,7 @@ from skin_editor.render import preview
 from tests.test_preview_engine import SETS, _RD, dump
 
 ROOT = Path(__file__).resolve().parent.parent
+GENERATOR = ROOT / "tools" / "build_layout_parity.py"
 
 def _full_dump():
     """The synthetic preview dump with the min/max fields the REA engine's graph needs."""
@@ -34,7 +35,7 @@ DISAGREE_COMP = "4_Tiles_2x4x4_2x4x2-Large"         # one of the 65 parity disag
 class GeneratedData(unittest.TestCase):
     def test_the_generated_parity_file_exists_with_expected_counts(self):
         path = preview.parity_path()
-        self.assertTrue(path.is_file(), "layout-parity.json is missing")
+        self.assertTrue(path.is_file(), "run tools/build_layout_parity.py")
         data = json.loads(path.read_text(encoding="utf-8-sig"))
         self.assertEqual(data["counts"]["compositions"], 412)
         self.assertEqual(data["counts"]["agree"], 347)
@@ -48,6 +49,14 @@ class GeneratedData(unittest.TestCase):
                          {"measured": 17, "computed": 330, "unverified": 65})
         self.assertEqual(sum(data["counts"]["confidence_labels"].values()), 412)
         self.assertEqual(data["counts"]["measured_compositions"], 18)
+
+    @unittest.skipUnless(GENERATOR.is_file(), "needs development tools")
+    def test_the_generator_rebuilds_the_checked_in_file_byte_for_byte(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "layout-parity.json"
+            subprocess.run([sys.executable, str(GENERATOR), "--out", str(out)],
+                           cwd=str(ROOT), check=True, capture_output=True, text=True)
+            self.assertEqual(out.read_bytes(), preview.parity_path().read_bytes())
 
 
 class Classifier(unittest.TestCase):
@@ -148,6 +157,23 @@ class PreviewResponse(unittest.TestCase):
         for side in ("a", "b"):
             self.assertIn("confidence", cmp_[side])
             self.assertEqual(cmp_[side]["confidence"]["engine"], "rea")
+
+    def test_all1_medium_and_large_profiles_expose_build_labelled_measurements(self):
+        from skin_editor import layoutspace
+        for prof, exp_grid in (
+            (layoutspace.PROFILE_FULLSCREEN, (30, 16)),
+            (layoutspace.PROFILE_FULLSCREEN_MEDIUM, (25, 13)),
+            (layoutspace.PROFILE_FULLSCREEN_LARGE, (20, 11)),
+        ):
+            vp = layoutspace.viewport_profile(prof)
+            self.assertEqual(vp["grid"], exp_grid)
+            fs = preview.fullscreen_measurements(profile=prof)
+            self.assertTrue(fs["available"], prof)
+            self.assertIn("27.1.0.2505117", str(fs.get("build") or ""))
+            conf = preview.confidence_for("SquadComposition-Large", "rea", profile=prof)
+            self.assertEqual(conf["label"], "measured", prof)
+            self.assertIn(prof, conf["reason"])
+            self.assertIn("measured (27.1.0, carried over to 27.1.1)", conf["reason"])
 
 
 if __name__ == "__main__":

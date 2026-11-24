@@ -90,7 +90,7 @@ export default function Updates({ project, say, onChanged }: { project: string |
       <div className="head">GAME UPDATES <button onClick={() => load().catch(fail)}>refresh</button></div>
       {err && <div className="warn pad">{err}</div>}
       {status && <div className={'ustatus s-' + status.state}><b>{status.state.replace('_', ' ')}</b> {status.message}
-        {status.block_bundle_install && <div className="warn">Bundle installs are blocked until this is resolved. Native skins are not affected.</div>}
+        {status.block_bundle_install && <div className="warn" data-testid="restore-refusal-note">Bundle installs and Restore stock are blocked until Studio rereads the updated game (putting old-build backups over an updated game mixes two builds and breaks FM27). Verify integrity in Steam first, then click Re-read the game. Native skins and Game Layouts are not affected.</div>}
         {status.state === 'catalog_changed' && (
           <div className="pkg reread" data-testid="reread-card">
             <h3>The game was updated - re-read it from here</h3>

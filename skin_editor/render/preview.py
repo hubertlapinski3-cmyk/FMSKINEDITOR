@@ -316,8 +316,16 @@ CUSTOM_LABEL = "custom layout from the game folder"
 PARITY_RELATIVE_PATH = "docs/rea/data/layout-parity.json"
 PARITY_PATH_ENV = "FM27_LAYOUT_PARITY"          # relocation/test override; never written by the app
 FULLSCREEN_MEASUREMENTS_RELATIVE_PATH = "docs/rea/data/fullscreen-2k-measurements.json"
+FULLSCREEN_MEDIUM_MEASUREMENTS_RELATIVE_PATH = "docs/rea/data/all1-m2.json"
+FULLSCREEN_LARGE_MEASUREMENTS_RELATIVE_PATH = "docs/rea/data/all1-m3.json"
 FULLSCREEN_MEASUREMENTS_ENV = "FM27_FULLSCREEN_MEASUREMENTS"
 CONFIDENCE_LABELS = ("measured", "measured mismatch", "computed", "unverified")
+
+ALL1_PROFILE_RELATIVE_PATHS = {
+    _layoutspace.PROFILE_FULLSCREEN: FULLSCREEN_MEASUREMENTS_RELATIVE_PATH,
+    _layoutspace.PROFILE_FULLSCREEN_MEDIUM: FULLSCREEN_MEDIUM_MEASUREMENTS_RELATIVE_PATH,
+    _layoutspace.PROFILE_FULLSCREEN_LARGE: FULLSCREEN_LARGE_MEASUREMENTS_RELATIVE_PATH,
+}
 
 
 def parity_path():
@@ -327,10 +335,14 @@ def parity_path():
     return Path(override) if override else _config.resource_root() / PARITY_RELATIVE_PATH
 
 
-def fullscreen_measurements_path():
-    """Where the FS1 fullscreen 2560x1440 Small/Larger measurement & scoring table lives."""
+def fullscreen_measurements_path(profile=None):
+    """Where the fullscreen 2560x1440 measurement & scoring table lives for `profile`."""
     override = os.environ.get(FULLSCREEN_MEASUREMENTS_ENV)
-    return Path(override) if override else _config.resource_root() / FULLSCREEN_MEASUREMENTS_RELATIVE_PATH
+    if override and (profile is None or _layoutspace.normalize_profile(profile) == _layoutspace.PROFILE_FULLSCREEN):
+        return Path(override)
+    prof = _layoutspace.normalize_profile(profile)
+    rel = ALL1_PROFILE_RELATIVE_PATHS.get(prof, FULLSCREEN_MEASUREMENTS_RELATIVE_PATH)
+    return _config.resource_root() / rel
 
 
 def _measured_name(name):
@@ -360,22 +372,24 @@ def layout_parity(path=None):
 
 
 @lru_cache(maxsize=8)
-def fullscreen_measurements(path=None):
-    """Read FS1 fullscreen 2560x1440 Small/Larger measurements once per path. Windowed cases never appear here."""
-    path = str(path or fullscreen_measurements_path())
+def fullscreen_measurements(path=None, profile=None):
+    """Read fullscreen 2560x1440 measurements once per path/profile. Windowed cases never appear here."""
+    path = str(path or fullscreen_measurements_path(profile))
     try:
         data = json.loads(Path(path).read_text(encoding="utf-8-sig"))
         rows = {r["composition"]: r for r in (data.get("compositions") or []) if r.get("composition")}
         return {"available": True, "path": path, "profile": data.get("profile"),
+                "build": data.get("build"), "carried_over_to": data.get("carried_over_to"),
                 "counts": data.get("counts") or {}, "rows": rows}
     except (OSError, ValueError, TypeError, KeyError, AttributeError):
-        return {"available": False, "path": path, "profile": None, "counts": {}, "rows": {}}
+        return {"available": False, "path": path, "profile": None, "build": None, "carried_over_to": None,
+                "counts": {}, "rows": {}}
 
 
 def panel_content_rect(composition, width, height, profile=None):
     """Return `(panel_name, (left, top, width, height))` for `composition` under `profile`, or None.
 
-    Profiles are strictly isolated: fullscreen reads ONLY FS1 fullscreen measurements; windowed reads
+    Profiles are strictly isolated: fullscreen reads ONLY its ALL1/FS1 fullscreen measurements; windowed reads
     ONLY the windowed `MEASURED_PANEL_RECTS` table.
     """
     prof = _layoutspace.normalize_profile(profile)
@@ -383,7 +397,7 @@ def panel_content_rect(composition, width, height, profile=None):
         return MEASURED_PANEL_RECTS.get((composition, width, height))
     if (width, height) not in ((2560, 1440), (0, 0)):
         return None
-    fs = fullscreen_measurements(str(fullscreen_measurements_path()))
+    fs = fullscreen_measurements(str(fullscreen_measurements_path(prof)), prof)
     row = fs["rows"].get(_measured_name(composition))
     if row and isinstance(row.get("content_rect"), list) and len(row["content_rect"]) == 4:
         return (row.get("panel") or composition, tuple(row["content_rect"]))
@@ -407,31 +421,42 @@ def confidence_for(composition, engine="rea", profile=None):
     other = "one_rule" if engine == "rea" else "rea"
     agree = bool(row["agree"]) if row else None
 
-    use_fullscreen = profile is not None and _layoutspace.normalize_profile(profile) == _layoutspace.PROFILE_FULLSCREEN
-    fs_row = fullscreen_measurements(str(fullscreen_measurements_path()))["rows"].get(name) if use_fullscreen else None
+    prof = _layoutspace.normalize_profile(profile)
+    use_fullscreen = profile is not None and prof != _layoutspace.PROFILE_WINDOWED
+    fs = fullscreen_measurements(str(fullscreen_measurements_path(prof)), prof) if use_fullscreen else None
+    fs_row = fs["rows"].get(name) if fs else None
     cases = [] if use_fullscreen else parity["measured"].get(name, [])
 
     mismatches = None
     source_path = parity["path"] if parity["available"] else None
+    build_note = None
+    build_label = None
     if use_fullscreen:
         if fs_row is not None:
-            source_path = fullscreen_measurements(str(fullscreen_measurements_path()))["path"]
+            source_path = fs["path"]
+            build_note = str(fs_row.get("build") or (fs or {}).get("build") or "27.1.0.2505117")
+            if "27.1.0" in build_note and "27.1.1" in build_note:
+                build_label = "measured (27.1.0, carried over to 27.1.1)"
+            else:
+                build_label = "measured (%s)" % build_note
             if fs_row.get("pass"):
                 label = "measured"
-                reason = ("MEASURED (2560x1440 fullscreen, Small, Larger): %s on %s matched REA across %d host(s) "
+                reason = ("MEASURED (%s, %s): %s on %s matched REA across %d host(s) "
                           "(worst %.1f px, within 1.5 px)"
-                          % (name, fs_row.get("panel") or "?", fs_row.get("scored_hosts") or 0, fs_row.get("worst_px") or 0.0))
-                measured_cases = [{"case": "FS1", "panel": fs_row.get("panel"), "grid": fs_row.get("grid"),
+                          % (prof, build_label, name, fs_row.get("panel") or "?", fs_row.get("scored_hosts") or 0, fs_row.get("worst_px") or 0.0))
+                measured_cases = [{"case": "ALL1", "build": build_note, "build_label": build_label,
+                                   "panel": fs_row.get("panel"), "grid": fs_row.get("grid"),
                                    "worst_px": fs_row.get("worst_px"), "scored_hosts": fs_row.get("scored_hosts")}]
             else:
                 label = "measured mismatch"
                 mismatches = list(fs_row.get("mismatches") or [])
                 worst_m = max(mismatches, key=lambda m: m.get("max_px") or 0) if mismatches else {}
-                reason = ("MEASURED MISMATCH (2560x1440 fullscreen, Small, Larger): %s on %s cell %s off by %.1f px (%s)"
-                          % (name, fs_row.get("panel") or "?", worst_m.get("cell") or "?",
+                reason = ("MEASURED MISMATCH (%s, %s): %s on %s cell %s off by %.1f px (%s)"
+                          % (prof, build_label, name, fs_row.get("panel") or "?", worst_m.get("cell") or "?",
                              worst_m.get("max_px") or fs_row.get("worst_px") or 0.0,
                              worst_m.get("cause") or "differs from REA"))
-                measured_cases = [{"case": "FS1", "panel": fs_row.get("panel"), "grid": fs_row.get("grid"),
+                measured_cases = [{"case": "ALL1", "build": build_note, "build_label": build_label,
+                                   "panel": fs_row.get("panel"), "grid": fs_row.get("grid"),
                                    "worst_px": fs_row.get("worst_px"), "scored_hosts": fs_row.get("scored_hosts"),
                                    "pass": False, "mismatches": mismatches}]
         else:

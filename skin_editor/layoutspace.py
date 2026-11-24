@@ -51,8 +51,10 @@ ZONE_KEYS = {v: k for k, v in FILE_ZONES.items()}
 
 MAIN = "main"
 
-# FS1: fullscreen 2K Small as the main setting, with 2560x1440 windowed kept selectable.
+# FS1 / ALL1: fullscreen 2K Small/Medium/Large, with 2560x1440 windowed kept selectable.
 PROFILE_FULLSCREEN = "2560x1440 fullscreen, Small, Larger"
+PROFILE_FULLSCREEN_MEDIUM = "2560x1440 fullscreen, Medium, Larger"
+PROFILE_FULLSCREEN_LARGE = "2560x1440 fullscreen, Large, Larger"
 PROFILE_WINDOWED = "2560x1440 windowed, Small, Larger"
 DEFAULT_VIEWPORT_PROFILE = PROFILE_FULLSCREEN
 
@@ -66,6 +68,30 @@ MEASURED_VIEWPORT_FULLSCREEN = {
     "breakpoint": "Large",
     "content_rect": (15.6, 85.9, 2468.8, 1319.3),
     "grid": (30, 16),
+}
+
+MEASURED_VIEWPORT_FULLSCREEN_MEDIUM = {
+    "profile": PROFILE_FULLSCREEN_MEDIUM,
+    "width": 2560,
+    "height": 1440,
+    "window_mode": "fullscreen",
+    "information_display": "Medium",
+    "text_scaling": "Larger",
+    "breakpoint": "Large",
+    "content_rect": (13.1, 71.8, 2063.9, 1102.9),
+    "grid": (25, 13),
+}
+
+MEASURED_VIEWPORT_FULLSCREEN_LARGE = {
+    "profile": PROFILE_FULLSCREEN_LARGE,
+    "width": 2560,
+    "height": 1440,
+    "window_mode": "fullscreen",
+    "information_display": "Large",
+    "text_scaling": "Larger",
+    "breakpoint": "Large",
+    "content_rect": (10.5, 57.7, 1659.0, 886.6),
+    "grid": (20, 11),
 }
 
 MEASURED_VIEWPORT_WINDOWED = {
@@ -82,6 +108,8 @@ MEASURED_VIEWPORT_WINDOWED = {
 
 VIEWPORT_PROFILES = {
     PROFILE_FULLSCREEN: MEASURED_VIEWPORT_FULLSCREEN,
+    PROFILE_FULLSCREEN_MEDIUM: MEASURED_VIEWPORT_FULLSCREEN_MEDIUM,
+    PROFILE_FULLSCREEN_LARGE: MEASURED_VIEWPORT_FULLSCREEN_LARGE,
     PROFILE_WINDOWED: MEASURED_VIEWPORT_WINDOWED,
 }
 
@@ -97,6 +125,10 @@ def normalize_profile(profile=None):
     low = s.lower()
     if low == PROFILE_WINDOWED.lower() or ("window" in low and "full" not in low):
         return PROFILE_WINDOWED
+    if low == PROFILE_FULLSCREEN_MEDIUM.lower() or ("fullscreen" in low and "medium" in low):
+        return PROFILE_FULLSCREEN_MEDIUM
+    if low == PROFILE_FULLSCREEN_LARGE.lower() or ("fullscreen" in low and "large" in low and "larger" in low and "small" not in low):
+        return PROFILE_FULLSCREEN_LARGE
     if low == PROFILE_FULLSCREEN.lower() or "fullscreen" in low:
         return PROFILE_FULLSCREEN
     return DEFAULT_VIEWPORT_PROFILE

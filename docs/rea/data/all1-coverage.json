@@ -1,0 +1,172 @@
+{
+  "total_compositions_in_dump": 1834,
+  "editable_count": 1815,
+  "template_count": 19,
+  "measured_union": 143,
+  "by_entry": {
+    "M1": {
+      "scored": 141,
+      "pass": 140,
+      "mismatch": 1
+    },
+    "M2": {
+      "scored": 141,
+      "pass": 139,
+      "mismatch": 2
+    },
+    "M3": {
+      "scored": 139,
+      "pass": 138,
+      "mismatch": 1
+    }
+  },
+  "not_reached_total": 1672,
+  "not_reached_by_reason": {
+    "not selected at any tested entry": 992,
+    "only in match": 10,
+    "panel skipped as an action": 28,
+    "no navigation route": 642
+  },
+  "mismatches": [
+    {
+      "entry": "M1",
+      "composition": "3_Tiles_8x4-Expandable_2x4x2",
+      "panel": "PortalMessagesTool",
+      "cell": "Portal Card Template Element",
+      "delta": [
+        -0.1,
+        245.8,
+        -0.5,
+        0.5
+      ],
+      "max_px": 245.8,
+      "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+    },
+    {
+      "entry": "M1",
+      "composition": "3_Tiles_8x4-Expandable_2x4x2",
+      "panel": "PortalMessagesTool",
+      "cell": "RelatedInfoTitle",
+      "delta": [
+        0.0,
+        245.8,
+        -0.1,
+        0.6
+      ],
+      "max_px": 245.8,
+      "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+    },
+    {
+      "entry": "M2",
+      "composition": "3_Tiles_8x4-Expandable_2x4x2",
+      "panel": "PortalMessagesTool",
+      "cell": "Portal Card Template Element",
+      "delta": [
+        -0.2,
+        245.7,
+        0.1,
+        0.2
+      ],
+      "max_px": 245.7,
+      "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+    },
+    {
+      "entry": "M2",
+      "composition": "3_Tiles_8x4-Expandable_2x4x2",
+      "panel": "PortalMessagesTool",
+      "cell": "RelatedInfoTitle",
+      "delta": [
+        0.0,
+        245.3,
+        0.3,
+        0.7
+      ],
+      "max_px": 245.3,
+      "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+    },
+    {
+      "entry": "M2",
+      "composition": "SquadYouthSetupReportOverviewGridComposition-Large",
+      "panel": "SquadYouthSetupReport",
+      "cell": "Competitions",
+      "delta": [
+        0.2,
+        0.3,
+        81.3,
+        -0.2
+      ],
+      "max_px": 81.3,
+      "cause": "Inferred: measured host rect differs from rea prediction beyond 1.5 px"
+    },
+    {
+      "entry": "M2",
+      "composition": "SquadYouthSetupReportOverviewGridComposition-Large",
+      "panel": "SquadYouthSetupReport",
+      "cell": "Facilities",
+      "delta": [
+        163.8,
+        0.3,
+        82.1,
+        -0.2
+      ],
+      "max_px": 163.8,
+      "cause": "Inferred: measured host rect differs from rea prediction beyond 1.5 px"
+    },
+    {
+      "entry": "M2",
+      "composition": "SquadYouthSetupReportOverviewGridComposition-Large",
+      "panel": "SquadYouthSetupReport",
+      "cell": "Loans",
+      "delta": [
+        82.0,
+        0.3,
+        82.1,
+        -0.2
+      ],
+      "max_px": 82.1,
+      "cause": "Inferred: measured host rect differs from rea prediction beyond 1.5 px"
+    },
+    {
+      "entry": "M2",
+      "composition": "SquadYouthSetupReportOverviewGridComposition-Large",
+      "panel": "SquadYouthSetupReport",
+      "cell": "YouthCandidates",
+      "delta": [
+        245.6,
+        0.3,
+        82.1,
+        -0.2
+      ],
+      "max_px": 245.6,
+      "cause": "Inferred: measured host rect differs from rea prediction beyond 1.5 px"
+    },
+    {
+      "entry": "M3",
+      "composition": "3_Tiles_8x4-Expandable_2x4x2",
+      "panel": "PortalMessagesTool",
+      "cell": "Portal Card Template Element",
+      "delta": [
+        -0.1,
+        245.8,
+        0.3,
+        0.3
+      ],
+      "max_px": 245.8,
+      "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+    },
+    {
+      "entry": "M3",
+      "composition": "3_Tiles_8x4-Expandable_2x4x2",
+      "panel": "PortalMessagesTool",
+      "cell": "RelatedInfoTitle",
+      "delta": [
+        0.0,
+        245.8,
+        0.0,
+        -0.3
+      ],
+      "max_px": 245.8,
+      "cause": "nested subgrid uses 0 px padding (x-offset fixed at 0.0 px); game grew top tile to 5 rows instead of 8 via FitHeightToContent (y shifted +245.8 px)"
+    }
+  ]
+}
